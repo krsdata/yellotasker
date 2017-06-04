@@ -71,7 +71,7 @@ class RouteServiceProvider extends ServiceProvider
     {
 
         Route::group([
-            'middleware' => 'admin',
+            'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
             require __DIR__.'/../Route/admin.php';
