@@ -1,0 +1,13 @@
+<?php
+
+ 
+namespace App\Console\Commands\stubs;
+
+use Illuminate\Http\Request;
+use Modules\Admin\Http\Controllers; 
+
+
+class DummyClass extends Controller
+{
+    //
+}

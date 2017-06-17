@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Index</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Avant">
+	<meta name="author" content="The Red Team">
+
+    <!-- <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  -->
+    <link rel="stylesheet" href="assets/css/styles.css?=140">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+
+    <link href='assets/demo/variations/default.css' rel='stylesheet' type='text/css' media='all' id='styleswitcher'> 
+    <link href='assets/demo/variations/default.css' rel='stylesheet' type='text/css' media='all' id='headerswitcher'> 
+    
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries. Placeholdr.js enables the placeholder attribute -->
+	<!--[if lt IE 9]>
+        <link rel="stylesheet" href="assets/css/ie8.css">
+		<script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.1.0/respond.min.js"></script>
+        <script type="text/javascript" src="assets/plugins/charts-flot/excanvas.min.js"></script>
+	<![endif]-->
+
+	<!-- The following CSS are included as plugins and can be removed if unused-->
+
+<link rel='stylesheet' type='text/css' href='assets/plugins/form-daterangepicker/daterangepicker-bs3.css' /> 
+<link rel='stylesheet' type='text/css' href='assets/plugins/fullcalendar/fullcalendar.css' /> 
+<link rel='stylesheet' type='text/css' href='assets/plugins/form-markdown/css/bootstrap-markdown.min.css' /> 
+<link rel='stylesheet' type='text/css' href='assets/plugins/codeprettifier/prettify.css' /> 
+<link rel='stylesheet' type='text/css' href='assets/plugins/form-toggle/toggles.css' /> 
+
+<!-- <script type="text/javascript" src="assets/js/less.js"></script> -->
+</head>
+
+<body class="">
+
+
+    <div id="headerbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6 col-sm-2">
+                    <a href="#" class="shortcut-tiles tiles-brown">
+                        <div class="tiles-body">
+                            <div class="pull-left"><i class="fa fa-pencil"></i></div>
+                        </div>
+                        <div class="tiles-footer">
+                            Create Assignment
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-2">
+                    <a href="#" class="shortcut-tiles tiles-grape">
+                        <div class="tiles-body">
+                            <div class="pull-left"><i class="fa fa-group"></i></div>
+                            <div class="pull-right"><span class="badge">2</span></div>
+                        </div>
+                        <div class="tiles-footer">
+                            Labs Group
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-2">
+                    <a href="#" class="shortcut-tiles tiles-primary">
+                        <div class="tiles-body">
+                            <div class="pull-left"><i class="fa fa-envelope-o"></i></div>
+                            <div class="pull-right"><span class="badge">10</span></div>
+                        </div>
+                        <div class="tiles-footer">
+                            Safety Post
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-2">
+                    <a href="#" class="shortcut-tiles tiles-inverse">
+                        <div class="tiles-body">
+                            <div class="pull-left"><i class="fa fa-book"></i></div>
+                            <div class="pull-right"><span class="badge">3</span></div>
+                        </div>
+                        <div class="tiles-footer">
+                            Course Textbook
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-xs-6 col-sm-2">
+                    <a href="#" class="shortcut-tiles tiles-midnightblue">
+                        <div class="tiles-body">
+                            <div class="pull-left"><i class="fa fa-flag"></i></div>
+                        </div>
+                        <div class="tiles-footer">
+                            Hints For Success
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-2">
+                    <a href="#" class="shortcut-tiles tiles-orange">
+                        <div class="tiles-body">
+                            <div class="pull-left"><i class="fa fa-book"></i></div>
+                        </div>
+                        <div class="tiles-footer">
+                            Quizzes
+                        </div>
+                    </a>
+                </div>
+                            
+            </div>
+        </div>
+    </div>
+
+    <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+        <a id="leftmenu-trigger" class="tooltips" data-toggle="tooltip" data-placement="right" title="Toggle Sidebar"></a>
+        <a id="rightmenu-trigger" class="tooltips" data-toggle="tooltip" data-placement="left" title="Toggle Infobar"></a>
+
+        <div class="navbar-header pull-left">
+            <!--<a class="navbar-brand" href="index.htm">Avant</a>-->
+        </div>
+
+        <ul class="nav navbar-nav pull-right toolbar">
+        	<li class="dropdown">
+        		<a href="#" class="dropdown-toggle username" data-toggle="dropdown"><span class="hidden-xs">John McCartney <i class="fa fa-caret-down"></i></span><img src="assets/demo/avatar/dangerfield.png" alt="Dangerfield" /></a>
+        		<ul class="dropdown-menu userinfo arrow">
+        			<li class="username">
+                        <a href="#">
+        				    <div class="pull-left"><img src="assets/demo/avatar/dangerfield.png" alt="Jeff Dangerfield"/></div>
+        				    <div class="pull-right"><h5>Howdy, John!</h5><small>Logged in as <span>john275</span></small></div>
+                        </a>
+        			</li>
+        			<li class="userlinks">
+        				<ul class="dropdown-menu">
+        					<li><a href="#">Edit Profile <i class="pull-right fa fa-pencil"></i></a></li>
+        					<li><a href="#">Account <i class="pull-right fa fa-cog"></i></a></li>
+        					<li><a href="#">Help <i class="pull-right fa fa-question-circle"></i></a></li>
+        					<li class="divider"></li>
+        					<li><a href="#" class="text-right">Sign Out</a></li>
+        				</ul>
+        			</li>
+        		</ul>
+        	</li>
+        	
+        	<li class="dropdown">
+        		<a href="#" class="hasnotifications dropdown-toggle" data-toggle='dropdown'><i class="fa fa-bell"></i><span class="badge">3</span></a>
+        		<ul class="dropdown-menu notifications arrow">
+        			<li class="dd-header">
+        				<span>You have 3 new notification(s)</span>
+        				<span><a href="#">Mark all Seen</a></span>
+        			</li>
+                    <div class="scrollthis">
+    				    <li>
+    				    	<a href="#" class="notification-user active">
+    				    		<span class="time">4 mins</span>
+    				    		<i class="fa fa-user"></i>
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-danger active">
+    				    		<span class="time">20 mins</span>
+    				    		<i class="fa fa-bolt"></i>
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-success active">
+    				    		<span class="time">1 hr</span>
+    				    		<i class="fa fa-check"></i> 
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-warning">
+    				    		<span class="time">2 hrs</span>
+    				    		<i class="fa fa-exclamation-triangle"></i> 
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-order">
+    				    		<span class="time">10 hrs</span>
+    				    		<i class="fa fa-shopping-cart"></i> 
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-failure">
+    				    		<span class="time">12 hrs</span>
+    				    		<i class="fa fa-times-circle"></i>
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-fix">
+    				    		<span class="time">12 hrs</span>
+    				    		<i class="fa fa-wrench"></i>
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+    				    <li>
+    				    	<a href="#" class="notification-success">
+    				    		<span class="time">18 hrs</span>
+    				    		<i class="fa fa-check"></i>
+    				    		<span class="msg">Lorem ipsum dolor</span>
+    				    	</a>
+    				    </li>
+                    </div>
+        			<li class="dd-footer"><a href="#">View All Notifications</a></li>
+				</ul>
+			</li>
+            <li>
+                <a href="#" id="headerbardropdown"><span><i class="fa fa-level-down"></i></span></a>
+            </li>
+            <li class="dropdown demodrop">
+               <!-- <a href="#" class="dropdown-toggle tooltips" data-toggle="dropdown"><i class="fa fa-magic"></i></a>-->
+
+                <ul class="dropdown-menu arrow dropdown-menu-form" id="demo-dropdown">
+                    <li>
+                        <label for="demo-header-variations" class="control-label">Header Colors</label>
+                        <ul class="list-inline demo-color-variation" id="demo-header-variations">
+                            <li><a class="color-black" href="javascript:;"  data-headertheme="header-black.css"></a></li>
+                            <li><a class="color-dark" href="javascript:;"  data-headertheme="default.css"></a></li>
+                            <li><a class="color-red" href="javascript:;" data-headertheme="header-red.css"></a></li>
+                            <li><a class="color-blue" href="javascript:;" data-headertheme="header-blue.css"></a></li>
+                        </ul>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <label for="demo-color-variations" class="control-label">Sidebar Colors</label>
+                        <ul class="list-inline demo-color-variation" id="demo-color-variations">
+                            <li><a class="color-lite" href="javascript:;"  data-theme="default.css"></a></li>
+                            <li><a class="color-steel" href="javascript:;" data-theme="sidebar-steel.css"></a></li>
+                            <li><a class="color-lavender" href="javascript:;" data-theme="sidebar-lavender.css"></a></li>
+                            <li><a class="color-green" href="javascript:;" data-theme="sidebar-green.css"></a></li>
+                        </ul>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <label for="fixedheader">Fixed Header</label>
+                        <div id="fixedheader" style="margin-top:5px;"></div> 
+                    </li>
+                </ul>
+            </li>
+		</ul>
+    </header>
+
+    <div id="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <nav id="page-leftbar" role="navigation">
+                <!-- BEGIN SIDEBAR MENU -->
+            <ul class="acc-menu" id="sidebar">
+                <li id="search">
+                    <a href="javascript:;"><i class="fa fa-search opacity-control"></i></a>
+                     <form>
+                        <input type="text" class="search-query" placeholder="Search...">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </li>
+                <li class="divider"></li>
+                <li><a href="index.htm"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+                <li><a href="javascript:;"><i class="fa fa-th"></i> <span>Class meeting</span> </a>
+                </li>
+                <li><a href="javascript:;"><i class="fa fa-list-ol"></i> <span>Course Textbook</span> <span class="badge badge-indigo">4</span></a>
+                </li>
+                <li><a href="javascript:;"><i class="fa fa-tasks"></i> <span>Student Performance</span> </a>
+                                <li><a href="javascript:;"><i class="fa fa-tasks"></i> <span>Student Attandence</span> <span class="badge badge-info">70%</span></a>
+
+                <li><a href="javascript:;"><i class="fa fa-tasks"></i> <span>Assignment</span> <span class="badge badge-info">3</span></a>
+                </li>
+                <li><a href="javascript:;"><i class="fa fa-tasks"></i> <span>Participation</span></a>
+                </li>
+                <li><a href="javascript:;"><i class="fa fa-table"></i> <span>Labs</span></a>
+                    
+                </li>
+                <li><a href="javascript:;"><i class="fa fa-pencil"></i> <span>Quizzes</span><span class="badge badge-primary">5</span></a>
+                    
+                </li>
+                
+                <li><a href="javascript:;"><i class="fa fa-bar-chart-o"></i> <span>Mid Semester Exam</span></a>
+                    
+                </li>
+                <li><a href="#"><i class="fa fa-calendar"></i> <span>Final Exam</span></a></li>
+                <li><a href="javascript:;"><i class="fa fa-flag"></i> <span>Hints For Success</span> <span class="badge badge-orange">2</span></a>
+                    
+                </li>
+                
+                <li><a href="javascript:;"><i class="fa fa-briefcase"></i> <span>Study Habit</span> <span class="badge badge-danger">1</span></a>
+                    
+                </li>
+                <li><a href="javascript:;"><i class="fa fa-sitemap"></i> <span>No Extra Credit</span></a>
+                    
+                </li>
+                                <li><a href="javascript:;"><i class="fa fa-flag"></i> <span>Safety</span></a>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </nav>
+
+        <!-- BEGIN RIGHTBAR -->
+        <div id="page-rightbar">
+
+            <div id="chatarea">
+                <div class="chatuser">
+                    <span class="pull-right">Jane Smith</span>
+                    <a id="hidechatbtn" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+                <div class="chathistory">
+                    <div class="chatmsg">
+                        <p>Hey! How's it going?</p>
+                        <span class="timestamp">1:20:42 PM</span>
+                    </div>
+                    <div class="chatmsg sent">
+                        <p>Not bad... i guess. What about you? Haven't gotten any updates from you in a long time.</p>
+                        <span class="timestamp">1:20:46 PM</span>
+                    </div>
+                    <div class="chatmsg">
+                        <p>Yeah! I've been a bit busy lately. I'll get back to you soon enough.</p>
+                        <span class="timestamp">1:20:54 PM</span>
+                    </div>
+                    <div class="chatmsg sent">
+                        <p>Alright, take care then.</p>
+                        <span class="timestamp">1:21:01 PM</span>
+                    </div>
+                </div>
+                <div class="chatinput">
+                    <textarea name="" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div id="widgetarea">
+                <div class="widget">
+                    <div class="widget-heading">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#accsummary"><h4>Account Summary</h4></a>
+                    </div>
+                    <div class="widget-body collapse in" id="accsummary">
+                        <div class="widget-block" style="background: #7ccc2e; margin-top:10px;">
+                            <div class="pull-left">
+                                <small>Monthly Attandence</small>
+                                <h5>70%</h5>
+                            </div>
+                            <div class="pull-right"><div id="currentbalance"></div></div>
+                        </div>
+                        
+                       
+                    </div>
+                </div>
+
+
+                <div id="chatbar" class="widget">
+                    <div class="widget-heading">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#chatbody"><h4>Course Textbook</small></h4></a>
+                    </div>
+                    <div class="widget-body collapse in" id="chatbody">
+                        <ul class="chat-users">
+                            <li data-stats="online"><a href="javascript:;"><img src="assets/demo/avatar/potter.png" alt=""><span>Lorem ipsum</span></a></li>
+                            <li data-stats="online"><a href="javascript:;"><img src="assets/demo/avatar/tennant.png" alt=""><span>Lorem ipsum</span></a></li>
+                            <li data-stats="online"><a href="javascript:;"><img src="assets/demo/avatar/potter.png" alt=""><span>Lorem ipsum</span></a></li>
+                            <li data-stats="online"><a href="javascript:;"><img src="assets/demo/avatar/tennant.png" alt=""><span>Lorem ipsum</span></a></li>
+                             <li data-stats="online"><a href="javascript:;"><img src="assets/demo/avatar/potter.png" alt=""><span>Lorem ipsum</span></a></li>
+                            <li data-stats="online"><a href="javascript:;"><img src="assets/demo/avatar/tennant.png" alt=""><span>Lorem ipsum</span></a></li>
+                            <!--li data-stats="offline"><a href="javascript:;"><img src="assets/demo/avatar/watson.png" alt=""><span>Annie Watson</span></a></li>
+                            <li data-stats="offline"><a href="javascript:;"><img src="assets/demo/avatar/doyle.png" alt=""><span>Alan Doyle</span></a></li>
+                            <li data-stats="offline"><a href="javascript:;"><img src="assets/demo/avatar/corbett.png" alt=""><span>Simon Corbett</span></a></li>
+                            <li data-stats="offline"><a href="javascript:;"><img src="assets/demo/avatar/paton.png" alt=""><span>Polly Paton</span></a></li-->
+                        </ul>
+                        <span class="more"><a href="#">See all</a></span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-heading">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#taskbody"><h4>Pending Assignment <small>(5)</small></h4></a>
+                    </div>
+                    <div class="widget-body collapse in" id="taskbody">
+                        <div class="contextual-progress" style="margin-top:10px;">
+                            <div class="clearfix">
+                                <div class="progress-title">Lorem ipsum</div>
+                                <div class="progress-percentage"><span class="label label-info">Today</span> 25%</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div class="contextual-progress">
+                            <div class="clearfix">
+                                <div class="progress-title">Lorem ipsum</div>
+                                <div class="progress-percentage"><span class="label label-primary">Tomorrow</span> 17%</div>
+                            </div>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-primary" style="width: 17%"></div>
+                            </div>
+                        </div>
+                        <div class="contextual-progress">
+                            <div class="clearfix">
+                                <div class="progress-title">Lorem ipsum</div>
+                                <div class="progress-percentage">70%</div>
+                            </div>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-success" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="contextual-progress">
+                            <div class="clearfix">
+                                <div class="progress-title">Lorem ipsum</div>
+                                <div class="progress-percentage">6%</div>
+                            </div>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-danger" style="width: 6%"></div>
+                            </div>
+                        </div>
+                        <div class="contextual-progress">
+                            <div class="clearfix">
+                                <div class="progress-title">Lorem ipsum</div>
+                                <div class="progress-percentage">20%</div>
+                            </div>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-orange" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        
+                        <span class="more"><a href="ui-progressbars.htm">View all Pending</a></span>
+                    </div>
+                </div>
+
+ 
+
+                
+
+                
+
+            </div>
+        </div>
+        <!-- END RIGHTBAR -->
+<div id="page-content">
+    <div id='wrap'>
+        <div id="page-heading">
+            <ol class="breadcrumb">
+                <li class='active'><a href="index.htm">Dashboard</a></li>
+            </ol>
+
+            <h1>Dashboard</h1>
+            <div class="options">
+                <div class="btn-toolbar">
+                    <button class="btn btn-default" id="daterangepicker2">
+                        <i class="fa fa-calendar-o"></i> 
+                        <span class="hidden-xs hidden-sm">December 9, 2013 - January 8, 2014</span> <b class="caret"></b>
+                    </button>
+                    <div class="btn-group hidden-xs">
+                        <a href='#' class="btn btn-default dropdown-toggle" data-toggle='dropdown'><i class="fa fa-cloud-download"></i><span class="hidden-xs hidden-sm hidden-md"> Export as</span> <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Text File (*.txt)</a></li>
+                            <li><a href="#">Excel File (*.xlsx)</a></li>
+                            <li><a href="#">PDF File (*.pdf)</a></li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-default hidden-xs"><i class="fa fa-cog"></i></a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            
+
+
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 clearfix">
+                                    <h4 class="pull-left" style="margin: 0 0 20px;">Student Performance<small>(weekly)</small></h4>
+                                    <div class="btn-group pull-right">
+                                        <a href="javascript:;" class="btn btn-default btn-sm active">this week</a>
+                                        <a href="javascript:;" class="btn btn-default btn-sm ">previous week</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="site-statistics" style="height:250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-grape">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 clearfix">
+                                    <h4 class="pull-left" style="margin: 0 0 20px;">Attandence <small></small></h4>
+                                    <div class="btn-group pull-right">
+                                        <a href="javascript:;" class="btn btn-default btn-sm active">2017</a>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="budget-variance" style="height:250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-grape">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 clearfix">
+                                    <h4 class="pull-left" style="margin:0 0 10px">Overview <small></small></h4>
+                                    <div class="btn-group pull-right">
+                                        <a href="javascript:;" id="updatePieCharts" class="btn btn-default-alt btn-sm">Refresh</a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-4" style="padding-top:10px;padding-bottom:10px;">
+                                    <div class="easypiechart" id="returningvisits" data-percent="65">
+                                        <span class="percent"></span>
+                                    </div>
+                                    <label for="newvisits">Overall Performance</label>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-4" style="padding-top:10px;padding-bottom:10px;">
+                                    <span class="easypiechart" id="newvisitor" data-percent="81">
+                                        <span class="percent"></span>
+                                    </span>
+                                    <label for="bouncerate">Attandence</label>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-4" style="padding-top:10px;padding-bottom:10px;">
+                                    <span class="easypiechart" id="clickrate" data-percent="42">
+                                        <span class="percent"></span>
+                                    </span>
+                                    <label for="clickrate">Complete Assignment</label>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-4" style="padding-top:10px;padding-bottom:10px;">
+                                    <div class="easypiechart" id="returningvisits" data-percent="65">
+                                        <span class="percent"></span>
+                                    </div>
+                                    <label for="newvisits">Lab Performance</label>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-4" style="padding-top:10px;padding-bottom:10px;">
+                                    <span class="easypiechart" id="newvisitor" data-percent="81">
+                                        <span class="percent"></span>
+                                    </span>
+                                    <label for="bouncerate">Assignment Marks</label>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-4" style="padding-top:10px;padding-bottom:10px;">
+                                    <span class="easypiechart" id="clickrate" data-percent="42">
+                                        <span class="percent"></span>
+                                    </span>
+                                    <label for="clickrate">Mid Exam Marks</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-midnightblue">
+                        <div class="panel-heading">
+                              <h4>
+                                <ul class="nav nav-tabs">
+                                  <li class="active"><a href="#threads" data-toggle="tab"><i class="fa fa-list visible-xs icon-scale"></i><span class="hidden-xs">Course Textbook</span></a></li>
+                                  <li><a href="#comments" data-toggle="tab"><i class="fa fa-comments visible-xs icon-scale"></i><span class="hidden-xs">Quizzes</span></a></li>
+                                  <li><a href="#users" data-toggle="tab"><i class="fa fa-group visible-xs icon-scale"></i><span class="hidden-xs">Hints For Success</span></a></li>
+                                </ul>
+                              </h4>
+                              <!-- <div class="options">
+                                <a href="javascript:;"><i class="fa fa-cog"></i></a>
+                                <a href="javascript:;"><i class="fa fa-wrench"></i></a> 
+                              </div> -->
+                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="threads">
+                                    <ul class="panel-threads">
+                                        <li>
+                                            <img src="assets/demo/avatar/aniss.png" alt="Aniss">
+                                            <div class="content">
+                                                <span class="time">20 mins</span>
+                                                <a href="#" class="title">Envato's Most Wanted – $5,000 Reward for Music & Band Themes and Templates</a>
+                                                <span class="thread">asked by <a href="#">Jim Gordon</a> in <a href="#">Section #3</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/corbett.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="time">2 hrs</span>
+                                                <a href="#" class="title">How to create a corporate wordpress theme?</a>
+                                                <span class="thread">asked by <a href="#">Simon Corbett</a> in <a href="#">Section #15</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/dangerfield.png" alt="Dangerfield">
+                                            <div class="content">
+                                                <span class="time">4 hrs</span>
+                                                <a href="#" class="title">Which cart is growing in popularity - WOOCOMMERCE or OPENCART? And which one would you choose?</a>
+                                                <span class="thread">asked by <a href="#">Jeff Dangerfield</a> in <a href="#">Section #9</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/doyle.png" alt="Doyle">
+                                            <div class="content">
+                                                <span class="time">13 hrs</span>
+                                                <a href="#" class="title">Pros and Cons of Using Grids in Responsive Web Design</a>
+                                                <span class="thread">asked by <a href="#">Alan Doyle</a> in <a href="#">Section #11</a></span>
+                                            </div>
+
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/jackson.png" alt="Jackson">
+                                            <div class="content">
+                                                <span class="time">19 hrs</span>
+                                                <a href="#" class="title">Best Web & Graphic Design Proposal Software</a>
+                                                <span class="thread">asked by <a href="#">Eric Jackson</a> in <a href="#">Section #18</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/aniss.png" alt="Aniss">
+                                            <div class="content">
+                                                <span class="time">20 mins</span>
+                                                <a href="#" class="title">Envato's Most Wanted – $5,000 Reward for Music & Band Themes and Templates</a>
+                                                <span class="thread">asked by <a href="#">Jim Gordon</a> in <a href="#">Section #3</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/corbett.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="time">2 hrs</span>
+                                                <a href="#" class="title">How to create a corporate wordpress theme?</a>
+                                                <span class="thread">asked by <a href="#">Simon Corbett</a> in <a href="#">Section #15</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/dangerfield.png" alt="Dangerfield">
+                                            <div class="content">
+                                                <span class="time">4 hrs</span>
+                                                <a href="#" class="title">Which cart is growing in popularity - WOOCOMMERCE or OPENCART? And which one would you choose?</a>
+                                                <span class="thread">asked by <a href="#">Jeff Dangerfield</a> in <a href="#">Section #9</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/doyle.png" alt="Doyle">
+                                            <div class="content">
+                                                <span class="time">13 hrs</span>
+                                                <a href="#" class="title">Pros and Cons of Using Grids in Responsive Web Design</a>
+                                                <span class="thread">asked by <a href="#">Alan Doyle</a> in <a href="#">Section #11</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/jackson.png" alt="Jackson">
+                                            <div class="content">
+                                                <span class="time">19 hrs</span>
+                                                <a href="#" class="title">Best Web & Graphic Design Proposal Software</a>
+                                                <span class="thread">asked by <a href="#">Eric Jackson</a> in <a href="#">Section #18</a></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a href="#" class="btn btn-default-alt btn-sm pull-right">Load More</a>
+                                </div>
+                                <div class="tab-pane" id="comments">
+                                    <ul class="panel-comments">
+                                        <li>
+                                            <img src="assets/demo/avatar/aniss.png" alt="Aniss">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Jim Gordon</a> commented on <a href="#">Article #121</a></span>
+                                                Just wondering - can random users see our comments? If so, allow them to comment!
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/corbett.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Simon Corbett</a> commented on <a href="#">Article #55</a></span>
+                                                Not sure what changed but for the last few weeks a few of my regulars are having their comments held for moderation.
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/paton.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Polly Paton</a> commented on <a href="#">Article #12</a></span>
+                                                I'm sure there is a tool for that. 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/watson.png" alt="Watson">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Annie Watson</a> commented on <a href="#">Article #223</a></span>
+                                                We have enough problems with Spammers already without letting non members leave comments.
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/aniss.png" alt="Aniss">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Jim Gordon</a> commented on <a href="#">Article #121</a></span>
+                                                Just wondering - can random users see our comments? If so, allow them to comment!
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/corbett.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Simon Corbett</a> commented on <a href="#">Article #55</a></span>
+                                                Not sure what changed but for the last few weeks a few of my regulars are having their comments held for moderation.
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/paton.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Polly Paton</a> commented on <a href="#">Article #12</a></span>
+                                                I'm sure there is a tool for that. 
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/watson.png" alt="Watson">
+                                            <div class="content">
+                                                <span class="actions"><div class="options"><div class="btn-group"><button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button><button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button></div></div></span>
+                                                <span class="commented"><a href="#">Annie Watson</a> commented on <a href="#">Article #223</a></span>
+                                                We have enough problems with Spammers already without letting non members leave comments.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a href="#" class="btn btn-default-alt btn-sm pull-right">Load More</a>
+                                </div>
+                                <div class="tab-pane" id="users">
+                                    <ul class="panel-users">
+                                        <li>
+                                            <img src="assets/demo/avatar/paton.png" alt="Paton">
+                                            <div class="content">
+                                                <span class="time">11 mins</span>
+                                                <span class="desc"><a href="#">Polly Paton</a> followed <a href="#">John White</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/tennant.png" alt="Tennant">
+                                            <div class="content">
+                                                <span class="time">48 mins</span>
+                                                <span class="desc"><a href="#">David Tennant</a> unfollowed <a href="#">Tony Doubleday</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/jobs.png" alt="Jobs">
+                                            <div class="content">
+                                                <span class="time">5 hrs</span>
+                                                <span class="desc"><a href="#">Howard Jobs</a> commented on <a href="#">Selling PSD Template Rights!</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/dangerfield.png" alt="Dangerfield">
+                                            <div class="content">
+                                                <span class="time">6 hrs</span>
+                                                <span class="desc"><a href="#">Jeff Dangerfield</a> posted on <a href="#">Please help with Theme Design</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/aniss.png" alt="Aniss">
+                                            <div class="content">
+                                                <span class="time">22 hrs</span>
+                                                <span class="desc"><a href="#">Jim Gordon</a> followed <a href="#">Polly Paton</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/corbett.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="time">3 days</span>
+                                                <span class="desc"><a href="#">Simon Corbett</a> followed <a href="#">Anna Johansson</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/paton.png" alt="Paton">
+                                            <div class="content">
+                                                <span class="time">11 mins</span>
+                                                <span class="desc"><a href="#">Polly Paton</a> followed <a href="#">John White</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/tennant.png" alt="Tennant">
+                                            <div class="content">
+                                                <span class="time">48 mins</span>
+                                                <span class="desc"><a href="#">David Tennant</a> unfollowed <a href="#">Tony Doubleday</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/jobs.png" alt="Jobs">
+                                            <div class="content">
+                                                <span class="time">5 hrs</span>
+                                                <span class="desc"><a href="#">Howard Jobs</a> commented on <a href="#">Selling PSD Template Rights!</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/dangerfield.png" alt="Dangerfield">
+                                            <div class="content">
+                                                <span class="time">6 hrs</span>
+                                                <span class="desc"><a href="#">Jeff Dangerfield</a> posted on <a href="#">Please help with Theme Design</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/aniss.png" alt="Aniss">
+                                            <div class="content">
+                                                <span class="time">22 hrs</span>
+                                                <span class="desc"><a href="#">Jim Gordon</a> followed <a href="#">Polly Paton</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="assets/demo/avatar/corbett.png" alt="Corbett">
+                                            <div class="content">
+                                                <span class="time">3 days</span>
+                                                <span class="desc"><a href="#">Simon Corbett</a> followed <a href="#">Anna Johansson</a></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a href="#" class="btn btn-default-alt btn-sm pull-right">Load More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                              <h4><i class="icon-highlight fa fa-calendar"></i> Calendar</h4>
+                              <div class="options">
+                                <a href="javascript:;"><i class="fa fa-cog"></i></a>
+                                <a href="javascript:;"><i class="fa fa-wrench"></i></a> 
+                                <a href="javascript:;" class="panel-collapse"><i class="fa fa-chevron-down"></i></a>
+                              </div>
+                        </div>
+                        <div class="panel-body" id="calendardemo">
+                              <div id='calendar-drag'></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+
+
+            
+
+            
+
+        </div> <!-- container -->
+    </div> <!--wrap -->
+</div> <!-- page-content -->
+
+    <footer role="contentinfo">
+        <div class="clearfix">
+            <ul class="list-unstyled list-inline pull-left">
+                <li>Student &copy; 2017</li>
+            </ul>
+            <button class="pull-right btn btn-inverse-alt btn-xs hidden-print" id="back-to-top"><i class="fa fa-arrow-up"></i></button>
+        </div>
+    </footer>
+
+</div> <!-- page-container -->
+
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+<script>!window.jQuery && document.write(unescape('%3Cscript src="assets/js/jquery-1.10.2.min.js"%3E%3C/script%3E'))</script>
+<script type="text/javascript">!window.jQuery.ui && document.write(unescape('%3Cscript src="assets/js/jqueryui-1.10.3.min.js'))</script>
+-->
+
+<script type='text/javascript' src='assets/js/jquery-1.10.2.min.js'></script> 
+<script type='text/javascript' src='assets/js/jqueryui-1.10.3.min.js'></script> 
+<script type='text/javascript' src='assets/js/bootstrap.min.js'></script> 
+<script type='text/javascript' src='assets/js/enquire.js'></script> 
+<script type='text/javascript' src='assets/js/jquery.cookie.js'></script> 
+<script type='text/javascript' src='assets/js/jquery.nicescroll.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/codeprettifier/prettify.js'></script> 
+<script type='text/javascript' src='assets/plugins/easypiechart/jquery.easypiechart.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/sparklines/jquery.sparklines.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/form-toggle/toggle.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/fullcalendar/fullcalendar.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/form-daterangepicker/daterangepicker.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/form-daterangepicker/moment.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/charts-flot/jquery.flot.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/charts-flot/jquery.flot.resize.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/charts-flot/jquery.flot.orderBars.min.js'></script> 
+<script type='text/javascript' src='assets/plugins/pulsate/jQuery.pulsate.min.js'></script> 
+<script type='text/javascript' src='assets/demo/demo-index.js'></script> 
+<script type='text/javascript' src='assets/js/placeholdr.js'></script> 
+<script type='text/javascript' src='assets/js/application.js'></script> 
+<script type='text/javascript' src='assets/demo/demo.js'></script> 
+
+</body>
+</html>
