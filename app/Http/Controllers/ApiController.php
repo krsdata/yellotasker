@@ -104,13 +104,13 @@ class ApiController extends Controller
     public function register(Request $request,User $user)
     {   
 
-        $input['first_name']    = $request->input('firstName');
-        $input['last_name']     = $request->input('lastName'); 
+        $input['first_name']    = $request->input('first_name');
+        $input['last_name']     = $request->input('last_name'); 
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
         $input['role_type']      = ($request->input('role_type'))?$request->input('role_type'):'';
          
-        if($request->input('id')){
+        if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
             return $u;
         } 
@@ -144,7 +144,7 @@ class ApiController extends Controller
         /** --Send Mail after Sign Up-- **/
         $subject = "Welcome to yellotasker! Verify your email address to get started";
         $email_content = array('receipent_email'=> $request->input('email'),'subject'=>$subject);
-        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link',['name'=> $request->input('firstName')]);
+        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link',['first_name'=> $request->input('first_name')]);
        
         return response()->json(
                             [ 
@@ -164,42 +164,51 @@ class ApiController extends Controller
     */
     public function updateProfile(Request $request,User $user,$user_id=null)
     {       
-        if(!Helper::isUserExist($user_id))
+        if(!Helper::isUserExist($request->get('user_id')))
         {
             return Response::json(array(
                 'status' => 0,
-                'message' => 'Invalid user ID!',
+                'message' => 'Invalid user Id!',
                 'data'  =>  ''
                 )
             );
         } 
-        $user = User::find($user_id); 
+        $user = User::find($request->get('user_id')); 
         $role_type  = $user->role_type;
 
-        $data = ['userID'=>$user->id,'name'=>$user->name,'email'=>$user->email];
-        if($user->role_type==1){
-            $data =  ProfessorProfile::firstOrNew(['professor_id' => $user->id]);
-            $data->name            = $request->get('name');   
-            $data->designation     = $request->get('designation');   
-            $data->office_hours    = $request->get('office_hours');   
-            $data->location        = $request->get('location');   
-            $data->email           = $request->get('email');   
-            $data->professor_id    = $user->id;   
+        $data = [
+                    'user_id'=>$user->id,
+                    'first_name'=>$user->first_name,
+                    'last_name'=>$user->first_name,
+                    'email'=>$user->email,
+                    'role_type' => $user->role_type
+                ];
+         
+        foreach ($request->all() as $key => $value) {
+             if($key=="email" || $key=="user_id")
+             {
+                continue;
+             }else{
+               $user->$key=$value; 
+             }
         }
-        if($user->role_type==2){
-            $data =  StudentProfile::firstOrNew(['student_id' => $user->id]);
-            $data->student_id    = $user->id;
-            $data->name          = $request->get('name');
-            $data->email         = $request->get('email');
-            $data->phone         = $request->get('phone');
-            $data->address       = $request->get('address');
-        } 
+
+        try{
+            $user->save();
+            $status = 1;
+            $code  = 200;
+            $message ="Profile updated successfully";
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+            $message =$e->getMessage();
+        }
 
         return response()->json(
                             [ 
-                            "status"=>1,
-                            'code'   => 200,
-                            "message"=> "Profile updated successfully",
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
                             'data'=>$data
                             ]
                         );
@@ -215,23 +224,20 @@ class ApiController extends Controller
     public function login(Request $request)
     {    
         $input = $request->all();
-        if (!$token = JWTAuth::attempt(['email'=>$request->input('email'),'password'=>$request->input('password')])) {
+        if (!$token = JWTAuth::attempt(['email'=>$request->get('email'),'password'=>$request->get('password')])) {
             return response()->json([ "status"=>0,"message"=>"Invalid email or password. Try again!" ,'data' => '' ]);
         }
-
+         
         $user = JWTAuth::toUser($token); 
 
-        $data['userId']         = $user->id;
-        $data['name']           = $user->name; 
-        $data['email']          = $user->email;
-        $data['roleType']       = ($user->role_type==1)?"professor":"student";
+        $data['user_id']        = $user->id; 
+        $input['first_name']    = $request->input('first_name');
+        $input['last_name']     = $request->input('last_name'); 
+        $input['email']         = $request->input('email'); 
+        $input['password']      = Hash::make($request->input('password'));
+        $input['role_type']     = ($request->input('role_type'))?$request->input('role_type'):'';
         $data['token']          = $token;
 
-        if($user->status)
-        {
-           // return response()->json([ "status"=>0,"message"=>"Your email is not verified!" ,'data' => '' ]);   
-        }
- 
         return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $data ]);
 
     } 
@@ -250,23 +256,7 @@ class ApiController extends Controller
         $data['email']          = $user->email;
         $data['roleType']       = ($user->role_type==1)?"professor":"student";
        
-        if($user->role_type==1){
-            $professor =  ProfessorProfile::where(['professor_id' => $user->id])->first();
-            if($professor){
-                $data['designation']    = $professor->designation;
-                $data['office_hours']   =  $professor->office_hours;  
-                $data['location']       = $professor->location;
-                $data['professor_id']  = $professor->professor_id;  
-            } 
-        }
-        if($user->role_type==2){
-            $student =  StudentProfile::where(['student_id' => $user->id])->first();
-            if($student){
-                $data['student_id'] = $student->student_id;
-                $data['phone']      = $student->phone;
-                $data['address']    = $student->address;
-            }
-        }  
+         
 
         return response()->json(
                 [ "status"=>1,

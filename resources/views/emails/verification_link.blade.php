@@ -19,7 +19,7 @@ table {
               <tr>
                 <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#000;"> 
                   <div>
-                        <p>Dear {{$content['name']}},</p>
+                        <p>Dear {{$content['first_name']}},</p>
                         <p>Welcome !</p>
                         <p>Thank you for registration. To activate
 your account, please click the link below to confirm your email address and
@@ -35,7 +35,7 @@ get started.
                           {{ url('api/v1/email_verification?verification_code='.$content['verification_token'].'&email='.$content['email']) }}</a> 
                       </p> 
                           <p>Best Regards,</p>
-                          <p>Team Syncabi</p>
+                          <p>Team Yellotasker</p>
 
                   </div>
                 </td>
