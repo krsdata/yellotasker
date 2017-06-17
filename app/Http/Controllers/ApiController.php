@@ -14,10 +14,7 @@ use Config,Mail,View,Redirect,Validator,Response;
 use Auth,Crypt,okie,Hash,Lang,JWTAuth,Input,Closure,URL; 
 use JWTExceptionTokenInvalidException; 
 use App\Helpers\Helper as Helper;
-use App\User;
-use App\ProfessorProfile;
-use App\StudentProfile; 
-
+use App\User; 
 
 class ApiController extends Controller
 {
@@ -38,6 +35,63 @@ class ApiController extends Controller
         $user_id =  $request->input('userID');
        
     } 
+
+    public function validateUser(Request $request,User $user){
+
+        $input['first_name']    = $request->input('firstName');
+        $input['last_name']     = $request->input('lastName'); 
+        $input['email']         = $request->input('email'); 
+        $input['password']      = Hash::make($request->input('password'));
+        $input['deviceID']      = ($request->input('deviceID'))?$request->input('deviceID'):'';
+         //Server side valiation
+        if($request->input('userID')){
+            $validator = Validator::make($request->all(), [
+                  
+            ]); 
+        } 
+        else{
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email|unique:t_user' 
+            ]); 
+        }
+       
+        // Return Error Message
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }
+
+        $helper = new Helper;
+        $group_name =  $helper->getCorporateGroupName($input['email']);
+        $email_allow = array('gmail','yahoo','ymail','aol','hotmail');
+
+        if(in_array($group_name, $email_allow))
+        {
+           return Response::json(array(
+                'status' => 0,
+                'message' => 'Only corporate email is allowed!',
+                'data'  =>  ''
+                )
+            ); 
+        }
+
+        return response()->json(
+                            [ 
+                                "status"=>1,
+                                "message"=>"User validated successfully.",
+                                'data'=>$request->all()
+                            ]
+                        );  
+    }   
     
    /* @method : register
     * @param : email,password,deviceID,firstName,lastName
@@ -49,25 +103,23 @@ class ApiController extends Controller
 
     public function register(Request $request,User $user)
     {   
-        $input['name']         = $request->input('name');
-        $input['email']        = $request->input('email'); 
-        $input['role_type']    = $request->input('roleType');  
-        $input['password']     = Hash::make($request->input('password'));
-        
-        if($request->input('userID')){
+
+        $input['first_name']    = $request->input('firstName');
+        $input['last_name']     = $request->input('lastName'); 
+        $input['email']         = $request->input('email'); 
+        $input['password']      = Hash::make($request->input('password'));
+        $input['role_type']      = ($request->input('role_type'))?$request->input('role_type'):'';
+         
+        if($request->input('id')){
             $u = $this->updateProfile($request,$user);
             return $u;
         } 
 
         //Server side valiation
         $validator = Validator::make($request->all(), [
-           'email' => 'required|email',
-           'name'  => 'required',
-           'password' => 'required',
-           'roleType' => 'required'
-
+           'email' => 'required|email|unique:users'
         ]);
-         /** Return Error Message **/
+        /** Return Error Message **/
         if ($validator->fails()) {
                     $error_msg  =   [];
             foreach ( $validator->messages()->all() as $key => $value) {
@@ -76,77 +128,29 @@ class ApiController extends Controller
                             
             return Response::json(array(
                 'status' => 0,
-                'code'   => 500,
                 'message' => $error_msg[0],
-                'data'  =>  $request->all()
+                'data'  =>  ''
                 )
             );
         }  
-        $roleType   = $request->input('roleType');
-        if($roleType==1){
+        
+        $helper = new Helper;
+        /** --Create USER-- **/
+        $user = User::create($input); 
+       // $data = ['userID'=>$user->userID,'name'=>$user['first_name'],'email'=>$user['email'],'firstName'=>$user['first_name'],'lastName'=>$user['last_name']];
+         
+        /** --Create Company Group-- **/
+        //$h = $helper->createCompanyGroup($request->input('email'),$user->userID);
+        /** --Send Mail after Sign Up-- **/
+        $subject = "Welcome to yellotasker! Verify your email address to get started";
+        $email_content = array('receipent_email'=> $request->input('email'),'subject'=>$subject);
+        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link',['name'=> $request->input('firstName')]);
        
-           $professor  = User::where('email',$request->input('email'))
-                        ->where('role_type',1)->first();
-            if(count($professor)){
-                $status     = 0;
-                $code       = 500;
-                $message    = "Email id already exist!";
-                $data       = $request->get('email');
-            }else{
-                $user = User::create($input);
-                $professor =  ProfessorProfile::firstOrNew(['professor_id' => $user->id]);
-                $professor->name            = $request->get('name');   
-                $professor->designation     = $request->get('designation');   
-                $professor->office_hours    = $request->get('office_hours');   
-                $professor->location        = $request->get('location');   
-                $professor->email           = $request->get('email');   
-                $professor->professor_id    = $user->id;   
-                $professor->save();
-                $data = ['userId'=>$user->id,'name'=>$user->name,'email'=>$user->email];
-                $data['roleType'] = "professor";
-                $status = 1;
-                $code   = 200;
-                $message = "Registration successfully done."; 
-            } 
-        }
-        if($roleType==2){  
-            $student    = User::where('email',$request->input('email'))
-                        ->where('role_type',2)->first();
-
-            if(count($student)){
-                $status     = 0;
-                $code       = 500;
-                $message    = "Email id already exist!";
-                $data       = $request->get('email');
-            }else{
-                $user = User::create($input);
-                $student =  StudentProfile::firstOrNew(['student_id' => $user->id]);
-                $student->student_id    = $user->id;
-                $student->name          = $request->get('name');
-                $student->email         = $request->get('email');
-                $student->phone         = $request->get('phone');
-                $student->address       = $request->get('address');
-                $student->save();
-                $data = ['userId'=>$user->id,'name'=>$user->name,'email'=>$user->email];
-                $data['roleType'] = "student"; 
-                $status = 1;
-                $code   = 200;
-                $message = "Registration successfully done."; 
-            } 
-        } 
-
-        /*      
-            helper = new Helper;
-            $subject = "Welcome to syncabi! Verify your email address to get started";
-            $email_content = array('receipent_email'=> $user->email,'subject'=>'subject');
-            $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link',['name'=> 'fname']);
-        */
         return response()->json(
                             [ 
-                            "status"=>$status,
-                            'code'   => $code,
-                            "message"=>$message,
-                            'data'=>$data
+                                "status"=>1,
+                                "message"=>"Thank you for registration. Please verify your email.",
+                                'data'=>$request->except('password')
                             ]
                         );
     }

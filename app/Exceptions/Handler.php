@@ -73,8 +73,8 @@ class Handler extends ExceptionHandler
             if($api_url)
             {
                 echo json_encode(
-                    [ "status"=>1,
-                      "code"=>200,
+                    [ "status"=>0,
+                      "code"=>500,
                       "message"=>"Route Not defind" ,
                       "data" => "" 
                     ]
@@ -94,8 +94,8 @@ class Handler extends ExceptionHandler
             if($api_url)
             {
                 echo json_encode(
-                    [ "status"=>1,
-                      "code"=>200,
+                    [ "status"=>0,
+                      "code"=>500,
                       "message"=>"Request URL not available" ,
                       "data" => "" 
                     ]
@@ -112,8 +112,8 @@ class Handler extends ExceptionHandler
             if($api_url)
             {    
                 echo json_encode(
-                    [ "status"=>1,
-                      "code"=>200,
+                    [ "status"=>0,
+                      "code"=>500,
                       "message"=>$e->getMessage(),
                       "data" => "" 
                     ]
@@ -134,8 +134,8 @@ class Handler extends ExceptionHandler
             if($api_url)
             {
                 echo json_encode(
-                    [ "status"=>1,
-                      "code"=>200,
+                    [ "status"=>0,
+                      "code"=>500,
                       "message"=>"Request method not found!" ,
                       "data" => "" 
                     ]
@@ -151,7 +151,7 @@ class Handler extends ExceptionHandler
             {
                 echo json_encode(
                     [ "status"=>1,
-                      "code"=>200,
+                      "code"=>500,
                       "message"=>[
                                     'error_message'=>$e->getmessage(),
                                     'file_path'=>$e->getfile(),
