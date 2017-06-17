@@ -117,7 +117,8 @@ class ApiController extends Controller
 
         //Server side valiation
         $validator = Validator::make($request->all(), [
-           'email' => 'required|email|unique:users'
+           'email' => 'required|email|unique:users',
+            'password' => 'required'
         ]);
         /** Return Error Message **/
         if ($validator->fails()) {
