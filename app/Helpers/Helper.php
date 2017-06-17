@@ -26,6 +26,8 @@ use App\Interview;
 use App\Criteria;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\RatingFeedback;
+use PHPMailerAutoload;
+use PHPMailer; 
  
 
 class Helper {
@@ -214,18 +216,54 @@ class Helper {
     * Response :  
     * Return : true or false
     */
-    public  function sendMailFrontEnd($email_content, $template, $template_content)
+    public  function sendMailFrontEnd($email_content, $template)
     {        
-        $template_content['verification_token'] =  Hash::make($email_content['receipent_email']);
-        $template_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:'';
-        
-        return  Mail::send('emails.'.$template, array('content' => $template_content), function($message) use($email_content)
-          {
-            $name = "admin";
-            $message->from('admin@yellotasker',$name);  
-            $message->to($email_content['receipent_email'])->subject($email_content['subject']);
-            
-          });
+        $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
+        $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:''; 
+
+        $mail = new PHPMailer;
+        $html = view::make('emails.'.$template,['content' => $email_content]);
+        $html = $html->render(); 
+
+        try {
+            $mail->isSMTP(); // tell to use smtp
+            $mail->CharSet = "utf-8"; // set charset to utf8
+             
+
+            $mail->SMTPAuth   = true;                  // enable SMTP authentication
+            $mail->Host       = "mail.guruhomeshops.com"; // sets the SMTP server
+            $mail->Port       = 587;   
+            $mail->SMTPSecure = 'false';                 // set the SMTP port for the GMAIL server
+            $mail->Username   = "admin@guruhomeshops.com"; // SMTP account username
+            $mail->Password   = "admin@123!"; 
+
+            $mail->setFrom("admin@yellotasker.com", "yellotasker");
+            $mail->Subject = $email_content['subject'];
+            $mail->MsgHTML($html);
+            $mail->addAddress($email_content['receipent_email'], "yellotasker");
+            $mail->addAddress("kroy.iips@gmail.com","yellotasker"); 
+
+            //$mail->addReplyTo(‘examle@examle.net’, ‘Information’);
+             $mail->addBCC('kroy.zend@gmail.com');
+            //$mail->addAttachment(‘/home/kundan/Desktop/abc.doc’, ‘abc.doc’); // Optional name
+            $mail->SMTPOptions= array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+
+            $mail->send();
+            //echo "success";
+            } catch (phpmailerException $e) {
+             
+            } catch (Exception $e) {
+             
+            }
+
+
+
     } 
   /* @method : send Mail
     * @param : email

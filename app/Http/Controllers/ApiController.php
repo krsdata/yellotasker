@@ -147,10 +147,11 @@ class ApiController extends Controller
         $email_content = [
                 'receipent_email'=> $request->input('email'),
                 'subject'=>$subject,
-                'greeting'=> 'Yellotasker'
+                'greeting'=> 'Yellotasker',
+                'first_name'=> $request->input('first_name')
                 ];
 
-        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link',['first_name'=> $request->input('first_name')]);
+        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
        
         return response()->json(
                             [ 
