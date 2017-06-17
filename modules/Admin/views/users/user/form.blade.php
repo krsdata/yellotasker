@@ -36,8 +36,9 @@
         <div class="col-lg-8 col-md-8"> 
            <select name="role_type" class="form-control form-cascade-control">  
             
-            <option value="1" {{ ($user->role_type == 1)?"selected":""}}>{{ "Professor" }}</option>
-             <option value="2" {{ ($user->role_type == 2)?"selected":""}}>{{ "Student" }}</option>
+            <option value="1" {{ ($user->role_type == 1)?"selected":""}}>{{ "Admin" }}</option>
+            <option value="2" {{ ($user->role_type == 2)?"selected":""}}>{{ "Bussiness" }}</option>
+             <option value="3"{{ ($user->role_type == 3)?"selected":""}}>{{ "Superadmin" }}</option>
              
             </select>
             <span class="label label-danger">{{ $errors->first('role_type', ':message') }}</span>

@@ -57,7 +57,7 @@ return array(
     'remember_me'                                               => 'Remember Me ',
     'i_forget_pwd'                                              => 'I forgot my password',
     'sign_in'                                                   => 'Sign In',
-    'immoclick_Admin_panel'                                     => 'Admin Panel',
+    'immoclick_Admin_panel'                                     => 'Yellotasker CMS',
     'password_req'                                              => "Plaese enter password",
     'email_req'                                                 => "Please enter  email",
     'forgot_password'                                           => "Forgot password",

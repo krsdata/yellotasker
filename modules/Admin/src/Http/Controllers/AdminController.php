@@ -61,12 +61,9 @@ class AdminController extends Controller {
         $page_action = "";
         $professor = User::where('role_type',1)->count();
          
-        $student = User::where('role_type',2)->count();  
-        $course = Course::count();  
-        $assignment = Assignment::count();  
-        $syllabus = Syllabus::count();  
+        $user = User::count();
         $viewPage = "Admin";
-        return view('packages::dashboard.index',compact('syllabus','course','assignment','professor','student','page_title','page_action','viewPage'));
+        return view('packages::dashboard.index',compact('user','page_title','page_action','viewPage'));
     }
 
    public function profile(Request $request,Admin $users)

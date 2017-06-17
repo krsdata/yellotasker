@@ -85,7 +85,16 @@
                                                     <td>{{ ++$key }}</td>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ ($user->role_type==1)?'Professor':'Student' }} </td> 
+                                                    <td> 
+                                                    @if($user->role_type==1)
+                                                    Admin
+                                                    @elseif($user->role_type==2)
+                                                    Business
+                                                    @else
+                                                    Superadmin
+                                                    @endif
+                                                    
+                                                    </td> 
                                                     <td>
                                                         {!! Carbon\Carbon::parse($user->created_at)->format('m-d-Y H:i:s A'); !!}
                                                     </td>
