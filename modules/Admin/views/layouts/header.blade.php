@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ $page_title or 'Admin|dashboard' }}</title>
+    <title>Yellotasker CMS</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta http-equiv="refresh" content="900;url={{URL::to('logout')}}" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
