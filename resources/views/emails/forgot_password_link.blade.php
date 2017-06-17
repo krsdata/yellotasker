@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Your  Account Password</title>
+<title>Reset password Password</title>
 <style type="text/css">
   table {
     border-collapse: collapse;
@@ -19,7 +19,7 @@
               <tr>
                 <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#000;"> 
                   <div>
-                  <p>Dear {{$content['name']}},</p>
+                  <p>Dear {{$content['first_name']}},</p>
                   <p>Looks like you need to reset your password. Please click the link below on.
                   </p>
                       <p> <a href="{{ url('admin/password/reset?token='.$content['temp_password'].'&key='.$content['encrypt_key']) }} ">Reset Your Password</a>
@@ -29,7 +29,7 @@
                    
                   </p> 
                   <p> Regards, </p>
-                  <p>Team</p>
+                  <p>Team {{$content['greeting']}}</p>
                   </div>
                 </td>
               </tr>

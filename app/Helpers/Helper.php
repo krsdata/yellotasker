@@ -222,7 +222,7 @@ class Helper {
         return  Mail::send('emails.'.$template, array('content' => $template_content), function($message) use($email_content)
           {
             $name = "admin";
-            $message->from('kundan.roy@webdunia.net',$name);  
+            $message->from('admin@yellotasker',$name);  
             $message->to($email_content['receipent_email'])->subject($email_content['subject']);
             
           });
@@ -237,7 +237,7 @@ class Helper {
           
         return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
           {
-            $name = $_SERVER['SERVER_NAME'];
+            $name = $email_content['greeting'];
             $message->from('no-reply@admin.com',$name);  
             $message->to($email_content['receipent_email'])->subject($email_content['subject']);
             

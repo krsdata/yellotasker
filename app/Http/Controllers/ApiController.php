@@ -143,7 +143,12 @@ class ApiController extends Controller
         //$h = $helper->createCompanyGroup($request->input('email'),$user->userID);
         /** --Send Mail after Sign Up-- **/
         $subject = "Welcome to yellotasker! Verify your email address to get started";
-        $email_content = array('receipent_email'=> $request->input('email'),'subject'=>$subject);
+        $email_content = [
+                'receipent_email'=> $request->input('email'),
+                'subject'=>$subject,
+                'greeting'=> 'Yellotasker'
+                ];
+
         $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link',['first_name'=> $request->input('first_name')]);
        
         return response()->json(
@@ -162,7 +167,7 @@ class ApiController extends Controller
     * Author : kundan Roy
     * Calling Method : get  
     */
-    public function updateProfile(Request $request,User $user,$user_id=null)
+    public function updateProfile(Request $request,User $user)
     {       
         if(!Helper::isUserExist($request->get('user_id')))
         {
@@ -361,10 +366,12 @@ class ApiController extends Controller
  
         $email_content = array(
                         'receipent_email'   => $request->input('email'),
-                        'subject'           => 'Your Account Password',
-                        'name'              => $user[0]->first_name,
+                        'subject'           => 'Reset account password link!',
+                        'first_name'        => $user[0]->first_name,
                         'temp_password'     => $temp_password,
-                        'encrypt_key'       => Crypt::encrypt($email)
+                        'encrypt_key'       => Crypt::encrypt($email),
+                        'greeting'          => 'Yellotasker'
+
                     );
         $helper = new Helper;
         $email_response = $helper->sendMail(
