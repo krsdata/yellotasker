@@ -2,8 +2,6 @@
 /public/storage
 /vendor
 /.idea
-/storage
 Homestead.json
 Homestead.yaml
 .env
-composer.lock
