@@ -2,7 +2,7 @@
 <div class="col-md-6">
 
     <div class="form-group{{ $errors->first('name', ' has-error') }}">
-        <label class="col-lg-4 col-md-4 control-label"> First Name <span class="error">*</span></label>
+        <label class="col-lg-4 col-md-4 control-label"> Full Name <span class="error">*</span></label>
         <div class="col-lg-8 col-md-8"> 
             {!! Form::text('name',null, ['class' => 'form-control form-cascade-control input-small'])  !!} 
             <span class="label label-danger">{{ $errors->first('name', ':message') }}</span>
