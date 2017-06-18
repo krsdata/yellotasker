@@ -26,8 +26,6 @@ use App\Interview;
 use App\Criteria;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\RatingFeedback;
-use PHPMailerAutoload;
-use PHPMailer; 
  
 
 class Helper {
@@ -219,6 +217,20 @@ class Helper {
     public  function sendMailFrontEnd($email_content, $template)
     {        
         $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
+        $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:'';
+      
+        return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
+          {
+            $name = "admin";
+            $message->from('admin@yellotasker.com',$name);  
+            $message->to($email_content['receipent_email'])->subject($email_content['subject']);
+            
+          });
+    } 
+
+     public  function sendMailFrontEnd2($email_content, $template)
+    {        
+        $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
         $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:''; 
 
         $mail = new PHPMailer;
@@ -275,7 +287,7 @@ class Helper {
           
         return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
           {
-            $name = $email_content['greeting'];
+            $name = $_SERVER['SERVER_NAME'];
             $message->from('no-reply@admin.com',$name);  
             $message->to($email_content['receipent_email'])->subject($email_content['subject']);
             

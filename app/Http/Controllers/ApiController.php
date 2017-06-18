@@ -38,20 +38,19 @@ class ApiController extends Controller
 
     public function validateUser(Request $request,User $user){
 
-        $input['first_name']    = $request->input('firstName');
-        $input['last_name']     = $request->input('lastName'); 
+        $input['first_name']    = $request->input('first_name');
+        $input['last_name']     = $request->input('last_name'); 
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
-        $input['deviceID']      = ($request->input('deviceID'))?$request->input('deviceID'):'';
-         //Server side valiation
-        if($request->input('userID')){
+          //Server side valiation
+        if($request->input('user_id')){
             $validator = Validator::make($request->all(), [
                   
             ]); 
         } 
         else{
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email|unique:t_user' 
+                'email' => 'required|email|unique:users' 
             ]); 
         }
        
@@ -138,11 +137,6 @@ class ApiController extends Controller
         $helper = new Helper;
         /** --Create USER-- **/
         $user = User::create($input); 
-       // $data = ['userID'=>$user->userID,'name'=>$user['first_name'],'email'=>$user['email'],'firstName'=>$user['first_name'],'lastName'=>$user['last_name']];
-         
-        /** --Create Company Group-- **/
-        //$h = $helper->createCompanyGroup($request->input('email'),$user->userID);
-        /** --Send Mail after Sign Up-- **/
         $subject = "Welcome to yellotasker! Verify your email address to get started";
         $email_content = [
                 'receipent_email'=> $request->input('email'),
