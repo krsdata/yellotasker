@@ -221,7 +221,7 @@ class Helper {
       
         return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
           {
-            $name = "admin";
+            $name = "Yellotasker";
             $message->from('admin@yellotasker.com',$name);  
             $message->to($email_content['receipent_email'])->subject($email_content['subject']);
             
