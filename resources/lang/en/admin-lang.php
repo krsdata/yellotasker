@@ -108,6 +108,8 @@ return array(
     'AddUser'               =>  'Add User',
     'ShowUser'              =>  'Show User',
     'ViewUser'              =>  'View User',
+
+    'admin_header_title' => 'Yellotasker CMS'
     
     
     

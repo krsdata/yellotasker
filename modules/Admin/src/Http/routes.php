@@ -3,7 +3,7 @@
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');
     Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');  
-    Route::get('logout','Modules\Admin\Http\Controllers\AuthController@logout');  
+    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout');  
 
     Route::post('admin/login',function(App\Admin $user){
    

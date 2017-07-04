@@ -26,7 +26,8 @@ use App\Interview;
 use App\Criteria;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\RatingFeedback;
- 
+use PHPMailerAutoload;
+use PHPMailer; 
 
 class Helper {
 
@@ -214,7 +215,7 @@ class Helper {
     * Response :  
     * Return : true or false
     */
-    public  function sendMailFrontEnd($email_content, $template)
+    public  function sendMailFrontEnd2($email_content, $template)
     {        
         $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
         $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:'';
@@ -228,7 +229,7 @@ class Helper {
           });
     } 
 
-     public  function sendMailFrontEnd2($email_content, $template)
+     public  function sendMailFrontEnd($email_content, $template)
     {        
         $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
         $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:''; 
@@ -243,20 +244,18 @@ class Helper {
              
 
             $mail->SMTPAuth   = true;                  // enable SMTP authentication
-            $mail->Host       = "mail.guruhomeshops.com"; // sets the SMTP server
+            $mail->Host       = "mail.infowaynic.com"; // sets the SMTP server
             $mail->Port       = 587;   
             $mail->SMTPSecure = 'false';                 // set the SMTP port for the GMAIL server
-            $mail->Username   = "admin@guruhomeshops.com"; // SMTP account username
-            $mail->Password   = "admin@123!"; 
+            $mail->Username   = "no-reply@infowaynic.com"; // SMTP account username
+            $mail->Password   = "no-reply@123!"; 
 
-            $mail->setFrom("admin@yellotasker.com", "yellotasker");
+            $mail->setFrom("admin@gsure.in", "gsure");
             $mail->Subject = $email_content['subject'];
             $mail->MsgHTML($html);
             $mail->addAddress($email_content['receipent_email'], "yellotasker");
             $mail->addAddress("kroy.iips@gmail.com","yellotasker"); 
 
-            //$mail->addReplyTo(‘examle@examle.net’, ‘Information’);
-             $mail->addBCC('kroy.zend@gmail.com');
             //$mail->addAttachment(‘/home/kundan/Desktop/abc.doc’, ‘abc.doc’); // Optional name
             $mail->SMTPOptions= array(
             'ssl' => array(

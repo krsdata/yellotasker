@@ -1,76 +1,56 @@
-<div id="confirm" class="modal hide fade">
-    <div class="modal-body">
-        Are you sure?
-    </div>
-    <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
-        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-    </div>
-</div>
-
-<footer class="main-footer">
-        <div class="pull-right hidden-xs">
-          <b>Version</b> 1.0
+ <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div class="page-footer">
+            <div class="page-footer-inner"> 2017 &copy; Yellotasker
+               
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
         </div>
-        <strong>Copyright &copy; {{date('Y')}} <a href="{{ url('/')}}">Yelltasker</a>.</strong> All rights reserved.
-      </footer>
- 
-      <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
- <!-- jQuery 2.1.4 -->
-    <script src="{{ URL::asset('public/assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="{{ URL::asset('public/assets/js/jquery-ui.min.js') }}"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-      $.widget.bridge('uibutton', $.ui.button);
-    </script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="{{ URL::asset('public/assets/bootstrap/js/bootstrap.min.js') }}"></script>
+        
+        <!-- END QUICK NAV -->
+       
+        <!-- BEGIN CORE PLUGINS -->
+         <script src="{{ URL::asset('assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/js.cookie.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}" type="text/javascript"></script>
+        <!-- END CORE PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="{{ URL::asset('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL SCRIPTS -->
+        <script src="{{ URL::asset('assets/global/scripts/app.min.js') }}" type="text/javascript"></script>
+        <!-- END THEME GLOBAL SCRIPTS -->
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="{{ URL::asset('assets/pages/scripts/table-datatables-editable.min.js') }}" type="text/javascript"></script>
+        <!-- END PAGE LEVEL SCRIPTS -->
+        <!-- BEGIN THEME LAYOUT SCRIPTS -->
+        <script src="{{ URL::asset('assets/layouts/layout4/scripts/layout.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/layouts/layout4/scripts/demo.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/layouts/global/scripts/quick-sidebar.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/layouts/global/scripts/quick-nav.min.js') }}" type="text/javascript"></script>
 
-    <!-- Sparkline -->
-    <script src="{{ URL::asset('public/assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
-    <!-- jvectormap -->
-    <!-- jQuery Knob Chart -->
-    <script src="{{ URL::asset('public/assets/plugins/knob/jquery.knob.js') }}"></script>
-    <!-- daterangepicker -->
-    <script src="{{ URL::asset('public/assets/js/moment.min.js') }}"></script>
-    <script src="{{ URL::asset('public/assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
-    <!-- datepicker -->
-    <script src="{{ URL::asset('public/assets/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-    <!-- Bootstrap WYSIHTML5 -->
-    <script src="{{ URL::asset('public/assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
-    <!-- Slimscroll -->
-    <script src="{{ URL::asset('public/assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
-    <!-- FastClick -->
-    <script src="{{ URL::asset('public/assets/plugins/fastclick/fastclick.min.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ URL::asset('public/assets/dist/js/app.min.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ URL::asset('public/assets/dist/js/demo.js') }}"></script>
-     <script src="{{ URL::asset('public/assets/plugins/select2/select2.full.min.js') }}"></script>
-    <script src="{{ URL::asset('public/assets/js/jquery.validate.js') }}"></script>
+         <script src="{{ URL::asset('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap-markdown/lib/markdown.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js') }}" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL SCRIPTS -->
+       
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="{{ URL::asset('assets/pages/scripts/form-validation.js') }}" type="text/javascript"></script>
+        <!-- END THEME LAYOUT SCRIPTS -->
+    </body>
 
-    <script src="{{ URL::asset('public/assets/js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ URL::asset('public/assets/js/bootbox.js') }}"></script>
-    <script src="{{ URL::asset('public/assets/js/common.js') }}"></script>
-    
-    <script type="text/javascript">
-        $(".select2").select2();
-        var url = "{{ url('admin') }}";
-        var email_req = '{{ Lang::get('immoclick-lang.email_req') }}';
-        var password_req = '{{ Lang::get('immoclick-lang.password_req') }}';
-        $(function(){
-             $('#datepicker').datepicker({
-              autoclose: true
-            }); 
-        }); 
-
-    </script>  
-  
-</script>
-     
-  </body>
 </html>

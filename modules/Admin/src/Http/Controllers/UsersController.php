@@ -96,7 +96,7 @@ class UsersController extends Controller {
         //dd($users[0]->group);
        // dd($users[0]->position->position_name);
          //dd($users);
-        return view('packages::users.user.index', compact('status','users', 'page_title', 'page_action'));
+        return view('packages::users.index', compact('status','users', 'page_title', 'page_action'));
     }
 
     /*
@@ -107,7 +107,7 @@ class UsersController extends Controller {
     {
         $page_title = 'User';
         $page_action = 'Create User';
-        return view('packages::users.user.create', compact('position', 'user', 'page_title', 'page_action', 'groups'));
+        return view('packages::users.create', compact('position', 'user', 'page_title', 'page_action', 'groups'));
     }
 
     /*
@@ -135,7 +135,7 @@ class UsersController extends Controller {
         $page_title = 'User';
         $page_action = 'Show Users';
       
-        return view('packages::users.user.edit', compact('user', 'page_title', 'page_action'));
+        return view('packages::users.edit', compact('user', 'page_title', 'page_action'));
     }
 
     public function update(Request $request, User $user) {
