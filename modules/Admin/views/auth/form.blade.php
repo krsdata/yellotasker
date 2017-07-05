@@ -15,7 +15,7 @@
         <label class="control-label visible-ie8 visible-ie9"> email <span class="error">*</span></label>
         <div class="input-icon">
             <i class="fa fa-user"></i>
-             {!! Form::email('email',null, ['class' => 'form-control placeholder-no-fix', 'placeholder'=>'email' ])  !!} 
+             {!! Form::email('email',null, ['class' => 'form-control placeholder-no-fix', 'placeholder'=>'Email' ])  !!} 
         </div>
     </div>
    <div class="form-group{{ $errors->first('password', ' has-error') }}">
@@ -23,7 +23,7 @@
         <div class="input-icon">
             <i class="fa fa-lock"></i>
             
-             {!! Form::password('password', ['class' => 'form-control placeholder-no-fix', 'placeholder'=>'password' ])  !!} 
+             {!! Form::password('password', ['class' => 'form-control placeholder-no-fix', 'placeholder'=>'Password' ])  !!} 
 
             </div>
     </div>
