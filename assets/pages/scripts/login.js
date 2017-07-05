@@ -20,10 +20,10 @@ var Login = function() {
 
             messages: {
                 email: {
-                    required: "Please enter your email"
+                    required: "Please enter your email."
                 },
                 password: {
-                    required: "Please enter your password"
+                    required: "Please enter your password."
                 }
             },
 
