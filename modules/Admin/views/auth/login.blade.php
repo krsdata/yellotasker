@@ -30,7 +30,8 @@
         <link href="{{ URL::asset('assets/global/css/plugins.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="{{ URL::asset('assets/pages/css/login-3.min.css') }}" rel="stylesheet" type="text/css" />
+
+        <link href="{{ URL::asset('assets/pages/css/login.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
@@ -41,7 +42,7 @@
         <!-- BEGIN LOGO -->
         <div class="logo">
             
-                <p style="font-size: 25px; margin: 0px;"> Yellotasker CMS</p>
+                <p style="font-size: 30px; font-family: inherit; color:#fff; margin: 0px; padding: 0px"> <b style="color:yellow">Yellotasker </b> CMS</p>
         </div>
 
         <!-- END LOGO -->
@@ -61,7 +62,7 @@
                 <p> Enter your e-mail address below to reset your password. </p>
                 <div class="form-group">
                     <div class="input-icon">
-                        <i class="fa fa-envelope"></i>
+                       
                         <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
                 </div>
                 <div class="form-actions">
@@ -102,5 +103,12 @@
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
     </body>
+ <style type="text/css">
+     .has-error .input-icon input.form-control {
+    border-color: #e73d4a;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+ </style>
 
 </html>
