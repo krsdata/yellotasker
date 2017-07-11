@@ -87,7 +87,7 @@ class UsersController extends Controller {
                         }
                     })->Paginate($this->record_per_page);
         } else {
-            $users = User::orderBy('id','desc')->Paginate(5);
+            $users = User::orderBy('id','desc')->Paginate(10);
             
         }
         

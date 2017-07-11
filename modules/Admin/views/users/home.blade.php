@@ -37,35 +37,35 @@
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="btn-group">
-                                                <a href="{{route('user.create')}}">
-                                                    <button id="" class="btn green"> Create User
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                    </a>
-                                                </div>
+                                            <form action="{{route('user')}}" method="get">
+                                            <div class="col-md-3">
+                                                <select name="status" class="form-control">
+                                                    <option value="">Sort by Status</option>
+                                                    <option value="active" @if($status==='active') selected  @endif>Active</option>
+                                                    <option value="inActive" @if($status==='inActive') selected  @endif>Inactive</option>
+                                                </select>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="btn-group pull-right">
-                                                    <button class="btn green btn-outline dropdown-toggle" data-toggle="dropdown">Tools
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li>
-                                                            <a href="javascript:;"> Print </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"> Save as PDF </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"> Export to Excel </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                            <div class="col-md-3">
+                                                <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="search by Name/Email" type="text" name="search" id="search" class="form-control" >
                                             </div>
+                                            <div class="col-md-2">
+                                                <input type="submit" value="Search" class="btn btn-primary form-control">
+                                            </div>
+                                           
+                                        </form>
+                                         <div class="col-md-2">
+                                             <a href="{{ route('user') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
+                                        </div>
+                                       <div class="col-md-2 pull-right">
+                                            <div style="width: 150px;" class="input-group"> 
+                                                <a href="{{ route('user.create')}}">
+                                                    <button class="btn  btn-primary"><i class="fa fa-user-plus"></i> Add User</button> 
+                                                </a>
+                                            </div>
+                                        </div> 
                                         </div>
                                     </div>
+                                     
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
