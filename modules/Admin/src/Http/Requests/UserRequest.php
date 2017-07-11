@@ -22,8 +22,10 @@ class UserRequest extends Request {
                 case 'POST': {
                         return [
                             'email'     => "required|email|unique:users,email" ,  
-                            'name'      => 'required', 
+                            'name'      => 'required|min:3', 
                             'password'  => 'required|min:6',
+                            'phone' =>  'required|numeric',
+                            //'role'  => 'required'
                             /*'confirm_password' => 'required|same:password'*/ 
                         ];
                     }
@@ -33,7 +35,9 @@ class UserRequest extends Request {
 
                         return [
                             'email'   => "required|email" ,  
-                            'name' => 'required|min:3'
+                            'name' => 'required|min:3',
+                            'phone' => 'numeric',
+                           // 'role'  => 'required'
                         ];
                     }
                 }

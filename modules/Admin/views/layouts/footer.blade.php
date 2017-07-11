@@ -51,6 +51,21 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{ URL::asset('assets/pages/scripts/form-validation.js') }}" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
+      @if(isset($js_file))
+
+        @foreach($js_file as $key => $js )
+              <script src="{{ URL::asset('assets/js/'.$js) }}" type="text/javascript"></script>
+        @endforeach
+      @endif
+
+      <script type="text/javascript">
+          
+          var   email_req = "Please enter email";
+          var  password_req = "Please enter password";
+          var url = "{{ url::to('/')}}";
+      </script>
+
+
     </body>
 
 </html>

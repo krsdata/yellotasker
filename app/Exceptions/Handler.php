@@ -58,7 +58,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {   
-             //$referrer = $request->headers->get('referer'); 
        $path_info_url = $request->getpathInfo();
        $api_url='';
        $web_url ='';
@@ -123,7 +122,7 @@ class Handler extends ExceptionHandler
               $page_action = "Page";
               $viewPage = "404 Error";
               $msg = "page not found";
-              $error_msg = "Oops! Server is busy please try later."; 
+              $error_msg = $e->getMessage(); //"Oops! Server is busy please try later."; 
               return view('packages::auth.page_not_found',compact('error_msg','page_title','page_action','viewPage'))->with('flash_alert_notice', $msg);
             } 
             exit();

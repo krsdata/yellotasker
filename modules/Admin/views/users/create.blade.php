@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="portlet-body">
                                     <!-- BEGIN FORM-->
-                                  {!! Form::model($user, ['route' => ['user.store'],'class'=>'form-horizontal','id'=>'form_sample_3']) !!}
+                                  {!! Form::model($user, ['route' => ['user.store'],'class'=>'form-horizontal user-form','id'=>'user-form']) !!}
                                   
                                   @include('packages::users.form')
                                   

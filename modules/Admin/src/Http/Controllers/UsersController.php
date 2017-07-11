@@ -26,10 +26,7 @@ use Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
 use App\Helpers\Helper;
-
-//use App\User;
-use App\ProfessorProfile;
-use App\StudentProfile;
+use Modules\Admin\Models\Roles; 
  
 
 /**
@@ -90,13 +87,14 @@ class UsersController extends Controller {
                         }
                     })->Paginate($this->record_per_page);
         } else {
-            $users = User::orderBy('id','desc')->Paginate($this->record_per_page);
+            $users = User::orderBy('id','desc')->Paginate(5);
             
         }
-        //dd($users[0]->group);
-       // dd($users[0]->position->position_name);
-         //dd($users);
-        return view('packages::users.index', compact('status','users', 'page_title', 'page_action'));
+        
+        $roles = Roles::all();
+
+        $js_file = ['common.js','bootbox.js','formValidate.js'];
+        return view('packages::users.index', compact('js_file','roles','status','users', 'page_title', 'page_action'));
     }
 
     /*
@@ -107,7 +105,10 @@ class UsersController extends Controller {
     {
         $page_title = 'User';
         $page_action = 'Create User';
-        return view('packages::users.create', compact('position', 'user', 'page_title', 'page_action', 'groups'));
+        $roles = Roles::all();
+        $role_id = null;
+        $js_file = ['common.js','bootbox.js','formValidate.js'];
+        return view('packages::users.create', compact('js_file','role_id','roles', 'user', 'page_title', 'page_action', 'groups'));
     }
 
     /*
@@ -115,11 +116,11 @@ class UsersController extends Controller {
      * */
 
     public function store(UserRequest $request, User $user) {
-
         $user->fill(Input::all());
         $user->password = Hash::make($request->get('password'));
+        $user->role_type = $request->get('role'); 
         $user->save();
-        
+        $js_file = ['common.js','bootbox.js','formValidate.js'];
         return Redirect::to(route('user'))
                             ->with('flash_alert_notice', 'New user was successfully created !');
         }
@@ -134,8 +135,10 @@ class UsersController extends Controller {
 
         $page_title = 'User';
         $page_action = 'Show Users';
-      
-        return view('packages::users.edit', compact('user', 'page_title', 'page_action'));
+        $role_id = $user->role_type;
+        $roles = Roles::all();
+        $js_file = ['common.js','bootbox.js','formValidate.js'];
+        return view('packages::users.edit', compact('js_file','role_id','roles','user', 'page_title', 'page_action'));
     }
 
     public function update(Request $request, User $user) {

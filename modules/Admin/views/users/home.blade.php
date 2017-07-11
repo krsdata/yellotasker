@@ -39,9 +39,11 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="btn-group">
-                                                    <button id="sample_editable_1_new" class="btn green"> Add New
+                                                <a href="{{route('user.create')}}">
+                                                    <button id="" class="btn green"> Create User
                                                         <i class="fa fa-plus"></i>
                                                     </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -64,116 +66,57 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
+                                    <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
                                                 <th> Name </th>
                                                 <th> Email </th>
                                                 <th> Phone </th>
                                                 <th> Role </th>
-                                                <th> Edit </th>
-                                                <th> Delete </th>
+                                                <th>Signup Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        @foreach($users as $key => $result)
                                             <tr>
-                                                <td> Kandy </td>
-                                                <td> Kandy@gmail.com </td>
-                                                <td> 1234 </td>
-                                                <td class="center"> power user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
+                                                <td> {{$result->name}} </td>
+                                                <td> {{$result->email}} </td>
+                                                <td> {{$result->phone}} </td>
+                                                <td class="center">  @if($result->role_type==1)
+                                                    Admin
+                                                    @elseif($result->role_type==2)
+                                                    Business
+                                                    @else
+                                                    Superadmin
+                                                    @endif</td>
+                                                     <td>
+                                                        {!! Carbon\Carbon::parse($result->created_at)->format('Y-m-d'); !!}
+                                                    </td>
+                                                    <td>
+                                                        <span class="label label-{{ ($result->status==1)?'success':'warning'}} status" id="{{$result->id}}"  data="{{$result->status}}"  onclick="changeStatus({{$result->id}},'user')" >
+                                                            {{ ($result->status==1)?'Active':'Inactive'}}
+                                                        </span>
+                                                    </td>
+                                                    <td> 
+                                                        <a href="{{ route('user.edit',$result->id)}}">
+                                                            <i class="fa fa-fw fa-pencil-square-o" title="edit"></i> 
+                                                        </a>
+
+                                                        {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('user.destroy', $result->id))) !!}
+                                                        <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$result->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button>
+                                                        
+                                                         {!! Form::close() !!}
+
+                                                    </td>
+                                               
                                             </tr>
-                                            <tr>
-                                                <td> lisa </td>
-                                                <td> Lisa Wong </td>
-                                                <td> 434 </td>
-                                                <td class="center"> new user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> nick12 </td>
-                                                <td> Nick Roberts </td>
-                                                <td> 232 </td>
-                                                <td class="center"> power user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> goldweb </td>
-                                                <td> Sergio Jackson </td>
-                                                <td> 132 </td>
-                                                <td class="center"> elite user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> alex </td>
-                                                <td> Alex Nilson </td>
-                                                <td> 1234 </td>
-                                                <td class="center"> power user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> webriver </td>
-                                                <td> Antonio Sanches </td>
-                                                <td> 462 </td>
-                                                <td class="center"> new user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> gist124 </td>
-                                                <td> Nick Roberts </td>
-                                                <td> 62 </td>
-                                                <td class="center"> new user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> alex </td>
-                                                <td> Alex Nilson </td>
-                                                <td> 1234 </td>
-                                                <td class="center"> power user </td>
-                                                <td>
-                                                    <a class="edit" href="javascript:;"> Edit </a>
-                                                </td>
-                                                <td>
-                                                    <a class="delete" href="javascript:;"> Delete </a>
-                                                </td>
-                                            </tr>
+                                           @endforeach
+                                            
                                         </tbody>
                                     </table>
+                                     <div class="center" align="center">  {!! $users->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->
