@@ -89,3 +89,10 @@ var formValidate = function() {
 jQuery(document).ready(function() {
     formValidate.init();
 });
+
+
+function SortByStatus(id)
+{
+
+    $('#'+id).submit();
+}

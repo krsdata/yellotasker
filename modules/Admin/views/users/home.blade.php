@@ -37,9 +37,9 @@
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
                                         <div class="row">
-                                            <form action="{{route('user')}}" method="get">
+                                            <form action="{{route('user')}}" method="get" id="filter_data">
                                             <div class="col-md-3">
-                                                <select name="status" class="form-control">
+                                                <select name="status" class="form-control" onChange="SortByStatus('filter_data')">
                                                     <option value="">Sort by Status</option>
                                                     <option value="active" @if($status==='active') selected  @endif>Active</option>
                                                     <option value="inActive" @if($status==='inActive') selected  @endif>Inactive</option>
