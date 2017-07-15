@@ -48,101 +48,118 @@
         );
 
 
-        Route::bind('student', function($value, $route) {
-            return Modules\Admin\Models\User::find($value);
-        });
+       
+        /*------------User Category and controller---------*/
 
-        Route::resource('admin/student', 'Modules\Admin\Http\Controllers\StudentController', [
-            'names' => [
-                'edit' => 'student.edit',
-                'show' => 'student.show',
-                'destroy' => 'student.destroy',
-                'update' => 'student.update',
-                'store' => 'student.store',
-                'index' => 'student',
-                'create' => 'student.create',
-            ]
+            Route::bind('category', function($value, $route) {
+                return Modules\Admin\Models\Category::find($value);
+            });
+     
+            Route::resource('admin/category', 'Modules\Admin\Http\Controllers\CategoryController', [
+                'names' => [
+                    'edit'      => 'category.edit',
+                    'show'      => 'category.show',
+                    'destroy'   => 'category.destroy',
+                    'update'    => 'category.update',
+                    'store'     => 'category.store',
+                    'index'     => 'category',
+                    'create'    => 'category.create',
                 ]
-        );
-
-
-        Route::bind('professor', function($value, $route) {
-            return Modules\Admin\Models\User::find($value);
-        });
-
-        Route::resource('admin/professor', 'Modules\Admin\Http\Controllers\ProfessorController', [
-            'names' => [
-                'edit' => 'professor.edit',
-                'show' => 'professor.show',
-                'destroy' => 'professor.destroy',
-                'update' => 'professor.update',
-                'store' => 'professor.store',
-                'index' => 'professor',
-                'create' => 'professor.create',
-            ]
-                ]
-        );
-
-
+                    ]
+            );
         /*---------End---------*/   
 
-        Route::bind('course', function($value, $route) {
-            return Modules\Admin\Models\Course::find($value);
-        });
 
-        Route::resource('admin/course', 'Modules\Admin\Http\Controllers\CourseController', [
+        /*------------User Category and controller---------*/
+
+            Route::bind('sub-category', function($value, $route) {
+                return Modules\Admin\Models\Category::find($value);
+            });
+     
+            Route::resource('admin/sub-category', 'Modules\Admin\Http\Controllers\SubCategoryController', [
+                'names' => [
+                    'edit' => 'sub-category.edit',
+                    'show' => 'sub-category.show',
+                    'destroy' => 'sub-category.destroy',
+                    'update' => 'sub-category.update',
+                    'store' => 'sub-category.store',
+                    'index' => 'sub-category',
+                    'create' => 'sub-category.create',
+                ]
+                    ]
+            );
+        /*---------End---------*/    
+
+        Route::bind('product', function($value, $route) {
+            return Modules\Admin\Models\Product::find($value);
+        });
+ 
+        Route::resource('admin/product', 'Modules\Admin\Http\Controllers\ProductController', [
             'names' => [
-                'edit' => 'course.edit',
-                'show' => 'course.show',
-                'destroy' => 'course.destroy',
-                'update' => 'course.update',
-                'store' => 'course.store',
-                'index' => 'course',
-                'create' => 'course.create',
+                'edit' => 'product.edit',
+                'show' => 'product.show',
+                'destroy' => 'product.destroy',
+                'update' => 'product.update',
+                'store' => 'product.store',
+                'index' => 'product',
+                'create' => 'product.create',
             ]
                 ]
-        );
+        ); 
 
-
-          Route::bind('syllabus', function($value, $route) {
-            return Modules\Admin\Models\Syllabus::find($value);
+        Route::bind('transaction', function($value, $route) {
+            return Modules\Admin\Models\Transaction::find($value);
         });
-
-        Route::resource('admin/syllabus', 'Modules\Admin\Http\Controllers\SyllabusController', [
+ 
+        Route::resource('admin/transaction', 'Modules\Admin\Http\Controllers\TransactionController', [
             'names' => [
-                'edit' => 'syllabus.edit',
-                'show' => 'syllabus.show',
-                'destroy' => 'syllabus.destroy',
-                'update' => 'syllabus.update',
-                'store' => 'syllabus.store',
-                'index' => 'syllabus',
-                'create' => 'syllabus.create',
+                'edit'      => 'transaction.edit',
+                'show'      => 'transaction.show',
+                'destroy'   => 'transaction.destroy',
+                'update'    => 'transaction.update',
+                'store'     => 'transaction.store',
+                'index'     => 'transaction',
+                'create'    => 'transaction.create',
             ]
                 ]
-        );
+        ); 
 
-
-        Route::bind('assignment', function($value, $route) {
-            return Modules\Admin\Models\Assignment::find($value);
+        Route::bind('setting', function($value, $route) {
+            return Modules\Admin\Models\Settings::find($value);
         });
-
-        Route::resource('admin/assignment', 'Modules\Admin\Http\Controllers\AssignmentController', [
+ 
+        Route::resource('admin/setting', 'Modules\Admin\Http\Controllers\SettingsController', [
             'names' => [
-                'edit'      => 'assignment.edit',
-                'show'      => 'assignment.show',
-                'destroy'   => 'assignment.destroy',
-                'update'    => 'assignment.update',
-                'store'     => 'assignment.store',
-                'index'     => 'assignment',
-                'create'    => 'assignment.create',
+                'edit'      => 'setting.edit',
+                'show'      => 'setting.show',
+                'destroy'   => 'setting.destroy',
+                'update'    => 'setting.update',
+                'store'     => 'setting.store',
+                'index'     => 'setting',
+                'create'    => 'setting.create',
             ]
                 ]
-        );
+        ); 
 
 
-        Route::get('admin/corporateUser/{name}','Modules\Admin\Http\Controllers\CorporateProfileController@corporateUser');
-        Route::get('admin/recentInterview/{id}', 'Modules\Admin\Http\Controllers\InterviewController@recentInterview'); 
-        Route::get('admin/condidateDirectory', 'Modules\Admin\Http\Controllers\InterviewController@condidateDirectory'); 
+          Route::bind('page', function($value, $route) {
+            return Modules\Admin\Models\Pages::find($value);    
+        });
+ 
+        Route::resource('admin/page', 'Modules\Admin\Http\Controllers\PageController', [
+            'names' => [
+                'edit'      => 'page.edit',
+                'show'      => 'page.show',
+                'destroy'   => 'page.destroy',
+                'update'    => 'page.update',
+                'store'     => 'page.store',
+                'index'     => 'page',
+                'create'    => 'page.create',
+            ]
+                ]
+        ); 
+
+
         /*----------End---------*/    
         
         Route::match(['get','post'],'admin/profile', 'Modules\Admin\Http\Controllers\AdminController@profile'); 

@@ -9,7 +9,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>User Login</title>
+        <title>CMS Login</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #4 for " name="description" />
@@ -56,25 +56,16 @@
        @include('packages::auth.form')
     {!! Form::close() !!}
             <!-- END LOGIN FORM -->
-            <!-- BEGIN FORGOT PASSWORD FORM -->
-            <form class="forget-form" action="index.html" method="post">
-                <h3>Forget Password ?</h3>
-                <p> Enter your e-mail address below to reset your password. </p>
-                <div class="form-group">
-                    <div class="input-icon">
-                       
-                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" id="back-btn" class="btn grey-salsa btn-outline"> Back </button>
-                    <button type="submit" class="btn green pull-right"> Submit </button>
-                </div>
-            </form>
+            
+
+              
+           
             <!-- END FORGOT PASSWORD FORM -->
             <!-- BEGIN REGISTRATION FORM -->
            
             <!-- END REGISTRATION FORM -->
         </div>
+        <div class="copyright"> {{date('Y')}} © Yellotasker. All rights reserved </div>
         <!-- END LOGIN -->
         <!--[if lt IE 9]>
 <script src="{{ URL::asset('assets/global/plugins/respond.min.js') }}"></script>
@@ -99,9 +90,12 @@
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{ URL::asset('assets/pages/scripts/login.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('public/assets/js/common.js') }}" type="text/javascript"></script>
+       
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
+         <script src="{{ URL::asset('assets/global/scripts/app.min.js') }}" type="text/javascript"></script>
     </body>
  <style type="text/css">
      .has-error .input-icon input.form-control {

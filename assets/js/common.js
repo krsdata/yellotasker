@@ -14,7 +14,7 @@ $(function() {
 /* 
 Method : Delete particulare record
 @param : id,status
-Author : Kundan Roy
+Author : Kundan
 Description : delete particular record from dataBase
 */
 $('button[name="remove_levels"]').on('click', function(e){
@@ -23,7 +23,7 @@ $('button[name="remove_levels"]').on('click', function(e){
     var form = $(this).closest('form'); 
     e.preventDefault(); 
     
-   bootbox.confirm('<b><h3>Are you sure?</h3></b>',function(result){
+   bootbox.confirm('<b><h3>Are you sure you want to delete?</h3></b>',function(result){
 	if(result)
 	{
          var id = self.attr('id');

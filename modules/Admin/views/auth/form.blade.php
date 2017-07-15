@@ -1,4 +1,4 @@
-<h3 class="form-title">Sign In</h3>
+<h3 class="form-title">Sign in</h3>
      @if (count($errors) > 0)
     <div class="alert alert-danger">
         <button class="close" data-close="alert"></button>
@@ -34,11 +34,11 @@
                         <input type="checkbox" name="remember" value="1" />Remember
                         <span></span>
                     </label>
-                    <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+                    <a href="{{url('admin/forgot-password')}}" id="forget-password" class="forget-password">Forgot Password?</a>
                 </div>
                 
                 <div class="create-account">
                     <p>
-                        <a href="javascript:;"  class="uppercase">Yellotasker</a>
+                        <a href="javascript:;"  class="uppercase"></a>
                     </p>
                 </div>

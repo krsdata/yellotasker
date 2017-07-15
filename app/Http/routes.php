@@ -218,3 +218,17 @@ Route::group(['prefix' => 'api/v1'], function()
 
 Route::get('/login','Adminauth\AuthController@showLoginForm'); 
 Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
+
+
+Route::get('admin/404',function(){
+    if(Auth::guard('admin')->check()==false){
+        return redirect('admin');
+    }
+
+    $page_title = "404 Error";
+              $page_action = "Page";
+              $viewPage = "404 Error";
+              $msg = "page not found";
+              $error_msg = "Page not found!"; 
+              return view('packages::auth.page_not_found',compact('error_msg','page_title','page_action','viewPage'))->with('flash_alert_notice', $msg);
+});

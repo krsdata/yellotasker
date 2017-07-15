@@ -10,11 +10,11 @@
                     <!-- BEGIN PAGE BREADCRUMB -->
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <a href="index.html">Home</a>
+                            <a href="{{ url('/') }}">Home</a>
                             <i class="fa fa-circle"></i>
                         </li>
                         <li>
-                            <a href="#">User</a>
+                            <a href="{{ route('user') }}">User</a>
                             <i class="fa fa-circle"></i>
                         </li>
                         <li>
@@ -130,4 +130,11 @@
             
             <!-- END QUICK SIDEBAR -->
         </div>
+
+        <script type="text/javascript">
+            
+            function SortByStatus(filter_data) {
+                $('#filter_data').submit();
+            }
+        </script>
         

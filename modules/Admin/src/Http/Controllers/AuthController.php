@@ -121,15 +121,17 @@ class AuthController extends Controller
 				 		->withInput()  
 				 		->withErrors(['alert'=>'danger','message'=>'Oh no! The address you provided isn’t in our system']);
         }
-        $user_data = User::find($user[0]->userID); 
+        $user_data = User::find($user[0]->id); 
         $temp_password =  Hash::make($email);
  
         $email_content = array(
                         'receipent_email'   => $request->get('email'),
-                        'subject'           => 'Your Udex Account Password',
+                        'subject'           => 'Your Yellotasker Account Password',
                         'name'              => $user_data->first_name,
                         'temp_password'     => $temp_password,
-                        'encrypt_key'       => Crypt::encrypt($email)
+                        'encrypt_key'       => Crypt::encrypt($email),
+                        'greeting'          => 'Yellotasker Team',
+                        'name'              => $user[0]->name
                     );
         //print_r($email_content);
         $helper = new Helper;

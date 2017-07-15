@@ -19,7 +19,7 @@
               <tr>
                 <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#000;"> 
                   <div>
-                  <p>Dear {{$content['first_name']}},</p>
+                  <p>Dear {{$content['name']}},</p>
                   <p>Looks like you need to reset your password. Please click the link below on.
                   </p>
                       <p> <a href="{{ url('admin/password/reset?token='.$content['temp_password'].'&key='.$content['encrypt_key']) }} ">Reset Your Password</a>

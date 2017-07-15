@@ -23,9 +23,7 @@ use Validator;
 use App\Http\Requests;
 use App\Helpers\Helper as Helper;
 //use Modules\Admin\Models\User; 
-use Modules\Admin\Models\Course; 
-use Modules\Admin\Models\Assignment;
-use Modules\Admin\Models\Syllabus;
+use Modules\Admin\Models\Category;
 use App\Admin;
 use Illuminate\Http\Request;
 use Session;
@@ -63,7 +61,13 @@ class AdminController extends Controller {
          
         $user = User::count();
         $viewPage = "Admin";
-        return view('packages::dashboard.index',compact('user','page_title','page_action','viewPage'));
+
+        $users_count        =  User::count();
+        $category_grp_count =  Category::where('parent_id',0)->count();
+        $category_count     =  Category::where('parent_id','!=',0)->count();
+
+
+        return view('packages::dashboard.index',compact('category_count','users_count','category_grp_count','page_title','page_action','viewPage'));
     }
 
    public function profile(Request $request,Admin $users)

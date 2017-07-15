@@ -18,7 +18,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item start active open">
-                                    <a href="index.html" class="nav-link ">
+                                    <a href="{{ url('/')}}" class="nav-link ">
                                         <i class="icon-bar-chart"></i>
                                         <span class="title">Dashboard</span>
                                         <span class="selected"></span>
@@ -60,7 +60,10 @@
                               
                              
                             </ul>
-                        </li>
+                        </li> 
+
+
+
                          <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
@@ -70,41 +73,55 @@
                             <ul class="sub-menu">
                                 
                                 <li class="nav-item  ">
-                                    <a href="page_system_coming_soon.html" class="nav-link " target="_blank">
+                                    <a href="#" class="nav-link "  >
                                         <span class="title">Coming Soon</span>
                                     </a>
                                 </li>
                                 
                             </ul>
                         </li>
-                        <li class="nav-item  ">
+                       
+                         <li class="nav-item  {{ (isset($page_title) && $page_title=='Category')?'open':'' }}">
                             <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-social-dribbble"></i>
-                                <span class="title">Category</span>
-                                <span class="arrow"></span>
+                                <i class="fa fa-folder-open-o"></i>
+                                <span class="title">Category Management</span>
+                                <span class="arrow {{ (isset($page_title) && $page_title=='Category')?'open':'' }}"></span>
                             </a>
-                            <ul class="sub-menu">
-                                 <li class="nav-item  ">
-                                    <a href="page_system_coming_soon.html" class="nav-link " target="_blank">
-                                        <span class="title">Coming Soon</span>
+                            <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Category')?'block':'' }}">
+                                
+                                <li class="nav-item  {{ (isset($sub_page_title) && $sub_page_title=='Group Category')?'open':'' }}">
+
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="fa fa-folder-o"></i>
+                                        <span class="title">Group Category</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Category')?'open':'' }}"></span>
                                     </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Category')?'block':'' }}">
+                                        <li class="nav-item {{ (isset($page_action) && $page_action=='Create Group Category')?'open':'' }}">
+                                            <a href="{{ route('category.create') }}" class="nav-link "  > Create Group category</a>
+                                        </li>
+                                        <li class="nav-item {{ (isset($page_action) && $page_action=='View Group Category')?'open':'' }}">
+                                            <a href="{{ route('category') }}" class="nav-link " >View Group Category</a>
+                                        </li>
+                                        
+                                    </ul>
                                 </li>
-                              
-                                
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i>
-                                <span class="title">Settings</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                
-                                <li class="nav-item  ">
-                                    <a href="page_system_coming_soon.html" class="nav-link " target="_blank">
-                                        <span class="title">Coming Soon</span>
+                                 <li class="nav-item  {{ (isset($sub_page_title) && $sub_page_title=='Sub Category')?'open':'' }}">
+
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="fa fa-folder-o"></i>
+                                        <span class="title">Category</span>
+                                        <span class="arrow {{ (isset($sub_page_title) && $sub_page_title=='Sub Category')?'open':'' }}"></span>
                                     </a>
+                                    <ul class="sub-menu"  style="display: {{ (isset($sub_page_title) && $sub_page_title=='Sub Category')?'block':'' }}">
+                                        <li class="nav-item {{ (isset($page_action) && $page_action=='Create Sub Category')?'open':'' }}">
+                                            <a href="{{ route('sub-category.create') }}" class="nav-link " > Create Category</a>
+                                        </li>
+                                        <li class="nav-item {{ (isset($page_action) && $page_action=='View Sub Category')?'open':'' }}">
+                                            <a href="{{ route('sub-category') }}" class="nav-link "  >View Category</a>
+                                        </li>
+                                        
+                                    </ul>
                                 </li>
                                 
                             </ul>

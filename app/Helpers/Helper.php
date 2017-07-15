@@ -215,20 +215,7 @@ class Helper {
     * Response :  
     * Return : true or false
     */
-    public  function sendMailFrontEnd2($email_content, $template)
-    {        
-        $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
-        $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:'';
-      
-        return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
-          {
-            $name = "Yellotasker";
-            $message->from('admin@yellotasker.com',$name);  
-            $message->to($email_content['receipent_email'])->subject($email_content['subject']);
-            
-          });
-    } 
-
+     
      public  function sendMailFrontEnd($email_content, $template)
     {        
         $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
@@ -283,8 +270,7 @@ class Helper {
     */
     public  function sendMail($email_content, $template)
     {        
-          
-        return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
+         return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
           {
             $name = 'Yellotasker';
             $message->from('no-reply@admin.com',$name);  

@@ -1,4 +1,4 @@
-<div class="form-group{{ $errors->first('email', ' has-error') }} has-feedback">
+d<div class="form-group{{ $errors->first('email', ' has-error') }} has-feedback">
     {!! Form::email('email',null, ['class'=>'form-control', 'placeholder'=>'Email']) !!}
     <span class="glyphicon glyphicon-envelope form-control-feedback input-img"></span> 
 </div> 

@@ -167,8 +167,7 @@ return [
        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
        Barryvdh\DomPDF\ServiceProvider::class,
        Way\Generators\GeneratorsServiceProvider::class,
-       Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
-
+       Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class, 
     ],
 
     /*
@@ -219,7 +218,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'Helper'    =>  App\Helpers\Helper::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class, 
 
     ],
 

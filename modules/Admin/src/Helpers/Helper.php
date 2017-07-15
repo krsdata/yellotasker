@@ -21,7 +21,6 @@ use App\CorporateProfile;
 use Validator; 
 use App\Position;
 use Modules\Admin\Helpers\Helper as Helper;
-use Modules\Admin\Models\User;
  
 
 class Helper {

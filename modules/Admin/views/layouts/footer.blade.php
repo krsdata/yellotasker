@@ -50,12 +50,18 @@
        
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{ URL::asset('assets/pages/scripts/form-validation.js') }}" type="text/javascript"></script>
+
+         <script src="{{ URL::asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
+
         <!-- END THEME LAYOUT SCRIPTS -->
       @if(isset($js_file))
 
         @foreach($js_file as $key => $js )
               <script src="{{ URL::asset('assets/js/'.$js) }}" type="text/javascript"></script>
         @endforeach
+        @else
+         <script src="{{ URL::asset('assets/js/common.js') }}" type="text/javascript"></script>
+         <script src="{{ URL::asset('assets/js/bootbox.js') }}" type="text/javascript"></script>
       @endif
 
       <script type="text/javascript">

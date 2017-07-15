@@ -24,7 +24,9 @@ class UserRequest extends Request {
                             'email'     => "required|email|unique:users,email" ,  
                             'name'      => 'required|min:3', 
                             'password'  => 'required|min:6',
-                            'phone' =>  'required|numeric',
+                        //    'phone' =>  'required|number|min:10',
+                             'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|numeric'
+                             //size:10
                             //'role'  => 'required'
                             /*'confirm_password' => 'required|same:password'*/ 
                         ];
@@ -36,7 +38,7 @@ class UserRequest extends Request {
                         return [
                             'email'   => "required|email" ,  
                             'name' => 'required|min:3',
-                            'phone' => 'numeric',
+                            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|numeric'
                            // 'role'  => 'required'
                         ];
                     }

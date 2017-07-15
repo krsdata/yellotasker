@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
-    {   
+    {   //dd($e); 
        $path_info_url = $request->getpathInfo();
        $api_url='';
        $web_url ='';
@@ -101,8 +101,8 @@ class Handler extends ExceptionHandler
                 );
             }else{
                
-              $url =  URL::previous().'?error=InvalidURL'; 
-              return Redirect::to($url);
+              //$url =  URL::previous().'?error=InvalidURL'; 
+              return Redirect::to('admin/404');
             } 
             exit();
         }

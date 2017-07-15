@@ -2,7 +2,7 @@
   
                                         <div class="form-body">
                                             <div class="alert alert-danger display-hide">
-                                                <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
+                                                <button class="close" data-close="alert"></button> Please fill required field! </div>
                                             <div class="alert alert-success display-hide">
                                                 <button class="close" data-close="alert"></button> Your form validation is successful! </div>
  
@@ -11,16 +11,16 @@
 										        <div class="col-md-4"> 
 										            {!! Form::text('name',null, ['class' => 'form-control','data-required'=>1])  !!} 
 										            
-										            <span class="label label-danger">{{ $errors->first('name', ':message') }}</span>
+										            <span class="help-block">{{ $errors->first('name', ':message') }}</span>
 										        </div>
 										    </div> 
 
 										    <div class="form-group {{ $errors->first('phone', ' has-error') }}">
-										        <label class="control-label col-md-3">Phone <span class="required">  </span></label>
+										        <label class="control-label col-md-3">Phone <span class="required"> *  </span></label>
 										        <div class="col-md-4"> 
-										            {!! Form::text('phone',null, ['class' => 'form-control','data-required'=>1])  !!} 
+										            {!! Form::text('phone',null, ['class' => 'form-control','data-required'=>1,'min'=>10])  !!} 
 										            
-										            <span class="label label-danger">{{ $errors->first('phone', ':message') }}</span>
+										            <span class="help-block">{{ $errors->first('phone', ':message') }}</span>
 										        </div>
 										    </div> 
 
@@ -32,7 +32,7 @@
                                                 <div class="col-md-4"> 
                                                         
 			                                     {!! Form::email('email',null, ['class' => 'form-control','data-required'=>1])  !!} 
-                                                <span class="label label-danger">{{ $errors->first('email', ':message') }}</span>
+                                                <span class="help-block">{{ $errors->first('email', ':message') }}</span>
        
                                                 </div> 
                                             </div>
@@ -41,7 +41,7 @@
 									        <div class="col-md-4"> 
 									            {!! Form::password('password', ['class' => 'form-control','data-required'=>1])  !!} 
 									            
-									            <span class="label label-danger">{{ $errors->first('password', ':message') }}</span>
+									            <span class="help-block">{{ $errors->first('password', ':message') }}</span>
 									        </div>
 									    </div> 
                                             
@@ -58,7 +58,7 @@
 									            <option value="{{$value->id}}" {{($value->id ==$role_id)?"selected":""}}>{{ $value->name }}</option>
 									            @endforeach
 									            </select>
-									            <span class="label label-danger">{{ $errors->first('role', ':message') }}</span>
+									            <span class="help-block">{{ $errors->first('role', ':message') }}</span>
 									        </div>
 									    </div> 
 

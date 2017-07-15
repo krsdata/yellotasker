@@ -1,15 +1,5 @@
 
 $(function() {
-     var d = new Date(); // for now
-    
-    $('.datepicker').datepicker({
-        dateFormat: 'yy-dd-mm',
-        onSelect: function(datetext){
-
-            datetext=datetext+" "+d.getHours()+": "+d.getMinutes()+": "+d.getSeconds();
-            $('.datepicker').val(datetext);
-        },
-    });  
      
 /* 
 Method : Delete particulare record
@@ -34,35 +24,9 @@ $('button[name="remove_levels"]').on('click', function(e){
    });
 });
                                     
-	 	
+	 	 
+
     
-    $('#dropoff_date').datepicker({});
-
-    $('.email-error').css('width', '100%');
-
-    $("#user_login").validate({
-        errorLabelContainer: '.error-loc',
-        rules: {
-            email: {
-                required: true,
-                email: true
-            },
-            password: {
-                required: true,
-            }
-        },
-        // Specify the validation error messages
-        messages: {
-            email: {
-                required: email_req},
-            password: {
-                required: password_req,
-            },
-        },
-        submitHandler: function(event) {
-            $("#user_login").submit();
-        }
-    });
 
 });
 /* 
@@ -343,16 +307,39 @@ $("#building_exc").validate({
 
 });
 
-$('#last_reminder').datepicker({}); 
-$('#end_date').datepicker({
-    format: 'yyyy-mm-dd '+getHora(),
-});
 
-$('#date').datepicker({
-    format: 'yyyy-mm-dd',
-});
+$(function(){
+    
 
-function getHora() {
-    date = new Date();
-    return date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-};
+    $('form.forget-form').on('submit',function(){
+       
+        e.preventDefault(); 
+
+        var email =  $('#email').val(); 
+
+        var url =  $('form.forget').attr('data');
+
+        alert('url');
+        $.ajax({
+            type: "GET",
+            data: {emailemail: email},
+            url: url+'/forgetPwd',
+            beforeSend: function() {
+               $('#'+id).html('Processing');
+            },
+              success: function(response) {
+                
+          //bootbox.alert('Activated');            
+            if(response==1)
+                {
+                     
+                }else
+                {
+                    
+                }
+            }
+        });
+
+    });
+
+});
