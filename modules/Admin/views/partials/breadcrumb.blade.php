@@ -4,7 +4,7 @@
         <i class="fa fa-circle"></i>
     </li>
     <li>
-        <a href="{{ Route::currentRouteName()  }}">{{ $heading  }}</a>
+        <a href="{{ url($route_url)  }}">{{ $heading  }}</a>
         <i class="fa fa-circle"></i>
     </li>
     <li>

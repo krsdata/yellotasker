@@ -48,6 +48,8 @@ class CategoryController extends Controller {
         View::share('sub_page_title', 'Group Category');
         View::share('helper',new Helper);
         View::share('heading','Group Category');
+        View::share('route_url',route('category'));
+
         $this->record_per_page = Config::get('app.record_per_page');
     }
 

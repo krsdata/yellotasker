@@ -46,6 +46,7 @@ class UsersController extends Controller {
         View::share('viewPage', 'user');
         View::share('helper',new Helper);
         View::share('heading','Users');
+        View::share('route_url',route('user'));
 
         $this->record_per_page = Config::get('app.record_per_page');
     }

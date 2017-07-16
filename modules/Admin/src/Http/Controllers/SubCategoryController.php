@@ -49,6 +49,8 @@ class SubCategoryController extends Controller {
         View::share('helper',new Helper);
         View::share('heading','Category');
         $this->record_per_page = Config::get('app.record_per_page');
+        View::share('route_url',route('sub-category'));
+
     }
 
     protected $categories;
