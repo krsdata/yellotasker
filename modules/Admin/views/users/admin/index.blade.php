@@ -1,22 +1,42 @@
-@extends('packages::layouts.master') 
+
+@extends('packages::layouts.master')
+  @section('title', 'Dashboard')
+    @section('header')
+    <h1>Dashboard</h1>
+    @stop
     @section('content') 
-      @include('packages::partials.main-header')
+      @include('packages::partials.navigation')
       <!-- Left side column. contains the logo and sidebar -->
-      @include('packages::partials.main-sidebar')
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper"> 
-       @include('packages::partials.breadcrumb')
+      @include('packages::partials.sidebar')
+                             <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+             <div class="page-content-wrapper">
+                <!-- BEGIN CONTENT BODY -->
+                <div class="page-content">
+                    <!-- BEGIN PAGE HEAD-->
+                    
+                    <!-- END PAGE HEAD-->
+                    <!-- BEGIN PAGE BREADCRUMB -->
+                    @include('packages::partials.breadcrumb')
+ 
         <!-- Main content -->
-          <section class="content">
-            <!-- Small boxes (Stat box) -->
+         <!-- Small boxes (Stat box) -->
               <div class="row">
                   <div class="col-md-12">
+                     <div class="portlet light portlet-fit portlet-form bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Update Profile</span>
+                                    </div>
+                                    
+                                </div>
+
 
 
                        <div class="panel panel-cascade">
                           <div class="panel-body ">
-                              <fieldset><legend>Personel Information:</legend>
-
+                              
                               @if($flash_alert_notice)
                                    <div class="alert alert-success   bg-olive btn-flat margin alert-dismissable" style="margin:10px">
                                       <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -49,6 +69,7 @@
                               </fieldset>  
                           </div>
                     </div>
+                    </div>
                 </div>            
               </div>  
             <!-- Main row --> 
@@ -60,7 +81,4 @@
           width: 100%;
        }  
      </style> 
-@stop
-
-
-
+@stop 

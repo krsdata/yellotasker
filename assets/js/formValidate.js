@@ -35,6 +35,9 @@ var Login = function() {
                 },
                 category_image:{
                     required:true
+                },
+                name:{
+                    required:true
                 }
             },
 

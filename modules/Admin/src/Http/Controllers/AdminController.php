@@ -48,6 +48,8 @@ class AdminController extends Controller {
     public function __construct()
     {  
         $this->middleware('admin');  
+        View::share('heading','dashboard');
+        View::share('route_url','admin');
     }
     /*
     * Dashboard
@@ -77,29 +79,34 @@ class AdminController extends Controller {
         $page_action = "My Profile";
         $viewPage = "Admin";
         $method = $request->method();
-        $msg = "Update your information!";
+        $msg = "";
         $error_msg = [];
         if($request->method()==='POST'){
             $messages = ['password.regex' => "Your password must contain 1 lower case character 1 upper case character one number"];
 
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email',
-                'password' => 'min:6' 
+                'password' => 'min:6',
+                'name' => 'required', 
         ]);
         /** Return Error Message **/
         if ($validator->fails()) {
 
             $error_msg  =   $validator->messages()->all(); 
+           return view('packages::users.admin.index',compact('error_msg','method','users','page_title','page_action','viewPage'))->with('flash_alert_notice', $msg)->withInput($request->all());
         }
             $users->name= $request->get('name');
             $users->email= $request->get('email');
-            $users->password=  Hash::make($request->get('password'));
+            if($request->get('password')!=null){
+                $users->password=    Hash::make($request->get('password'));
+            }
             $users->save();
             $method = $request->method();
-            $msg = "Information successfully updated!";
+            $msg = "Profile details successfully updated.";
         } 
+       return view('packages::users.admin.index',compact('error_msg','method','users','page_title','page_action','viewPage'))->with('flash_alert_notice', $msg)->withInput($request->all());
        
-        return view('packages::users.admin.index',compact('error_msg','method','users','page_title','page_action','viewPage'))->with('flash_alert_notice', $msg)->withInput($request->all());
+     
    }
    public function errorPage()
    {

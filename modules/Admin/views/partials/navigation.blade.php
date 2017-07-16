@@ -25,7 +25,7 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="javascript:;">
+                                <a href="{{ route('user')}}">
                                     <i class="icon-user"></i> View Users </a>
                             </li>
                             
@@ -69,7 +69,7 @@
                                     <img alt="" class="img-circle" src="{{URL::asset('assets/layouts/layout4/img/avatar9.jpg') }}" /> </a>
                                 <ul class="dropdown-menu dropdown-menu-default">
                                     <li>
-                                        <a href="#">
+                                        <a href="{{ url('admin/profile') }}">
                                             <i class="icon-user"></i> My Profile </a>
                                     </li>
                                     
