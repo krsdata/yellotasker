@@ -8,7 +8,7 @@
                         <!-- BEGIN PAGE TITLE -->
                         <div class="page-title">
                             <h1>My Dashboard
-                                <small>statistics, charts, recent events and reports</small>
+                                <small>user, group category and category</small>
                             </h1>
                         </div>
                         <!-- END PAGE TITLE -->
@@ -19,7 +19,7 @@
                     <!-- BEGIN PAGE BREADCRUMB -->
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <a href="index.html">Home</a>
+                            Home
                             <i class="fa fa-circle"></i>
                         </li>
                         <li>

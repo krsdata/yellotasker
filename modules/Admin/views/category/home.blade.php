@@ -19,7 +19,7 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">{{ $page_title }}</span>
+                                        <span class="caption-subject font-red sbold uppercase">{{ $heading }}</span>
                                     </div>
                                      <div class="col-md-2 pull-right">
                                             <div style="width: 150px;" class="input-group"> 

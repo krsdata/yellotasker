@@ -45,6 +45,8 @@ class UsersController extends Controller {
         $this->middleware('admin');
         View::share('viewPage', 'user');
         View::share('helper',new Helper);
+        View::share('heading','Users');
+
         $this->record_per_page = Config::get('app.record_per_page');
     }
 
@@ -121,7 +123,7 @@ class UsersController extends Controller {
         $user->save();
         $js_file = ['common.js','bootbox.js','formValidate.js'];
         return Redirect::to(route('user'))
-                            ->with('flash_alert_notice', 'New user was successfully created !');
+                            ->with('flash_alert_notice', 'New user  successfully created.');
         }
 
     /*
@@ -144,9 +146,26 @@ class UsersController extends Controller {
         
         $user->fill(Input::all());
         $user->password = Hash::make($request->get('password'));
-        $user->save();
+
+        $validator_email = User::where('email',$request->get('email'))
+                            ->where('id','!=',$user->id)->first();
+        if($validator_email) {
+            if($validator_email->id==$user->id)
+            {
+                $user->save();
+            }else{
+                  return  Redirect::back()->withInput()->with(
+                    'field_errors','The Email already been taken!'
+                 );
+                 
+            }
+        }else{
+           $user->save(); 
+        }
+
+       
         return Redirect::to(route('user'))
-                        ->with('flash_alert_notice', 'User was  successfully updated !');
+                        ->with('flash_alert_notice', 'User   successfully updated.');
     }
     /*
      *Delete User
@@ -158,7 +177,7 @@ class UsersController extends Controller {
         User::where('id',$user->id)->delete();
 
         return Redirect::to(route('user'))
-                        ->with('flash_alert_notice', 'User was successfully deleted!');
+                        ->with('flash_alert_notice', 'User  successfully deleted.');
     }
 
     public function show(User $user) {

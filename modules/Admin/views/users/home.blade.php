@@ -8,19 +8,7 @@
                     
                     <!-- END PAGE HEAD-->
                     <!-- BEGIN PAGE BREADCRUMB -->
-                    <ul class="page-breadcrumb breadcrumb">
-                        <li>
-                            <a href="{{ url('/') }}">Home</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <a href="{{ route('user') }}">User</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <span class="active">Datatables</span>
-                        </li>
-                    </ul>
+                     @include('packages::partials.breadcrumb')
                     <!-- END PAGE BREADCRUMB -->
                     <!-- BEGIN PAGE BASE CONTENT -->
                     <div class="row">
@@ -30,7 +18,7 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">User Management</span>
+                                        <span class="caption-subject font-red sbold uppercase">{{$heading or ''}}</span>
                                     </div>
                                      
                                 </div>

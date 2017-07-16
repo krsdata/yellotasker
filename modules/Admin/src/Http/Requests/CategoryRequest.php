@@ -30,6 +30,7 @@ class CategoryRequest  extends Request {
 
                         return [
                             'category_group_name'   => "required" , 
+                            
                         ];
                     }
                 }

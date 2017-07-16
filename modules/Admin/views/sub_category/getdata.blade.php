@@ -8,19 +8,7 @@
                     
                     <!-- END PAGE HEAD-->
                     <!-- BEGIN PAGE BREADCRUMB -->
-                    <ul class="page-breadcrumb breadcrumb">
-                        <li>
-                            <a href="index.html">Home</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <a href="#">User</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <span class="active">Datatables</span>
-                        </li>
-                    </ul>
+                     @include('packages::partials.breadcrumb')
                     <!-- END PAGE BREADCRUMB -->
                     <!-- BEGIN PAGE BASE CONTENT -->
                     <div class="row">

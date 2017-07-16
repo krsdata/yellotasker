@@ -356,3 +356,28 @@ function getHora() {
     date = new Date();
     return date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 };
+
+
+
+
+$(function(){
+     $("#user-form2").validate({
+        errorLabelContainer: '.error-loc',
+         errorClass:'myClass',
+        rules: {
+            category_group_name: {
+                required: true, 
+            } 
+        },
+        // Specify the validation error messages
+        messages: {
+            category_group_name: {
+                required: "category group name is required."
+            },
+             
+        },
+        submitHandler: function(event) {
+            $("#user-form").submit();
+        }
+    });
+});

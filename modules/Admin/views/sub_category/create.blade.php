@@ -17,19 +17,7 @@
                     
                     <!-- END PAGE HEAD-->
                     <!-- BEGIN PAGE BREADCRUMB -->
-                    <ul class="page-breadcrumb breadcrumb">
-                        <li>
-                            <a href="index.html">Home</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <a href="#">User</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <span class="active">Create</span>
-                        </li>
-                    </ul>
+                      @include('packages::partials.breadcrumb')
                     <!-- END PAGE BREADCRUMB -->
                     <!-- BEGIN PAGE BASE CONTENT -->
                       <div class="row">
@@ -38,8 +26,8 @@
                             <div class="portlet light portlet-fit portlet-form bordered">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="icon-settings font-dark"></i>
-                                        <span class="caption-subject font-red sbold uppercase">Create Group Category</span>
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">{{ $heading or 'Category' }}</span>
                                     </div>
                                     
                                 </div>

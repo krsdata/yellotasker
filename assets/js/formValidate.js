@@ -22,6 +22,19 @@ var Login = function() {
                 phone: {
                     required: true,
                     number: true
+                },
+                 
+                category_group_name:{
+                    required:true
+                },
+                category_group_image:{
+                    required:true
+                },
+                category_name:{
+                    required:true
+                },
+                category_image:{
+                    required:true
                 }
             },
 
@@ -330,3 +343,4 @@ var Login = function() {
 jQuery(document).ready(function() {
     Login.init();
 });
+

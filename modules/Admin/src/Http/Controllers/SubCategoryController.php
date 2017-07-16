@@ -47,6 +47,7 @@ class SubCategoryController extends Controller {
         $this->middleware('admin');
         View::share('viewPage', 'category');
         View::share('helper',new Helper);
+        View::share('heading','Category');
         $this->record_per_page = Config::get('app.record_per_page');
     }
 
@@ -99,8 +100,8 @@ class SubCategoryController extends Controller {
     {
           
         $page_title = 'Category';
-        $page_action = 'Create Sub Category';
-        $sub_page_title = 'Sub Category';
+        $page_action = 'Create Category';
+        $sub_page_title = 'Sub Category';   
         $category  = Category::all();
         $sub_category_name  = Category::all();
  
@@ -151,7 +152,7 @@ class SubCategoryController extends Controller {
         $cat->save();   
          
         return Redirect::to(route('sub-category'))
-                            ->with('flash_alert_notice', 'New category was successfully created !');
+                            ->with('flash_alert_notice', 'New category  successfully created.');
         }
 
     /*
@@ -217,7 +218,7 @@ class SubCategoryController extends Controller {
         } 
         $cat->save();    
         return Redirect::to(route('sub-category'))
-                        ->with('flash_alert_notice', 'Category was  successfully updated !');
+                        ->with('flash_alert_notice', 'Category   successfully updated.');
     }
     /*
      *Delete User
@@ -228,7 +229,7 @@ class SubCategoryController extends Controller {
         
         $d = Category::where('id',$category->id)->delete(); 
         return Redirect::to(route('category'))
-                        ->with('flash_alert_notice', 'Category was successfully deleted!');
+                        ->with('flash_alert_notice', 'Category  successfully deleted.');
     }
 
     public function show(Category $category) {

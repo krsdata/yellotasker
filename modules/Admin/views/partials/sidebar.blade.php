@@ -36,13 +36,13 @@
                         <li class="nav-item  {{ (isset($page_title) && $page_title=='User')?'open':'' }}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-user"></i>
-                                <span class="title">User</span>
-                                <span class="arrow"></span>
+                                <span class="title">Manage User</span>
+                                <span class="arrow {{ (isset($page_title) && $page_title=='User')?'open':'' }}"></span>
                             </a>
                             <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='User')?'block':'' }}">
                                 <li class="nav-item  {{ (isset($page_title) && $page_action=='Create User')?'active':'' }}">
                                     <a href="{{ route('user.create') }}" class="nav-link ">
-                                        <i class="icon-user"></i>
+                                        <!-- <i class="icon-user"></i> -->
                                         <span class="title">
                                             Create User
                                         </span>
@@ -51,9 +51,9 @@
 
                                 <li class="nav-item  {{ (isset($page_title) && $page_action=='View User')?'active':'' }}">
                                     <a href="{{ route('user') }}" class="nav-link ">
-                                        <i class="icon-user"></i>
+                                       <!--  <i class="icon-user"></i> -->
                                         <span class="title">
-                                            Users
+                                            View Users
                                         </span>
                                     </a>
                                 </li>
@@ -67,14 +67,14 @@
                          <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
-                                <span class="title">Roles</span>
+                                <span class="title">Manage Roles</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
                                 
                                 <li class="nav-item  ">
                                     <a href="#" class="nav-link "  >
-                                        <span class="title">Coming Soon</span>
+                                        <span class="title">In progress</span>
                                     </a>
                                 </li>
                                 
@@ -84,7 +84,7 @@
                          <li class="nav-item  {{ (isset($page_title) && $page_title=='Category')?'open':'' }}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="fa fa-folder-open-o"></i>
-                                <span class="title">Category Management</span>
+                                <span class="title">Manage Category</span>
                                 <span class="arrow {{ (isset($page_title) && $page_title=='Category')?'open':'' }}"></span>
                             </a>
                             <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Category')?'block':'' }}">

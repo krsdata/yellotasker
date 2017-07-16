@@ -39,5 +39,9 @@
 
          <link href="{{ URL::asset('assets/global/plugins/select2/css/select2-bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
         <link rel="shortcut icon" href="favicon.ico" /> 
-
+        <style type="text/css">
+            span.title{
+                font-weight: 700;
+            }
+        </style>
     </head>

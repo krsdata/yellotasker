@@ -47,11 +47,11 @@ class CategoryController extends Controller {
         View::share('viewPage', 'category');
         View::share('sub_page_title', 'Group Category');
         View::share('helper',new Helper);
+        View::share('heading','Group Category');
         $this->record_per_page = Config::get('app.record_per_page');
     }
 
-    protected $categories;
-
+   
     /*
      * Dashboard
      * */
@@ -138,7 +138,7 @@ class CategoryController extends Controller {
         $cat->save();   
          
         return Redirect::to(route('category'))
-                            ->with('flash_alert_notice', 'New category was successfully created !');
+                            ->with('flash_alert_notice', 'New category  successfully created !');
         }
 
     /*
@@ -155,11 +155,23 @@ class CategoryController extends Controller {
         return view('packages::category.edit', compact( 'url','category', 'page_title', 'page_action'));
     }
 
-    public function update(Request $request, Category $category) {
+    public function update(CategoryRequest $request, Category $category) {
        
         $name = $request->get('category_group_name');
         $slug = str_slug($request->get('category_group_name'));
         $parent_id = 0;
+
+        $validate_cat = Category::where('category_group_name',$request->get('category_group_name'))
+                            ->where('parent_id',0)
+                            ->where('id','!=',$category->id)
+                            ->first();
+         
+        if($validate_cat){
+              return  Redirect::back()->withInput()->with(
+                'field_errors','The Group Category name already been taken!'
+            );
+        } 
+
 
         if ($request->file('category_group_image')) {
             $photo = $request->file('category_group_image');
@@ -186,7 +198,7 @@ class CategoryController extends Controller {
 
 
         return Redirect::to(route('category'))
-                        ->with('flash_alert_notice', 'Category was  successfully updated !');
+                        ->with('flash_alert_notice', 'Group Category  successfully updated.');
     }
     /*
      *Delete User
@@ -197,7 +209,7 @@ class CategoryController extends Controller {
         
         $d = Category::where('id',$category->id)->delete(); 
         return Redirect::to(route('category'))
-                        ->with('flash_alert_notice', 'Category was successfully deleted!');
+                        ->with('flash_alert_notice', 'Group Category  successfully deleted.');
     }
 
     public function show(Category $category) {

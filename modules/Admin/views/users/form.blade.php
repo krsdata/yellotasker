@@ -25,14 +25,14 @@
 										    </div> 
 
 
-                                            <div class="form-group {{ $errors->first('email', ' has-error') }}">
+                                            <div class="form-group {{ $errors->first('email', ' has-error') }}  @if(session('field_errors')) {{ 'has-group' }} @endif">
                                                 <label class="col-md-3 control-label">Email Address
                                                     <span class="required"> * </span>
                                                 </label>
                                                 <div class="col-md-4"> 
                                                         
 			                                     {!! Form::email('email',null, ['class' => 'form-control','data-required'=>1])  !!} 
-                                                <span class="help-block">{{ $errors->first('email', ':message') }}</span>
+                                                <span class="help-block" style="color:red">{{ $errors->first('email', ':message') }} @if(session('field_errors')) {{ 'The email has already been taken.' }} @endif</span>
        
                                                 </div> 
                                             </div>
@@ -55,7 +55,7 @@
 									           <option value="">Select Roles...</option>
 									            @foreach($roles as $key=>$value)
 									            
-									            <option value="{{$value->id}}" {{($value->id ==$role_id)?"selected":""}}>{{ $value->name }}</option>
+									            <option value="{{$value->id}}" {{($value->id ==$role_id)?"selected":"selected"}}>{{ $value->name }}</option>
 									            @endforeach
 									            </select>
 									            <span class="help-block">{{ $errors->first('role', ':message') }}</span>

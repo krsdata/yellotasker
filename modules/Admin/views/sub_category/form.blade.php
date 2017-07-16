@@ -2,10 +2,8 @@
 
             <div class="form-body">
                 <div class="alert alert-danger display-hide">
-                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
-                <div class="alert alert-success display-hide">
-                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>
- 
+                    <button class="close" data-close="alert"></button> Please fill the required field! </div>
+           
 			  
                  <div class="form-group {{ $errors->first('category_group_name', ' has-error') }}">
                  <label class="control-label col-md-3">Select Group Category
@@ -35,7 +33,7 @@
                     <label class="control-label col-md-3">Category Name <span class="required"> * </span></label>
                     <div class="col-md-4"> 
                         {!! Form::text('category_name',null, ['class' => 'form-control','data-required'=>1])  !!} 
-                        <span class="help-block">{{ $errors->first('category_name', ':message') }} @if(session('field_errors')) {{ 'The Category name already taken!' }} @endif </span>
+                        <span class="help-block">{{ $errors->first('category_name', ':message') }} @if(session('field_errors')) {{ 'The Category name already been taken!' }} @endif </span>
                     </div>
                 </div> 
                 
