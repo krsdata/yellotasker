@@ -27,7 +27,7 @@
                             <div class="portlet light portlet-fit portlet-form bordered">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="icon-settings font-dark"></i>
+                                        <i class="icon-settings font-red"></i>
                                         <span class="caption-subject font-red sbold uppercase">Create Group Category</span>
                                     </div>
                                     
