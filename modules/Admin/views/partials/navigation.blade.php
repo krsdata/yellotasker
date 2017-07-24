@@ -5,8 +5,15 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="index.html">
-                        <img src="http://webpedialab.com/ytasker/public/assets/admin/layouts/layout4/img/new-logo.jpg" alt="logo" class="logo-default"  style="width: 170px" /> </a>
+                    <a href="/" style="
+    margin-top: 25px;
+    font-size: 20px;
+    color: yellow;
+">
+                       <!--  <img src="http://webpedialab.com/ytasker/public/in/layouts/layout4/img/new-logo.jpg" alt="logo" class="logo-default"  style="width: 170px" />  -->
+                           
+                           YelloTasker
+                       </a>
                     <div class="menu-toggler sidebar-toggler">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
                     </div>
