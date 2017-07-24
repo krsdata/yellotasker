@@ -63,8 +63,8 @@
                                      <table class="table table-striped  table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Group Category Management </th>
-                                                <th>  Move </th> 
+                                                <th> Category </th>
+                                                <th>  Move  Category </th> 
                                                 <th> Set Default Category </th> 
                                                  
                                             </tr>
