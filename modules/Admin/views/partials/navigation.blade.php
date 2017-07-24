@@ -5,7 +5,7 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="/" style="
+                    <a href="{{url('admin')}}" style="
     margin-top: 25px;
     font-size: 20px;
     color: yellow;

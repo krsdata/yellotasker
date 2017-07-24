@@ -24,6 +24,7 @@ use App\Http\Requests;
 use App\Helpers\Helper as Helper;
 //use Modules\Admin\Models\User; 
 use Modules\Admin\Models\Category;
+use Modules\Admin\Models\CategoryDashboard;
 use App\Admin;
 use Illuminate\Http\Request;
 use Session;
@@ -67,9 +68,10 @@ class AdminController extends Controller {
         $users_count        =  User::count();
         $category_grp_count =  Category::where('parent_id',0)->count();
         $category_count     =  Category::where('parent_id','!=',0)->count();
+        $category_dashboard_count = CategoryDashboard::count();
 
 
-        return view('packages::dashboard.index',compact('category_count','users_count','category_grp_count','page_title','page_action','viewPage'));
+        return view('packages::dashboard.index',compact('category_count','users_count','category_grp_count','page_title','page_action','viewPage','category_dashboard_count'));
     }
 
    public function profile(Request $request,Admin $users)
