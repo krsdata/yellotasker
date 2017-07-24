@@ -94,9 +94,9 @@
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="fa fa-folder-o"></i>
                                         <span class="title">Group Category</span>
-                                        <span class="arrow {{ (isset($page_title) && $page_title=='Category')?'open':'' }}"></span>
+                                        <span class="arrow {{ (isset($sub_page_title) && $sub_page_title=='Group Category')?'open':'' }}"></span>
                                     </a>
-                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Category')?'block':'' }}">
+                                    <ul class="sub-menu" style="display: {{ (isset($sub_page_title) && $sub_page_title=='Group Category')?'block':'' }}">
                                         <li class="nav-item {{ (isset($page_action) && $page_action=='Create Group Category')?'open':'' }}">
                                             <a href="{{ route('category.create') }}" class="nav-link "  > Create Group category</a>
                                         </li>
@@ -106,7 +106,7 @@
                                         
                                     </ul>
                                 </li>
-                                 <li class="nav-item  {{ (isset($sub_page_title) && $sub_page_title=='Sub Category')?'open':'' }}">
+                                <li class="nav-item  {{ (isset($sub_page_title) && $sub_page_title=='Sub Category')?'open':'' }}">
 
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="fa fa-folder-o"></i>
@@ -119,6 +119,21 @@
                                         </li>
                                         <li class="nav-item {{ (isset($page_action) && $page_action=='View Sub Category')?'open':'' }}">
                                             <a href="{{ route('sub-category') }}" class="nav-link "  >View Category</a>
+                                        </li>
+                                        
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item  {{ (isset($sub_page_title) && $sub_page_title=='Category Dashboard')?'open':'' }}">
+
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="fa fa-folder-o"></i>
+                                        <span class="title">Category Dashboard</span>
+                                        <span class="arrow {{ (isset($sub_page_title) && $sub_page_title=='Category Dashboard')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu"  style="display: {{ (isset($sub_page_title) && $sub_page_title=='Category Dashboard')?'block':'' }}">
+                                        <li class="nav-item {{ (isset($page_action) && $page_action=='Category Dashboard')?'open':'' }}">
+                                            <a href="{{ route('category-dashboard') }}" class="nav-link "  >Category Dashboard</a>
                                         </li>
                                         
                                     </ul>

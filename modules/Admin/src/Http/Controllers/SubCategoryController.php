@@ -102,7 +102,7 @@ class SubCategoryController extends Controller {
     {
           
         $page_title = 'Category';
-        $page_action = 'Create Category';
+        $page_action = 'Create Sub Category';
         $sub_page_title = 'Sub Category';   
         $category  = Category::all();
         $sub_category_name  = Category::all();

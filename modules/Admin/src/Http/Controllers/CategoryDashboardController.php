@@ -25,14 +25,15 @@ use Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
 use App\Helpers\Helper;
-use Modules\Admin\Models\Roles; 
+use Modules\Admin\Models\Roles;
 use Modules\Admin\Models\Category;
+use Modules\Admin\Models\CategoryDashboard; 
  
 
 /**
  * Class AdminController
  */
-class CategoryController extends Controller {
+class CategoryDashboardController extends Controller {
     /**
      * @var  Repository
      */
@@ -44,10 +45,10 @@ class CategoryController extends Controller {
      */
     public function __construct() { 
         $this->middleware('admin');
-        View::share('viewPage', 'Category');
-        View::share('sub_page_title', 'Group Category');
+        View::share('viewPage', 'category');
+        View::share('sub_page_title', 'Category Dashboard');
         View::share('helper',new Helper);
-        View::share('heading','Group Category');
+        View::share('heading','Category Dashboard');
         View::share('route_url',route('category'));
 
         $this->record_per_page = Config::get('app.record_per_page');
@@ -60,10 +61,10 @@ class CategoryController extends Controller {
 
     public function index(Category $category, Request $request) 
     { 
-        $page_title = 'Category';
-        $sub_page_title = 'Group Category';
-        $page_action = 'View Group Category'; 
 
+        $page_title = 'Category';
+        $sub_page_title = 'Category Dashboard';
+        $page_action = 'Category Dashboard'; 
 
         if ($request->ajax()) {
             $id = $request->get('id'); 
@@ -81,70 +82,60 @@ class CategoryController extends Controller {
 
             $search = isset($search) ? Input::get('search') : '';
                
-            $categories = Category::where(function($query) use($search,$status) {
+            $categories = Category::with('subcategory')->where(function($query) use($search,$status) {
                         if (!empty($search)) {
                             $query->Where('category_group_name', 'LIKE', "%$search%")
                                     ->OrWhere('category_name', 'LIKE', "%$search%");
                         }
                         
-                    })->where('parent_id',0)->Paginate($this->record_per_page);
+                    })->where('parent_id',0)->get();
         } else {
-            $categories = Category::where('parent_id',0)->Paginate($this->record_per_page);
+            $categories = Category::with('subcategory')->where('parent_id',0)->get();
         }
-         
+
+        $category = '';
+        $sub_categories = Category::with('subcategory')->where('parent_id','!=',0)->get(); 
+        $categoryDashboard = CategoryDashboard::all();
+        $cat_id = [];
+        foreach ($categoryDashboard as $key => $value) {
+             $cat_id[]= $value->category_id;
+        }
         
-        return view('packages::category.index', compact('result_set','categories','data', 'page_title', 'page_action','sub_page_title'));
+        return view('packages::category-dashboard.index', compact('cat_id','categoryDashboard','category','sub_categories','categories','page_title', 'page_action','sub_page_title'));
     }
-
-    /*
-     * create Group method
-     * */
-
-    public function create(Category $category) 
-    {
-         
-        $page_title = 'Category';
-        $page_action = 'Create Group Category';
-        $category  = Category::all();
-        $sub_category_name  = Category::all();
  
-        $html = '';
-        $categories = '';
-
-        return view('packages::category.create', compact('categories', 'html','category','sub_category_name', 'page_title', 'page_action'));
-    }
 
     /*
      * Save Group method
      * */
 
-    public function store(CategoryRequest $request, Category $category) 
-    {  
-        $name = $request->get('category_group_name');
-        $slug = str_slug($request->get('category_group_name'));
-        $parent_id = 0;
+               
+    public function store(CategoryDashboard $categoryDashboard, Request $request){
 
-        $photo = $request->file('category_group_image');
-        $destinationPath = storage_path('uploads/category');
-        $photo->move($destinationPath, time().$photo->getClientOriginalName());
-        $photo_name = time().$photo->getClientOriginalName();
-        $request->merge(['photo'=>$photo_name]);
- 
+        $i=1;
+        if($request->get('name')){
 
-        $cat = new Category;
-        $cat->category_group_name   =  $request->get('category_group_name');
-        $cat->slug                  =  strtolower(str_slug($request->get('category_group_name')));
-        $cat->parent_id             =  $parent_id;
-        $cat->category_name         =  $request->get('category_group_name'); 
-        $cat->level                 =  1;
-        $cat->category_group_image  =  $photo_name; 
-        $cat->description           =  $request->get('description');
-        
-        $cat->save();   
-         
-        return Redirect::to(route('category'))
-                            ->with('flash_alert_notice', 'New category  successfully created !');
+            foreach ($request->get('name') as $key => $results) {
+                foreach ($results as $key => $value) {
+                     
+                   $cat = explode('_', $value);
+                   $categoryDashboard = CategoryDashboard::firstOrNew(['category_id' => $cat[0]]);
+                   $categoryDashboard->name = $cat[1];
+                   $categoryDashboard->category_id = $cat[0];
+                   $categoryDashboard->display_order = $i++;  
+                   $categoryDashboard->save();
+
+                }
+               
+            }
+        }else{
+            return Redirect::to(route('category-dashboard'))
+                            ->with('flash_alert_danger', 'Please select category to move!');
         }
+
+        return Redirect::to(route('category-dashboard'))
+                            ->with('flash_alert_notice', 'Category  successfully moved.');
+    }
 
     /*
      * Edit Group method
@@ -211,14 +202,15 @@ class CategoryController extends Controller {
      * 
      */
     public function destroy(Category $category) {
-        
-        $d = Category::where('id',$category->id)->delete(); 
-        return Redirect::to(route('category'))
-                        ->with('flash_alert_notice', 'Group Category  successfully deleted.');
+        $d = CategoryDashboard::where('id',$category->id)->delete(); 
+        return Redirect::to(route('category-dashboard'))
+                        ->with('flash_alert_notice', 'Default Category successfully deleted.');
     }
 
-    public function show(Category $category) {
-        
+    public function show(CategoryDashboard $category) {
+         $d = CategoryDashboard::where('id',$category->id)->delete(); 
+        return Redirect::to(route('category-dashboard'))
+                        ->with('flash_alert_notice', 'Default Category successfully deleted.');
     }
 
 }

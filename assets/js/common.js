@@ -1,4 +1,26 @@
 
+function popupAlert(url,id){
+    bootbox.confirm({
+    title: "Destroy default category?",
+    message: "Do you want to delete the default category? This cannot be undone.",
+    buttons: {
+        cancel: {
+            label: '<i class="fa fa-times"></i> Cancel'
+        },
+        confirm: {
+            label: '<i class="fa fa-check"></i> Confirm'
+        }
+    },
+    callback: function (result) {
+        if(result){
+            $('#'+id).attr('href',url); 
+            window.location.href = url;
+        }
+
+    }
+});
+}
+
 $(function() {
      var d = new Date(); // for now
     

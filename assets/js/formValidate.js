@@ -47,6 +47,12 @@ var Login = function() {
                 },
                 password: {
                     required: "Please enter your password."
+                },
+                category_image : {
+                    required: "Please enter category image."
+                },
+                category_group_name:{
+                    required:"Please enter category group name"
                 }
             },
 
