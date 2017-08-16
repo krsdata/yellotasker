@@ -14,7 +14,7 @@ use Validator;
 use Auth;
 use Hash;
 use View;
-use URL;
+use URL; 
 use Lang;
 use Session;
 use DB;

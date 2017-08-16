@@ -61,7 +61,7 @@ class TaskController extends Controller {
          $data = $this->getResource()->getAllTasks($request);
          return $data;
     }
-
+ 
     public function getRecentTasks(Request $request){
 
          $data = $this->getResource()->getRecentTasks($request);
