@@ -1,4 +1,9 @@
 <?php
+    
+    Route::get('abc',function(){
+        echo "test";
+    });
+
     Route::get('admin/login','Modules\Admin\Http\Controllers\AuthController@index');
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');

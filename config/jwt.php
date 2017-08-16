@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'secret' => env('JWT_SECRET', '8kkUKwiZ85xZsT6fHM557mHqWtE88vyB'),
+    'secret' => env('JWT_SECRET', 'NXIPPbZJA3QjNcukQ9oMUjeGKxU6Mizw'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,12 +29,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify the length of time (in minutes) that the token will be valid for.
-    | Defaults to 1 hour, by default it was 60 min
+    | Defaults to 1 hour
     |
     */
 
-    'ttl' => 1440,
- 
+    'ttl' => 60,
+
     /*
     |--------------------------------------------------------------------------
     | Refresh time to live
@@ -105,7 +105,7 @@ return [
     | Blacklist Enabled
     |--------------------------------------------------------------------------
     |
-    | In order to invalidate tokens, you must have the the blacklist enabled.
+    | In order to invalidate tokens, you must have the blacklist enabled.
     | If you do not want or need this functionality, then set this to false.
     |
     */
