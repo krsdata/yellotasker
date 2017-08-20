@@ -1,0 +1,88 @@
+#email-error{
+	width: 100% !important;
+}
+.col-lg-8.col-md-8 > input.user_picture
+     {
+  border: 1px solid #ccc;
+  padding: 5px;
+  width: 100%;
+ 
+}
+.status{
+    cursor: pointer;
+}
+.delbtn{
+    border: 0px !important;
+}
+
+.mix.dogs.mix_all {
+  border: 2px solid #ccc;
+  margin-left: 10px;
+}
+.panel-heading {
+  background: buttonshadow none repeat scroll 0 0;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  padding: 10px 15px;
+}
+
+.box {
+  background: #ffffff none repeat scroll 0 0;
+  border-radius: 3px;
+  border-top: 0px solid #d2d6de !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.col-md-border {
+  border-bottom: 3px solid #ccc;
+  padding-bottom: 7px;
+}
+ 
+ .thumbnail{
+ 	height: 300px  !important;
+ }
+ .gallery-img-height{
+ 	 height: 185px !important;
+ }
+ .panel {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+.action-dropdown {
+    bottom: auto !important;
+     
+    position: static;
+    float: right;
+}
+#dropdownMenu1{
+    float: right;
+}
+
+action-dropdown-b{
+     bottom: auto !important;
+     
+    position: absolute;
+    float: right;
+}
+.btn-danger-input {
+  float: right;
+  position: relative;
+  top: -34px;
+}
+.alert.alert-success.alert-dismissable {
+  margin: 5px;
+}
+/**********28/12/2015[ismael]************/
+label.error {
+  color: red;
+}
+a{
+  cursor: pointer !important;
+}
