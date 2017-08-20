@@ -18,7 +18,6 @@ use Modules\Api\Helpers\Helper as Helper;
 use Modules\Admin\Models\User;
 use Modules\Admin\Models\Tasks;
 
-
 /**
  * @author 
  */
@@ -216,5 +215,4 @@ class TaskResource extends BaseApiResource {
                 'data'    => $data
                 ];
     }
-
 }

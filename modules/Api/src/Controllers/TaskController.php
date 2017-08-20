@@ -21,10 +21,7 @@ use Route;
 use Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
-use Modules\Api\Resources\TaskResource;
-
- 
-
+use Modules\Api\Resources\TaskResource; 
 
 /**
  * Class AdminController
