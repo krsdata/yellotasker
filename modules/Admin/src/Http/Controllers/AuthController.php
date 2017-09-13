@@ -27,8 +27,7 @@ use App\Admin;
  
 class AuthController extends Controller
 {
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
+     
     protected $redirectTo = 'admin';
 	protected $guard = 'admin';
 	 

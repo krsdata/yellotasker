@@ -55,4 +55,14 @@ class User extends Authenticatable {
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
 
+    // Return user record
+    public function getUserDetail($id=null)
+    {
+        if($id){
+            return User::find($id); 
+        }
+        return User::all();
+    }
+
+
 }
