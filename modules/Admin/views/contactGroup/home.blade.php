@@ -22,11 +22,20 @@
                                         <span class="caption-subject font-red sbold uppercase">{{ $heading }}</span>
                                     </div>
                                      <div class="col-md-2 pull-right">
-                                            <div style="width: 150px;" class="input-group"> 
-                                                <a href="{{ route('category.create')}}">
-                                                    <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Group</button> 
+                                            <div style="" class="input-group"> 
+                                                <a href="{{ route('contact.create')}}">
+                                                    <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Contact</button> 
                                                 </a>
                                             </div>
+
+                                        </div> 
+                                         <div class="col-md-2 pull-right">
+                                            <div style="" class="input-group"> 
+                                                <a href="{{ route('contact')}}">
+                                                    <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Create Group</button> 
+                                                </a>
+                                            </div>
+                                            
                                         </div> 
                                      
                                 </div>
@@ -41,7 +50,7 @@
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
                                         <div class="row">
-                                            <form action="{{route('category')}}" method="get" id="filter_data">
+                                            <form action="{{route('contactGroup')}}" method="get" id="filter_data">
                                              
                                             <div class="col-md-3">
                                                 <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="Search by group name" type="text" name="search" id="search" class="form-control" >
@@ -52,7 +61,7 @@
                                            
                                         </form>
                                          <div class="col-md-2">
-                                             <a href="{{ route('category') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
+                                             <a href="{{ route('contactGroup') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
                                         </div>
                                        
                                         </div>
@@ -61,30 +70,30 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Group Name </th>
-                                                <th> Image </th> 
+                                                <th> Name </th>
+                                                <th> Email </th> 
+                                                 <th> Group Name </th> 
                                                 <th>Created date</th> 
                                                 <th>Action</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($categories as $key => $result)
+                                        @foreach($contactGroup as $key => $result)
                                             <tr>
-                                                <td> {{$result->category_group_name}} </td>
-                                                <td>
-                                                <a href="{{ url::asset('storage/uploads/category/'.$result->category_group_image)  }}" target="_blank" >
-                                                <img src="{{ url::asset('storage/uploads/category/'.$result->category_group_image)  }}" width="100px" height="50px;"> </a>  </td>
+                                                <td> {{$result->name}} </td>
+                                                 <td> {{$result->email}} </td>
+                                                  <td> {{$result->groupName}} </td>
                                                 
                                                      <td>
                                                         {!! Carbon\Carbon::parse($result->created_at)->format('Y-m-d'); !!}
                                                     </td>
                                                     
                                                     <td> 
-                                                        <a href="{{ route('category.edit',$result->id)}}">
+                                                       <!--  <a href="{{ route('contactGroup.edit',$result->id)}}">
                                                             <i class="fa fa-edit" title="edit"></i> 
-                                                        </a>
+                                                        </a> -->
 
-                                                        {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('category.destroy', $result->id))) !!}
+                                                        {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('contactGroup.destroy', $result->id))) !!}
                                                         <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$result->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button>
                                                         
                                                          {!! Form::close() !!}
@@ -96,7 +105,7 @@
                                             
                                         </tbody>
                                     </table>
-                                     <div class="center" align="center">  {!! $categories->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
+                                     <div class="center" align="center">  {!! $contactGroup->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->

@@ -56,7 +56,7 @@
           {!! Form::submit(' Save ', ['class'=>'btn  btn-primary text-white','id'=>'saveBtn']) !!}
 
 
-           <a href="{{route('category')}}">
+           <a href="{{route('contact')}}">
 {!! Form::button('Back', ['class'=>'btn btn-warning text-white']) !!} </a>
         </div>
     </div>

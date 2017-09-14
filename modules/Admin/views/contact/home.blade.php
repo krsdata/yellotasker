@@ -23,8 +23,8 @@
                                     </div>
                                      <div class="col-md-2 pull-right">
                                             <div style="width: 150px;" class="input-group"> 
-                                                <a href="#">
-                                                    <button onclick="createGroup('{{url("admin/createGroup")}}')" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Contact Group</button> 
+                                                <a href="{{ route('contact.create')}}">
+                                                    <button  class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Contact</button> 
                                                 </a>
                                             </div>
                                         </div> 

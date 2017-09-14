@@ -444,39 +444,56 @@ function checkAll(ele) {
 
 
 function createGroup(url,action) {
+    var createGroup=0;
     var name ='';
      try {
         var checkValues = $('input[name=checkAll]:checked').map(function()
             {
                 return $(this).val();
             }).get(); 
-           if(checkValues.length==0){
+        //alert(action);
+         if(checkValues.length==0){
              $('#error_msg').html('Please select contact to create group').css('color','red');
              $('#csave').hide();
              return false;
            }else{
                 if(action=='save'){
-                   name =  ($('#contact_group').val()).replace(/^\s+|\s+$/gm,'');;
-                    if(checkValues.length==0){
-                        $('#error_msg').html('Please select contact to create group').css('color','red');
-                         $('#csave').hide();
-                         return false;
+                   name =  ($('#contact_group').val()).replace(/^\s+|\s+$/gm,'');
+                   if(name.length==0){
+                        $('#error_msg').html('Please enter group name.').css('color','red');
+                        return false;
                      }else{
                         $('#error_msg').html('');
                         $('#csave').show();
+                        createGroup =1;
                      }
+               }else{
+                     $('#error_msg').html('');
+                        $('#csave').show();
                } 
            }  
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                data: { ids: checkValues,name:name },
-                 dataType: "json",
-                success:function(data){
-                    console.log(data);
-                }
-            });
+            
+            if(createGroup==1){
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    data: { ids: checkValues,groupName:name },
+                     dataType: "json",
+                    success:function(data){
+                         if(data.status==0){
+                            $('#error_msg').html(data.message).css('color','red');
+                            return false;
+                         }else{
+                             $('#responsive').modal('hide');
+                             bootbox.alert('Group name created successfully');
+                         }
+                        
+                    }
+                }); 
+            }else{
+                $('#responsive').modal('hide');
+            }
+           
 
 
 

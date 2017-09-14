@@ -27,6 +27,8 @@ use Illuminate\Http\Dispatcher;
 use App\Helpers\Helper;
 use Modules\Admin\Models\Roles; 
 use Modules\Admin\Models\Category;
+use Modules\Admin\Models\Contact; 
+use Modules\Admin\Models\ContactGroup;
  
 
 /**
@@ -43,14 +45,13 @@ class ContactGroupController extends Controller {
      * @return \Illuminate\View\View
      */
     public function __construct() { 
-        $this->middleware('admin');
-        View::share('viewPage', 'contactGroup');
-        View::share('sub_page_title', 'Contact Group');
+         $this->middleware('admin');
+        View::share('viewPage', 'Contact');
+        View::share('sub_page_title', 'Contact');
         View::share('helper',new Helper);
         View::share('heading','Contact Group');
-        View::share('route_url',route('contactGroup'));
-
-        $this->record_per_page = Config::get('app.record_per_page');
+        View::share('route_url',route('contact')); 
+        $this->record_per_page = Config::get('app.record_per_page'); 
     }
 
    
@@ -58,16 +59,16 @@ class ContactGroupController extends Controller {
      * Dashboard
      * */
 
-    public function index(Category $category, Request $request) 
+    public function index(ContactGroup $contactGroup, Request $request) 
     { 
-        $page_title = 'Category';
-        $sub_page_title = 'Group Category';
-        $page_action = 'View Group Category'; 
+        $page_title = 'Contact';
+        $sub_page_title = 'contactGroup';
+        $page_action = 'View contactGroup'; 
 
 
         if ($request->ajax()) {
             $id = $request->get('id'); 
-            $category = Category::find($id); 
+            $category = ContactGroup::find($id); 
             $category->status = $s;
             $category->save();
             echo $s;
@@ -81,19 +82,19 @@ class ContactGroupController extends Controller {
 
             $search = isset($search) ? Input::get('search') : '';
                
-            $categories = Category::where(function($query) use($search,$status) {
+            $contactGroup = ContactGroup::where(function($query) use($search,$status) {
                         if (!empty($search)) {
-                            $query->Where('category_group_name', 'LIKE', "%$search%")
-                                    ->OrWhere('category_name', 'LIKE', "%$search%");
+                            $query->Where('groupName', 'LIKE', "%$search%")
+                                    ->OrWhere('name', 'LIKE', "%$search%")
+                                    ->OrWhere('email', 'LIKE', "%$search%");
                         }
                         
-                    })->where('parent_id',0)->Paginate($this->record_per_page);
+                    })->Paginate($this->record_per_page);
         } else {
-            $categories = Category::where('parent_id',0)->Paginate($this->record_per_page);
+            $contactGroup = ContactGroup::Paginate($this->record_per_page);
         }
-         
         
-        return view('packages::contact.index', compact('result_set','categories','data', 'page_title', 'page_action','sub_page_title'));
+        return view('packages::contactGroup.index', compact('contactGroup','data', 'page_title', 'page_action','sub_page_title'));
     }
 
     /*

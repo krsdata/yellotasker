@@ -26,6 +26,7 @@ use Illuminate\Http\Dispatcher;
 use App\Helpers\Helper;
 use Modules\Admin\Models\Contact; 
 use Modules\Admin\Models\Category;
+use Modules\Admin\Models\ContactGroup;
 use Response; 
 
 /**
@@ -86,7 +87,7 @@ class ContactController extends Controller {
                                       ->OrWhere('phone', 'LIKE', "%$search%");
                         }
                         
-                    })>Paginate($this->record_per_page);
+                    })->Paginate($this->record_per_page);
         } else {
             $contacts = Contact::Paginate($this->record_per_page);
         }
@@ -115,6 +116,39 @@ class ContactController extends Controller {
 
     public function createGroup(Request $request)
     {
+        $users = $request->get('ids');
+        $validator = Validator::make($request->all(), [
+                'groupName' => 'required|unique:contact_groups,groupName' 
+            ]); 
+
+        if ($validator->fails()) {
+            $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }
+
+
+
+        foreach ($users as $key => $value) {
+            $contact        = Contact::find($value);
+            $cg             = new ContactGroup;
+            $cg->groupName  = $request->get('groupName');
+            $cg->contactId  = $value;
+            $cg->email      = $contact->email;
+            $cg->name       = $contact->name;
+            $cg->save();
+        }
+
+        return $cg;
+
         $contact = Contact::whereIn('id',$request->get('ids'))->get();
         return $contact;
     }
