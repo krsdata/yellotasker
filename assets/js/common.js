@@ -493,9 +493,6 @@ function createGroup(url,action) {
             }else{
                 $('#responsive').modal('hide');
             }
-           
-
-
 
 
      } catch (e) {
