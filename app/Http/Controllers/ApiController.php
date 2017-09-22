@@ -233,7 +233,7 @@ class ApiController extends Controller
          
         $user = JWTAuth::toUser($token); 
         
-        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $input,'token'=>$token ]);
+        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
 
     } 
    /* @method : get user details
