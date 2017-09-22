@@ -128,6 +128,7 @@ class ApiController extends Controller
                             
             return Response::json(array(
                 'status' => 0,
+                'code'=>500,
                 'message' => $error_msg[0],
                 'data'  =>  ''
                 )
@@ -145,12 +146,13 @@ class ApiController extends Controller
                 'first_name'=> $request->input('first_name')
                 ];
 
-        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
+        //$verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
        
         return response()->json(
                             [ 
                                 "status"=>1,
-                                "message"=>"Thank you for registration. Please verify your email.",
+                                "code"=>200,
+                                "message"=>"Thank you for registration",
                                 'data'=>$request->except('password')
                             ]
                         );
@@ -230,16 +232,8 @@ class ApiController extends Controller
         }
          
         $user = JWTAuth::toUser($token); 
-
-        $data['user_id']        = $user->id; 
-        $input['first_name']    = $request->input('first_name');
-        $input['last_name']     = $request->input('last_name'); 
-        $input['email']         = $request->input('email'); 
-        $input['password']      = Hash::make($request->input('password'));
-        $input['role_type']     = ($request->input('role_type'))?$request->input('role_type'):'';
-        $data['token']          = $token;
-
-        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $data ]);
+        
+        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $input,'token'=>$token ]);
 
     } 
    /* @method : get user details
@@ -251,19 +245,12 @@ class ApiController extends Controller
     public function getUserDetails(Request $request)
     {
         $user = JWTAuth::toUser($request->input('token'));
-        $data = [];
-        $data['userId']         = $user->id;
-        $data['name']           = $user->name;
-        $data['email']          = $user->email;
-        $data['roleType']       = ($user->role_type==1)?"professor":"student";
-       
-         
-
+        
         return response()->json(
                 [ "status"=>1,
                   "code"=>200,
-                  "message"=>"Record found successfully." ,
-                  "data" => $data 
+                  "message"=>"success." ,
+                  "data" => $user 
                 ]
             ); 
     }
