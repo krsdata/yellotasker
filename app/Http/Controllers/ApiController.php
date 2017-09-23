@@ -113,6 +113,7 @@ class ApiController extends Controller
             $u = $this->updateProfile($request,$user);
             return $u;
         } 
+         
 
         //Server side valiation
         $validator = Validator::make($request->all(), [
