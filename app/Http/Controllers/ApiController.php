@@ -32,7 +32,7 @@ class ApiController extends Controller
         if ($request->header('Content-Type') != "application/json")  {
             $request->headers->set('Content-Type', 'application/json');
         }
-        $user_id =  $request->input('userID');
+        $user_id =  $request->input('user_id');
        
     } 
 
@@ -113,7 +113,7 @@ class ApiController extends Controller
             $u = $this->updateProfile($request,$user);
             return $u;
         } 
-         
+
 
         //Server side valiation
         $validator = Validator::make($request->all(), [

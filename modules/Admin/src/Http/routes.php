@@ -1,9 +1,5 @@
 <?php
-    
-    Route::get('abc',function(){
-        echo "test";
-    });
-
+   
     Route::get('admin/login','Modules\Admin\Http\Controllers\AuthController@index');
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');
@@ -126,6 +122,23 @@
                 'store' => 'contact.store',
                 'index' => 'contact',
                 'create' => 'contact.create',
+            ]
+                ]
+        );  
+        // programs
+         Route::bind('program', function($value, $route) {
+            return Modules\Admin\Models\Program::find($value);
+        });
+ 
+        Route::resource('admin/program', 'Modules\Admin\Http\Controllers\ProgramController', [
+            'names' => [
+                'edit' => 'program.edit',
+                'show' => 'program.show',
+                'destroy' => 'program.destroy',
+                'update' => 'program.update',
+                'store' => 'program.store',
+                'index' => 'program',
+                'create' => 'program.create',
             ]
                 ]
         );  
