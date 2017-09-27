@@ -34,7 +34,7 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'email_verification','ApiController@emailVerification');   
         Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword');  
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
-        
+
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
            Route::match(['post','get'],'get_condidate_record','APIController@getCondidateRecord'); 
@@ -50,7 +50,19 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'post_task_create',
                 'uses' => 'TaskController@createTask'
                 ]
-            );      
+            );  
+
+            Route::match(['post','get'],'postTask/delete/{id}',[
+                'as' => 'post_task_delete',
+                'uses' => 'TaskController@deletePostTask'
+                ]
+            );  
+
+            Route::match(['post','get'],'postTask/deleteByUser/{id}',[
+                'as' => 'post_task_delete_buyser',
+                'uses' => 'TaskController@deletePostTaskByUser'
+                ]
+            );    
 
             Route::match(['get'],'getUserTasks/{user_id}',[
                 'as' => 'get_user_tasks',

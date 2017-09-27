@@ -234,4 +234,52 @@ class TaskController extends Controller {
                 'data'    => $data
                 ];
     }
+       // delete Blog
+    public function deletePostTask(Request $request,$id=null)
+    {
+        Tasks::where('id',$id)->delete();
+
+        return  response()->json([ 
+                    "status"=>1,
+                    "code"=> 200,
+                    "message"=>"Post deleted successfully.",
+                    'data' => []
+                   ]
+                );
+    }
+    public function deletePostTaskByUser(Request $request, $id=null)
+    {
+        
+        $user_id = $request->get('user_id');
+        
+        $validator = Validator::make($request->all(), [
+           'user_id' => 'required'
+        ]);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }  
+
+
+        Tasks::where('id',$id)->where('user_id',$user_id)->delete();
+
+        return  response()->json([ 
+                    "status"=>1,
+                    "code"=> 200,
+                    "message"=>"Post deleted successfully.",
+                    'data' => []
+                   ]
+                );
+    }
 }
