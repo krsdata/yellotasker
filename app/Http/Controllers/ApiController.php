@@ -15,6 +15,7 @@ use Auth,Crypt,okie,Hash,Lang,JWTAuth,Input,Closure,URL;
 use JWTExceptionTokenInvalidException; 
 use App\Helpers\Helper as Helper;
 use App\User; 
+use App\Model\Tasks;
 
 class ApiController extends Controller
 {
