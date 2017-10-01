@@ -40,7 +40,7 @@ class Program extends Model {
      *
      * @var array
      */
-    protected $fillable = ['program_name','start_date','end_date','description','target_users'];  // All field of user table here    
+    protected $fillable = ['program_name','start_date','end_date','description','target_users','complete_task','reward_point','description'];  // All field of user table here    
 
     
     

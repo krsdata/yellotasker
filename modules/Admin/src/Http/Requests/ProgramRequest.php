@@ -34,8 +34,6 @@ class ProgramRequest  extends Request {
                             'start_date'    => "required" , 
                             'end_date'      => "required" , 
                         ];
-                            
-                        ];
                     }
                 }
                 default:break;

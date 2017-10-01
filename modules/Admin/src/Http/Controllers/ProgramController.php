@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Modules\Admin\Http\Requests\ContactRequest;
 use Modules\Admin\Models\User; 
 use Input;
 use Validator;
@@ -29,7 +28,7 @@ use Modules\Admin\Models\Category;
 use Modules\Admin\Models\ContactGroup;
 use Modules\Admin\Models\Program;
 use Response; 
-
+use Modules\Admin\Http\Requests\ProgramRequest;
 /**
  * Class AdminController
  */
@@ -99,75 +98,34 @@ class ProgramController extends Controller {
      * create Group method
      * */
 
-    public function create(Contact $contact) 
+    public function create(Program $program) 
     {
-        
-        $page_title = 'Contact';
-        $page_action = 'Create Contact';
-        $category  = Category::all();
-        $sub_category_name  = Category::all();
- 
-        $html = '';
-        $categories = '';
+        $page_title     = 'Program';
+        $page_action    = 'Create Program';
+        $program       = Program::all(); 
+        $status         = [
+                            'last_15_days'=>'inactive from last 15 days',
+                            'last_30_days'=>'inactive from last 30 days',
+                            'last_45_days'=>'inactive from last 45 days'
+                        ];
 
-        return view('packages::contact.create', compact('categories', 'html','category','sub_category_name', 'page_title', 'page_action'));
+        return view('packages::program.create', compact( 'program','status','page_title', 'page_action'));
     }
 
-    public function createGroup(Request $request)
-    {
-        $users = $request->get('ids');
-        $validator = Validator::make($request->all(), [
-                'groupName' => 'required|unique:contact_groups,groupName' 
-            ]); 
-
-        if ($validator->fails()) {
-            $error_msg  =   [];
-            foreach ( $validator->messages()->all() as $key => $value) {
-                        array_push($error_msg, $value);     
-                    }
-                            
-            return Response::json(array(
-                'status' => 0,
-                'message' => $error_msg[0],
-                'data'  =>  ''
-                )
-            );
-        }
-
-
-
-        foreach ($users as $key => $value) {
-            $contact        = Contact::find($value);
-            $cg             = new ContactGroup;
-            $cg->groupName  = $request->get('groupName');
-            $cg->contactId  = $value;
-            $cg->email      = $contact->email;
-            $cg->name       = $contact->name;
-            $cg->save();
-        }
-
-        return $cg;
-
-        $contact = Contact::whereIn('id',$request->get('ids'))->get();
-        return $contact;
-    }
+    
 
     /*
      * Save Group method
      * */
 
-    public function store(ContactRequest $request, Contact $contact) 
+    public function store(ProgramRequest $request, Program $program) 
     {   
-        $contact->name     =   $request->get('name');
-        $contact->phone    =   $request->get('phone');
-        $contact->email    =   $request->get('email');
-        $contact->address  =   $request->get('address'); 
-        
-        $contact->save();   
+        $program->fill(Input::all()); 
+        $program->save();   
          
-        return Redirect::to(route('contact'))
-                            ->with('flash_alert_notice', 'New contact  successfully created!');
-        }
+        return Redirect::to(route('program'))
+                            ->with('flash_alert_notice', 'New program  successfully created!');
+    }
 
     /*
      * Edit Group method
@@ -175,38 +133,40 @@ class ProgramController extends Controller {
      * object : $category
      * */
 
-    public function edit(Contact $contact) {
-        $page_title     = 'contact';
-        $page_action    = 'Edit contact'; 
-        return view('packages::contact.edit', compact( 'url','contact', 'page_title', 'page_action'));
+    public function edit(Program $program) {
+        $page_title     = 'Program';
+        $page_action    = 'Edit Program'; 
+        $status         = [
+                            'last_15_days'=>'inactive from last 15 days',
+                            'last_30_days'=>'inactive from last 30 days',
+                            'last_45_days'=>'inactive from last 45 days'
+                        ];
+        return view('packages::program.edit', compact( 'url','program','status', 'page_title', 'page_action'));
     }
 
-    public function update(Request $request, Contact $contact) {
+    public function update(Request $request, Program $program) {
         
-        $request = $request->except('_method','_token');
-        $contact = Contact::find($contact->id); 
-        foreach ($request as $key => $value) {
-            $contact->$key = $value;
-        }
-        $contact->save();
-        return Redirect::to(route('contact'))
-                        ->with('flash_alert_notice', 'Contact  successfully updated.');
+        $program->fill(Input::all()); 
+        $program->save();  
+        return Redirect::to(route('program'))
+                        ->with('flash_alert_notice', 'program  successfully updated.');
     }
     /*
      *Delete User
      * @param ID
      * 
      */
-    public function destroy(ontact $contact) { 
-        Contact::where('id',$id)->delete(); 
-        return Redirect::to(route('contact'))
-                        ->with('flash_alert_notice', 'contact  successfully deleted.');
+    public function destroy(Program $program) { 
+        
+         Program::where('id',$program->id)->delete();
+        return Redirect::to(route('program'))
+                        ->with('flash_alert_notice', 'program  successfully deleted.');
     }
 
     public function show($id) {
         
-        return Redirect::to('admin/contact');
+        return Redirect::to('admin/program');
 
-            }
+    }
 
 }
