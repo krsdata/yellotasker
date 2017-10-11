@@ -5,7 +5,7 @@ var Login = function() {
 
     var handleLogin = function() {
 
-        $('.user-form').validate({
+        $('.user-form, .contact-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -19,10 +19,7 @@ var Login = function() {
                 password: {
                     required: true
                 },
-                phone: {
-                    required: true,
-                    number: true
-                },
+                
                  
                 category_group_name:{
                     required:true
@@ -37,6 +34,9 @@ var Login = function() {
                     required:true
                 },
                 name:{
+                    required:true
+                },
+                first_name:{
                     required:true
                 }
             },

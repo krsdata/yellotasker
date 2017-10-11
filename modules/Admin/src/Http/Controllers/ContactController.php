@@ -28,6 +28,8 @@ use Modules\Admin\Models\Contact;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\ContactGroup;
 use Response; 
+use Maatwebsite\Excel\Facades\Excel as Excel;
+use Exporter;
 
 /**
  * Class AdminController
@@ -72,7 +74,7 @@ class ContactController extends Controller {
             echo $s;
             exit();
         }
-
+ 
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
@@ -135,7 +137,10 @@ class ContactController extends Controller {
             );
         }
 
-
+        $cgObj             = new ContactGroup;
+        $cgObj->groupName  = $request->get('groupName');
+        $cgObj->parent_id  = 0;
+        $cgObj->save();
 
         foreach ($users as $key => $value) {
             $contact        = Contact::find($value);
@@ -144,6 +149,7 @@ class ContactController extends Controller {
             $cg->contactId  = $value;
             $cg->email      = $contact->email;
             $cg->name       = $contact->name;
+            $cg->parent_id  = $cgObj->id;
             $cg->save();
         }
 
@@ -159,16 +165,68 @@ class ContactController extends Controller {
 
     public function store(ContactRequest $request, Contact $contact) 
     {   
-        $contact->name     =   $request->get('name');
-        $contact->phone    =   $request->get('phone');
-        $contact->email    =   $request->get('email');
-        $contact->address  =   $request->get('address'); 
-        
+        $table_cname = \Schema::getColumnListing('contacts');
+        $except = ['id','create_at','updated_at'];
+        $input = $request->all();
+
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           }
+
+           if(isset($input[$value])) {
+               $contact->$value = $request->get($value); 
+           } 
+        }
         $contact->save();   
          
         return Redirect::to(route('contact'))
                             ->with('flash_alert_notice', 'New contact  successfully created!');
-        }
+    }
+    
+    public function uploadFile($file)
+    {
+       
+        //Display File Name
+        $fileName = $file->getClientOriginalName();
+
+        //Display File Extension
+        $ext = $file->getClientOriginalExtension();
+        //Display File Real Path
+        $realPath = $file->getRealPath(); 
+        //Display File Mime Type
+        $mime = $file->getMimeType(); 
+
+        $file_name = time().'.'.$ext;
+        $path = storage_path('csv');
+
+        chmod($path ,0777);
+        $file->move($path,$file_name);
+        chmod($path.'/'.$file_name ,0777);
+        return url::to(asset($path.'/'.$file_name));
+    }
+
+    public function contactImport(Request $request)
+    {
+        $file = $request->file('importContact');
+        $ext = $file->getClientOriginalExtension();
+        $upload = $this->uploadFile($file);
+        return $upload;
+        \Maatwebsite\Excel\Facades\Excel::load($upload, function($reader) {
+
+            // Getting all results
+            $results = $reader->get();
+
+            // ->all() is a wrapper for ->get() and will work the same
+            $results = $reader->all();
+
+            dd( $results);
+        });
+
+       
+       
+    }
 
     /*
      * Edit Group method
@@ -198,8 +256,8 @@ class ContactController extends Controller {
      * @param ID
      * 
      */
-    public function destroy(ontact $contact) { 
-        Contact::where('id',$id)->delete(); 
+    public function destroy(Contact $contact) { 
+        Contact::where('id',$contact->id)->delete(); 
         return Redirect::to(route('contact'))
                         ->with('flash_alert_notice', 'contact  successfully deleted.');
     }

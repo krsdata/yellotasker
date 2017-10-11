@@ -16,7 +16,7 @@
 										    </div> 
 
 										    <div class="form-group {{ $errors->first('phone', ' has-error') }}">
-										        <label class="control-label col-md-3">Phone <span class="required"> *  </span></label>
+										        <label class="control-label col-md-3">Phone  </label>
 										        <div class="col-md-4"> 
 										            {!! Form::text('phone',null, ['class' => 'form-control','data-required'=>1,'min'=>10])  !!} 
 										            
@@ -91,16 +91,25 @@
  
                                             
                                         </div>
-                                        <div class="form-actions">
-                                            <div class="row">
-                                                <div class="col-md-offset-3 col-md-9">
-                                                  {!! Form::submit(' Save ', ['class'=>'btn  btn-primary text-white','id'=>'saveBtn']) !!}
+<div class="form-actions">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-9">
+           <div class="col-md-2">
+               <button type="submit" class="btn col-md-12 blue mt-ladda-btn ladda-button" data-style="slide-up" id="saveBtn"> 
+                        <span class="ladda-label"> Save </span>
+                      <span class="ladda-spinner"></span>
+                      <div class="ladda-progress" style="width: 0px;">
+                      </div>
+                    </button>
+                </div>
+            <div class="col-md-2">    
 
-                                                   <a href="{{route('user')}}">
-            {!! Form::button('Back', ['class'=>'btn btn-warning text-white']) !!} </a>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <a href="{{route('user')}}">
+                {!! Form::button('Back', ['class'=>'btn btn-warning col-md-12 text-white']) !!} </a>
+            </div>            
+        </div>
+    </div>
+</div>
 
 
     <div class="form-body">

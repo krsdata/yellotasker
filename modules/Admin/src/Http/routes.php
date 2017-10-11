@@ -144,7 +144,7 @@
         );  
 
          Route::get('admin/createGroup', 'Modules\Admin\Http\Controllers\ContactController@createGroup');  
-
+         Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');  
 
 
          Route::bind('contacts', function($value, $route) {

@@ -57,6 +57,7 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
+                                                 <th> Sno. </th>
                                                 <th> Name </th>
                                                 <th> Email </th>
                                                 <th> Phone </th>
@@ -69,6 +70,7 @@
                                         <tbody>
                                         @foreach($users as $key => $result)
                                             <tr>
+                                                 <td> {{++$key}} </td>
                                                 <td> {{$result->name}} </td>
                                                 <td> {{$result->email}} </td>
                                                 <td> {{$result->phone}} </td>

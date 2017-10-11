@@ -518,4 +518,28 @@ $(document).ready(function(){
         });
 
 });
+
+$(document).ready(function(){
+    var action = "admin/contact/import";
+    
  
+        $("#import_contact").on('submit',(function(e){
+            e.preventDefault();
+            $.ajax({
+            url: url+'/'+action,
+            type: "POST",
+            data:  new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function(data){
+            
+              console.log(data);
+            },
+            error: function(){}             
+            });
+        })); 
+
+
+});
+

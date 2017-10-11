@@ -75,6 +75,10 @@ class ContactGroupController extends Controller {
             exit();
         }
 
+        $cg = 
+
+        
+ 
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
@@ -82,19 +86,29 @@ class ContactGroupController extends Controller {
 
             $search = isset($search) ? Input::get('search') : '';
                
-            $contactGroup = ContactGroup::where(function($query) use($search,$status) {
-                        if (!empty($search)) {
-                            $query->Where('groupName', 'LIKE', "%$search%")
-                                    ->OrWhere('name', 'LIKE', "%$search%")
-                                    ->OrWhere('email', 'LIKE', "%$search%");
-                        }
-                        
+            $contactGroup = ContactGroup::with(['contactGroup' => function ($query) {
+                                $query->with('contact');
+                            }])->where(function($query) use($search,$status) {
+
+                                if (!empty($search)) {
+                                    $query->Where('groupName', 'LIKE', "%$search%")
+                                            ->OrWhere('name', 'LIKE', "%$search%")
+                                            ->OrWhere('email', 'LIKE', "%$search%");
+                                }
+                            
                     })->Paginate($this->record_per_page);
         } else {
-            $contactGroup = ContactGroup::Paginate($this->record_per_page);
-        }
-        
-        return view('packages::contactGroup.index', compact('contactGroup','data', 'page_title', 'page_action','sub_page_title'));
+           
+           $contactGroup =  ContactGroup::with(['contactGroup' => function ($query) {
+                $query->with('contact');
+            }])->where('parent_id',0)->Paginate($this->record_per_page);
+
+        } 
+
+        $contactGroupPag =  ContactGroup::where('parent_id',0)->Paginate($this->record_per_page);
+
+
+        return view('packages::contactGroup.index', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));
     }
 
     /*
@@ -204,21 +218,21 @@ class ContactGroupController extends Controller {
 
 
         return Redirect::to(route('contact'))
-                        ->with('flash_alert_notice', 'Group Category  successfully updated.');
+                        ->with('flash_alert_notice', 'Contact Group  successfully updated.');
     }
     /*
      *Delete User
      * @param ID
      * 
      */
-    public function destroy(Category $category) {
+    public function destroy(ContactGroup $cg) {
         
-        $d = Category::where('id',$category->id)->delete(); 
-        return Redirect::to(route('category'))
-                        ->with('flash_alert_notice', 'Group Category  successfully deleted.');
+        $d = ContactGroup::where('id',$cg->id)->delete(); 
+        return Redirect::to(route('contactGroup'))
+                        ->with('flash_alert_notice', 'Contact Group  successfully deleted.');
     }
 
-    public function show(Category $category) {
+    public function show(ContactGroup $cg) {
         
     }
 

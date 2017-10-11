@@ -38,7 +38,7 @@ class UserRequest extends Request {
                         return [
                             'email'   => "required|email" ,  
                             'name' => 'required|min:3',
-                            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|numeric'
+                            'phone' => 'regex:/^([0-9\s\-\+\(\)]*)$/|numeric'
                            // 'role'  => 'required'
                         ];
                     }

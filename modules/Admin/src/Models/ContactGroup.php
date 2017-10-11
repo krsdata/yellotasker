@@ -39,6 +39,18 @@ class ContactGroup extends Eloquent {
      *
      * @var array
      */
+
+   
+
+    public function contact()
+    {
+        return $this->belongsTo('Modules\Admin\Models\Contact','contactId','id');
+    }
+
+    public function contactGroup()
+    {
+        return $this->hasMany('Modules\Admin\Models\ContactGroup','parent_id','id');
+    }
     
  
   
