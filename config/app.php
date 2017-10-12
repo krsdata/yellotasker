@@ -169,7 +169,6 @@ return [
        Way\Generators\GeneratorsServiceProvider::class,
        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class, 
        Maatwebsite\Excel\ExcelServiceProvider::class,
-       Cyberduck\LaravelExcel\ExcelServiceProvider::class,
     ],
 
     /*
