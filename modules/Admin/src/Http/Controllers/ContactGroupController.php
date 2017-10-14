@@ -29,8 +29,7 @@ use Modules\Admin\Models\Roles;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\Contact; 
 use Modules\Admin\Models\ContactGroup;
-use PDF;
-use Excel;
+use PDF; 
  
 
 /**
@@ -103,9 +102,8 @@ class ContactGroupController extends Controller {
         } 
 
         $contactGroupPag =  ContactGroup::where('parent_id',0)->Paginate(10);
-
-
         $export = $request->get('export');
+
         if($export=='pdf')
         {
             $contactGroup =  ContactGroup::with(['contactGroup' => function ($query) {
