@@ -101,4 +101,10 @@
   'ionicons' => array(
     'normal' => DOMPDF_FONT_DIR . 'b2608a1d75a789d3034f290947ea1156',
   ),
+  'open sans' => array(
+    'normal' => DOMPDF_FONT_DIR . '4d35c75111be887aa6bb6681d7ff3444',
+  ),
+  'simple-line-icons' => array(
+    'normal' => DOMPDF_FONT_DIR . '355b046d28075fd3dfb45be72843b9f6',
+  ),
 ) ?>

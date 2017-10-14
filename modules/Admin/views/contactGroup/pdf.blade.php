@@ -1,13 +1,21 @@
-            <!-- END SIDEBAR -->
-            <!-- BEGIN CONTENT -->
+
+            <style type="text/css">
+                table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+
+                    table, th, td {
+                        border: 1px solid black;
+                        padding-left: 5px;
+                    }
+            </style>
              <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                     <!-- BEGIN PAGE HEAD-->
-                    
-                    <!-- END PAGE HEAD-->
-                    <!-- BEGIN PAGE BREADCRUMB -->
-                   @include('packages::partials.breadcrumb')
+                    <center><h3>Yellotasker</h3></center>
+                    <!-- END PAGE HEAD--> 
 
                     <!-- END PAGE BREADCRUMB -->
                     <!-- BEGIN PAGE BASE CONTENT -->
@@ -18,59 +26,12 @@
                             <div class="portlet-title">
                                 <div class="caption">
                                     <i class="icon-settings font-red"></i>
-                                    <span class="caption-subject font-red sbold uppercase">{{ $heading }}</span>
+                                    <span class="caption-subject font-red sbold uppercase">{{ $heading }} List</span>
                                 </div>
-                                <div class="col-md-2 pull-right">
-                                        <div style="" class="input-group"> 
-                                            <a href="{{ route('contact.create')}}">
-                                                <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Contact</button> 
-                                            </a>
-                                        </div>
-
-                                </div> 
-                                <div class="col-md-2 pull-right">
-                                    <div style="" class="input-group"> 
-                                        <a href="{{ route('contact')}}">
-                                            <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Create Group</button> 
-                                        </a>
-                                    </div> 
-                                </div>
-                                 <div class="col-md-3 pull-right">
-                                    <div style="" class="input-group"> 
-                                        <a href="{{url::to('admin/contactGroup?export=pdf')}}">
-                                            <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Export Groups to pdf</button> 
-                                        </a>
-                                    </div> 
-                                </div>  
+                                <hr>
                             </div>
                                   
-                            @if(Session::has('flash_alert_notice'))
-                                 <div class="alert alert-success alert-dismissable" style="margin:10px">
-                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                  <i class="icon fa fa-check"></i>  
-                                 {{ Session::get('flash_alert_notice') }} 
-                                 </div>
-                            @endif
-                            <div class="portlet-body">
-                                <div class="table-toolbar">
-                                    <div class="row">
-                                        <form action="{{route('contactGroup')}}" method="get" id="filter_data">
-                                         
-                                            <div class="col-md-3">
-                                                <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="Search by group name" type="text" name="search" id="search" class="form-control" >
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="submit" value="Search" class="btn btn-primary form-control">
-                                            </div>
-                                       
-                                        </form>
-                                        <div class="col-md-2">
-                                             <a href="{{ route('contactGroup') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
-                                        </div>
-                                       
-                                    </div>
-                                </div>  
-                            </div>
+                           
                             <div class="portlet box  portlet-fit bordered"> 
                                 <div class="portlet-body"> 
                                  
@@ -96,8 +57,7 @@
                                                                 <th> Email </th> 
                                                                 <th> Position </th> 
                                                                  <th> Phone </th> 
-                                                                <th>Created date</th> 
-                                                                <th>Action</th> 
+                                                                <th>Created date</th>  
                                                             </tr>
                                                         </thead>
                                                     <tbody>
@@ -112,15 +72,7 @@
                                                                 <td>
                                                                     {!! Carbon\Carbon::parse($contact->created_at)->format('Y-m-d'); !!}
                                                                 </td>
-                                                                <td> 
-                                                                       <!--  <a href="{{ route('contactGroup.edit',$result->id)}}">
-                                                                            <i class="fa fa-edit" title="edit"></i> 
-                                                                        </a> -->
-
-                                                                    {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$contact->id, 'route' => array('contactGroup.destroy', $contact->id))) !!}
-                                                                    <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$contact->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button> 
-                                                                    {!! Form::close()  !!}
-                                                                </td> 
+                                                                
                                                             </tr>
                                                             @endif
                                                            @endforeach 

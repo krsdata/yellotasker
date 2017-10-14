@@ -62,9 +62,9 @@
 
 
         <script src="{{ URL::asset('assets/pages/scripts/ui-buttons.min.js') }}" type="text/javascript"></script>
+        <script src="{{ URL::asset('assets/js/bootstrap-multiselect.js') }}" type="text/javascript"></script>
 
-
-         
+        <script src="{{ URL::asset('assets/js/components-bootstrap-multiselect.min.js') }}" type="text/javascript"></script>
 
         <!-- END THEME LAYOUT SCRIPTS -->
       @if(isset($js_file))

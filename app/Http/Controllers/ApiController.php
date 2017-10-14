@@ -108,13 +108,12 @@ class ApiController extends Controller
         $input['last_name']     = $request->input('last_name'); 
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
-        $input['role_type']      = ($request->input('role_type'))?$request->input('role_type'):'';
+        $input['role_type']     = ($request->input('role_type'))?$request->input('role_type'):'';
          
         if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
             return $u;
         } 
-
 
         //Server side valiation
         $validator = Validator::make($request->all(), [
@@ -127,7 +126,7 @@ class ApiController extends Controller
             foreach ( $validator->messages()->all() as $key => $value) {
                         array_push($error_msg, $value);     
                     }
-                            
+                    
             return Response::json(array(
                 'status' => 0,
                 'code'=>500,

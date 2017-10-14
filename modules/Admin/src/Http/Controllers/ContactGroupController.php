@@ -29,6 +29,8 @@ use Modules\Admin\Models\Roles;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\Contact; 
 use Modules\Admin\Models\ContactGroup;
+use PDF;
+use Excel;
  
 
 /**
@@ -65,7 +67,6 @@ class ContactGroupController extends Controller {
         $sub_page_title = 'contactGroup';
         $page_action = 'View contactGroup'; 
 
-
         if ($request->ajax()) {
             $id = $request->get('id'); 
             $category = ContactGroup::find($id); 
@@ -73,11 +74,7 @@ class ContactGroupController extends Controller {
             $category->save();
             echo $s;
             exit();
-        }
-
-        $cg = 
-
-        
+        } 
  
         // Search by name ,email and group
         $search = Input::get('search');
@@ -101,11 +98,24 @@ class ContactGroupController extends Controller {
            
            $contactGroup =  ContactGroup::with(['contactGroup' => function ($query) {
                 $query->with('contact');
-            }])->where('parent_id',0)->Paginate($this->record_per_page);
+            }])->where('parent_id',0)->orderBy('id','desc')->Paginate(10);
 
         } 
 
-        $contactGroupPag =  ContactGroup::where('parent_id',0)->Paginate($this->record_per_page);
+        $contactGroupPag =  ContactGroup::where('parent_id',0)->Paginate(10);
+
+
+        $export = $request->get('export');
+        if($export=='pdf')
+        {
+            $contactGroup =  ContactGroup::with(['contactGroup' => function ($query) {
+                $query->with('contact')->get();
+
+            }])->where('parent_id',0)->get();
+
+           $pdf = PDF::loadView('packages::contactGroup.pdf', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));
+           return ($pdf->download('contact-group.pdf'));
+        }
 
 
         return view('packages::contactGroup.index', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));

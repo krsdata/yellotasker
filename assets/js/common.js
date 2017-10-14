@@ -443,7 +443,7 @@ function checkAll(ele) {
 
 
 
-function createGroup(url,action) {
+function createGroup(Url,action) {
     var createGroup=0;
     var name ='';
      try {
@@ -475,7 +475,7 @@ function createGroup(url,action) {
             
             if(createGroup==1){
                 $.ajax({
-                    url: url,
+                    url: Url,
                     type: 'get',
                     data: { ids: checkValues,groupName:name },
                      dataType: "json",
@@ -485,7 +485,12 @@ function createGroup(url,action) {
                             return false;
                          }else{
                              $('#responsive').modal('hide');
-                             bootbox.alert('Group name created successfully');
+                             bootbox.alert('Group name created successfully',function(){
+                                 var u =url+'/admin/contactGroup';
+                                 console.log(u);
+                                 window.location.assign(u);
+                             });
+                             
                          }
                         
                     }

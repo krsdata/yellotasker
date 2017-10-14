@@ -19,10 +19,10 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">{{ $heading }}</span>
+                                        <span class="caption-subject font-red sbold uppercase">People Of Contacts</span>
                                     </div>
                                         <div class="col-md-2 pull-right">
-                                            <div style="width: 150px;" class="input-group"> 
+                                            <div class="input-group"> 
                                                 <a href="{{ route('contact.create')}}">
                                                     <button  class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Contact</button> 
                                                 </a>
@@ -30,10 +30,25 @@
                                         </div> 
 
                                          <div class="col-md-2 pull-right">
-                                            <div style="width: 150px;" class="input-group">  
+                                            <div   class="input-group">  
                                              <a class="btn  btn-success" data-toggle="modal" href="#responsive2"><i class="fa fa-plus-circle"></i>   Import Contacts </a> 
                                             </div>
                                         </div>  
+                                        
+                                         <div class="col-md-2 pull-right">
+                                            <div   class="input-group">  
+                                              <a onclick="createGroup('{{url("admin/createGroup")}}')" class="btn  btn-success  btn-outline sbold" data-toggle="modal" href="#responsive"> 
+                                                <i class="fa fa-plus-circle"></i> 
+                                            Create Group </a>  
+                                            </div>
+                                        </div>  
+                                          <div class="col-md-3 pull-right">
+                                            <div   class="input-group">  
+                                             <a class="btn  btn-success" data-toggle="modal" href="{{url('admin/contact?export=pdf')}}"><i class="fa fa-plus-circle"></i> Export Contacts to pdf </a> 
+                                            </div>
+                                        </div>  
+
+                                      
                                      
                                 </div>
                                   
@@ -105,10 +120,7 @@
                                             
                                         </tbody>
                                     </table>
-                                    <span>
-                                    <a onclick="createGroup('{{url("admin/createGroup")}}')" class="btn red btn-outline sbold" data-toggle="modal" href="#responsive"> 
-                                        <i class="fa fa-plus-circle"></i> 
-                                    Add Contact Group </a>  </span>
+                                   
 
                                      <div class="center" align="center">  {!! $contacts->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
@@ -129,7 +141,7 @@
  <div id="responsive" class="modal fade" tabindex="-1" data-width="300">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #efeb10 !important">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">Contact Group</h4>
             </div>
@@ -156,7 +168,7 @@
  <div id="responsive2" class="modal fade" tabindex="-1" data-width="300">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #efeb10 !important">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">Import Contact Name</h4>
             </div>

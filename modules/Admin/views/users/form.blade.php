@@ -6,14 +6,23 @@
                                             <div class="alert alert-success display-hide">
                                                 <button class="close" data-close="alert"></button> Your form validation is successful! </div>
  
-										 	<div class="form-group {{ $errors->first('name', ' has-error') }}">
-										        <label class="control-label col-md-3">Name <span class="required"> * </span></label>
+										 	<div class="form-group {{ $errors->first('first_name', ' has-error') }}">
+										        <label class="control-label col-md-3">First Name <span class="required"> * </span></label>
 										        <div class="col-md-4"> 
-										            {!! Form::text('name',null, ['class' => 'form-control','data-required'=>1])  !!} 
+										            {!! Form::text('first_name',null, ['class' => 'form-control','data-required'=>1])  !!} 
 										            
-										            <span class="help-block">{{ $errors->first('name', ':message') }}</span>
+										            <span class="help-block">{{ $errors->first('first_name', ':message') }}</span>
 										        </div>
 										    </div> 
+
+                                            <div class="form-group {{ $errors->first('last_name', ' has-error') }}">
+                                                <label class="control-label col-md-3">Last Name <span class="required"> * </span></label>
+                                                <div class="col-md-4"> 
+                                                    {!! Form::text('first_name',null, ['class' => 'form-control','data-required'=>1])  !!} 
+                                                    
+                                                    <span class="help-block">{{ $errors->first('last_name', ':message') }}</span>
+                                                </div>
+                                            </div>  
 
 										    <div class="form-group {{ $errors->first('phone', ' has-error') }}">
 										        <label class="control-label col-md-3">Phone  </label>

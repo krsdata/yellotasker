@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b63904025e80930e02c194872b6a4c4",
-    "content-hash": "7722730357bc9384000dbaf23f4977e9",
+    "hash": "90d0967df4db539aeca5077aa0b597e4",
+    "content-hash": "90e9b83f4c8c6b2a43569079646e8b27",
     "packages": [
         {
             "name": "atayahmet/laravel-nestable",

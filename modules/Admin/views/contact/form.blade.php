@@ -9,13 +9,12 @@
 
       
             <div class="form-group {{ $errors->first('title', ' has-error') }}">
-                <label class="control-label col-md-3">Select Group Category
+                <label class="control-label col-md-3">Select Title
                     <span class="required" aria-required="true">  </span>
                 </label>
                 <div class="col-md-4"> 
                 <select name="title" class="form-control">
-                   <option value="">Select Title...</option> 
-                    <option value="Mr." {{ (isset($contact->title) && $contact->title=="Mr.")?"selected":'' }}> 
+                   <option value="Mr." {{ (isset($contact->title) && $contact->title=="Mr.")?"selected":'' }}> 
                         Mr. 
                     </option>         
                     <option value="Mrs." {{ (isset($contact->title) && $contact->title=="Mrs.")?"selected":'' }} > 
@@ -79,6 +78,33 @@
         </div> 
     </div>
 
+     
+
+     <div class="form-group {{ $errors->first('categoryName', ' has-error') }}">
+        <label class="control-label col-md-3">Select Category
+            <span class="required">  </span>
+        </label>
+        <div class="col-md-4"> 
+        <div class="portlet-body">
+             <select class="mt-multiselect btn btn-default" multiple="multiple" data-label="right" data-select-all="true" data-width="100%"  name="categoryName[]" data-action-onchange="true">
+                @foreach($categories as $key=>$value)
+                <option value="{{$value->id}}" @if(isset($category_id) && ($value->id==$category_id)) {{ 'selected="selected"'}}  @endif
+
+                @if($value->id==old('categoryName'))  {{ 'selected="selected"'}} @endif
+                  >
+
+                {{ $value->category_name }}
+                
+                </option>
+                @endforeach
+            </select>
+            </div>
+            <span class="help-block">{{ $errors->first('categoryName', ':message') }}</span>
+        </div>
+    </div> 
+ 
+
+
 
 <div class="form-group {{ $errors->first('address', ' has-error') }}">
     <label class="control-label col-md-3">Address<span class="required"> </span></label>
@@ -104,13 +130,8 @@
 </div>
 
 
-
-
-<div class="form-body">
-
-
-
-
-
-</div> 
-
+<style type="text/css">
+    ul.multiselect-container.dropdown-menu li {
+    margin-left: 25px !important;
+}
+</style>

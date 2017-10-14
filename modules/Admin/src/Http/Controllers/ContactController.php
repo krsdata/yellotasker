@@ -29,7 +29,7 @@ use Modules\Admin\Models\Category;
 use Modules\Admin\Models\ContactGroup;
 use Response; 
 use Maatwebsite\Excel\Facades\Excel as Excel;
-use Exporter;
+use PDF;
 
 /**
  * Class AdminController
@@ -74,6 +74,9 @@ class ContactController extends Controller {
             echo $s;
             exit();
         }
+
+       
+
  
         // Search by name ,email and group
         $search = Input::get('search');
@@ -93,6 +96,13 @@ class ContactController extends Controller {
         } else {
             $contacts = Contact::Paginate($this->record_per_page);
         }
+
+        $export = $request->get('export');
+        if($export=='pdf')
+        {
+           $pdf = PDF::loadView('packages::contact.pdf', compact('corporateProfile', 'page_title', 'page_action','contacts'));
+           return ($pdf->download('all-contacts.pdf'));
+        }
          
         
         return view('packages::contact.index', compact('result_set','contacts','data', 'page_title', 'page_action','sub_page_title'));
@@ -108,11 +118,8 @@ class ContactController extends Controller {
         $page_title = 'Contact';
         $page_action = 'Create Contact';
         $category  = Category::all();
-        $sub_category_name  = Category::all();
- 
-        $html = '';
-        $categories = '';
-
+        $categories  = Category::all();
+  
         return view('packages::contact.create', compact('categories', 'html','category','sub_category_name', 'page_title', 'page_action'));
     }
 
@@ -165,10 +172,17 @@ class ContactController extends Controller {
 
     public function store(ContactRequest $request, Contact $contact) 
     {   
+        
+        $categoryName = $request->get('categoryName');
+        $cn= '';
+        foreach ($categoryName as $key => $value) {
+            $cn = ltrim($cn.','.$value,',');
+        }
+        
         $table_cname = \Schema::getColumnListing('contacts');
-        $except = ['id','create_at','updated_at'];
+        $except = ['id','create_at','updated_at','categoryName'];
         $input = $request->all();
-
+        $contact->categoryName = $cn;
         foreach ($table_cname as $key => $value) {
            
            if(in_array($value, $except )){
@@ -182,7 +196,7 @@ class ContactController extends Controller {
         $contact->save();   
          
         return Redirect::to(route('contact'))
-                            ->with('flash_alert_notice', 'New contact  successfully created!');
+                            ->with('flash_alert_notice', 'New contact successfully created!');
     }
     
     public function uploadFile($file)
@@ -237,7 +251,9 @@ class ContactController extends Controller {
     public function edit(Contact $contact) {
         $page_title     = 'contact';
         $page_action    = 'Edit contact'; 
-        return view('packages::contact.edit', compact( 'url','contact', 'page_title', 'page_action'));
+        $categories  = Category::all();
+        $category_id  = intval($contact->categoryName);
+        return view('packages::contact.edit', compact('category_id','categories', 'url','contact', 'page_title', 'page_action'));
     }
 
     public function update(Request $request, Contact $contact) {
