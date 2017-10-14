@@ -103,7 +103,6 @@ class ApiController extends Controller
 
     public function register(Request $request,User $user)
     {   
-
         $input['first_name']    = $request->input('first_name');
         $input['last_name']     = $request->input('last_name'); 
         $input['email']         = $request->input('email'); 
@@ -118,7 +117,7 @@ class ApiController extends Controller
         //Server side valiation
         $validator = Validator::make($request->all(), [
            'email' => 'required|email|unique:users',
-            'password' => 'required'
+           'password' => 'required'
         ]);
         /** Return Error Message **/
         if ($validator->fails()) {
@@ -131,7 +130,7 @@ class ApiController extends Controller
                 'status' => 0,
                 'code'=>500,
                 'message' => $error_msg[0],
-                'data'  =>  ''
+                'data'  =>  $request->all()
                 )
             );
         }  
@@ -139,6 +138,7 @@ class ApiController extends Controller
         $helper = new Helper;
         /** --Create USER-- **/
         $user = User::create($input); 
+
         $subject = "Welcome to yellotasker! Verify your email address to get started";
         $email_content = [
                 'receipent_email'=> $request->input('email'),
@@ -154,7 +154,7 @@ class ApiController extends Controller
                                 "status"=>1,
                                 "code"=>200,
                                 "message"=>"Thank you for registration",
-                                'data'=>$request->except('password')
+                                'data'=>$user
                             ]
                         );
     }
