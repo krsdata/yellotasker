@@ -252,14 +252,25 @@ class ContactController extends Controller {
         $page_title     = 'contact';
         $page_action    = 'Edit contact'; 
         $categories  = Category::all();
-        $category_id  = intval($contact->categoryName);
+        $category_id  = explode(',',$contact->categoryName);
+        
         return view('packages::contact.edit', compact('category_id','categories', 'url','contact', 'page_title', 'page_action'));
     }
 
     public function update(Request $request, Contact $contact) {
         
-        $request = $request->except('_method','_token');
         $contact = Contact::find($contact->id); 
+        $categoryName = $request->get('categoryName');
+        $cn= '';
+        foreach ($categoryName as $key => $value) {
+            $cn = ltrim($cn.','.$value,',');
+        }
+    
+        if($cn!=''){
+            $contact->categoryName =  $cn;
+        }
+        $request = $request->except('_method','_token','categoryName');
+        
         foreach ($request as $key => $value) {
             $contact->$key = $value;
         }

@@ -88,7 +88,7 @@
         <div class="portlet-body">
              <select class="mt-multiselect btn btn-default" multiple="multiple" data-label="right" data-select-all="true" data-width="100%"  name="categoryName[]" data-action-onchange="true">
                 @foreach($categories as $key=>$value)
-                <option value="{{$value->id}}" @if(isset($category_id) && ($value->id==$category_id)) {{ 'selected="selected"'}}  @endif
+                <option value="{{$value->id}}" @if(isset($category_id) && (in_array($value->id,$category_id))) {{ 'selected="selected"'}}  @endif
 
                 @if($value->id==old('categoryName'))  {{ 'selected="selected"'}} @endif
                   >
