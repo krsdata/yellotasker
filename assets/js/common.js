@@ -422,6 +422,26 @@ function checkAll(ele) {
      }
  }
 
+ function checkAllContact(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+             }
+         }
+     }
+ }
+
+
+
  function deleteRow(tableID) {
      try {
          var table = document.getElementById(tableID);
@@ -537,9 +557,21 @@ $(document).ready(function(){
             contentType: false,
             cache: false,
             processData:false,
-            success: function(data){
-            
-              console.log(data);
+            success: function(datas){
+                console.log(datas);
+                var data = JSON.parse(datas); 
+                if(data.status==0){
+                    $('#error_msg2').html(data.message).css('color','red');
+                    return false;
+                 }else{
+                     $('#responsive2').modal('hide');
+                     bootbox.alert('Contact imported successfully',function(){
+                         var u =url+'/admin/contact';
+                         console.log(u);
+                         setTimeout(function(){ window.location.assign(u);},100);
+                         
+                     });
+                 }
             },
             error: function(){}             
             });
@@ -547,4 +579,63 @@ $(document).ready(function(){
 
 
 });
+
+function updateGroup(Url,id) {
+    createGroup=0;
+    var name =$('form#updateGroup_'+id+' input#contact_group').val().replace(/^\s+|\s+$/gm,'');  
+    console.log(id,name,'form#updateGroup_'+id+' input#contact_group');
+    var parent_id = $('form#updateGroup_'+id+' input#parent_id').val();
+     try {
+        var checkValues = $('form#updateGroup_'+id+' input[name=checkAll]:checked').map(function()
+            {
+                return $(this).val();
+            }).get(); 
+        
+         if(checkValues.length==0){
+             $('form#updateGroup_'+id+' #error_msg').html('Please select contact from list').css('color','red');
+            
+             return false;
+           }else{
+                if(name.length==0){
+                    $('form#updateGroup_'+id+' #error_msg').html('Please enter group name.').css('color','red');
+                    return false;
+                 }else{
+                    $('form#updateGroup_'+id+' #error_msg').html('');
+                    createGroup =1;
+                 }
+           }  
+            if(createGroup==1){
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    data: { ids: checkValues,groupName:name,parent_id:parent_id },
+                     dataType: "json",
+                    success:function(data){
+                        //return false;
+                         if(data.status==0){
+                            $('#error_msg').html(data.message).css('color','red');
+                            return false;
+                         }else{
+                             $('#responsive_'+id).modal('hide');
+                             bootbox.alert('Group updated successfully',function(){
+                                 var u =url+'/admin/contactGroup';
+                                 console.log(u);
+                                 //window.location.assign(u);
+                                setTimeout(function(){ location.reload();},100);
+                                
+                             });
+                             
+                         }
+                        
+                    }
+                }); 
+            }else{
+                $('#responsive').modal('hide');
+            }
+
+
+     } catch (e) {
+         alert(e);
+     }
+ }
 

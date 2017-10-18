@@ -82,7 +82,7 @@
                                     <table class="table table-striped table-hover table-bordered" id="contact">
                                         <thead>
                                             <tr>
-                                             <th>   <INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> All </th>
+                                             <th>   <INPUT type="checkbox" onchange="checkAll(this)" name="chk[]" /> All </th> 
                                              <th> Title </th>
                                                 <th> Name </th>
                                                 <th> Email </th> 
@@ -176,13 +176,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h4>Import Contact</h4>
+                        <span id="error_msg2"></span>
                         <p>
                             <input type="file" class="col-md-12 form-control" name="importContact" id="importContact"> </p> 
                     </div>
                 </div> 
             </div>
             <div class="modal-footer">
-            <span id="error_msg"></span>
+            
                 <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
                 <button type="submit" class="btn red" id="csave" >Imort</button>
             </div>

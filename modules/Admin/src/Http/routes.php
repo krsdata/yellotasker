@@ -166,7 +166,7 @@
 
 
 
-
+        Route::get('admin/updateGroup', 'Modules\Admin\Http\Controllers\ContactGroupController@updateGroup'); 
          /*---------Contact Route ---------*/    
 
         Route::bind('contactGroup', function($value, $route) {

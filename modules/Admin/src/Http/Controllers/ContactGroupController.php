@@ -24,7 +24,7 @@ use Route;
 use Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
-use App\Helpers\Helper;
+use Modules\Admin\Helpers\Helper as Helper;
 use Modules\Admin\Models\Roles; 
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\Contact; 
@@ -100,7 +100,6 @@ class ContactGroupController extends Controller {
             }])->where('parent_id',0)->orderBy('id','desc')->Paginate(10);
 
         } 
-
         $contactGroupPag =  ContactGroup::where('parent_id',0)->Paginate(10);
         $export = $request->get('export');
 
@@ -114,9 +113,38 @@ class ContactGroupController extends Controller {
            $pdf = PDF::loadView('packages::contactGroup.pdf', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));
            return ($pdf->download('contact-group.pdf'));
         }
+       
 
+        return view('packages::contactGroup.index', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title','contacts','html'));
+    }
 
-        return view('packages::contactGroup.index', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));
+    // updateGroup
+
+    public function updateGroup(Request $request)
+    {
+
+        $cgn =  ContactGroup::find($request->get('parent_id'));
+        $cgn->groupName = $request->get('groupName');
+        $cgn->save();
+
+       ContactGroup::whereNotIn('id',$request->get('ids'))
+                  ->where('parent_id',$request->get('parent_id'))->delete();
+
+        $ids = $request->get('ids');
+
+        foreach ($ids as $key => $value) {
+           $data = ContactGroup::findOrNew($value);
+           $data->groupName = $request->get('groupName');
+           if(count($data->contactId)==0){
+                 $data->contactId = $value;
+           }
+          
+           $data->parent_id = $request->get('parent_id');
+           $data->save();
+        }
+        echo json_encode(['status'=>1,'message'=>'Group Updated successfully']); 
+                exit(); 
+
     }
 
     /*
@@ -221,10 +249,7 @@ class ContactGroupController extends Controller {
         {
           $cat->category_group_image  =  $photo_name; 
         }
-         
         $cat->save();    
-
-
         return Redirect::to(route('contact'))
                         ->with('flash_alert_notice', 'Contact Group  successfully updated.');
     }
@@ -233,11 +258,11 @@ class ContactGroupController extends Controller {
      * @param ID
      * 
      */
-    public function destroy(ContactGroup $cg) {
-        
-        $d = ContactGroup::where('id',$cg->id)->delete(); 
+    public function destroy(ContactGroup $cg) 
+    {
+        ContactGroup::whereIdOrParentId($cg->id,$cg->id)->delete();
         return Redirect::to(route('contactGroup'))
-                        ->with('flash_alert_notice', 'Contact Group  successfully deleted.');
+                        ->with('flash_alert_notice', 'Contact Group successfully deleted.');
     }
 
     public function show(ContactGroup $cg) {
