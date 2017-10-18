@@ -36,10 +36,13 @@ class User extends Authenticatable {
      */
     protected $fillable = [
                             'name',
+                            'first_name',
+                            'last_name',
                             'phone',
                             'mobile',
                             'email', 
                             'role_type',
+                            'status',
                             'remember_token'
                         ];  // All field of user table here    
 

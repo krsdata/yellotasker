@@ -147,7 +147,6 @@ class UsersController extends Controller {
         
         $user->fill(Input::all());
         $user->password = Hash::make($request->get('password'));
-
         $validator_email = User::where('email',$request->get('email'))
                             ->where('id','!=',$user->id)->first();
         if($validator_email) {

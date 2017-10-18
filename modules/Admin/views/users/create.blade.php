@@ -1,4 +1,3 @@
-
 @extends('packages::layouts.master')
   @section('title', 'Dashboard')
     @section('header')
@@ -10,51 +9,49 @@
       @include('packages::partials.sidebar')
                              <!-- END SIDEBAR -->
             <!-- BEGIN CONTENT -->
-             <div class="page-content-wrapper">
-                <!-- BEGIN CONTENT BODY -->
-                <div class="page-content">
-                    <!-- BEGIN PAGE HEAD-->
-                    
-                    <!-- END PAGE HEAD-->
-                    <!-- BEGIN PAGE BREADCRUMB -->
-                    @include('packages::partials.breadcrumb')
+        <div class="page-content-wrapper">
+           <!-- BEGIN CONTENT BODY -->
+           <div class="page-content">
+               <!-- BEGIN PAGE HEAD-->
 
-                  
-                    <!-- END PAGE BREADCRUMB -->
-                    <!-- BEGIN PAGE BASE CONTENT -->
-                      <div class="row">
-                        <div class="col-md-12">
-                            <!-- BEGIN VALIDATION STATES-->
-                            <div class="portlet light portlet-fit portlet-form bordered">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">Create User</span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="portlet-body">
-                                    <!-- BEGIN FORM-->
-                                  {!! Form::model($user, ['route' => ['user.store'],'class'=>'form-horizontal user-form','id'=>'user-form']) !!}
-                                  
-                                  @include('packages::users.form')
-                                  
-                                  {!! Form::close() !!}   
-                                    <!-- END FORM-->
-                                </div>
-                                <!-- END VALIDATION STATES-->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END PAGE BASE CONTENT -->
-                </div>
-                <!-- END CONTENT BODY -->
-            </div>
-            
-            
-            <!-- END QUICK SIDEBAR -->
-        </div>
-        
+               <!-- END PAGE HEAD-->
+               <!-- BEGIN PAGE BREADCRUMB -->
+               @include('packages::partials.breadcrumb')
+
+
+               <!-- END PAGE BREADCRUMB -->
+               <!-- BEGIN PAGE BASE CONTENT -->
+                <div class="row">
+                   <div class="col-md-12">
+                       <!-- BEGIN VALIDATION STATES-->
+                       <div class="portlet light portlet-fit portlet-form bordered">
+                           <div class="portlet-title">
+                               <div class="caption">
+                                   <i class="icon-settings font-red"></i>
+                                   <span class="caption-subject font-red sbold uppercase">Create User</span>
+                               </div> 
+                           </div> 
+                               <!-- BEGIN FORM-->
+                           <div class="form-body"> 
+                               {!! Form::model($user, ['route' => ['user.store'],'class'=>'form-horizontal user-form','id'=>'user-form']) !!}
+                               @include('packages::users.form') 
+                               {!! Form::close() !!} 
+                           </div>
+                               <!-- END FORM-->
+
+                           <!-- END VALIDATION STATES-->
+                       </div>
+                   </div>
+               </div>
+               <!-- END PAGE BASE CONTENT -->
+           </div>
+           <!-- END CONTENT BODY -->
+       </div>
+
+
+       <!-- END QUICK SIDEBAR -->
+   </div>
+
 
         
 @stop

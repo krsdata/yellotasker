@@ -27,7 +27,7 @@
                             <i class="fa fa-circle"></i>
                         </li>
                         <li>
-                            <span class="active">Create</span>
+                            <span class="active">Edit</span>
                         </li>
                     </ul>
                     <!-- END PAGE BREADCRUMB -->
@@ -39,14 +39,12 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-dark"></i>
-                                        <span class="caption-subject font-dark sbold uppercase">Create User</span>
+                                        <span class="caption-subject font-dark sbold uppercase">Edit User</span>
                                     </div>
                                     
                                 </div>
-                                <div class="portlet-body">
-                                    <!-- BEGIN FORM-->
-                                  
-
+                                 <div class="form-body">
+                                    <!-- BEGIN FORM--> 
                                 {!! Form::model($user, ['method' => 'PATCH', 'route' => ['user.update', $user->id],'class'=>'form-horizontal user-form','id'=>'form_sample_3']) !!}
                                     @include('packages::users.form', compact('user'))
                                 {!! Form::close() !!} 
@@ -56,6 +54,7 @@
                             </div>
                         </div>
                     </div>
+                       
                     <!-- END PAGE BASE CONTENT -->
                 </div>
                 <!-- END CONTENT BODY -->

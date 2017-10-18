@@ -22,7 +22,7 @@ class UserRequest extends Request {
                 case 'POST': {
                         return [
                             'email'     => "required|email|unique:users,email" ,  
-                            'name'      => 'required|min:3', 
+                            'first_name'      => 'required|min:3', 
                             'password'  => 'required|min:6',
                         //    'phone' =>  'required|number|min:10',
                              'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|numeric'
@@ -37,7 +37,7 @@ class UserRequest extends Request {
 
                         return [
                             'email'   => "required|email" ,  
-                            'name' => 'required|min:3',
+                            'first_name'      => 'required|min:3',
                             'phone' => 'regex:/^([0-9\s\-\+\(\)]*)$/|numeric'
                            // 'role'  => 'required'
                         ];
