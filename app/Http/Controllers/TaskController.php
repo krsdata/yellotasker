@@ -49,7 +49,8 @@ class TaskController extends Controller {
 
          //Server side valiation
         $validator = Validator::make($request->all(), [
-           'user_id' => 'required'
+           'userId' => 'required',
+           'title' => 'required'
         ]);
         /** Return Error Message **/
         if ($validator->fails()) {
@@ -65,63 +66,49 @@ class TaskController extends Controller {
                 'data'  =>  ''
                 )
             );
-        }  
+        }   
+         
+        if ($request->get('userId')==null) {
 
+            $user_id = $request->get('userId');
+            $user_data = User::find($user_id);
+            if (empty($user_data)) {
+                return
+                    [ 
+                    "status"  => '0',
+                    'code'    => '500',
+                    "message" => 'No match found for the given user id.',
+                    'data'    => []
+                    ];
+                
+            } 
+        }   
+        $task = new Tasks;
+
+        $table_cname = \Schema::getColumnListing('post_tasks');
+        $except = ['id','created_at','updated_at'];
         
-        if (!empty($post_request)) 
-        {
-            if ($request->get('user_id')) {
-
-                $user_id = $request->get('user_id');
-                $user_data = User::find($user_id);
-                if (empty($user_data)) {
-                    return
-                        [ 
-                        "status"  => '0',
-                        'code'    => '200',
-                        "message" => 'No match found for the given user id.',
-                        'data'    => []
-                        ];
-                    
-                } else {
-                  
-                        $task = new Tasks;
-
-                        $task->title = $request->get('title');
-                        $task->description = $request->get('description');
-                        $task->user_id = $request->get('user_id');
-                        $date = $request->get('due_date');
-                        $task->people_required = $request->get('people_required');
-                        $due_date = $request->get('due_date'); //Carbon::createFromFormat('m/d/Y', $date);
-                        $task->due_date = $due_date;
-                        $task->budget = $request->get('budget');
-                        $task->budget_type = $request->get('budget_type');
-                        $task->save();
-
-                        $status  = 1;
-                        $code    = 200;
-                        $message = 'Task  successfully inserted.';
-                        $data    = $task; 
-                }
-            } else {
-                 $status  = 0;
-                $code    = 400;
-                $message = 'Unable to add task, user id field is empty.';
-                $data    = [];
-            }  
-        } else {
-            $status  = 0;
-            $code    = 400;
-            $message = 'Unable to add task, no post data found.';
-            $data    = [];
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+           $task->$value = $request->get($value);
         }
+        
+        $task->save();
+        $status  = 1;
+        $code    = 200;
+        $message = 'Task  created successfully.';
+        $data    = $task; 
+        
         return 
-                            [ 
-                            "status"  =>$status,
-                            'code'    => $code,
-                            "message" =>$message,
-                            'data'    => $data
-                            ];
+                [ 
+                "status"  =>$status,
+                'code'    => $code,
+                "message" =>$message,
+                'data'    => $data
+                ];
                        
 
     }
