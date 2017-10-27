@@ -86,7 +86,7 @@ class TaskController extends Controller {
         $task = new Tasks;
 
         $table_cname = \Schema::getColumnListing('post_tasks');
-        $except = ['id','created_at','updated_at'];
+        $except = ['id','created_at','updated_at','status'];
         
         foreach ($table_cname as $key => $value) {
            
@@ -95,7 +95,6 @@ class TaskController extends Controller {
            } 
            $task->$value = $request->get($value);
         }
-        
         $task->save();
         $status  = 1;
         $code    = 200;
@@ -113,18 +112,41 @@ class TaskController extends Controller {
 
     }
 
-    public function getAllTasks(){
-        $tasks = Tasks::all();
+    public function getPostTask(Request $request){
 
-        if(count($tasks)){
+        $status = $request->get('taskStatus');
+        $limit  = $request->get('limit');
+        $userId = $request->get('userId');
+        $title  = $request->get('title');
+        
+        $tasks  = Tasks::where(function($q)use($status,$limit,$userId,$title){
+                    if($title){
+                        $q->where('title','LIKE',"%".$title."%"); 
+                    }
+                    if($status){
+                        $q->where('status', $status); 
+                    }
+                   
+                    if($userId){
+                        $q->where('userId', $userId); 
+                    }
+                     
+                })->orderBy('id', 'desc');
+
+        if($limit){
+           $task = $tasks->take($limit)->get();  
+        }else{
+           $task =  $tasks->get();
+        }
+        if(count($task)){
             $status  =  1;
             $code    =  200;
-            $message =  "List of all tasks.";
-            $data    =  $tasks;
+            $message =  "List of tasks.";
+            $data    =  $task;
         } else {
             $status  =  0;
-            $code    =  204;
-            $message =  "No tasks found.";
+            $code    =  404;
+            $message =  "No task found.";
             $data    =  [];
         }
 
@@ -159,32 +181,7 @@ class TaskController extends Controller {
                     ];
     }
 
-    // status '0'=>'open','1'=>'completed','2'=>'in-progress'
-    public function getRecentTasks(){
-        $tasks = Tasks::where('status', 1)
-               ->orderBy('id', 'desc')
-               ->take(8)
-               ->get();
-
-        if(count($tasks)){
-            $status  =  1;
-            $code    =  200;
-            $message =  "List of recently completed tasks.";
-            $data    =  $tasks;
-        } else {
-            $status  =  0;
-            $code    =  204;
-            $message =  "No tasks found.";
-            $data    =  [];
-        }
-
-        return      [ 
-                    "status"  =>$status,
-                    'code'    => $code,
-                    "message" =>$message,
-                    'data'    => $data
-                    ];
-    }
+  
 
     public function getUserTasks(Request $request,$usrt_id)
     {

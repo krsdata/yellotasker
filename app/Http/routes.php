@@ -70,9 +70,9 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
  
-            Route::match(['get'],'getAllTasks',[
-                'as' => 'get_all_tasks',
-                'uses' => 'TaskController@getAllTasks'
+            Route::match(['get','post'],'getPostTask',[
+                'as' => 'getPostTask',
+                'uses' => 'TaskController@getPostTask'
                 ]
             );
 
