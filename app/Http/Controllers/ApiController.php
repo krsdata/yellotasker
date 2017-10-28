@@ -16,6 +16,8 @@ use JWTExceptionTokenInvalidException;
 use App\Helpers\Helper as Helper;
 use App\User; 
 use App\Model\Tasks;
+use Modules\Admin\Models\Category;
+use Modules\Admin\Models\CategoryDashboard; 
 
 class ApiController extends Controller
 {
@@ -331,7 +333,7 @@ class ApiController extends Controller
             );
         }
 
-        $user =   User::where('email',$email)->get();
+        $user =   User::where('email',$email)->first();
 
         if($user->count()==0){
             return Response::json(array(
@@ -341,17 +343,16 @@ class ApiController extends Controller
                 )
             );
         }
-        $user_data = User::find($user[0]->userID);
+        $user_data = User::find($user->id);
         $temp_password = Hash::make($email);
-       
         
       // Send Mail after forget password
         $temp_password =  Hash::make($email);
- 
+       
         $email_content = array(
                         'receipent_email'   => $request->input('email'),
                         'subject'           => 'Reset account password link!',
-                        'first_name'        => $user[0]->first_name,
+                        'name'              => $user->first_name,
                         'temp_password'     => $temp_password,
                         'encrypt_key'       => Crypt::encrypt($email),
                         'greeting'          => 'Yellotasker'
@@ -559,6 +560,30 @@ class ApiController extends Controller
                     "code"=> 200,
                     "message"=>"You've invited your colleague, nice work!",
                     'data' => ['receipentEmail'=>$user_email]
+                   ]
+                );
+
+    }
+    public function categoryDashboard(){
+
+
+        $cd = CategoryDashboard::all();
+
+        if(count($cd)){
+            $status = 1;
+            $code   = 200;
+            $msg    = "Category dashboard list";
+        }else{
+            $status = 0;
+            $code   = 404;
+            $msg    = "Category dashboard list not  found!";
+        }
+
+        return  response()->json([ 
+                    "status"=>$status,
+                    "code"=> $code,
+                    "message"=> $msg,
+                    'data' => $cd
                    ]
                 );
 

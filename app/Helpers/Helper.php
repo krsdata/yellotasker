@@ -220,7 +220,7 @@ class Helper {
     {        
         $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
         $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:''; 
-
+        dd($email_content);
         $mail = new PHPMailer;
         $html = view::make('emails.'.$template,['content' => $email_content]);
         $html = $html->render(); 
@@ -237,7 +237,7 @@ class Helper {
             $mail->Username   = "no-reply@infowaynic.com"; // SMTP account username
             $mail->Password   = "no-reply@123!"; 
 
-            $mail->setFrom("admin@gsure.in", "gsure");
+            $mail->setFrom("admin@yellotasker.co", "yellotasker");
             $mail->Subject = $email_content['subject'];
             $mail->MsgHTML($html);
             $mail->addAddress($email_content['receipent_email'], "yellotasker");
@@ -270,10 +270,10 @@ class Helper {
     */
     public  function sendMail($email_content, $template)
     {        
-         return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
+        return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
           {
             $name = 'Yellotasker';
-            $message->from('no-reply@admin.com',$name);  
+            $message->from('no-reply@admin.com',$name);   
             $message->to($email_content['receipent_email'])->subject($email_content['subject']);
             
           });
