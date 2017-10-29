@@ -118,8 +118,39 @@ class TaskController extends Controller {
         $limit  = $request->get('limit');
         $userId = $request->get('userId');
         $title  = $request->get('title');
+
+        $start_week = \Carbon\Carbon::now()->startOfWeek()->toDateString();
+        $end_week   = \Carbon\Carbon::now()->endOfWeek()->toDateString();
+        $today      = \Carbon\Carbon::today()->toDateString();
+        $startOfMonth = \Carbon\Carbon::now()->startOfMonth()->toDateString();
+        $endOfMonth = \Carbon\Carbon::now()->subMonth()->toDateString();
+        $tomorrow   = \Carbon\Carbon::tomorrow()->toDateString();
+
+        $due_today          = $request->get('due_today');
+        $due_tomorrow       = $request->get('due_tomorrow');
+        $due_current_week   = $request->get('due_current_week');
+        $due_current_month  = $request->get('due_current_month');
+        $search_by_date     =  $request->get('search_by_date');
         
-        $tasks  = Tasks::where(function($q)use($status,$limit,$userId,$title){
+        $tasks  = Tasks::where(function($q)
+                use(
+                        $status,
+                        $limit,
+                        $userId,
+                        $title,
+                        $start_week,
+                        $end_week ,
+                        $today,
+                        $startOfMonth,
+                        $endOfMonth,
+                        $tomorrow,
+                        $due_today,
+                        $due_tomorrow,
+                        $due_current_week,
+                        $due_current_month,
+                        $search_by_date
+                    )
+                {
                     if($title){
                         $q->where('title','LIKE',"%".$title."%"); 
                     }
@@ -130,19 +161,41 @@ class TaskController extends Controller {
                     if($userId){
                         $q->where('userId', $userId); 
                     }
+
+                    if($due_today){
+                        $q->where('dueDate', $today); 
+                    }
+                    if($due_tomorrow){
+                         $q->where('dueDate', $tomorrow); 
+                    }
+                    if($due_current_week){
+                         $q->whereBetween('dueDate',[$start_week,$end_week]);
+                    }
+                    if($due_current_month){
+                         $q->whereBetween('dueDate',[$startOfMonth,$endOfMonth]);
+                    }
+                    if($search_by_date){
+                        $q->where('dueDate',$search_by_date);
+                    }
                      
-                })->orderBy('id', 'desc');
+                });
+               
 
         if($limit){
-           $task = $tasks->take($limit)->get();  
+           $task = $tasks->take($limit)->orderBy('id', 'desc')->get()->toArray();  
         }else{
-           $task =  $tasks->get();
-        }
+
+           $task =  $tasks->get()->toArray();
+        } 
+        $my_data = $this->array_msort($task, array('dueDate'=>SORT_ASC));
+        $data = array_values($my_data);
+         
+        
         if(count($task)){
             $status  =  1;
             $code    =  200;
             $message =  "List of tasks.";
-            $data    =  $task;
+            $data    =  $data;
         } else {
             $status  =  0;
             $code    =  404;
@@ -156,6 +209,31 @@ class TaskController extends Controller {
                     "message" =>$message,
                     'data'    => $data
                     ];
+    }
+
+    public function array_msort($array, $cols)
+    {
+        $colarr = array();
+        foreach ($cols as $col => $order) {
+            $colarr[$col] = array();
+            foreach ($array as $k => $row) { $colarr[$col]['_'.$k] = strtolower($row[$col]); }
+        }
+        $eval = 'array_multisort(';
+        foreach ($cols as $col => $order) {
+            $eval .= '$colarr[\''.$col.'\'],'.$order.',';
+        }
+        $eval = substr($eval,0,-1).');';
+        eval($eval);
+        $ret = array();
+        foreach ($colarr as $col => $arr) {
+            foreach ($arr as $k => $v) {
+                $k = substr($k,1);
+                if (!isset($ret[$k])) $ret[$k] = $array[$k];
+                $ret[$k][$col] = $array[$k][$col];
+            }
+        }
+        return $ret;
+
     }
 
     public function getOpenTasks(){
@@ -180,6 +258,8 @@ class TaskController extends Controller {
                     'data'    => $data
                     ];
     }
+
+
 
   
 

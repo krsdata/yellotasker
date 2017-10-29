@@ -22,6 +22,8 @@ Route::get('/', function () {
      return redirect('admin');
 });
 
+Route::get('sendMail','ApiController@sendMail'); 
+
 /*
 * Rest API Request , auth  & Route
 */ 
@@ -35,8 +37,9 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword');  
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
         Route::match(['post','get'],'categoryDashboard','ApiController@categoryDashboard');
+        Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
 
-        
+
 
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 

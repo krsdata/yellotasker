@@ -602,5 +602,65 @@ class ApiController extends Controller
         );
 
     }
+
+    public function sendMail()
+    {
+        $emails = ['kroy@mailinator.com'];
+
+        Mail::send('emails.welcome', [], function($message) use ($emails)
+        {    
+            $message->to($emails)->subject('This is test e-mail');    
+        });
+        var_dump( Mail:: failures());
+        exit;
+    }
+    //array_msort($array, $cols)
+    public function getTaskByDueDate()
+    {
+        
+
+        $status = $request->get('taskStatus');
+        $limit  = $request->get('limit');
+        $userId = $request->get('userId');
+        $title  = $request->get('title');
+        
+        $tasks  = Tasks::where(function($q)use($status,$limit,$userId,$title){
+                    if($title){
+                        $q->where('title','LIKE',"%".$title."%"); 
+                    }
+                    if($status){
+                        $q->where('status', $status); 
+                    }
+                   
+                    if($userId){
+                        $q->where('userId', $userId); 
+                    }
+                     
+                })->orderBy('id', 'desc');
+
+        if($limit){
+           $task = $tasks->take($limit)->get();  
+        }else{
+           $task =  $tasks->get();
+        }
+        if(count($task)){
+            $status  =  1;
+            $code    =  200;
+            $message =  "List of tasks.";
+            $data    =  $task;
+        } else {
+            $status  =  0;
+            $code    =  404;
+            $message =  "No task found.";
+            $data    =  [];
+        }
+
+        return [ 
+                    "status"  =>$status,
+                    'code'    => $code,
+                    "message" =>$message,
+                    'data'    => $data
+                    ];
+    }
     
 } 
