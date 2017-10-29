@@ -564,12 +564,26 @@ class ApiController extends Controller
                 );
 
     }
-    public function categoryDashboard(){
+    public function categoryDashboard(){ 
 
+       // $cd = CategoryDashboard::all 
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+        $categoryDashboard = CategoryDashboard::with('category')->get();
+        $data = [];
+        $category_data = [];
+        foreach ($categoryDashboard as $key => $value) {
+            $data['category_id']            = $value->category->id;
+            $data['category_name']          = $value->category->category_name;
+            $data['category_image']         = $image_url.'/'.$value->category->category_image;
+            $data['group_id']               = $value->category->parent->id;
+            $data['category_group_name']    = $value->category->parent->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$value->category->category_group_image;
+            
+            $category_data[] = $data;
 
-        $cd = CategoryDashboard::all();
+        } 
 
-        if(count($cd)){
+        if(count($data)){
             $status = 1;
             $code   = 200;
             $msg    = "Category dashboard list";
@@ -580,12 +594,12 @@ class ApiController extends Controller
         }
 
         return  response()->json([ 
-                    "status"=>$status,
-                    "code"=> $code,
-                    "message"=> $msg,
-                    'data' => $cd
-                   ]
-                );
+                "status"=>$status,
+                "code"=> $code,
+                "message"=> $msg,
+                'data' => $category_data
+            ]
+        );
 
     }
     
