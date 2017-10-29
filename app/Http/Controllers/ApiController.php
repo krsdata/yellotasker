@@ -568,7 +568,7 @@ class ApiController extends Controller
 
        // $cd = CategoryDashboard::all 
         $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
-        $categoryDashboard = CategoryDashboard::with('category')->get();
+        $categoryDashboard = CategoryDashboard::with('category')->take(8)->get();
         $data = [];
         $category_data = [];
         foreach ($categoryDashboard as $key => $value) {
