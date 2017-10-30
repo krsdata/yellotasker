@@ -603,6 +603,52 @@ class ApiController extends Controller
 
     }
 
+
+    public function category(){ 
+
+       // $cd = CategoryDashboard::all 
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+        $categoryDashboard = Category::with('children')->where('parent_id',0)->get();
+        
+        $data = [];
+        $category_data = [];
+        foreach ($categoryDashboard as $key => $value) {
+            $data['group_id']               = $value->id;
+            $data['category_group_name']    = $value->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$value->category_group_image;
+
+            foreach ($value->children as $key => $result) {
+                $data2['category_id']      = $result->id;
+                $data2['category_name']    = $result->category_name;
+                $data2['category_image']   = $image_url.'/'.$result->category_image;
+                $data2['category_group_id'] = $result->parent_id;
+                $data2['category_group_name'] = $value->category_group_name;
+                $data['category'][] = $data2;
+            }
+            
+            $category_data[] = $data;
+
+        } 
+        if(count($data)){
+            $status = 1;
+            $code   = 200;
+            $msg    = "Category dashboard list";
+        }else{
+            $status = 0;
+            $code   = 404;
+            $msg    = "Category dashboard list not  found!";
+        }
+
+        return  response()->json([ 
+                "status"=>$status,
+                "code"=> $code,
+                "message"=> $msg,
+                'data' => $category_data
+            ]
+        );
+
+    }
+
     public function sendMail()
     {
         $emails = ['kroy@mailinator.com'];
@@ -615,52 +661,6 @@ class ApiController extends Controller
         exit;
     }
     //array_msort($array, $cols)
-    public function getTaskByDueDate()
-    {
-        
 
-        $status = $request->get('taskStatus');
-        $limit  = $request->get('limit');
-        $userId = $request->get('userId');
-        $title  = $request->get('title');
-        
-        $tasks  = Tasks::where(function($q)use($status,$limit,$userId,$title){
-                    if($title){
-                        $q->where('title','LIKE',"%".$title."%"); 
-                    }
-                    if($status){
-                        $q->where('status', $status); 
-                    }
-                   
-                    if($userId){
-                        $q->where('userId', $userId); 
-                    }
-                     
-                })->orderBy('id', 'desc');
-
-        if($limit){
-           $task = $tasks->take($limit)->get();  
-        }else{
-           $task =  $tasks->get();
-        }
-        if(count($task)){
-            $status  =  1;
-            $code    =  200;
-            $message =  "List of tasks.";
-            $data    =  $task;
-        } else {
-            $status  =  0;
-            $code    =  404;
-            $message =  "No task found.";
-            $data    =  [];
-        }
-
-        return [ 
-                    "status"  =>$status,
-                    'code'    => $code,
-                    "message" =>$message,
-                    'data'    => $data
-                    ];
-    }
     
 } 
