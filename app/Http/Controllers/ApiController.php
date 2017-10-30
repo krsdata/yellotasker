@@ -19,6 +19,12 @@ use App\Model\Tasks;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
 
+use App\Http\Requests\UserRequest;  
+use Illuminate\Http\Dispatcher;   
+use Cookie; 
+
+
+
 class ApiController extends Controller
 {
     
@@ -335,11 +341,12 @@ class ApiController extends Controller
 
         $user =   User::where('email',$email)->first();
 
-        if($user->count()==0){
+        if($user==null){
             return Response::json(array(
                 'status' => 0,
+                'code' => 500,
                 'message' => "Oh no! The address you provided isn't in our system",
-                'data'  =>  ''
+                'data'  =>  $request->all()
                 )
             );
         }
@@ -351,7 +358,7 @@ class ApiController extends Controller
        
         $email_content = array(
                         'receipent_email'   => $request->input('email'),
-                        'subject'           => 'Reset account password link!',
+                        'subject'           => 'Your Yellotasker Account Password',
                         'name'              => $user->first_name,
                         'temp_password'     => $temp_password,
                         'encrypt_key'       => Crypt::encrypt($email),
@@ -369,9 +376,91 @@ class ApiController extends Controller
                         "status"=>1,
                         "code"=> 200,
                         "message"=>"Reset password link has sent. Please check your email.",
-                        'data' => ''
+                        'data' => $request->all()
                     ]
                 );
+    }
+
+
+    public function resetPassword(UserRequest $request)
+    { 
+
+        $encryptedValue = ($request->get('key'))?$request->get('key'):''; 
+        $method_name = $request->method();
+        $token = $request->get('token');
+       // $email = ($request->get('email'))?$request->get('email'):'';
+
+        if($method_name=='GET')
+        {    
+            try {
+                $email = Crypt::decrypt($encryptedValue); 
+                
+                if (Hash::check($email, $token)) {
+                    return view('admin.auth.passwords.reset',compact('token','email')); 
+                }else{
+
+                    return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+                } 
+                
+            } catch (DecryptException $e) {
+                   
+            //   return view('admin.auth.passwords.reset',compact('token','email')) 
+              //              ->withErrors(['message'=>'Invalid reset password link!']);  
+
+                return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+    
+            }
+            
+        }else
+        {   
+            try {
+                $email = Crypt::decrypt($encryptedValue); 
+                
+                if (Hash::check($email, $token)) {
+                        $password =  Hash::make($request->get('password'));
+                        $user = User::where('email',$request->get('email'))->update(['password'=>$password]);
+                      
+                        return Response::json(array(
+                                'status' => 0,
+                                'message' => "Password reset successfully.",
+                                'data'  =>  ''
+                                )
+                            );
+                }else{
+
+                    return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+                } 
+                
+            } catch (DecryptException $e) {
+                   
+                return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+    
+            }
+
+ 
+            
+        }
+        
     }
 
    /* @method : change password
@@ -381,8 +470,45 @@ class ApiController extends Controller
    */
     public function changePassword(Request $request)
     {   
-        $user = JWTAuth::toUser($request->input('deviceToken'));
-        $user_id = $user->userID; 
+        
+        $email = $request->input('email');
+        //Server side valiation
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+
+        $helper = new Helper;
+       
+        if ($validator->fails()) {
+            $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                "code" => 201,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }
+
+        $user =   User::where('email',$email)->first();
+
+        if($user==null){
+            return Response::json(array(
+                'status' => 0,
+                'code' => 500,
+                'message' => "The email address you provided isn't in our system",
+                'data'  =>  $request->all()
+                )
+            );
+        }
+
+        $user = User::where('email',$request->get('email'))->first();
+        
+        $user_id = $user->id; 
         $old_password = $user->password;
      
         $validator = Validator::make($request->all(), [
@@ -421,6 +547,7 @@ class ApiController extends Controller
         {
             return Response::json(array(
                 'status' => 0,
+                "code"=> 500,
                 'message' => "Old password mismatch!",
                 'data'  =>  ''
                 )

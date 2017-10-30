@@ -24,7 +24,7 @@
      
       <tbody><tr>
        <td class="m_6462014940457833709textContent m_6462014940457833709text-center" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:center" valign="top" align="center">
-        <img height="auto" src="{{url('storage/image/logo.png')}}" style="border:0;outline:none;text-decoration:none" width="" class="CToWUd">
+        <img height="auto" src="<?php echo e(url('storage/image/logo.png')); ?>" style="border:0;outline:none;text-decoration:none" width="" class="CToWUd">
 </td>
 </tr>
 </tbody></table>
@@ -41,16 +41,16 @@
       <tbody><tr>
        <td class="m_6462014940457833709textContent" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:Left" valign="top" align="Left">
         <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:24px 0;padding:0;text-align:Left" align="Left">
-         <strong style="font-family:MuseoSans-500,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-weight:500">Hi {{$content['name']}},</strong></p>
+         <strong style="font-family:MuseoSans-500,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-weight:500">Hi <?php echo e($content['name']); ?>,</strong></p>
 <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:24px 0;padding:0;text-align:Left" align="Left">
            <p>Looks like you need to reset your password. Please click the link below on.</p>
               <p> 
-                <a href="{{ url('admin/password/reset?token='.$content['temp_password'].'&key='.$content['encrypt_key']) }} ">
+                <a href="<?php echo e(url('admin/password/reset?token='.$content['temp_password'].'&key='.$content['encrypt_key'])); ?> ">
                   Reset Your Password
                 </a> 
               </p>
 <div class="m_6462014940457833709mobile-hide">
-         <a href="{{ url('admin/password/reset?token='.$content['temp_password'].'&key='.$content['encrypt_key']) }}" style="background:#efeb10; color:#000; padding:10px 25px; float:right; text-decoration:none; border-radius:40px;">Reset Password</a>
+         <a href="<?php echo e(url('admin/password/reset?token='.$content['temp_password'].'&key='.$content['encrypt_key'])); ?>" style="background:#efeb10; color:#000; padding:10px 25px; float:right; text-decoration:none; border-radius:40px;">Reset Password</a>
 </div>
 </td>
 </tr>
@@ -75,13 +75,13 @@
              
               <tbody><tr>
                <td class="m_6462014940457833709mobile-block m_6462014940457833709mobile-text-center" width="64px">
-                <img height="48" src="{{url('storage/image/icon-y.png')}}" style="border:0;outline:none;text-decoration:none" width="48" class="CToWUd">
+                <img height="48" src="<?php echo e(url('storage/image/icon-y.png')); ?>" style="border:0;outline:none;text-decoration:none" width="48" class="CToWUd">
 </td>
 <td class="m_6462014940457833709mobile-70-block">
                 <p class="m_6462014940457833709margin-4-0" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:14px;margin:4px 0;padding:0;text-align:Left" align="Left">
                  <a href="#" style="color:#000; text-decoration:none">Yellotasker support C.</a></p>
 <p class="m_6462014940457833709margin-4-0" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:14px;margin:4px 0;padding:0;text-align:Left" align="Left">
-                 <img class="m_6462014940457833709inline-block CToWUd" height="" src="{{url('storage/image/rating.png')}}" width="100" style="border:0;outline:none;text-decoration:none"></p>
+                 <img class="m_6462014940457833709inline-block CToWUd" height="" src="<?php echo e(url('storage/image/rating.png')); ?>" width="100" style="border:0;outline:none;text-decoration:none"></p>
 
 </td>
 <td class="m_6462014940457833709mobile-30-block">
@@ -92,7 +92,6 @@
 <tr>
                <td class="m_6462014940457833709mobile-block m_6462014940457833709description m_6462014940457833709mobile-16-font" colspan="2">
                 <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:14px;font-weight:300;line-height:20px;margin:16px 0;padding:0;text-align:Left" align="Left">
-                <br>
                  Yellotasker Team</p>
 </td>
 <td class="m_6462014940457833709cta m_6462014940457833709mobile-block" style="padding-top:16px;vertical-align:top" width="107" valign="top">
@@ -125,7 +124,7 @@
           <tbody><tr>
            <td class="m_6462014940457833709textContent m_6462014940457833709mobile-text-center" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:Left" valign="top" align="Left">
             <p class="m_6462014940457833709mobile-text-center m_6462014940457833709no-margin" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:0;padding:0;text-align:Left" align="Left">
-<a class="m_6462014940457833709unsubscribe" rel="nofollow" href="#" style="color:#fff; text-decoration:none;"> Yellotasker  </a></p>
+<a class="m_6462014940457833709unsubscribe" rel="nofollow" href="#" style="color:#fff; text-decoration:none;"> Unsubscribe </a></p>
 </td>
 </tr>
 </tbody></table>
@@ -134,8 +133,8 @@
           <tbody><tr>
            <td class="m_6462014940457833709textContentLast" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:Left" valign="top" align="Left">
             <p style="margin-top:0px; text-align:right;">
-        <img src="{{url('storage/image/apple-store.png')}}" width="100px;"> 
-        <img src="{{url('storage/image/google-play.png')}}" width="100px;"> 
+        <img src="<?php echo e(url('storage/image/apple-store.png')); ?>" width="100px;"> 
+        <img src="<?php echo e(url('storage/image/google-play.png')); ?>" width="100px;"> 
       </p>
 </td>
 </tr>

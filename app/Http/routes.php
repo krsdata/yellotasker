@@ -30,23 +30,25 @@ Route::get('sendMail','ApiController@sendMail');
 Route::group(['prefix' => 'api/v1'], function()
 {   
     Route::group(['middleware' => 'api'], function () {
+
         Route::match(['post','get'],'user/signup','ApiController@register');  
         Route::match(['post','get'],'user/updateProfile','ApiController@updateProfile'); 
         Route::match(['post','get'],'user/login', 'ApiController@login'); 
         Route::match(['post','get'],'email_verification','ApiController@emailVerification');   
-        Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword');  
+        Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword'); 
+        Route::post('password/reset','ApiController@resetPassword');  
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
         Route::match(['post','get'],'categoryDashboard','ApiController@categoryDashboard');
         Route::match(['post','get'],'category','ApiController@category');
         Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
+        Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
 
-
-
+       
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
            Route::match(['post','get'],'get_condidate_record','APIController@getCondidateRecord'); 
-           Route::match(['post','get'],'user/logout','ApiController@logout'); 
-           Route::match(['post','get'],'change_password','ApiController@changePassword'); 
+            Route::match(['post','get'],'user/logout','ApiController@logout'); 
+          
         });   
 
 
@@ -114,7 +116,8 @@ Route::group(['prefix' => 'api/v1'], function()
   
 
 Route::get('/login','Adminauth\AuthController@showLoginForm'); 
-Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
+//Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
+Route::post('password/reset','ApiController@resetPassword');  
 
 
 Route::get('admin/404',function(){
