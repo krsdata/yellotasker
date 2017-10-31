@@ -125,6 +125,27 @@
             ]
                 ]
         );  
+
+
+         Route::bind('postTask', function($value, $route) {
+            return Modules\Admin\Models\postTask::find($value);
+        });
+ 
+        Route::resource('admin/postTask', 'Modules\Admin\Http\Controllers\PostTaskController', [
+            'names' => [
+                'edit' => 'postTask.edit',
+                'show' => 'postTask.show',
+                'destroy' => 'postTask.destroy',
+                'update' => 'postTask.update',
+                'store' => 'postTask.store',
+                'index' => 'postTask',
+                'create' => 'postTask.create',
+            ]
+                ]
+        );  
+
+
+
         // programs
          Route::bind('program', function($value, $route) {
             return Modules\Admin\Models\Program::find($value);

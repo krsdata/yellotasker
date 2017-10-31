@@ -2,13 +2,11 @@
 
 namespace Modules\Admin\Models;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model as Eloquent; 
 use Modules\Admin\Models\Group;
-use Modules\Admin\Models\Position;
-use Auth;
+use Modules\Admin\Models\Position; 
 
-class Tasks extends Authenticatable {
+class postTask extends Authenticatable {
 
    
     /**
@@ -16,7 +14,7 @@ class Tasks extends Authenticatable {
      *
      * @var string
      */
-    protected $table = 'yt_tasks';
+    protected $table = 'post_tasks';
     /**
      * The attributes that are mass assignable.
      *
@@ -36,9 +34,7 @@ class Tasks extends Authenticatable {
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
+    
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
 

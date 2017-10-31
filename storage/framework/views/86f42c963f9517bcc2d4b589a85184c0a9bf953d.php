@@ -92,6 +92,7 @@
 <tr>
                <td class="m_6462014940457833709mobile-block m_6462014940457833709description m_6462014940457833709mobile-16-font" colspan="2">
                 <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:14px;font-weight:300;line-height:20px;margin:16px 0;padding:0;text-align:Left" align="Left">
+                <br>
                  Yellotasker Team</p>
 </td>
 <td class="m_6462014940457833709cta m_6462014940457833709mobile-block" style="padding-top:16px;vertical-align:top" width="107" valign="top">
@@ -124,7 +125,7 @@
           <tbody><tr>
            <td class="m_6462014940457833709textContent m_6462014940457833709mobile-text-center" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:Left" valign="top" align="Left">
             <p class="m_6462014940457833709mobile-text-center m_6462014940457833709no-margin" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:0;padding:0;text-align:Left" align="Left">
-<a class="m_6462014940457833709unsubscribe" rel="nofollow" href="#" style="color:#fff; text-decoration:none;"> Unsubscribe </a></p>
+<a class="m_6462014940457833709unsubscribe" rel="nofollow" href="#" style="color:#fff; text-decoration:none;"> Yellotasker  </a></p>
 </td>
 </tr>
 </tbody></table>
