@@ -46,11 +46,11 @@ class PostTaskController extends Controller {
      */
     public function __construct(Contact $contact) { 
         $this->middleware('admin');
-        View::share('viewPage', 'Contact');
-        View::share('sub_page_title', 'Contact');
+        View::share('viewPage', 'Post Task Detail');
+        View::share('sub_page_title', 'Post Task Detail');
         View::share('helper',new Helper);
-        View::share('heading','Contact');
-        View::share('route_url',route('contact')); 
+        View::share('heading','Post Task Detail');
+        View::share('route_url',route('postTask')); 
         $this->record_per_page = Config::get('app.record_per_page'); 
     }
 
@@ -61,9 +61,9 @@ class PostTaskController extends Controller {
 
     public function index(Contact $contact, Request $request) 
     { 
-        $page_title = 'Contact';
-        $sub_page_title = 'View Contact';
-        $page_action = 'View Contact'; 
+        $page_title = 'Post Task Detail';
+        $sub_page_title = 'View Post Task Detail';
+        $page_action = 'View Post Task Detail'; 
 
 
         if ($request->ajax()) {

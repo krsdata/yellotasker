@@ -33,27 +33,28 @@
             <div class="portlet-body">
                 <div class="table-toolbar">
                     <div class="row"> 
-                    <div>
-<div>
-            <div>
-                <div>
-                    <div>
+
+                        <div class="modal-body">
+            <div class="post-detail-left">
+                <div class="detail-pic-name">
+                    <div class="pic-name-left">
                         <img src="{{url('storage/image/poster-big.png')}}" alt="">
                     </div>
-                    <div>
-                        <h4>Mark Josh <span><a href="#0.1_">
-                        <img src="{{url('storage/image/follow.png')}}"></a></span></h4>
+                    <div class="pic-name-right"> 
+
+                        <h4>Mark Josh <span class="follow-ico"><a href="#">
+                        <img src="{{url('storage/image/follow.png')}}"></a></span>
+
+                        </h4>
                         <p>Lorem ipsum dolor sit amet is the dummy lorem
-Lorem ipsum dolor sit amet is the dummy</p>
-                        <p><a href="#0.1_">
-                        <img src="{{url('storage/image/open.png')}}"></a>
-                        <a href="#0.1_">
-                        <img src="{{url('storage/image/assigned.png')}}"></a>
-                        <a href="#0.1_">
-                        <img src="{{url('storage/image/complete.png')}}"></a></p>
+            Lorem ipsum dolor sit amet is the dummy</p>
+                        <p><a href="#">
+                            <img src="{{url('storage/image/open.png')}}">
+
+                        </a> &nbsp;&nbsp;<a href="#"><img src="{{url('storage/image/assigned.png')}}"></a> &nbsp;&nbsp;<a href="#"><img src="{{url('storage/image/complete.png')}}"></a></p>
                     </div>
                 </div>
-                <div>
+                <div class="post-description">
                     <h4>Description</h4>
                     <p>
                         Need a reliable Airtasker to help clean my 2 bedroom / 2 bathroom apartment.
@@ -82,57 +83,53 @@ Lorem ipsum dolor sit amet is the dummy</p>
                     </p>
                 </div>
             </div>
-            <div>
+            <div class="post-detail-right">
                 <h4>Task Budget</h4>
-                <div>
-                    <p>
+                <div class="rate">
+                    <p class="main-price">
                                 $100
                                 <span>Approx. 4hrs</span>
                     </p>
-                    <p>
-                                <a href="#0.1_">Make An Offer</a>
+                    <p class="make-offer">
+                                <a href="#">Make An Offer</a>
                     </p>
                 </div>
-                <div>
-                    <div>
-                        <i></i>
-                    </div>
-                    <div>
-                        <h5>Location</h5>
-                        <p>Brookvale, New South
-Wales, Australia</p>
-                    </div>
-                    
+                                <div class="popup-location">
+                                    <div class="pop-location-nav">
+                                        <i class="fa fa-location-arrow"></i>
+                                    </div>
+                                    <div class="pop-location-desc">
+                                        <h5>Location</h5>
+                                        <p>Brookvale, New South
+                Wales, Australia</p>
+                                    </div>
+                                    
+                                </div>
+                                <div class="popup-location">
+                                    <div class="pop-location-nav">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <div class="pop-location-desc">
+                                        <h5>Posted by 20 sep</h5>
+                                        <p>Brookvale, New South
+                Wales, Australia</p>
+                                    </div>
+                                    
+                                </div>
+                                <div class="offers-pop">
+                                    
+                                </div>
+                            </div>
+                      </div>
+                                 
+                
+                    </div> 
                 </div>
-                <div>
-                    <div>
-                        <i></i>
-                    </div>
-                    <div>
-                        <h5>Posted by 20 sep</h5>
-                        <p>Brookvale, New South
-Wales, Australia</p>
-                    </div>
-                    
-                </div>
-                <div>
-                    
-                </div>
-            </div>
-      </div>
-</div>
-
-                       
-                    </div>
-                </div>  
-            </div>
-             
-            </div>
             <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
         </div>
-    </div>
     <!-- END PAGE BASE CONTENT -->
-</div>
+    </div>
 <!-- END CONTENT BODY -->
 </div>
 
@@ -142,3 +139,4 @@ Wales, Australia</p>
 
 
  
+        
