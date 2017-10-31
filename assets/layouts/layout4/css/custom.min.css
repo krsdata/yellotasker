@@ -83,3 +83,9 @@ span.follow-ico {
     line-height: 16px;
     font-size: 13px;
 }
+
+p.main-price {    font-size: 21px;    color: #efeb10;}
+p.main-price span {    font-size: 13px;    display: block;    color: #fff;}
+.main-price span {    font-size: 13px;    display: block;    color: #fff;}
+.make-offer a {    background: #eee;    padding: 8px 10px;    border-radius: 20px;    display: block;    
+    color: #333;    width: 80%;    margin: 0 auto;    font-weight: 600;}
