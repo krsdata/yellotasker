@@ -128,7 +128,7 @@
 
 
          Route::bind('postTask', function($value, $route) {
-            return Modules\Admin\Models\postTask::find($value);
+            return Modules\Admin\Models\PostTask::find($value);
         });
  
         Route::resource('admin/postTask', 'Modules\Admin\Http\Controllers\PostTaskController', [

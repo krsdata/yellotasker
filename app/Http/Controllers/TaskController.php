@@ -132,7 +132,7 @@ class TaskController extends Controller {
         $due_current_month  = $request->get('due_current_month');
         $search_by_date     =  $request->get('search_by_date');
         
-        $tasks  = Tasks::where(function($q)
+        $tasks  = Tasks::with('userDetail')->where(function($q)
                 use(
                         $status,
                         $limit,

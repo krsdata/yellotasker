@@ -30,6 +30,7 @@ use Modules\Admin\Models\ContactGroup;
 use Response; 
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use PDF;
+use Modules\Admin\Models\PostTask;
 
 /**
  * Class AdminController
@@ -111,57 +112,11 @@ class PostTaskController extends Controller {
      * */
 
     public function create(Contact $contact) 
-    {
-        
-        $page_title = 'Contact';
-        $page_action = 'Create Contact';
-        $category  = Category::all();
-        $categories  = Category::all();
-  
-        return view('packages::contact.create', compact('categories', 'html','category','sub_category_name', 'page_title', 'page_action'));
+    { 
     }
 
     public function createGroup(Request $request)
-    {
-        $users = $request->get('ids');
-        $validator = Validator::make($request->all(), [
-                'groupName' => 'required|unique:contact_groups,groupName' 
-            ]); 
-
-        if ($validator->fails()) {
-            $error_msg  =   [];
-            foreach ( $validator->messages()->all() as $key => $value) {
-                        array_push($error_msg, $value);     
-                    }
-                            
-            return Response::json(array(
-                'status' => 0,
-                'message' => $error_msg[0],
-                'data'  =>  ''
-                )
-            );
-        }
-
-        $cgObj             = new ContactGroup;
-        $cgObj->groupName  = $request->get('groupName');
-        $cgObj->parent_id  = 0;
-        $cgObj->save();
-
-        foreach ($users as $key => $value) {
-            $contact        = Contact::find($value);
-            $cg             = new ContactGroup;
-            $cg->groupName  = $request->get('groupName');
-            $cg->contactId  = $value;
-            $cg->email      = $contact->email;
-            $cg->name       = $contact->name;
-            $cg->parent_id  = $cgObj->id;
-            $cg->save();
-        }
-
-        return $cg;
-
-        $contact = Contact::whereIn('id',$request->get('ids'))->get();
-        return $contact;
+    { 
     }
 
     /*
@@ -326,10 +281,9 @@ class PostTaskController extends Controller {
                         ->with('flash_alert_notice', 'contact  successfully deleted.');
     }
 
-    public function show($id) {
-        
-        return Redirect::to('admin/contact');
-
-            }
+    public function show( Request $request, PostTask $postTask) {
+     
+       dd($postTask);   
+    }
 
 }

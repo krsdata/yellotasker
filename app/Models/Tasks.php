@@ -42,4 +42,10 @@ class Tasks extends Authenticatable {
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
 
+
+    public  function userDetail()
+    {
+        return $this->hasOne('App\User','id','userId') ;
+    }
+
 }

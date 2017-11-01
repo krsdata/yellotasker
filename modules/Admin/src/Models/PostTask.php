@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Modules\Admin\Models\Group;
 use Modules\Admin\Models\Position; 
 
-class postTask extends Authenticatable {
+class PostTask extends Eloquent {
 
    
     /**
