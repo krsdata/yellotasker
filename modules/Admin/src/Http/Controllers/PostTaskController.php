@@ -281,9 +281,9 @@ class PostTaskController extends Controller {
                         ->with('flash_alert_notice', 'contact  successfully deleted.');
     }
 
-    public function show( Request $request, PostTask $postTask) {
+    public function show(PostTask $postTask) {
      
-       dd($postTask);   
+       
     }
 
 }
