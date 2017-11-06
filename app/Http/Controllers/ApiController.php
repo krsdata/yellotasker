@@ -170,13 +170,24 @@ class ApiController extends Controller
 
     public function createImage($base64)
     {
-        $img  = explode(',',$base64);
-        $image = base64_decode($img[1]);
-        $image_name= time().'.jpg';
-        $path = storage_path() . "/images/" . $image_name;
-      
-        file_put_contents($path, $image); 
-        return url::to(asset('storage/images/'.$image_name));
+        try{
+            $img  = explode(',',$base64);
+            if(is_array($img) && isset($img[1])){
+                $image = base64_decode($img[1]);
+                $image_name= time().'.jpg';
+                $path = storage_path() . "/image/" . $image_name;
+              
+                file_put_contents($path, $image); 
+                return url::to(asset('storage/image/'.$image_name));
+            }else{
+                return false; 
+            }
+
+            
+        }catch(Exception $e){
+            return false;
+        }
+        
     }
 
 
@@ -193,6 +204,7 @@ class ApiController extends Controller
         {
             return Response::json(array(
                 'status' => 0,
+                'code' => 500,
                 'message' => 'Invalid user Id!',
                 'data'  =>  ''
                 )
@@ -209,14 +221,23 @@ class ApiController extends Controller
                     'role_type' => $user->role_type
                 ];
 
-        if($request->get('profile_image')){
+        if($request->get('profile_image')){  ;
             $profile_image = $this->createImage($request->get('profile_image')); 
+            if($profile_image==false){
+                return Response::json(array(
+                    'status' => 0,
+                     'code' => 500,
+                    'message' => 'Invalid Image format!',
+                    'data'  =>  $request->all()
+                    )
+                );
+            }
             $user->profile_image  = $profile_image;       
         }        
           
          
         foreach ($request->all() as $key => $value) {
-             if($key=="email" || $key=="user_id")
+             if($key=="email" || $key=="user_id" || $key == "profile_image")
              {
                 continue;
              }else{
@@ -234,6 +255,7 @@ class ApiController extends Controller
             $code  = 500;
             $message =$e->getMessage();
         }
+        $data = User::find($request->get('user_id'));  
 
         return response()->json(
                             [ 
