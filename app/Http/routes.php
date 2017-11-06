@@ -42,7 +42,7 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'category','ApiController@category');
         Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
         Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
-
+       
        
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
@@ -58,6 +58,12 @@ Route::group(['prefix' => 'api/v1'], function()
           Route::match(['post','get'],'postTask/createTask',[
                 'as' => 'post_task_create',
                 'uses' => 'TaskController@createTask'
+                ]
+            );  
+
+           Route::match(['post','get'],'updatePostTask',[
+                'as' => 'updatePostTask',
+                'uses' => 'TaskController@updatePostTask'
                 ]
             );  
 

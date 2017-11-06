@@ -112,6 +112,77 @@ class TaskController extends Controller {
 
     }
 
+    public function updatePostTask(Request $request)
+    {
+
+        $post_request = $request->all();
+
+         //Server side valiation
+        $validator = Validator::make($request->all(), [
+           'taskId' => 'required',
+           'title' => 'required'
+        ]);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }   
+        $taskId = $request->get('taskId'); 
+        $task = Tasks::find($taskId);
+        if ($task==null) {
+            $task_data = Tasks::find($taskId);
+            if (empty($task_data)) {
+                return
+                    [ 
+                    "status"  => '0',
+                    'code'    => '500',
+                    "message" => 'No match found for the given task id.',
+                    'data'    => []
+                    ];
+                
+            } 
+        }   
+         
+        $table_cname = \Schema::getColumnListing('post_tasks');
+        $except = ['id','created_at','updated_at'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+           if($request->get($value)){
+                $task->$value = $request->get($value);
+           }
+           
+        }
+        $task->save();
+        $status  = 1;
+        $code    = 200;
+        $message = 'Task  updated successfully.';
+        $data    = $task; 
+        
+        return 
+                [ 
+                "status"  =>$status,
+                'code'    => $code,
+                "message" =>$message,
+                'data'    => $data
+                ];
+                       
+
+    } 
+
     public function getPostTask(Request $request){
 
         $status = $request->get('taskStatus');
