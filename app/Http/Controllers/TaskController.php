@@ -107,16 +107,12 @@ class TaskController extends Controller {
                 'code'    => $code,
                 "message" =>$message,
                 'data'    => $data
-                ];
-                       
-
+                ]; 
     }
 
     public function updatePostTask(Request $request)
-    {
-
-        $post_request = $request->all();
-
+    { 
+        $post_request = $request->all(); 
          //Server side valiation
         $validator = Validator::make($request->all(), [
            'taskId' => 'required',
@@ -189,6 +185,7 @@ class TaskController extends Controller {
         $limit  = $request->get('limit');
         $userId = $request->get('userId');
         $title  = $request->get('title');
+        $taskId  = $request->get('taskId'); 
 
         $start_week = \Carbon\Carbon::now()->startOfWeek()->toDateString();
         $end_week   = \Carbon\Carbon::now()->endOfWeek()->toDateString();
@@ -207,6 +204,7 @@ class TaskController extends Controller {
                 use(
                         $status,
                         $limit,
+                        $taskId,
                         $userId,
                         $title,
                         $start_week,
@@ -247,6 +245,9 @@ class TaskController extends Controller {
                     }
                     if($search_by_date){
                         $q->where('dueDate',$search_by_date);
+                    }
+                    if($taskId){
+                        $q->where('id',$taskId);
                     }
                      
                 });

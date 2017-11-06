@@ -124,6 +124,7 @@ class ApiController extends Controller
 
         //Server side valiation
         $validator = Validator::make($request->all(), [
+           'first_name' => 'required'
            'email' => 'required|email|unique:users',
            'password' => 'required'
         ]);
@@ -167,6 +168,18 @@ class ApiController extends Controller
                         );
     }
 
+    public function createImage($base64)
+    {
+        $img  = explode(',',$base64);
+        $image = base64_decode($img[1]);
+        $image_name= time().'.jpg';
+        $path = storage_path() . "/images/" . $image_name;
+      
+        file_put_contents($path, $image); 
+        return url::to(asset('storage/images/'.$image_name));
+    }
+
+
 /* @method : update User Profile
     * @param : email,password,deviceID,firstName,lastName
     * Response : json
@@ -195,6 +208,12 @@ class ApiController extends Controller
                     'email'=>$user->email,
                     'role_type' => $user->role_type
                 ];
+
+        if($request->get('profile_image')){
+            $profile_image = $this->createImage($request->get('profile_image')); 
+            $user->profile_image  = $profile_image;       
+        }        
+          
          
         foreach ($request->all() as $key => $value) {
              if($key=="email" || $key=="user_id")
