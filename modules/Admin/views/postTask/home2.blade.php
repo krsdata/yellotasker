@@ -1,13 +1,4 @@
-@extends('packages::layouts.master')
-  @section('title', 'Dashboard')
-    @section('header')
-    <h1>Dashboard</h1>
-    @stop
-    @section('content') 
-      @include('packages::partials.navigation')
-      <!-- Left side column. contains the logo and sidebar -->
-      @include('packages::partials.sidebar')
-       <!-- END SIDEBAR -->
+<!-- END SIDEBAR -->
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 <!-- BEGIN CONTENT BODY -->
@@ -140,9 +131,12 @@
     <!-- END PAGE BASE CONTENT -->
     </div>
 <!-- END CONTENT BODY -->
-</div> 
+</div>
+
 
 <!-- END QUICK SIDEBAR -->
-</div> 
+</div>
+
+
+ 
         
-@stop

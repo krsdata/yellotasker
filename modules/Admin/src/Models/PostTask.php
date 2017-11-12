@@ -37,5 +37,10 @@ class PostTask extends Eloquent {
     
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
+    
+    public function user()
+    {
+        return $this->hasOne('Modules\Admin\Models\User','id','userId');
+    }
 
 }
