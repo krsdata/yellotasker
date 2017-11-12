@@ -186,9 +186,12 @@ class TaskController extends Controller {
         $userId = $request->get('userId');
         $title  = $request->get('title');
         $taskId  = $request->get('taskId'); 
-
-        $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
-        $page_size = ($request->get('page_size'))?$request->get('page_size'):20;
+        $page_number = $request->get('page_num');
+        if($page_number){
+            $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
+            $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+        }
+       
             
 
         $start_week = \Carbon\Carbon::now()->startOfWeek()->toDateString();
@@ -258,20 +261,20 @@ class TaskController extends Controller {
                
 
       
-        if($limit){
+        if($limit){  
            $task = $tasks->take($limit)->orderBy('id', 'desc')->get()->toArray();  
         }
-        elseif($page_num>1){
-            $offset = $page_size*($page_num-1);
-            $task =  $tasks->offset($offset)
-                        ->orderBy('id', 'desc')
-                        ->limit($page_size)
-                        ->get()->toArray();
+        elseif($page_number){
+            if($page_number>1){
+                  $offset = $page_size*($page_num-1);
+            }else{
+                  $offset = 0;
+            }  
+            $task =  $tasks->orderBy('id', 'desc')->skip($offset)->take($page_size)->get(); 
         }
         else{
-           $task =  $tasks->get()->toArray();
-        } 
-
+           $task =  $tasks->take(20)->get()->toArray();
+        }  
         $my_data = $this->array_msort($task, array('dueDate'=>SORT_ASC));
         $data = array_values($my_data);
          
