@@ -47,7 +47,7 @@
               <p> 
                  
               </p>
-<div class="m_6462014940457833709mobile-hide"> 
+<div class="m_6462014940457833709mobile-hide">
          <a href="http://www.yellotasker.co/#/update-password;token={{$content['temp_password']}};key={{$content['encrypt_key']}}" style="background:#efeb10; color:#000; padding:10px 25px; float:right; text-decoration:none; border-radius:40px;">Reset Password</a>
 </div>
 </td>
