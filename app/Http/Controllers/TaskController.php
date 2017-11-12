@@ -261,7 +261,7 @@ class TaskController extends Controller {
         if($limit){
            $task = $tasks->take($limit)->orderBy('id', 'desc')->get()->toArray();  
         }
-        if($page_num>1){
+        elseif($page_num>1){
             $offset = $page_size*($page_num-1);
             $task =  $tasks->offset($offset)
                         ->orderBy('id', 'desc')
