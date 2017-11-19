@@ -55,7 +55,7 @@
                         <img src="{{url('storage/image/follow.png')}}"></a></span>
 
                         </h4>
-                        <p>{{$postTasks->user->email or 'NA'}},{{$postTasks->user->phone or 'NA'}}</p>
+                        <p>{{$postTasks->user->email or 'NA'}} {{$postTasks->user->phone or 'NA'}}</p>
                         <p><a href="#">
                             <img src="{{url('storage/image/open.png')}}">
 
@@ -81,16 +81,16 @@
                 </div>
             </div>
             <div class="post-detail-right">
-                <h4>Task Budget</h4>
-                <div class="rate">
-                    <p class="main-price">
-                                ${{$postTasks->totalAmount}}
-                                <span>Approx. {{$postTasks->totalHours}}Hrs</span>
-                    </p>
-                    <p class="make-offer">
-                                
-                    </p>
-                </div>
+                            <h4>Task Budget</h4>
+                            <div class="rate">
+                                <p class="main-price">
+                                            ${{$postTasks->totalAmount}}
+                                            <span>Approx. {{$postTasks->totalHours}}Hrs</span>
+                                </p>
+                                <p class="make-offer">
+                                            
+                                </p>
+                            </div>
                                 <div class="popup-location">
                                     <div class="pop-location-nav">
                                         <i class="fa fa-location-arrow"></i>
