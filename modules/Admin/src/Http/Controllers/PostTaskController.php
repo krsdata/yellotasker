@@ -94,7 +94,7 @@ class PostTaskController extends Controller {
         } else {
             $postTasks = PostTask::with('user')->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-         
+          
         
         return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
     }
