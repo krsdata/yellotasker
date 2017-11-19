@@ -61,6 +61,7 @@
                                                 <th>Hourly Rate</th> 
                                                  <th>Status</th> 
                                                 <th>Created Date</th> 
+                                                 <th></th> 
                                                  <th>Action</th>
                                             </tr>
                                         </thead>
@@ -68,11 +69,12 @@
                                         @foreach($postTasks as $key => $result)
                                             <tr>
                                                 <td>{{ $result->title}}</td>
-                                                <td>{{ substr($result->description,0,20)   }}<a href="{{route('postTask.show',$result->id)}}"> View Details </a></td>
+                                                <td>{{ substr($result->description,0,20)   }}</td>
                                                 <td>{{ $result->totalAmount}}</td>
                                                 <td>{{ $result->hourlyRate}}</td>
                                                 <td>{{ $result->status}}</td>
                                                 <td>{{ $result->created_at}}</td>
+                                                <td><a href="{{route('postTask.show',$result->id)}}"> View Details </a></td>
                                                 <td> 
                                                     {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('postTask.destroy', $result->id))) !!}
                                                         <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$result->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button>
