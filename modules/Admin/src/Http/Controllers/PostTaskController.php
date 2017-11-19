@@ -277,7 +277,13 @@ class PostTaskController extends Controller {
         $page_title = 'Post Task Detail';
         $sub_page_title = 'View Post Task Detail';
         $page_action = 'View Post Task Detail'; 
-        return view('packages::postTask.main', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
+
+        $postTasks = PostTask::with('user')->where('id',$postTask->id)->first();
+//echo Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
+        $postBy = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
+        
+
+        return view('packages::postTask.main', compact('postBy','postTasks','data', 'page_title', 'page_action','sub_page_title'));
        
     }
 
