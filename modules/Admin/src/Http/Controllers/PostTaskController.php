@@ -69,7 +69,7 @@ class PostTaskController extends Controller {
 
         if ($request->ajax()) {
             $id = $request->get('id'); 
-            $category = Contact::find($id); 
+            $category = PostTask::find($id); 
             $category->status = $s;
             $category->save();
             echo $s;
@@ -80,31 +80,23 @@ class PostTaskController extends Controller {
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
-        if ((isset($search) && !empty($search))) {
+        if ((isset($search) && !empty($search))) { 
+            $search = isset($search) ? Input::get('search') : null; 
+            $postTasks = PostTask::with('user')->where(function($query) use($search,$status) {
+                if (!empty($search)) {
+                    $query->Where('title', 'LIKE', "%$search%"); 
+                }
+                if($status){
+                     $query->Where('satus', 'LIKE', "%$status%");
+                }
 
-            $search = isset($search) ? Input::get('search') : '';
-               
-            $contacts = Contact::where(function($query) use($search,$status) {
-                        if (!empty($search)) {
-                            $query->Where('name', 'LIKE', "%$search%")
-                                    ->OrWhere('email', 'LIKE', "%$search%")
-                                      ->OrWhere('phone', 'LIKE', "%$search%");
-                        }
-                        
-                    })->Paginate($this->record_per_page);
+            })->Paginate($this->record_per_page);
         } else {
-            $contacts = Contact::orderBy('id','desc')->Paginate($this->record_per_page);
+            $postTasks = PostTask::with('user')->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-
-        $export = $request->get('export');
-        if($export=='pdf')
-        {
-           $pdf = PDF::loadView('packages::contact.pdf', compact('corporateProfile', 'page_title', 'page_action','contacts'));
-           return ($pdf->download('all-contacts.pdf'));
-        }
-         
+          
         
-        return view('packages::postTask.index', compact('result_set','contacts','data', 'page_title', 'page_action','sub_page_title'));
+        return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
     }
 
     /*
@@ -275,14 +267,17 @@ class PostTaskController extends Controller {
      * @param ID
      * 
      */
-    public function destroy(Contact $contact) { 
-        Contact::where('id',$contact->id)->delete(); 
-        return Redirect::to(route('contact'))
-                        ->with('flash_alert_notice', 'contact  successfully deleted.');
+    public function destroy(PostTask $postTask) { 
+        PostTask::where('id',$postTask->id)->delete(); 
+        return Redirect::to(route('postTask'))
+                        ->with('flash_alert_notice', 'Post Task  successfully deleted.');
     }
 
     public function show(PostTask $postTask) {
-     
+        $page_title = 'Post Task Detail';
+        $sub_page_title = 'View Post Task Detail';
+        $page_action = 'View Post Task Detail'; 
+        return view('packages::postTask.main', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
        
     }
 

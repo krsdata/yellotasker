@@ -223,7 +223,37 @@
                                      
                                     </ul>
                                      
-                                </li> 
+                            </li> 
+                            <!-- Post task ------>
+                            <li class="nav-item  start active  <?php echo e((isset($page_title) && $page_title=='Post Task')?'open':''); ?>">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                     <i class="glyphicon glyphicon-user"></i>
+                                    <span class="title">Manage Post Task</span>
+                                    <span class="arrow <?php echo e((isset($page_title) && $page_title=='Post Task')?'open':''); ?>"></span>
+                                </a>
+
+                            <ul class="sub-menu" style="display: <?php echo e((isset($page_title) && $page_title=='Post Task')?'block':'none'); ?>">
+
+                                <li class="nav-item  <?php echo e((isset($page_title) && $page_title=='Post Task')?'open':''); ?>">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-user"></i>
+                                    <span class="title">Manage Post Task</span>
+                                    <span class="arrow <?php echo e((isset($page_title) && $page_title=='Post Task')?'open':''); ?>"></span>
+                                </a>
+                                    <ul class="sub-menu" style="display: <?php echo e((isset($page_title) && $page_title=='Post Task')?'block':'none'); ?>">
+                                         <li class="nav-item  <?php echo e((isset($page_title) && $page_action=='Post Task')?'active':''); ?>">
+                                            <a href="<?php echo e(route('postTask')); ?>" class="nav-link ">
+                                                 <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Post Task
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>
+                            </ul>  
+                        </li>
+                        <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
                 </div>
