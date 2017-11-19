@@ -55,7 +55,7 @@
                         <img src="{{url('storage/image/follow.png')}}"></a></span>
 
                         </h4>
-                        <p>{{$postTasks->user->email or 'NA'}} {{$postTasks->user->phone or 'NA'}}</p>
+                        <p>{{$postTasks->user->email or 'NA'}} {{$postTasks->user->phone or ''}}</p>
                         <p><a href="#">
                             <img src="{{url('storage/image/open.png')}}">
 
