@@ -482,9 +482,7 @@ class TaskController extends Controller {
                 
             } 
         }  
-
-
-       
+ 
 
         $userId = $request->get('userId'); 
         $user = User::find($userId);
@@ -501,7 +499,38 @@ class TaskController extends Controller {
                 
             } 
         }
-         
+        $action =  $request->get('commentReply');
+        if($action == 'yes'){ 
+            $validator = Validator::make($request->all(), [
+               'commentId' => 'required'
+            ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $post_request
+                    )
+                );
+            }   
+
+             $getComment = $this->replyComment($request->all()); 
+             
+             return Response::json(array(
+                    'status' => 1,
+                    'code'=>200,
+                    'message' => "Comment replied!",
+                    'data'  =>  $getComment
+                    )
+                );
+        }
+
         $table_cname = \Schema::getColumnListing('comments');
         $except = ['id','created_at','updated_at'];
         
@@ -533,6 +562,31 @@ class TaskController extends Controller {
                 ];
     }
 
+    public function replyComment($request)
+    {
+        $table_cname = \Schema::getColumnListing('comments');
+        $except = ['id','created_at','updated_at'];
+        
+        $comment = new Comments;
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+           if(isset($request[$value]) && $request[$value]){
+                $comment->$value = $request[$value];
+           }
+           
+        }
+        $comment->save();
+
+        $comments = Comments::with('userDetail','commentReply')
+                        ->where('id',$request['commentId'])
+                        ->get();
+        return $comments;
+
+
+    }
     public function getComment($taskId=null)
     {
  
