@@ -55,7 +55,7 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Title </th>
+                                                <th> Title  dfdf</th>
                                                 <th> Description </th>  
                                                 <th>Total Amount</th> 
                                                 <th>Hourly Rate</th> 

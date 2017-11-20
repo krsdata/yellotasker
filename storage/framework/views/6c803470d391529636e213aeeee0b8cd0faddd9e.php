@@ -55,12 +55,13 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Title </th>
+                                                <th> Title  dfdf</th>
                                                 <th> Description </th>  
                                                 <th>Total Amount</th> 
                                                 <th>Hourly Rate</th> 
                                                  <th>Status</th> 
                                                 <th>Created Date</th> 
+                                                 <th></th> 
                                                  <th>Action</th>
                                             </tr>
                                         </thead>
@@ -68,11 +69,12 @@
                                         <?php foreach($postTasks as $key => $result): ?>
                                             <tr>
                                                 <td><?php echo e($result->title); ?></td>
-                                                <td><?php echo e(substr($result->description,0,20)); ?><a href="<?php echo e(route('postTask.show',$result->id)); ?>"> View Details </a></td>
+                                                <td><?php echo e(substr($result->description,0,20)); ?></td>
                                                 <td><?php echo e($result->totalAmount); ?></td>
                                                 <td><?php echo e($result->hourlyRate); ?></td>
                                                 <td><?php echo e($result->status); ?></td>
                                                 <td><?php echo e($result->created_at); ?></td>
+                                                <td><a href="<?php echo e(route('postTask.show',$result->id)); ?>"> View Details </a></td>
                                                 <td> 
                                                     <?php echo Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('postTask.destroy', $result->id))); ?>
 
