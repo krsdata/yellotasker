@@ -58,7 +58,7 @@
                                         <thead>
                                             <tr>
                                                  <th> Sno. </th>
-                                                <th> Name </th>
+                                                <th> Full Name </th>
                                                 <th> Email </th>
                                                 <th> Phone </th>
                                                 <th> Role </th>
@@ -71,7 +71,7 @@
                                         <?php foreach($users as $key => $result): ?>
                                             <tr>
                                                  <td> <?php echo e(++$key); ?> </td>
-                                                <td> <?php echo e($result->name); ?> </td>
+                                                <td> <?php echo e($result->first_name.'  '.$result->last_name); ?> </td>
                                                 <td> <?php echo e($result->email); ?> </td>
                                                 <td> <?php echo e($result->phone); ?> </td>
                                                 <td class="center">  <?php if($result->role_type==1): ?>

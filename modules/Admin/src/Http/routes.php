@@ -126,6 +126,24 @@
                 ]
         );  
 
+         Route::bind('comment', function($value, $route) {
+            return App\Models\Comments::find($value);
+        });
+ 
+        Route::resource('admin/comment', 'Modules\Admin\Http\Controllers\CommentController', [
+            'names' => [
+                'edit' => 'comment.edit',
+                'show' => 'comment.show',
+                'destroy' => 'comment.destroy',
+                'update' => 'comment.update',
+                'store' => 'comment.store',
+                'index' => 'comment',
+                'create' => 'comment.create',
+            ]
+                ]
+        );  
+
+
 
          Route::bind('postTask', function($value, $route) {
             return Modules\Admin\Models\PostTask::find($value);

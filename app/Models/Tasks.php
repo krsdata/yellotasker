@@ -48,4 +48,5 @@ class Tasks extends Authenticatable {
         return $this->hasOne('App\User','id','userId') ;
     }
 
+    
 }
