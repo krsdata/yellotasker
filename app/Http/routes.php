@@ -109,6 +109,13 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'DashboardController@getCategories'
                 ]
             );
+
+           
+              Route::match(['get','post'],'comment/post',[
+                'as' => 'commentPost',
+                'uses' => 'TaskController@comment'
+                ]
+            );
  
        
  
@@ -125,6 +132,7 @@ Route::get('/login','Adminauth\AuthController@showLoginForm');
 //Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
 Route::post('password/reset','ApiController@resetPassword');  
 
+ Route::post('password/email','ApiController@resetPassword'); 
 
 Route::get('admin/404',function(){
     if(Auth::guard('admin')->check()==false){

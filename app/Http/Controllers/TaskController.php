@@ -24,6 +24,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
 use Modules\Api\Resources\TaskResource; 
 use App\User;
+use App\Models\Comments;
 
 /**
  * Class AdminController
@@ -434,4 +435,154 @@ class TaskController extends Controller {
                    ]
                 );
     }
+
+    public function Comment(Comments $comment, Request $request){
+
+        $post_request = $request->all(); 
+         //Server side valiation
+        $action =  $request->get('getCommentBy');
+        $taskId =  $request->get('taskId');
+        if($action == 'task'){
+             $getComment = $this->getComment($taskId); 
+              return Response::json($getComment);
+        }
+         
+
+        $validator = Validator::make($request->all(), [
+           'taskId' => 'required',
+           'userId' => 'required'
+        ]);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  $post_request
+                )
+            );
+        }   
+        $taskId = $request->get('taskId'); 
+        $task = Tasks::find($taskId);
+        if ($task==null) {
+            $task_data = Tasks::find($taskId);
+            if (empty($task_data)) {
+                return
+                    [ 
+                    "status"  => '0',
+                    'code'    => '500',
+                    "message" => 'No match found for the given task id.',
+                    'data'    => $post_request
+                    ];
+                
+            } 
+        }  
+
+
+       
+
+        $userId = $request->get('userId'); 
+        $user = User::find($userId);
+        if ($user==null) {
+            $user = Tasks::find($user);
+            if (empty($user)) {
+                return
+                    [ 
+                    "status"  => '0',
+                    'code'    => '500',
+                    "message" => 'No match found for the given user id.',
+                    'data'    => $post_request
+                    ];
+                
+            } 
+        }
+         
+        $table_cname = \Schema::getColumnListing('comments');
+        $except = ['id','created_at','updated_at'];
+        
+        $comment = new Comments;
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+           if($request->get($value)){
+                $comment->$value = $request->get($value);
+           }
+           
+        }
+        $comment->save();
+
+        $comments = Comments::with('userDetail')->where('id',$comment->id)->get();
+        $status  = 1;
+        $code    = 200;
+        $message = 'Reply added successfully.';
+        $data    = $comments; 
+        
+        return 
+                [ 
+                "status"  =>$status,
+                'code'    => $code,
+                "message" =>$message,
+                'data'    => $data
+                ];
+    }
+
+    public function getComment($taskId=null)
+    {
+ 
+        /** Return Error Message **/
+        if (empty($taskId)) {
+                    
+            return [
+                'status' => 0,
+                'code'=>500,
+                'message' => "Task id is required",
+                'data'  =>  []
+                ];
+        }   
+     
+       
+        $task_data = Tasks::find($taskId);
+        if (empty($task_data)) {
+            return
+                [ 
+                "status"  => '0',
+                'code'    => '500',
+                "message" => 'No match found for the given task id.',
+                'data'    => []
+                ];
+            
+        }  
+
+
+        $comment =  Comments::with('userDetail')->where('taskId',$taskId)->get();
+
+        if($comment->count()>0){
+            return 
+                [ 
+                "status"  =>1,
+                'code'    => 200,
+                "message" =>"Comments list",
+                'data'    => $comment
+                ];
+        }else{
+
+            return 
+                [ 
+                "status"  =>0,
+                'code'    => 404,
+                "message" =>"Record not found!",
+                'data'    => []
+                ];
+
+        }
+
+    }
+
 }

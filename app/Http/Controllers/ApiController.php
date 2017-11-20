@@ -18,7 +18,6 @@ use App\User;
 use App\Model\Tasks;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
-
 use App\Http\Requests\UserRequest;  
 use Illuminate\Http\Dispatcher;   
 use Cookie; 
