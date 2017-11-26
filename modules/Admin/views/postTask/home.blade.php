@@ -40,6 +40,9 @@
                                             <div class="col-md-3">
                                                 <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="Task Title" type="text" name="search" id="search" class="form-control" >
                                             </div>
+                                             <div class="col-md-3">
+                                                {!! Form::text('taskdate',null, ['id'=>'taskdate','class' => 'form-control taskdate','data-required'=>1,"size"=>"16","data-date-format"=>"yyyy-mm-dd","placeholder"=>'Task post date'])  !!} 
+                                            </div>
                                             <div class="col-md-2">
                                                 <input type="submit" value="Search" class="btn btn-primary form-control">
                                             </div>
@@ -55,7 +58,7 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Title </th>
+                                                <th> Title  dfdf</th>
                                                 <th> Description </th>  
                                                 <th>Total Amount</th> 
                                                 <th>Hourly Rate</th> 

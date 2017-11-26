@@ -40,12 +40,12 @@
                                         </div>
                                        
                                         </div>
-                                    </div>
+                                </div>
 
                                     @if(isset($result->commentReply) && count($result->commentReply)==0)
                                         Record Not found!
                                     @endif
-                                     
+                                <div class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
@@ -53,7 +53,8 @@
                                                 <th> Task Title </th>
                                                 <th> Posted By </th>  
                                                 <th> Comment </th> 
-                                                <th>Created Date</th>  
+                                                <th>Created Date</th> 
+                                                
                                                  <th>Action</th>
                                             </tr>
                                         </thead>
@@ -62,7 +63,7 @@
                                         @foreach($result->commentReply as $key => $result)
                                             <tr>
                                              <td>{{ ++$key }}</td>
-                                                <td> 
+                                               
                                                 <td>{{ $result->taskDetail->title}}</td>
                                                 <td> 
 

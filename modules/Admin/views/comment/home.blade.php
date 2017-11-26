@@ -40,6 +40,9 @@
                                             <div class="col-md-3">
                                                 <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="Task Title" type="text" name="search" id="search" class="form-control" >
                                             </div>
+                                            <div class="col-md-3">
+                                                {!! Form::text('taskdate',null, ['id'=>'taskdate','class' => 'form-control taskdate','data-required'=>1,"size"=>"16","data-date-format"=>"yyyy-mm-dd","placeholder"=>'Comment Date'])  !!} 
+                                            </div>
                                             <div class="col-md-2">
                                                 <input type="submit" value="Search" class="btn btn-primary form-control">
                                             </div>
@@ -55,6 +58,7 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
+                                                 <th> Sno</th>
                                                 <th> Task Title </th>
                                                 <th> Posted By </th>  
                                                 <th> Comment </th> 
@@ -66,8 +70,10 @@
                                         <tbody>
                                         @foreach($comments as $key => $result)
                                             <tr>
-                                                <td>{{ $result->taskDetail->title}}</td>
-                                                <td> 
+                                            <td>{{ ++$key }}</td>
+                                              
+                                                <td> <a href="{{route('postTask.show',$result->id)}}"> {{ ucfirst($result->taskDetail->title)}}</a></td>
+                                                <td>  
 
                                                 @if(isset($result->userDetail->first_name))
                                                     {{ $result->userDetail->first_name.' '. $result->userDetail->last_name }}
@@ -100,4 +106,4 @@
             
             <!-- END QUICK SIDEBAR -->
         </div>
-        
+       
