@@ -43,7 +43,7 @@ class CommentController extends Controller {
      */
     public function __construct(Comments $comment) { 
         $this->middleware('admin');
-        View::share('viewPage', 'Comment');
+        View::share('viewPage', 'Post Task');
         View::share('sub_page_title', 'Comment');
         View::share('helper',new Helper);
         View::share('heading','Comment');
@@ -72,19 +72,24 @@ class CommentController extends Controller {
             exit();
         } 
 
+         
  
         // Search by name ,email and group
-        $search = Input::get('search');
-        $status = Input::get('status');
-        if ((isset($search) && !empty($search))) { 
+        $search = $request->get('search');
+        $taskdate = $request->get('taskdate');  
+        if ((isset($search) && !empty($search)) || (isset($taskdate) && !empty($taskdate)) ) { 
             $search = isset($search) ? Input::get('search') : null; 
-            $comments = Comments::with('userDetail','taskDetail')->where(function($query) use($search,$status) {
+            $comments = Comments::where(function($query) use($search,$taskdate) {
                 if (!empty($search)) {
-                    $query->Where('commentDescription', 'LIKE', "%$search%"); 
-                }
-                
-
-            })->Paginate($this->record_per_page);
+                    $query->whereHas('taskDetail', function($query) use($search) {
+                            $query->where('title', $search);
+                        }); 
+                } 
+                if (!empty($taskdate)) {
+                     $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
+                } 
+            })->with('userDetail','taskDetail')->where('commentId',0)->Paginate($this->record_per_page);
+            
         } else {
             $comments = Comments::with('userDetail','taskDetail')->where('commentId',0)->orderBy('id','desc')->Paginate($this->record_per_page);
         }

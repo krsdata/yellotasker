@@ -638,4 +638,17 @@ function updateGroup(Url,id) {
          alert(e);
      }
  }
+ // datepicker  and validation
+ $( function() {
+    $( "#taskdate" ).datepicker();
+     var regExp = /[a-z]/i;
+      $('#taskdate,#startdate,#enddate').on('keydown keyup', function(e) {
+        var value = String.fromCharCode(e.which) || e.key;
 
+        // No letters
+        if (regExp.test(value)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+  } );
