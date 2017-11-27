@@ -691,7 +691,7 @@ class TaskController extends Controller {
       return  response()->json([ 
                     "status"=>($offers->count())?1:0,
                     "code"=> ($offers->count())?200:404,
-                    "message"=>($offers->count())?"interest list":"Record not found",
+                    "message"=>($offers->count())?"Task offer list":"Record not found",
                     'data' => $offers
                    ]
                 );
