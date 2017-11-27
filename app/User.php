@@ -43,5 +43,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+    
+     public function saveTask()
+    {
+        return $this->hasMany('App\Models\SavedTask','userId','id')->with('task');
+    }
     
 }

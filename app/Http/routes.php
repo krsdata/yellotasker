@@ -128,8 +128,17 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
-            
-                
+             Route::match(['get','post'],'saveTask',[
+                'as' => 'saveTask',
+                'uses' => 'TaskController@saveTask'
+                ]
+            );
+
+             Route::match(['get','post'],'getSaveTask/{id}',[
+                'as' => 'getSaveTask',
+                'uses' => 'TaskController@getSaveTask'
+                ]
+            );
  
         
     });
