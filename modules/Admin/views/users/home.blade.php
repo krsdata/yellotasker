@@ -58,7 +58,7 @@
                                         <thead>
                                             <tr>
                                                  <th> Sno. </th>
-                                                <th> Name </th>
+                                                <th> Full Name </th>
                                                 <th> Email </th>
                                                 <th> Phone </th>
                                                 <th> Role </th>
@@ -71,7 +71,7 @@
                                         @foreach($users as $key => $result)
                                             <tr>
                                                  <td> {{++$key}} </td>
-                                                <td> {{$result->name}} </td>
+                                                <td> {{$result->first_name.'  '.$result->last_name}} </td>
                                                 <td> {{$result->email}} </td>
                                                 <td> {{$result->phone}} </td>
                                                 <td class="center">  @if($result->role_type==1)

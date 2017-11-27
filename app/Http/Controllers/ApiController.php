@@ -829,5 +829,12 @@ class ApiController extends Controller
     }
     //array_msort($array, $cols)
 
+    public function makeOffer(Request $request)
+    {   
+
+
+
+    }
+
     
 } 

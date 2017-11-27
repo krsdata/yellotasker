@@ -34,60 +34,58 @@
                                     @endif
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
-                                        <div class="row">
-                                            <form action="{{route('postTask')}}" method="get" id="filter_data">
-                                             
-                                            <div class="col-md-3">
-                                                <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="Task Title" type="text" name="search" id="search" class="form-control" >
-                                            </div>
-                                             <div class="col-md-3">
-                                                {!! Form::text('taskdate',null, ['id'=>'taskdate','class' => 'form-control taskdate','data-required'=>1,"size"=>"16","data-date-format"=>"yyyy-mm-dd","placeholder"=>'Task post date'])  !!} 
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="submit" value="Search" class="btn btn-primary form-control">
-                                            </div>
-                                           
-                                        </form>
-                                         <div class="col-md-2">
-                                             <a href="{{ route('postTask') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
+                                         
+                                         <div class="col-md-2 pull-right">
+                                             <a href="{{ route('comment') }}">   <input type="button" value="Back" class="btn btn-primary form-control"> </a>
                                         </div>
                                        
                                         </div>
-                                    </div>
-                                     
+                                </div>
+
+                                    @if(isset($result->commentReply) && count($result->commentReply)==0)
+                                        Record Not found!
+                                    @endif
+                                <div class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Title  dfdf</th>
-                                                <th> Description </th>  
-                                                <th>Total Amount</th> 
-                                                <th>Hourly Rate</th> 
-                                                 <th>Status</th> 
+                                             <th> Id </th>
+                                                <th> Task Title </th>
+                                                <th> Posted By </th>  
+                                                <th> Comment </th> 
                                                 <th>Created Date</th> 
-                                                 <th></th> 
+                                                
                                                  <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($postTasks as $key => $result)
+                                        @foreach($comments as $key => $result)
+                                        @foreach($result->commentReply as $key => $result)
                                             <tr>
-                                                <td>{{ $result->title}}</td>
-                                                <td>{{ substr($result->description,0,20)   }}</td>
-                                                <td>{{ $result->totalAmount}}</td>
-                                                <td>{{ $result->hourlyRate}}</td>
-                                                <td>{{ $result->status}}</td>
-                                                <td>{{ $result->created_at}}</td>
-                                                <td><a href="{{route('postTask.show',$result->id)}}"> View Details </a></td>
+                                             <td>{{ ++$key }}</td>
+                                               
+                                                <td>{{ $result->taskDetail->title}}</td>
                                                 <td> 
-                                                    {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('postTask.destroy', $result->id))) !!}
+
+                                                @if(isset($result->userDetail->first_name))
+                                                    {{ $result->userDetail->first_name.' '. $result->userDetail->last_name }}
+                                                @endif
+
+                                               </td>
+                                                <td>{{ $result->commentDescription}}</td>
+                                                <td>{{ $result->created_at}}</td>
+                                                
+                                                <td> 
+                                                    {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('comment.destroy', $result->id))) !!}
                                                         <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$result->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button>
                                                     {!! Form::close() !!} 
                                                 </td> 
                                             </tr>
+                                             @endforeach 
                                            @endforeach 
                                         </tbody>
                                     </table>
-                                     <div class="center" align="center">  {!! $postTasks->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
+                                    
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->

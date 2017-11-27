@@ -67,20 +67,78 @@
                     <p>
                      <b>{{$postTasks->title}}</b>
                     </p>
-                    <p>
-                      
-                      {{$postTasks->description}}
+                   
+                    <table class="table table-striped table-hover table-bordered" id="">
+                        <tr>
+                            <td width="200px">Title</td>
+                            <td>{{$postTasks->title}}</td>
+                        </tr>
+                          <tr>
+                            <td>Description</td>
+                            <td>{{$postTasks->description}}</td>
+                        </tr>
+                          <tr>
+                            <td>Location Type</td>
+                            <td>{{$postTasks->locationType or 'NA'}}</td>
+                        </tr>
+                          <tr>
+                            <td>Type Of People</td>
+                            <td>{{$postTasks->typeOfPeople or 'NA'}}</td>
+                        </tr>
+                          <tr>
+                            <td>Total Amount</td>
+                            <td>{{$postTasks->totalAmount or 'NA'}}</td>
+                        </tr>
+                          <tr>
+                            <td>People Required</td>
+                            <td>{{$postTasks->peopleRequired or 'NA'}}</td>
+                        </tr>
+                         <tr>
+                            <td>Budget</td>
+                            <td>{{$postTasks->budget or 'NA'}}</td>
+                        </tr>
+                         <tr>
+                            <td>Budget Type</td>
+                            <td>{{$postTasks->budgetType or 'NA'}}</td>
+                        </tr>
+                         <tr>
+                            <td>Status</td>
+                            <td>{{$postTasks->status or 'NA'}}</td>
+                        </tr>
 
-                    </p>
+                    </table>
+
+
                     <br>
                     <h4>Requirement</h4>
                     <p>{{$postTasks->title}}</p>
                     <p>
                         <img src="{{url('storage/image/map.jpg')}}" alt="" width="100%;">
                     </p>
+
+                    <div><b>Comments :</b></div>
+                    <div >
+                        
+                        @foreach($comments as $key => $result)
+                            @if(!empty($result->commentDescription))
+                            <p class="comment"><b>{{ !empty($result->userDetail->first_name)?$result->userDetail->first_name:'xyz'}} </b>: {{$result->commentDescription}} </p>
+                            @endif
+                        @endforeach
+                         <style type="text/css">
+                            p.comment{
+                                  border: 1px solid #ccc;
+                                padding: 10px;
+                                border-radius: 5px !important;
+
+                            }   
+                              
+
+                           </style>      
+
+                    </div>
                 </div>
             </div>
-            <div class="post-detail-right">
+                        <div class="post-detail-right">
                             <h4>Task Budget</h4>
                             <div class="rate">
                                 <p class="main-price">
@@ -120,8 +178,9 @@
                                 </div>
                             </div>
                       </div>
-                                 
-                
+                           
+
+                    
                     </div> 
                 </div>
             <!-- END EXAMPLE TABLE PORTLET-->

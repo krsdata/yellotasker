@@ -225,14 +225,14 @@
                                      
                             </li> 
                             <!-- Post task ------>
-                            <li class="nav-item  start active  {{ (isset($page_title) && $page_title=='Post Task')?'open':'' }}">
+                        <li class="nav-item  start active  {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                      <i class="glyphicon glyphicon-user"></i>
                                     <span class="title">Task Management</span>
-                                    <span class="arrow {{ (isset($page_title) && $page_title=='Post Task')?'open':'' }}"></span>
+                                    <span class="arrow {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}"></span>
                                 </a>
 
-                            <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Post Task')?'block':'none' }}">
+                            <ul class="sub-menu" style="display: {{ (isset($viewPage) && $viewPage=='Post Task')?'block':'none' }}">
 
                                 <li class="nav-item  {{ (isset($page_title) && $page_title=='Post Task')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
@@ -246,6 +246,24 @@
                                                  <i class="glyphicon glyphicon-eye-open"></i> 
                                                 <span class="title">
                                                     View Task
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item  {{ (isset($page_title) && $page_title=='comment')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-user"></i>
+                                    <span class="title">Comment</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='comment')?'open':'' }}"></span>
+                                </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='comment')?'block':'none' }}">
+                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='comment')?'active':'' }}">
+                                            <a href="{{ route('comment') }}" class="nav-link ">
+                                                 <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Comment
                                                 </span>
                                             </a>
                                         </li> 

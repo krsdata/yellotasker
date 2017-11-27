@@ -1,4 +1,13 @@
-<!-- END SIDEBAR -->
+@extends('packages::layouts.master')
+  @section('title', 'Dashboard')
+    @section('header')
+    <h1>Dashboard</h1>
+    @stop
+    @section('content') 
+      @include('packages::partials.navigation')
+      <!-- Left side column. contains the logo and sidebar -->
+      @include('packages::partials.sidebar')
+       <!-- END SIDEBAR -->
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 <!-- BEGIN CONTENT BODY -->
@@ -42,12 +51,11 @@
                     </div>
                     <div class="pic-name-right"> 
 
-                        <h4>Mark Josh <span class="follow-ico"><a href="#">
+                        <h4>{{$postTasks->user->first_name or 'NA'}}<span class="follow-ico"><a href="#">
                         <img src="{{url('storage/image/follow.png')}}"></a></span>
 
                         </h4>
-                        <p>Lorem ipsum dolor sit amet is the dummy lorem
-            Lorem ipsum dolor sit amet is the dummy</p>
+                        <p>{{$postTasks->user->email or 'NA'}} {{$postTasks->user->phone or ''}}</p>
                         <p><a href="#">
                             <img src="{{url('storage/image/open.png')}}">
 
@@ -57,51 +65,42 @@
                 <div class="post-description">
                     <h4>Description</h4>
                     <p>
-                        Need a reliable Airtasker to help clean my 2 bedroom / 2 bathroom apartment.
-                    Notes:<br>
-                    Wash down bathroom walls as well please.They just need a freshen up
-                    <br><br>
-                    Standard Airtasker cleaning tasks should include: <br>
-                    - Everywhere in the house: Wiping down furniture and visible surfaces; Mop and
-                       vacuum floors; Empty rubbish <br>
-                    - Bathrooms: Cleaning showers, bathtub and toilets; <br>
-                    - Kitchen: Washing dishes; <br><br>
-
-                    I would also like the following cleaning tasks included:<br>
-
-                    - Windows (interior side) cleaned - should be about 1 hour
-
-                    This task was created using a Template. You can still ask questions and make offers
-                    as you would on a standard task.
+                     <b>{{$postTasks->title}}</b>
+                    </p>
+                    <p>
+                      
+                      {{$postTasks->description}}
 
                     </p>
                     <br>
                     <h4>Requirement</h4>
-                    <p>This task has certain requirements of the Airtasker Worker</p>
+                    <p>{{$postTasks->title}}</p>
                     <p>
                         <img src="{{url('storage/image/map.jpg')}}" alt="" width="100%;">
                     </p>
                 </div>
             </div>
             <div class="post-detail-right">
-                <h4>Task Budget</h4>
-                <div class="rate">
-                    <p class="main-price">
-                                $100
-                                <span>Approx. 4hrs</span>
-                    </p>
-                    <p class="make-offer">
-                                <a href="#">Make An Offer</a>
-                    </p>
-                </div>
+                            <h4>Task Budget</h4>
+                            <div class="rate">
+                                <p class="main-price">
+                                            ${{$postTasks->totalAmount}}
+                                            <span>Approx. {{$postTasks->totalHours}}Hrs</span>
+                                </p>
+                                <p class="make-offer">
+                                            
+                                </p>
+                            </div>
                                 <div class="popup-location">
                                     <div class="pop-location-nav">
                                         <i class="fa fa-location-arrow"></i>
                                     </div>
                                     <div class="pop-location-desc">
-                                        <h5>Location</h5>
-                                        <p>Brookvale, New South
-                Wales, Australia</p>
+                                        <h5>{{$postTasks->address or 'NA'}}</h5>
+                                        <p>
+                                            
+                                            {{$postTasks->zipcode}}
+                                        </p>
                                     </div>
                                     
                                 </div>
@@ -110,9 +109,9 @@
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     <div class="pop-location-desc">
-                                        <h5>Posted by 20 sep</h5>
-                                        <p>Brookvale, New South
-                Wales, Australia</p>
+                                        <h5>Posted by {{$postBy}}</h5>
+                                        <p>{{$postTasks->address}} <br>{{$postTasks->zipcode}}
+                                        </p>
                                     </div>
                                     
                                 </div>
@@ -131,12 +130,9 @@
     <!-- END PAGE BASE CONTENT -->
     </div>
 <!-- END CONTENT BODY -->
-</div>
-
+</div> 
 
 <!-- END QUICK SIDEBAR -->
-</div>
-
-
- 
+</div> 
         
+@stop

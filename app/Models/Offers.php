@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Eloquent; 
+use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Admin\Models\Group;
+use Modules\Admin\Models\Position;
+use Auth;
 
-class Comments extends Eloquent {
+class Offers extends Authenticatable {
 
    
     /**
@@ -12,7 +16,7 @@ class Comments extends Eloquent {
      *
      * @var string
      */
-    protected $table = 'comments';
+    protected $table = 'offers';
     /**
      * The attributes that are mass assignable.
      *
@@ -32,27 +36,25 @@ class Comments extends Eloquent {
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
+    
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
 
-    // user details
-    public  function userDetail()
+
+    public  function assignUser()
     {
-        return $this->hasOne('App\User','id','userId') ;
+        return $this->hasOne('App\User','id','assignUserId') ;
     }
 
-    public  function commentReply()
+    public  function interestedUser()
     {
-        return $this->hasMany('App\Models\Comments','commentId')->with('userDetail') ;
+        return $this->hasMany('App\User','id','interestedUsreId') ;
     }
 
-    public  function taskDetail()
+    public function task()
     {
-        return $this->hasOne('App\Models\Tasks','id','taskId');
+        return $this->belongsTo('App\Models\Tasks','taskId','id');
     }
 
-
+    
 }

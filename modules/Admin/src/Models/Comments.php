@@ -1,8 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent; 
+use Illuminate\Http\Request;
+use Input;
+use Validator;
+use Auth;
+use Hash;
+use View;
+use URL;
+use Lang;
+use Session;
+use DB;
+use Route;
+use Crypt;
+use Illuminate\Http\Dispatcher;
 
 class Comments extends Eloquent {
 
@@ -48,11 +61,5 @@ class Comments extends Eloquent {
     {
         return $this->hasMany('App\Models\Comments','commentId')->with('userDetail') ;
     }
-
-    public  function taskDetail()
-    {
-        return $this->hasOne('App\Models\Tasks','id','taskId');
-    }
-
 
 }

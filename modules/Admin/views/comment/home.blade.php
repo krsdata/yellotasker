@@ -8,7 +8,7 @@
                     
                     <!-- END PAGE HEAD-->
                     <!-- BEGIN PAGE BREADCRUMB -->
-                   <?php echo $__env->make('packages::partials.breadcrumb', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                   @include('packages::partials.breadcrumb')
 
                     <!-- END PAGE BREADCRUMB -->
                     <!-- BEGIN PAGE BASE CONTENT -->
@@ -19,26 +19,29 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase"><?php echo e($heading); ?></span>
+                                        <span class="caption-subject font-red sbold uppercase">{{ $heading }}</span>
                                     </div>
                                      
                                      
                                 </div>
                                   
-                                    <?php if(Session::has('flash_alert_notice')): ?>
+                                    @if(Session::has('flash_alert_notice'))
                                          <div class="alert alert-success alert-dismissable" style="margin:10px">
                                             <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                                           <i class="icon fa fa-check"></i>  
-                                         <?php echo e(Session::get('flash_alert_notice')); ?> 
+                                         {{ Session::get('flash_alert_notice') }} 
                                          </div>
-                                    <?php endif; ?>
+                                    @endif
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
                                         <div class="row">
-                                            <form action="<?php echo e(route('postTask')); ?>" method="get" id="filter_data">
+                                            <form action="{{route('comment')}}" method="get" id="filter_data">
                                              
                                             <div class="col-md-3">
-                                                <input value="<?php echo e((isset($_REQUEST['search']))?$_REQUEST['search']:''); ?>" placeholder="Task Title" type="text" name="search" id="search" class="form-control" >
+                                                <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="Task Title" type="text" name="search" id="search" class="form-control" >
+                                            </div>
+                                            <div class="col-md-3">
+                                                {!! Form::text('taskdate',null, ['id'=>'taskdate','class' => 'form-control taskdate','data-required'=>1,"size"=>"16","data-date-format"=>"yyyy-mm-dd","placeholder"=>'Comment Date'])  !!} 
                                             </div>
                                             <div class="col-md-2">
                                                 <input type="submit" value="Search" class="btn btn-primary form-control">
@@ -46,7 +49,7 @@
                                            
                                         </form>
                                          <div class="col-md-2">
-                                             <a href="<?php echo e(route('postTask')); ?>">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
+                                             <a href="{{ route('comment') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
                                         </div>
                                        
                                         </div>
@@ -55,35 +58,41 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Title </th>
-                                                <th> Description </th>  
-                                                <th>Total Amount</th> 
-                                                <th>Hourly Rate</th> 
-                                                 <th>Status</th> 
+                                                 <th> Sno</th>
+                                                <th> Task Title </th>
+                                                <th> Posted By </th>  
+                                                <th> Comment </th> 
                                                 <th>Created Date</th> 
+                                                 <th></th> 
                                                  <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach($postTasks as $key => $result): ?>
+                                        @foreach($comments as $key => $result)
                                             <tr>
-                                                <td><?php echo e($result->title); ?></td>
-                                                <td><?php echo e(substr($result->description,0,20)); ?><a href="<?php echo e(route('postTask.show',$result->id)); ?>"> View Details </a></td>
-                                                <td><?php echo e($result->totalAmount); ?></td>
-                                                <td><?php echo e($result->hourlyRate); ?></td>
-                                                <td><?php echo e($result->status); ?></td>
-                                                <td><?php echo e($result->created_at); ?></td>
-                                                <td> 
-                                                    <?php echo Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('postTask.destroy', $result->id))); ?>
+                                            <td>{{ ++$key }}</td>
+                                              
+                                                <td> <a href="{{route('postTask.show',$result->id)}}"> {{ ucfirst($result->taskDetail->title)}}</a></td>
+                                                <td>  
 
-                                                        <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="<?php echo e($result->id); ?>"><i class="fa fa-fw fa-trash" title="Delete"></i></button>
-                                                    <?php echo Form::close(); ?> 
+                                                @if(isset($result->userDetail->first_name))
+                                                    {{ $result->userDetail->first_name.' '. $result->userDetail->last_name }}
+                                                @endif
+
+                                               </td>
+                                                <td>{{ $result->commentDescription}}</td>
+                                                <td>{{ $result->created_at}}</td>
+                                                <td><a href="{{route('comment.show',$result->id)}}"> View Reply </a></td>
+                                                <td> 
+                                                    {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('comment.destroy', $result->id))) !!}
+                                                        <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$result->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button>
+                                                    {!! Form::close() !!} 
                                                 </td> 
                                             </tr>
-                                           <?php endforeach; ?> 
+                                           @endforeach 
                                         </tbody>
                                     </table>
-                                     <div class="center" align="center">  <?php echo $postTasks->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render(); ?></div>
+                                     <div class="center" align="center">  {!! $comments->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->
@@ -97,4 +106,4 @@
             
             <!-- END QUICK SIDEBAR -->
         </div>
-        
+       

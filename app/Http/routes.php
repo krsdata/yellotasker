@@ -111,13 +111,25 @@ Route::group(['prefix' => 'api/v1'], function()
             );
 
            
-              Route::match(['get','post'],'comment/post',[
+            Route::match(['get','post'],'comment/post',[
                 'as' => 'commentPost',
                 'uses' => 'TaskController@comment'
                 ]
             );
- 
-       
+
+            Route::match(['get','post'],'makeOffer',[
+                'as' => 'makeOffer',
+                'uses' => 'TaskController@makeOffer'
+                ]
+            );
+             Route::match(['get','post'],'taskOffer/{id}',[
+                'as' => 'taskOffer',
+                'uses' => 'TaskController@taskOffer'
+                ]
+            );
+
+            
+                
  
         
     });

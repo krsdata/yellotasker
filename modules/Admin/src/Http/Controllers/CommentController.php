@@ -24,18 +24,14 @@ use Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
 use App\Helpers\Helper;
-use Modules\Admin\Models\Contact; 
-use Modules\Admin\Models\Category;
-use Modules\Admin\Models\ContactGroup;
-use Response; 
-use Maatwebsite\Excel\Facades\Excel as Excel;
-use PDF;
+use App\Models\Comments;  
+use Response;  
 use Modules\Admin\Models\PostTask;
 
 /**
  * Class AdminController
  */
-class PostTaskController extends Controller {
+class CommentController extends Controller {
     /**
      * @var  Repository
      */
@@ -45,13 +41,13 @@ class PostTaskController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function __construct(Contact $contact) { 
+    public function __construct(Comments $comment) { 
         $this->middleware('admin');
         View::share('viewPage', 'Post Task');
-        View::share('sub_page_title', 'Post Task Detail');
+        View::share('sub_page_title', 'Comment');
         View::share('helper',new Helper);
-        View::share('heading','Post Task');
-        View::share('route_url',route('postTask')); 
+        View::share('heading','Comment');
+        View::share('route_url',route('comment')); 
         $this->record_per_page = Config::get('app.record_per_page'); 
     }
 
@@ -60,44 +56,45 @@ class PostTaskController extends Controller {
      * Dashboard
      * */
 
-    public function index(Contact $contact, Request $request) 
+    public function index(Comments $comment, Request $request) 
     { 
-        $page_title = 'Post Task';
-        $sub_page_title = 'View Post Task Detail';
-        $page_action = 'View Post Task Detail'; 
+        $page_title = 'comment';
+        $sub_page_title = 'View Comment';
+        $page_action = 'View Comment'; 
 
 
         if ($request->ajax()) {
             $id = $request->get('id'); 
-            $category = PostTask::find($id); 
+            $category = Comments::find($id); 
             $category->status = $s;
             $category->save();
             echo $s;
             exit();
         } 
 
+         
  
         // Search by name ,email and group
-        $search = Input::get('search');
-        $taskdate = Input::get('taskdate');
-        if ((isset($search) && !empty($search)) || (isset($taskdate) && !empty($taskdate)) ) {
+        $search = $request->get('search');
+        $taskdate = $request->get('taskdate');  
+        if ((isset($search) && !empty($search)) || (isset($taskdate) && !empty($taskdate)) ) { 
             $search = isset($search) ? Input::get('search') : null; 
-            $taskdate = isset($taskdate) ? $taskdate : null; 
-            $postTasks = PostTask::with('user')->where(function($query) use($search,$taskdate) {
+            $comments = Comments::where(function($query) use($search,$taskdate) {
                 if (!empty($search)) {
-                    $query->Where('title', 'LIKE', "%$search%"); 
-                }
-               if($taskdate){
-                     $query->Where('created_at', 'LIKE', "%$taskdate%");
-                }
-
-            })->Paginate($this->record_per_page);
+                    $query->whereHas('taskDetail', function($query) use($search) {
+                            $query->where('title', $search);
+                        }); 
+                } 
+                if (!empty($taskdate)) {
+                     $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
+                } 
+            })->with('userDetail','taskDetail')->where('commentId',0)->Paginate($this->record_per_page);
+            
         } else {
-            $postTasks = PostTask::with('user')->orderBy('id','desc')->Paginate($this->record_per_page);
+            $comments = Comments::with('userDetail','taskDetail')->where('commentId',0)->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-          
-        
-        return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
+         
+        return view('packages::comment.index', compact('comments','data', 'page_title', 'page_action','sub_page_title')); 
     }
 
     /*
@@ -268,24 +265,26 @@ class PostTaskController extends Controller {
      * @param ID
      * 
      */
-    public function destroy(PostTask $postTask) { 
-        PostTask::where('id',$postTask->id)->delete(); 
-        return Redirect::to(route('postTask'))
-                        ->with('flash_alert_notice', 'Post Task  successfully deleted.');
+    public function destroy(Comments $comment) { 
+
+        Comments::where('id',$comment->id)->delete(); 
+
+
+
+        return Redirect::to(URL::previous())
+                        ->with('flash_alert_notice', 'Comment successfully deleted.');
     }
 
-    public function show(PostTask $postTask) {
-        $page_title = 'Post Task Detail';
-        $sub_page_title = 'View Post Task Detail';
-        $page_action = 'View Post Task Detail'; 
-
-        $postTasks = PostTask::with('user')->where('id',$postTask->id)->first();
-//echo Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
-        $postBy = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
+    public function show(Comments $comment) {
         
-        $comments =  \App\Models\Comments::with('userDetail')->where('taskId',$postTask->id)->get();
-        
-        return view('packages::postTask.main', compact('comments','postBy','postTasks','data', 'page_title', 'page_action','sub_page_title'));
+        $page_title = 'comment Reply';
+        $sub_page_title = 'View Comment';
+        $page_action = 'View Comment'; 
+        $comments = Comments::with('userDetail','commentReply','taskDetail')
+                        ->where('id',$comment->id)
+                        ->get();
+      //dd($comments);
+        return view('packages::commentReply.index', compact('comments', 'page_title', 'page_action','sub_page_title'));
        
     }
 
