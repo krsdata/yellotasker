@@ -139,6 +139,31 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@getSaveTask'
                 ]
             );
+
+              Route::match(['get','post'],'getReason',[
+                'as' => 'getReason',
+                'uses' => 'ReasonController@getReason'
+                ]
+            );
+
+           Route::match(['get','post'],'getReport/user/{id}',[
+                'as' => 'getReport',
+                'uses' => 'ComplainController@getReport'
+                ]
+            );
+           Route::match(['get','post'],'getReport/task/{id}',[
+                'as' => 'getReport',
+                'uses' => 'ComplainController@getReport'
+                ]
+            );
+
+           Route::match(['get','post'],'report/{name}',[
+                'as' => 'reportBy',
+                'uses' => 'ComplainController@reportBy'
+                ]
+            ); 
+
+             
  
         
     });

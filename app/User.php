@@ -49,5 +49,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\SavedTask','userId','id')->with('task');
     }
-    
+    public function reportedDetails()
+    {
+        return $this->hasMany('App\Models\Complains','postedUserId')->with('reportedUser');
+    }
 }

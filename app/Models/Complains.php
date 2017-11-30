@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Admin\Models\Group;
-use Modules\Admin\Models\Position;
+ 
 use Auth;
 
-class Tasks extends Authenticatable {
+class Complains extends Authenticatable {
 
    
     /**
@@ -16,7 +15,7 @@ class Tasks extends Authenticatable {
      *
      * @var string
      */
-    protected $table = 'post_tasks';
+    protected $table = 'complains';
     /**
      * The attributes that are mass assignable.
      *
@@ -36,26 +35,29 @@ class Tasks extends Authenticatable {
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
+    
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
 
 
-    public  function userDetail()
+    public  function reportedUser()
     {
-        return $this->hasOne('App\User','id','userId') ;
+        return $this->hasMany('App\User','id','reportedUserId') ;
     }
 
-    public function OfferTask()
+    public  function postedUser()
     {
-        return $this->hasMany('App\Models\Offers','taskId','id')->with('interestedUser');
+        return $this->hasOne('App\User','id','postedUserId') ;
     }
 
-    public function reportedDetails()
+    public function task()
     {
-        return $this->hasMany('App\Models\Complains','taskId')->with('reportedUser');
+        return $this->belongsTo('App\Models\Tasks','taskId','id');
+    }
+
+    public function reason()
+    {
+        return $this->belongsTo('Modules\Admin\Models\Reason','reasonId','id');
     }
 
     

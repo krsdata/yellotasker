@@ -271,6 +271,35 @@
                                 </li>
                             </ul>  
                         </li>
+
+                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Program')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                    <span class="title">Manage Reason</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='Reason')?'open':'' }}"></span>
+                                </a>
+                                <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Reason')?'block':'none' }}">
+                                    <li class="nav-item  {{ (isset($page_title) && $page_action=='View Program')?'active':'' }}">
+                                        <a href="{{ route('reason') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-eye-open"></i> 
+                                            <span class="title">
+                                                View Reason 
+                                            </span>
+                                        </a>
+                                    </li> 
+                                    <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Reason')?'active':'' }}">
+                                        <a href="{{ route('reason.create') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-plus-sign"></i> 
+                                            <span class="title">
+                                                Create Reason 
+                                            </span>
+                                        </a>
+                                    </li> 
+                                 
+                                </ul>
+                                     
+                        </li> 
+
                         <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
