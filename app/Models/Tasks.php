@@ -58,5 +58,10 @@ class Tasks extends Authenticatable {
         return $this->hasMany('App\Models\Complains','taskId')->with('reportedUser');
     }
 
+     public function interestedUsers() {
+        return $this->belongsToMany('App\User', 'offers', 'taskId', 'interestedUsreId');
+    }
+
+
     
 }
