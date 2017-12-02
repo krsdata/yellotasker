@@ -50,7 +50,7 @@ class Tasks extends Authenticatable {
 
     public function OfferTask()
     {
-        return $this->hasMany('App\Models\Offers','taskId','id')->with('interestedUser');
+        return $this->hasMany('App\Models\Offers','taskId','id');
     }
 
     public function reportedDetails()

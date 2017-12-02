@@ -687,7 +687,7 @@ class TaskController extends Controller {
     public function taskOffer(Request $request, $taskId=null)
     {
       $offers =  Tasks::with('OfferTask')->where('id',$taskId)->get();
-
+ 
       return  response()->json([ 
                     "status"=>($offers->count())?1:0,
                     "code"=> ($offers->count())?200:404,
