@@ -67,13 +67,13 @@ class ComplainController extends Controller {
         if($reportType=='user'){
              $reportValidation = [
              'reasonId' => 'required',
-            'postedUserId' => 'required',
+         //   'postedUserId' => 'required',
                'reportedUserId' => 'required',
                
             ];
         }elseif($reportType=='task'){
             $reportValidation = [
-                'postedUserId' => 'required',
+             //   'postedUserId' => 'required',
                'reportedUserId' => 'required',
                'reasonId' => 'required',
                'taskId'=>'required'
