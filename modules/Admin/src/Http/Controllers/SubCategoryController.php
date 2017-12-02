@@ -230,7 +230,7 @@ class SubCategoryController extends Controller {
     public function destroy(Category $category) {
         
         $d = Category::where('id',$category->id)->delete(); 
-        return Redirect::to(route('category'))
+        return Redirect::to(URL::previous())
                         ->with('flash_alert_notice', 'Category  successfully deleted.');
     }
 
