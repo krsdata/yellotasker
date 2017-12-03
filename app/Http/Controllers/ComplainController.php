@@ -105,20 +105,7 @@ class ComplainController extends Controller {
                 )
             );
         } 
-
-        $is_user = User::find($request->get('postedUserId'));  
-         
-        if (!$is_user) {
  
-            return
-                [ 
-                "status"  => '0',
-                'code'    => '500',
-                "message" => 'No match found for the given upostedUserId.',
-                'data'    => $request->all()
-                ];
-                 
-        } else{
 
             $is_user = User::find($request->get('reportedUserId'));  
          
@@ -131,9 +118,7 @@ class ComplainController extends Controller {
                     "message" => 'No match found for the given reportedUserId.',
                     'data'    => $request->all()
                     ]; 
-            }
-
-        }  
+            } 
 
         $reason = Reason::find($request->get('reasonId'));
 
