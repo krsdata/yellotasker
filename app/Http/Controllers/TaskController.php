@@ -702,12 +702,25 @@ class TaskController extends Controller {
 
     public function getSaveTask(Request $request, $uid=null){
         
-         $offers =  User::with('saveTask')->where('id',$uid)->get();
+        $offers =  User::with('saveTask')->where('id',$uid)->get();
 
-      return  response()->json([ 
+        return  response()->json([ 
                     "status"=>($offers->count())?1:0,
                     "code"=> ($offers->count())?200:404,
                     "message"=>($offers->count())?"Saved task offer list":"Record not found",
+                    'data' => $offers
+                   ]
+                );
+    }
+
+    public function getTask(Request $request, $uid=null){
+        
+        $offers =  User::with('saveTask','openTask','pendingTask','assignedTask','completedTask','offers')->where('id',$uid)->get();
+
+        return  response()->json([ 
+                    "status"=>($offers->count())?1:0,
+                    "code"=> ($offers->count())?200:404,
+                    "message"=>($offers->count())?"All task list":"Record not found",
                     'data' => $offers
                    ]
                 );

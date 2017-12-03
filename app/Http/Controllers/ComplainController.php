@@ -105,7 +105,7 @@ class ComplainController extends Controller {
                 )
             );
         } 
- 
+      
 
             $is_user = User::find($request->get('reportedUserId'));  
          

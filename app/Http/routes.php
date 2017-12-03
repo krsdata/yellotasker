@@ -138,7 +138,13 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'getSaveTask',
                 'uses' => 'TaskController@getSaveTask'
                 ]
-            );
+            ); 
+
+            Route::match(['get','post'],'getUserTask/{id}',[
+                'as' => 'getUserTask',
+                'uses' => 'TaskController@getTask'
+                ]
+            ); 
 
               Route::match(['get','post'],'getReason',[
                 'as' => 'getReason',
