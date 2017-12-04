@@ -54,5 +54,10 @@ class SavedTask extends Authenticatable {
         return $this->hasMany('App\Models\Tasks','id','taskId');
     }
 
+    public function mytask()
+    {
+        return $this->hasOne('App\Models\Tasks','id','taskId');
+    }
+
     
 }

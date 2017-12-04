@@ -701,7 +701,7 @@ class TaskController extends Controller {
     }
 
     public function getSaveTask(Request $request, $uid=null){
-        
+      
         $offers =  User::with('saveTask')->where('id',$uid)->get();
 
         return  response()->json([ 
@@ -715,7 +715,9 @@ class TaskController extends Controller {
 
     public function getTask(Request $request, $uid=null){
         
-        $offers =  User::with('saveTask','openTask','pendingTask','assignedTask','completedTask','offers')->where('id',$uid)->get();
+        $offers =  User::with('saveTask','openTask','pendingTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
+
+       
 
         return  response()->json([ 
                     "status"=>($offers->count())?1:0,
