@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Foundation\Auth\User as Authenticatable;
- 
-use Auth;
+use Illuminate\Database\Eloquent\Model as Eloquent; 
 
-class Complains extends Authenticatable {
+class Complains extends Eloquent {
 
    
     /**
@@ -34,7 +31,7 @@ class Complains extends Authenticatable {
      * The attributes that should be hidden for arrays.
      *
      * @var array
-     */
+     */ 
     
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
@@ -58,6 +55,21 @@ class Complains extends Authenticatable {
     public function reason()
     {
         return $this->belongsTo('Modules\Admin\Models\Reason','reasonId','id');
+    }
+    
+    public  function userDetail()
+    {
+        return $this->hasOne('App\User','id','postedUserId') ;
+    }
+    
+    public  function reportedUserDetail()
+    {
+        return $this->hasOne('App\User','id','reportedUserId') ;
+    }
+
+    public  function taskDetail()
+    {
+        return $this->hasOne('App\Models\Tasks','id','taskId'); 
     }
 
     

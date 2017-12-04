@@ -270,7 +270,7 @@
                                     </ul>
                                 </li>
                             </ul>  
-                        </li>
+                        </li> 
 
                          <li class="nav-item start active {{ (isset($page_title) && $page_title=='Program')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
@@ -299,7 +299,25 @@
                                 </ul>
                                      
                         </li> 
-
+ 
+                        <li class="nav-item start active {{ (isset($page_title) && $page_title=='Compaint Managment')?'open':'' }}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-user"></i>
+                                <span class="title">Compaint Managment</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start active open">
+                                    <a href="{{ route('compaint') }}" class="nav-link ">
+                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                        <span class="title">View</span>
+                                        <span class="selected"></span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li> 
                         <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->

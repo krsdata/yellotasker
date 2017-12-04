@@ -143,6 +143,12 @@
                 ]
         );  
 
+        Route::resource('admin/compaint', 'Modules\Admin\Http\Controllers\CompaintController', [
+            'names' => [
+                'index' => 'compaint',
+            ]
+                ]
+        );
 
 
          Route::bind('postTask', function($value, $route) {
