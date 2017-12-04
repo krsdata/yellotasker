@@ -47,7 +47,11 @@ class User extends Authenticatable
     
     public function saveTask()
     {
+<<<<<<< HEAD
         return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId');
+=======
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+>>>>>>> 420039cff87fb2d390c880eb3a4a148493d49be6
     }
 
    
