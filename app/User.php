@@ -45,10 +45,12 @@ class User extends Authenticatable
 
 
     
-     public function saveTask()
+    public function saveTask()
     {
-        return $this->hasMany('App\Models\SavedTask','userId','id')->select(['id','taskId','userId']);//->with('task');
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId');
     }
+
+   
     public function reportedDetails()
     {
         return $this->hasMany('App\Models\Complains','postedUserId')->with('reportedUser');
@@ -56,23 +58,25 @@ class User extends Authenticatable
 
     public function openTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->select(['id','id as taskId','userId'])->where('status','open');
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','open');
     }
     public function pendingTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->select(['id','id as taskId','userId'])->where('status','pending');
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','pending');
     }
     public function assignedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->select(['id','id as taskId','userId'])->where('status','assigned');
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','assigned');
     }
     public function completedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->select(['id','id as taskId','userId'])->where('status','completed');
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','completed');
     }
-    public function offers()
+    public function offer_task()
     {
-        return $this->hasMany('App\Models\Offers','interestedUsreId')->select(['id','taskId','interestedUsreId']);
+       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
 

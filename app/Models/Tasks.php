@@ -62,6 +62,10 @@ class Tasks extends Authenticatable {
         return $this->belongsToMany('App\User', 'offers', 'taskId', 'interestedUsreId');
     }
 
+    public function saveTask()
+    {
+         return $this->hasMany('App\Models\SavedTask','taskId','id');
+    }
 
     
 }
