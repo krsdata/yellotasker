@@ -15,6 +15,14 @@ use Auth,Crypt,okie,Hash,Lang,JWTAuth,Input,Closure,URL;
 use JWTExceptionTokenInvalidException; 
 use App\Helpers\Helper as Helper;
 use App\User; 
+use App\Model\Tasks;
+use Modules\Admin\Models\Category;
+use Modules\Admin\Models\CategoryDashboard; 
+use App\Http\Requests\UserRequest;  
+use Illuminate\Http\Dispatcher;   
+use Cookie; 
+
+
 
 class ApiController extends Controller
 {
@@ -32,7 +40,7 @@ class ApiController extends Controller
         if ($request->header('Content-Type') != "application/json")  {
             $request->headers->set('Content-Type', 'application/json');
         }
-        $user_id =  $request->input('userID');
+        $user_id =  $request->input('user_id');
        
     } 
 
@@ -102,12 +110,11 @@ class ApiController extends Controller
 
     public function register(Request $request,User $user)
     {   
-
         $input['first_name']    = $request->input('first_name');
         $input['last_name']     = $request->input('last_name'); 
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
-        $input['role_type']      = ($request->input('role_type'))?$request->input('role_type'):'';
+        $input['role_type']     = ($request->input('role_type'))?$request->input('role_type'):'';
          
         if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
@@ -116,8 +123,9 @@ class ApiController extends Controller
 
         //Server side valiation
         $validator = Validator::make($request->all(), [
+           'first_name' => 'required',
            'email' => 'required|email|unique:users',
-            'password' => 'required'
+           'password' => 'required'
         ]);
         /** Return Error Message **/
         if ($validator->fails()) {
@@ -125,12 +133,12 @@ class ApiController extends Controller
             foreach ( $validator->messages()->all() as $key => $value) {
                         array_push($error_msg, $value);     
                     }
-                            
+                    
             return Response::json(array(
                 'status' => 0,
                 'code'=>500,
                 'message' => $error_msg[0],
-                'data'  =>  ''
+                'data'  =>  $request->all()
                 )
             );
         }  
@@ -138,6 +146,7 @@ class ApiController extends Controller
         $helper = new Helper;
         /** --Create USER-- **/
         $user = User::create($input); 
+
         $subject = "Welcome to yellotasker! Verify your email address to get started";
         $email_content = [
                 'receipent_email'=> $request->input('email'),
@@ -153,10 +162,33 @@ class ApiController extends Controller
                                 "status"=>1,
                                 "code"=>200,
                                 "message"=>"Thank you for registration",
-                                'data'=>$request->except('password')
+                                'data'=>$user
                             ]
                         );
     }
+
+    public function createImage($base64)
+    {
+        try{
+            $img  = explode(',',$base64);
+            if(is_array($img) && isset($img[1])){
+                $image = base64_decode($img[1]);
+                $image_name= time().'.jpg';
+                $path = storage_path() . "/image/" . $image_name;
+              
+                file_put_contents($path, $image); 
+                return url::to(asset('storage/image/'.$image_name));
+            }else{
+                return false; 
+            }
+
+            
+        }catch(Exception $e){
+            return false;
+        }
+        
+    }
+
 
 /* @method : update User Profile
     * @param : email,password,deviceID,firstName,lastName
@@ -171,6 +203,7 @@ class ApiController extends Controller
         {
             return Response::json(array(
                 'status' => 0,
+                'code' => 500,
                 'message' => 'Invalid user Id!',
                 'data'  =>  ''
                 )
@@ -186,9 +219,24 @@ class ApiController extends Controller
                     'email'=>$user->email,
                     'role_type' => $user->role_type
                 ];
+
+        if($request->get('profile_image')){  ;
+            $profile_image = $this->createImage($request->get('profile_image')); 
+            if($profile_image==false){
+                return Response::json(array(
+                    'status' => 0,
+                     'code' => 500,
+                    'message' => 'Invalid Image format!',
+                    'data'  =>  $request->all()
+                    )
+                );
+            }
+            $user->profile_image  = $profile_image;       
+        }        
+          
          
         foreach ($request->all() as $key => $value) {
-             if($key=="email" || $key=="user_id")
+             if($key=="email" || $key=="user_id" || $key == "profile_image")
              {
                 continue;
              }else{
@@ -206,6 +254,7 @@ class ApiController extends Controller
             $code  = 500;
             $message =$e->getMessage();
         }
+        $data = User::find($request->get('user_id'));  
 
         return response()->json(
                             [ 
@@ -233,7 +282,7 @@ class ApiController extends Controller
          
         $user = JWTAuth::toUser($token); 
         
-        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $input,'token'=>$token ]);
+        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
 
     } 
    /* @method : get user details
@@ -330,27 +379,27 @@ class ApiController extends Controller
             );
         }
 
-        $user =   User::where('email',$email)->get();
+        $user =   User::where('email',$email)->first();
 
-        if($user->count()==0){
+        if($user==null){
             return Response::json(array(
                 'status' => 0,
+                'code' => 500,
                 'message' => "Oh no! The address you provided isn't in our system",
-                'data'  =>  ''
+                'data'  =>  $request->all()
                 )
             );
         }
-        $user_data = User::find($user[0]->userID);
+        $user_data = User::find($user->id);
         $temp_password = Hash::make($email);
-       
         
       // Send Mail after forget password
         $temp_password =  Hash::make($email);
- 
+       
         $email_content = array(
                         'receipent_email'   => $request->input('email'),
-                        'subject'           => 'Reset account password link!',
-                        'first_name'        => $user[0]->first_name,
+                        'subject'           => 'Your Yellotasker Account Password',
+                        'name'              => $user->first_name,
                         'temp_password'     => $temp_password,
                         'encrypt_key'       => Crypt::encrypt($email),
                         'greeting'          => 'Yellotasker'
@@ -367,9 +416,91 @@ class ApiController extends Controller
                         "status"=>1,
                         "code"=> 200,
                         "message"=>"Reset password link has sent. Please check your email.",
-                        'data' => ''
+                        'data' => $request->all()
                     ]
                 );
+    }
+
+
+    public function resetPassword(UserRequest $request)
+    { 
+
+        $encryptedValue = ($request->get('key'))?$request->get('key'):''; 
+        $method_name = $request->method();
+        $token = $request->get('token');
+       // $email = ($request->get('email'))?$request->get('email'):'';
+
+        if($method_name=='GET')
+        {    
+            try {
+                $email = Crypt::decrypt($encryptedValue); 
+                
+                if (Hash::check($email, $token)) {
+                    return view('admin.auth.passwords.reset',compact('token','email')); 
+                }else{
+
+                    return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+                } 
+                
+            } catch (DecryptException $e) {
+                   
+            //   return view('admin.auth.passwords.reset',compact('token','email')) 
+              //              ->withErrors(['message'=>'Invalid reset password link!']);  
+
+                return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+    
+            }
+            
+        }else
+        {   
+            try {
+                $email = Crypt::decrypt($encryptedValue); 
+                
+                if (Hash::check($email, $token)) {
+                        $password =  Hash::make($request->get('password'));
+                        $user = User::where('email',$request->get('email'))->update(['password'=>$password]);
+                      
+                        return Response::json(array(
+                                'status' => 0,
+                                'message' => "Password reset successfully.",
+                                'data'  =>  ''
+                                )
+                            );
+                }else{
+
+                    return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+                } 
+                
+            } catch (DecryptException $e) {
+                   
+                return Response::json(array(
+                        'status' => 0,
+                        'message' => "Invalid reset password link!",
+                        'data'  =>  ''
+                        )
+                    );
+    
+            }
+
+ 
+            
+        }
+        
     }
 
    /* @method : change password
@@ -379,8 +510,45 @@ class ApiController extends Controller
    */
     public function changePassword(Request $request)
     {   
-        $user = JWTAuth::toUser($request->input('deviceToken'));
-        $user_id = $user->userID; 
+        
+        $email = $request->input('email');
+        //Server side valiation
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+
+        $helper = new Helper;
+       
+        if ($validator->fails()) {
+            $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                "code" => 201,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }
+
+        $user =   User::where('email',$email)->first();
+
+        if($user==null){
+            return Response::json(array(
+                'status' => 0,
+                'code' => 500,
+                'message' => "The email address you provided isn't in our system",
+                'data'  =>  $request->all()
+                )
+            );
+        }
+
+        $user = User::where('email',$request->get('email'))->first();
+        
+        $user_id = $user->id; 
         $old_password = $user->password;
      
         $validator = Validator::make($request->all(), [
@@ -419,6 +587,7 @@ class ApiController extends Controller
         {
             return Response::json(array(
                 'status' => 0,
+                "code"=> 500,
                 'message' => "Old password mismatch!",
                 'data'  =>  ''
                 )
@@ -562,5 +731,110 @@ class ApiController extends Controller
                 );
 
     }
+    public function categoryDashboard(){ 
+
+       // $cd = CategoryDashboard::all 
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+        $categoryDashboard = CategoryDashboard::with('category')->take(8)->get();
+        $data = [];
+        $category_data = [];
+        foreach ($categoryDashboard as $key => $value) {
+            $data['category_id']            = $value->category->id;
+            $data['category_name']          = $value->category->category_name;
+            $data['category_image']         = $image_url.'/'.$value->category->category_image;
+            $data['group_id']               = $value->category->parent->id;
+            $data['category_group_name']    = $value->category->parent->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$value->category->category_group_image;
+            
+            $category_data[] = $data;
+
+        } 
+
+        if(count($data)){
+            $status = 1;
+            $code   = 200;
+            $msg    = "Category dashboard list";
+        }else{
+            $status = 0;
+            $code   = 404;
+            $msg    = "Category dashboard list not  found!";
+        }
+
+        return  response()->json([ 
+                "status"=>$status,
+                "code"=> $code,
+                "message"=> $msg,
+                'data' => $category_data
+            ]
+        );
+
+    }
+
+
+    public function category(){ 
+
+       // $cd = CategoryDashboard::all 
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+        $categoryDashboard = Category::with('children')->where('parent_id',0)->get();
+        
+        $data = [];
+        $category_data = [];
+        foreach ($categoryDashboard as $key => $value) {
+            $data['group_id']               = $value->id;
+            $data['category_group_name']    = $value->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$value->category_group_image;
+
+            foreach ($value->children as $key => $result) {
+                $data2['category_id']      = $result->id;
+                $data2['category_name']    = $result->category_name;
+                $data2['category_image']   = $image_url.'/'.$result->category_image;
+                $data2['category_group_id'] = $result->parent_id;
+                $data2['category_group_name'] = $value->category_group_name;
+                $data['category'][] = $data2;
+            }
+            
+            $category_data[] = $data;
+
+        } 
+        if(count($data)){
+            $status = 1;
+            $code   = 200;
+            $msg    = "Category dashboard list";
+        }else{
+            $status = 0;
+            $code   = 404;
+            $msg    = "Category dashboard list not  found!";
+        }
+
+        return  response()->json([ 
+                "status"=>$status,
+                "code"=> $code,
+                "message"=> $msg,
+                'data' => $category_data
+            ]
+        );
+
+    }
+
+    public function sendMail()
+    {
+        $emails = ['kroy@mailinator.com'];
+
+        Mail::send('emails.welcome', [], function($message) use ($emails)
+        {    
+            $message->to($emails)->subject('This is test e-mail');    
+        });
+        var_dump( Mail:: failures());
+        exit;
+    }
+    //array_msort($array, $cols)
+
+    public function makeOffer(Request $request)
+    {   
+
+
+
+    }
+
     
 } 

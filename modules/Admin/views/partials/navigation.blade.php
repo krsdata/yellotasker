@@ -5,14 +5,8 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="{{url('admin')}}" style="
-    margin-top: 25px;
-    font-size: 20px;
-    color: yellow;
-">
-                       <!--  <img src="http://webpedialab.com/ytasker/public/in/layouts/layout4/img/new-logo.jpg" alt="logo" class="logo-default"  style="width: 170px" />  -->
-                           
-                           YelloTasker
+                    <a href="{{url('admin')}}" >
+                       <img src="{{ URL::asset('assets/global/logo.png') }}" alt="logo" class="logo"  style="width: 170px" />
                        </a>
                     <div class="menu-toggler sidebar-toggler">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->

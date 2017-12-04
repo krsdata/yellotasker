@@ -2,13 +2,22 @@
 
 namespace Modules\Admin\Models;
 
-use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Admin\Models\Group;
-use Modules\Admin\Models\Position;
+use Illuminate\Database\Eloquent\Model as Eloquent; 
+use Illuminate\Http\Request;
+use Input;
+use Validator;
 use Auth;
+use Hash;
+use View;
+use URL;
+use Lang;
+use Session;
+use DB;
+use Route;
+use Crypt;
+use Illuminate\Http\Dispatcher;
 
-class Tasks extends Authenticatable {
+class Comments extends Eloquent {
 
    
     /**
@@ -16,7 +25,7 @@ class Tasks extends Authenticatable {
      *
      * @var string
      */
-    protected $table = 'yt_tasks';
+    protected $table = 'comments';
     /**
      * The attributes that are mass assignable.
      *
@@ -41,5 +50,16 @@ class Tasks extends Authenticatable {
     ];
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
+
+    // user details
+    public  function userDetail()
+    {
+        return $this->hasOne('App\User','id','userId') ;
+    }
+
+    public  function commentReply()
+    {
+        return $this->hasMany('App\Models\Comments','commentId')->with('userDetail') ;
+    }
 
 }

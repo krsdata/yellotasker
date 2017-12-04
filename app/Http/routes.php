@@ -22,192 +22,156 @@ Route::get('/', function () {
      return redirect('admin');
 });
 
+Route::get('sendMail','ApiController@sendMail'); 
+
 /*
 * Rest API Request , auth  & Route
 */ 
 Route::group(['prefix' => 'api/v1'], function()
 {   
     Route::group(['middleware' => 'api'], function () {
+
         Route::match(['post','get'],'user/signup','ApiController@register');  
         Route::match(['post','get'],'user/updateProfile','ApiController@updateProfile'); 
         Route::match(['post','get'],'user/login', 'ApiController@login'); 
         Route::match(['post','get'],'email_verification','ApiController@emailVerification');   
-        Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword');  
+        Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword'); 
+        Route::post('password/reset','ApiController@resetPassword');  
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
+        Route::match(['post','get'],'categoryDashboard','ApiController@categoryDashboard');
+        Route::match(['post','get'],'category','ApiController@category');
+        Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
+        Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
+       
+       
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
            Route::match(['post','get'],'get_condidate_record','APIController@getCondidateRecord'); 
-           Route::match(['post','get'],'user/logout','ApiController@logout'); 
-           Route::match(['post','get'],'change_password','ApiController@changePassword');
-           Route::match(['post','get'],'get_interviewer','ApiController@getInterviewer');
-           Route::match(['post','get'],'add_interview','ApiController@addInterview');
-           Route::match(['post','get'],'user/details','ApiController@getUserDetails');
+            Route::match(['post','get'],'user/logout','ApiController@logout'); 
+          
         });   
 
 
           /*---------End---------*/   
+
+
+          Route::match(['post','get'],'postTask/createTask',[
+                'as' => 'post_task_create',
+                'uses' => 'TaskController@createTask'
+                ]
+            );  
+
+           Route::match(['post','get'],'updatePostTask',[
+                'as' => 'updatePostTask',
+                'uses' => 'TaskController@updatePostTask'
+                ]
+            );  
+
+            Route::match(['post','get'],'postTask/delete/{id}',[
+                'as' => 'post_task_delete',
+                'uses' => 'TaskController@deletePostTask'
+                ]
+            );  
+
+            Route::match(['post','get'],'postTask/deleteByUser/{id}',[
+                'as' => 'post_task_delete_buyser',
+                'uses' => 'TaskController@deletePostTaskByUser'
+                ]
+            );    
+
+            Route::match(['get'],'getUserTasks/{user_id}',[
+                'as' => 'get_user_tasks',
+                'uses' => 'TaskController@getUserTasks'
+                ]
+            );
  
-        /*-------------Course API Route -------------*/
+            Route::match(['get','post'],'getPostTask',[
+                'as' => 'getPostTask',
+                'uses' => 'TaskController@getPostTask'
+                ]
+            );
 
-        Route::match(['post','get'],'course',[
-            'as' => 'course_index',
-            'uses' => 'CourseController@index'
-            ]
-        );
+            Route::match(['get'],'getOpenTasks',[
+                'as' => 'get_open_tasks',
+                'uses' => 'TaskController@getOpenTasks'
+                ]
+            );
 
-      
-        Route::match(['post','get'],'course/create',[
-            'as' => 'course_create',
-            'uses' => 'CourseController@create'
-            ]
-        );
-        Route::match(['post','get'],'course/edit',[
-            'as' => 'course_edit',
-            'uses' => 'CourseController@edit'
-            ]
-        );
+            Route::match(['get'],'getRecentTasks',[
+                'as' => 'get_recent_tasks',
+                'uses' => 'TaskController@getRecentTasks'
+                ]
+            );
+            /*-------------Dashbord API Route -------------*/
 
-        Route::match(['post','get'],'course/update',[
-            'as' => 'course_update',
-            'uses' => 'CourseController@update'
-            ]
-        );
+            Route::match(['get'],'dashboard/categories',[
+                'as' => 'dashboard_get_categories',
+                'uses' => 'DashboardController@getCategories'
+                ]
+            );
 
-         Route::match(['post','get'],'course/store',[
-            'as' => 'course_store',
-            'uses' => 'CourseController@store'
-            ]
-        );
+           
+            Route::match(['get','post'],'comment/post',[
+                'as' => 'commentPost',
+                'uses' => 'TaskController@comment'
+                ]
+            );
+
+            Route::match(['get','post'],'makeOffer',[
+                'as' => 'makeOffer',
+                'uses' => 'TaskController@makeOffer'
+                ]
+            );
+             Route::match(['get','post'],'taskOffer/{id}',[
+                'as' => 'taskOffer',
+                'uses' => 'TaskController@taskOffer'
+                ]
+            );
+
+             Route::match(['get','post'],'saveTask',[
+                'as' => 'saveTask',
+                'uses' => 'TaskController@saveTask'
+                ]
+            );
+
+             Route::match(['get','post'],'getSaveTask/{id}',[
+                'as' => 'getSaveTask',
+                'uses' => 'TaskController@getSaveTask'
+                ]
+            ); 
+
+            Route::match(['get','post'],'getUserTask/{id}',[
+                'as' => 'getUserTask',
+                'uses' => 'TaskController@getTask'
+                ]
+            ); 
+
+              Route::match(['get','post'],'getReason',[
+                'as' => 'getReason',
+                'uses' => 'ReasonController@getReason'
+                ]
+            );
+
+           Route::match(['get','post'],'getReport/user/{id}',[
+                'as' => 'getReport',
+                'uses' => 'ComplainController@getReport'
+                ]
+            );
+           Route::match(['get','post'],'getReport/task/{id}',[
+                'as' => 'getReport',
+                'uses' => 'ComplainController@getReport'
+                ]
+            );
+
+           Route::match(['get','post'],'report/{name}',[
+                'as' => 'reportBy',
+                'uses' => 'ComplainController@reportBy'
+                ]
+            ); 
+
+             
  
-        /*-------------Course API Route END-------------*/
-
-
-        /*-------------Syllabus API Route -------------*/
-
-        Route::match(['post','get'],'syllabus',[
-            'as' => 'syllabus_index',
-            'uses' => 'SyllabusController@index'
-            ]
-        );
-
-      
-        Route::match(['post','get'],'syllabus/create',[
-            'as' => 'syllabus_create',
-            'uses' => 'SyllabusController@create'
-            ]
-        );
-
-        Route::match(['post','get'],'syllabus/edit',[
-            'as' => 'syllabus_edit',
-            'uses' => 'SyllabusController@edit'
-            ]
-        );
-
-        Route::match(['post','get'],'syllabus/update',[
-            'as' => 'syllabus_update',
-            'uses' => 'SyllabusController@update'
-            ]
-        );
-
-         Route::match(['post','get'],'syllabus/store',[
-            'as' => 'syllabus_store',
-            'uses' => 'SyllabusController@store'
-            ]
-        );
-
-        Route::match(['post','get'],'syllabus/destroy',[
-            'as' => 'syllabus_destroy',
-            'uses' => 'SyllabusController@destroy'
-            ]
-        );
-
-         Route::match(['post','get'],'syllabus/show',[
-            'as' => 'syllabus_show',
-            'uses' => 'SyllabusController@show'
-            ]
-        );
-
-        Route::match(['post','get'],'syllabus/clone',[
-            'as' => 'syllabus_clone',
-            'uses' => 'SyllabusController@cloneSyllabus'
-            ]
-        );
- 
-        /*-------------Syllabus API Route END-------------*/
-
-
-        /*-------------Assignment API Route -------------*/
-
-        Route::match(['post','get'],'assignment',[
-            'as' => 'assignment_index',
-            'uses' => 'AssignmentController@index'
-            ]
-        ); 
-      
-        Route::match(['post','get'],'assignment/create',[
-            'as' => 'assignment_create',
-            'uses' => 'AssignmentController@create'
-            ]
-        );
         
-        Route::match(['post','get'],'assignment/edit',[
-            'as' => 'assignment_edit',
-            'uses' => 'AssignmentController@edit'
-            ]
-        );
-
-        Route::match(['post','get'],'assignment/update',[
-            'as' => 'assignment_update',
-            'uses' => 'AssignmentController@update'
-            ]
-        );
-
-         Route::match(['post','get'],'assignment/store',[
-            'as' => 'assignment_store',
-            'uses' => 'AssignmentController@store'
-            ]
-        );
-
-          Route::match(['post','get'],'assignment/show',[
-            'as' => 'assignment_show',
-            'uses' => 'AssignmentController@show'
-            ]
-        );
-
-        Route::match(['post','get'],'assignment/destroy',[
-            'as' => 'assignment_destroy',
-            'uses' => 'AssignmentController@destroy'
-            ]
-        );
-        /*----------Student API-----------------*/
-        Route::match(['post','get'],'student',[
-            'as' => 'assignment_index',
-            'uses' => 'StudentController@index'
-            ]
-        );
-
-        Route::match(['post','get'],'student/course',[
-            'as' => 'student_course',
-            'uses' => 'StudentController@course'
-            ]
-        );
-
-        Route::match(['post','get'],'student/course/syllabus',[
-            'as' => 'student_syllabus',
-            'uses' => 'StudentController@syllabus'
-            ]
-        );
-
-        Route::match(['post','get'],'student/course/syllabus/assignment',[
-            'as' => 'student_assignment',
-            'uses' => 'StudentController@assignment'
-            ]
-        );
- 
-        /*-------------Syllabus API Route END-------------*/
-
-        
-            
     });
 });    
 
@@ -217,8 +181,10 @@ Route::group(['prefix' => 'api/v1'], function()
   
 
 Route::get('/login','Adminauth\AuthController@showLoginForm'); 
-Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
+//Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
+Route::post('password/reset','ApiController@resetPassword');  
 
+ Route::post('password/email','ApiController@resetPassword'); 
 
 Route::get('admin/404',function(){
     if(Auth::guard('admin')->check()==false){

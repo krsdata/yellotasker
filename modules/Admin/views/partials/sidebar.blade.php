@@ -28,7 +28,7 @@
                         
                         
 
-                         <li class="nav-item  start active  {{ (isset($page_title) && $page_title=='Category')?'open':'' }}">
+                        <li class="nav-item  start active  {{ (isset($page_title) && $page_title=='Category')?'open':'' }}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                  <i class="glyphicon glyphicon-user"></i>
                                 <span class="title">Manage User</span>
@@ -191,9 +191,134 @@
                                      
                                     </ul>
                                 </li> 
+
+
+                               
                             </ul>
+                             
                         </li>
-                        
+                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Program')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Program</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Program')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Program')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Program')?'active':'' }}">
+                                            <a href="{{ route('program') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Program 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Program')?'active':'' }}">
+                                            <a href="{{ route('program.create') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-plus-sign"></i> 
+                                                <span class="title">
+                                                    Create Program 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                     
+                                    </ul>
+                                     
+                            </li> 
+                            <!-- Post task ------>
+                        <li class="nav-item  start active  {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                     <i class="glyphicon glyphicon-user"></i>
+                                    <span class="title">Task Management</span>
+                                    <span class="arrow {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}"></span>
+                                </a>
+
+                            <ul class="sub-menu" style="display: {{ (isset($viewPage) && $viewPage=='Post Task')?'block':'none' }}">
+
+                                <li class="nav-item  {{ (isset($page_title) && $page_title=='Post Task')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-user"></i>
+                                    <span class="title">Task</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='Post Task')?'open':'' }}"></span>
+                                </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Post Task')?'block':'none' }}">
+                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='Post Task')?'active':'' }}">
+                                            <a href="{{ route('postTask') }}" class="nav-link ">
+                                                 <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Task
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item  {{ (isset($page_title) && $page_title=='comment')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-user"></i>
+                                    <span class="title">Comment</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='comment')?'open':'' }}"></span>
+                                </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='comment')?'block':'none' }}">
+                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='comment')?'active':'' }}">
+                                            <a href="{{ route('comment') }}" class="nav-link ">
+                                                 <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Comment
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>
+                            </ul>  
+                        </li> 
+
+                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Program')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                    <span class="title">Manage Reason</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='Reason')?'open':'' }}"></span>
+                                </a>
+                                <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Reason')?'block':'none' }}">
+                                    <li class="nav-item  {{ (isset($page_title) && $page_action=='View Program')?'active':'' }}">
+                                        <a href="{{ route('reason') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-eye-open"></i> 
+                                            <span class="title">
+                                                View Reason 
+                                            </span>
+                                        </a>
+                                    </li> 
+                                    <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Reason')?'active':'' }}">
+                                        <a href="{{ route('reason.create') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-plus-sign"></i> 
+                                            <span class="title">
+                                                Create Reason 
+                                            </span>
+                                        </a>
+                                    </li> 
+                                 
+                                </ul>
+                                     
+                        </li> 
+ 
+                        <li class="nav-item start active {{ (isset($page_title) && $page_title=='Compaint Managment')?'open':'' }}">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-user"></i>
+                                <span class="title">Compaint Managment</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start active open">
+                                    <a href="{{ route('compaint') }}" class="nav-link ">
+                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                        <span class="title">View</span>
+                                        <span class="selected"></span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li> 
+                        <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
                 </div>

@@ -80,7 +80,8 @@ class UsersController extends Controller {
                
             $users = User::where(function($query) use($search,$status) {
                         if (!empty($search)) {
-                            $query->Where('name', 'LIKE', "%$search%")
+                            $query->Where('first_name', 'LIKE', "%$search%")
+                                    ->OrWhere('last_name', 'LIKE', "%$search%")
                                     ->OrWhere('email', 'LIKE', "%$search%");
                         }
                         if (!empty($status)) {

@@ -1,9 +1,5 @@
 <?php
-    
-    Route::get('abc',function(){
-        echo "test";
-    });
-
+   
     Route::get('admin/login','Modules\Admin\Http\Controllers\AuthController@index');
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');
@@ -130,8 +126,90 @@
                 ]
         );  
 
-         Route::get('admin/createGroup', 'Modules\Admin\Http\Controllers\ContactController@createGroup');  
+         Route::bind('comment', function($value, $route) {
+            return App\Models\Comments::find($value);
+        });
+ 
+        Route::resource('admin/comment', 'Modules\Admin\Http\Controllers\CommentController', [
+            'names' => [
+                'edit' => 'comment.edit',
+                'show' => 'comment.show',
+                'destroy' => 'comment.destroy',
+                'update' => 'comment.update',
+                'store' => 'comment.store',
+                'index' => 'comment',
+                'create' => 'comment.create',
+            ]
+                ]
+        );  
 
+        Route::resource('admin/compaint', 'Modules\Admin\Http\Controllers\CompaintController', [
+            'names' => [
+                'index' => 'compaint',
+            ]
+                ]
+        );
+
+
+         Route::bind('postTask', function($value, $route) {
+            return Modules\Admin\Models\PostTask::find($value);
+        });
+ 
+        Route::resource('admin/postTask', 'Modules\Admin\Http\Controllers\PostTaskController', [
+            'names' => [
+                'edit' => 'postTask.edit',
+                'show' => 'postTask.show',
+                'destroy' => 'postTask.destroy',
+                'update' => 'postTask.update',
+                'store' => 'postTask.store',
+                'index' => 'postTask',
+                'create' => 'postTask.create',
+            ]
+                ]
+        );  
+
+
+
+        // programs
+         Route::bind('program', function($value, $route) {
+            return Modules\Admin\Models\Program::find($value);
+        });
+ 
+        Route::resource('admin/program', 'Modules\Admin\Http\Controllers\ProgramController', [
+            'names' => [
+                'edit' => 'program.edit',
+                'show' => 'program.show',
+                'destroy' => 'program.destroy',
+                'update' => 'program.update',
+                'store' => 'program.store',
+                'index' => 'program',
+                'create' => 'program.create',
+            ]
+                ]
+        );  
+
+
+        // programs
+         Route::bind('reason', function($value, $route) {
+            return Modules\Admin\Models\Reason::find($value);
+        });
+ 
+        Route::resource('admin/reason', 'Modules\Admin\Http\Controllers\ReasonController', [
+            'names' => [
+                'edit' => 'reason.edit',
+                'show' => 'reason.show',
+                'destroy' => 'reason.destroy',
+                'update' => 'reason.update',
+                'store' => 'reason.store',
+                'index' => 'reason',
+                'create' => 'reason.create',
+            ]
+                ]
+        );  
+
+
+         Route::get('admin/createGroup', 'Modules\Admin\Http\Controllers\ContactController@createGroup');  
+         Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');  
 
 
          Route::bind('contacts', function($value, $route) {
@@ -153,7 +231,7 @@
 
 
 
-
+        Route::get('admin/updateGroup', 'Modules\Admin\Http\Controllers\ContactGroupController@updateGroup'); 
          /*---------Contact Route ---------*/    
 
         Route::bind('contactGroup', function($value, $route) {

@@ -20,8 +20,9 @@ class ContactRequest  extends Request {
                     }
                 case 'POST': {
                         return [
-                            'name' => 'required', 
-                             'email'     => "required|email|unique:contacts,email" , 
+                            'firstName' => 'required', 
+                            'email'     => "required|email" , 
+                            'categoryName' => 'required'
                         ];
                     }
                 case 'PUT':
@@ -29,8 +30,9 @@ class ContactRequest  extends Request {
                     if ( $contact = $this->contact) {
 
                         return [
-                            'name' => 'required', 
+                            'firstName' => 'required', 
                              'email' => 'required' , 
+                            'categoryName' => 'required'
                             
                         ];
                     }

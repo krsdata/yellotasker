@@ -24,11 +24,12 @@ use Route;
 use Crypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
-use App\Helpers\Helper;
+use Modules\Admin\Helpers\Helper as Helper;
 use Modules\Admin\Models\Roles; 
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\Contact; 
 use Modules\Admin\Models\ContactGroup;
+use PDF; 
  
 
 /**
@@ -65,7 +66,6 @@ class ContactGroupController extends Controller {
         $sub_page_title = 'contactGroup';
         $page_action = 'View contactGroup'; 
 
-
         if ($request->ajax()) {
             $id = $request->get('id'); 
             $category = ContactGroup::find($id); 
@@ -73,8 +73,8 @@ class ContactGroupController extends Controller {
             $category->save();
             echo $s;
             exit();
-        }
-
+        } 
+ 
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
@@ -82,19 +82,69 @@ class ContactGroupController extends Controller {
 
             $search = isset($search) ? Input::get('search') : '';
                
-            $contactGroup = ContactGroup::where(function($query) use($search,$status) {
-                        if (!empty($search)) {
-                            $query->Where('groupName', 'LIKE', "%$search%")
-                                    ->OrWhere('name', 'LIKE', "%$search%")
-                                    ->OrWhere('email', 'LIKE', "%$search%");
-                        }
-                        
+            $contactGroup = ContactGroup::with(['contactGroup' => function ($query) {
+                                $query->with('contact');
+                            }])->where(function($query) use($search,$status) {
+
+                                if (!empty($search)) {
+                                    $query->Where('groupName', 'LIKE', "%$search%")
+                                            ->OrWhere('name', 'LIKE', "%$search%")
+                                            ->OrWhere('email', 'LIKE', "%$search%");
+                                }
+                            
                     })->Paginate($this->record_per_page);
         } else {
-            $contactGroup = ContactGroup::Paginate($this->record_per_page);
+           
+           $contactGroup =  ContactGroup::with(['contactGroup' => function ($query) {
+                $query->with('contact');
+            }])->where('parent_id',0)->orderBy('id','desc')->Paginate(10);
+
+        } 
+        $contactGroupPag =  ContactGroup::where('parent_id',0)->Paginate(10);
+        $export = $request->get('export');
+
+        if($export=='pdf')
+        {
+            $contactGroup =  ContactGroup::with(['contactGroup' => function ($query) {
+                $query->with('contact')->get();
+
+            }])->where('parent_id',0)->get();
+
+           $pdf = PDF::loadView('packages::contactGroup.pdf', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));
+           return ($pdf->download('contact-group.pdf'));
         }
-        
-        return view('packages::contactGroup.index', compact('contactGroup','data', 'page_title', 'page_action','sub_page_title'));
+       
+
+        return view('packages::contactGroup.index', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title','contacts','html'));
+    }
+
+    // updateGroup
+
+    public function updateGroup(Request $request)
+    {
+
+        $cgn =  ContactGroup::find($request->get('parent_id'));
+        $cgn->groupName = $request->get('groupName');
+        $cgn->save();
+
+       ContactGroup::whereNotIn('id',$request->get('ids'))
+                  ->where('parent_id',$request->get('parent_id'))->delete();
+
+        $ids = $request->get('ids');
+
+        foreach ($ids as $key => $value) {
+           $data = ContactGroup::findOrNew($value);
+           $data->groupName = $request->get('groupName');
+           if(count($data->contactId)==0){
+                 $data->contactId = $value;
+           }
+          
+           $data->parent_id = $request->get('parent_id');
+           $data->save();
+        }
+        echo json_encode(['status'=>1,'message'=>'Group Updated successfully']); 
+                exit(); 
+
     }
 
     /*
@@ -199,26 +249,23 @@ class ContactGroupController extends Controller {
         {
           $cat->category_group_image  =  $photo_name; 
         }
-         
         $cat->save();    
-
-
         return Redirect::to(route('contact'))
-                        ->with('flash_alert_notice', 'Group Category  successfully updated.');
+                        ->with('flash_alert_notice', 'Contact Group  successfully updated.');
     }
     /*
      *Delete User
      * @param ID
      * 
      */
-    public function destroy(Category $category) {
-        
-        $d = Category::where('id',$category->id)->delete(); 
-        return Redirect::to(route('category'))
-                        ->with('flash_alert_notice', 'Group Category  successfully deleted.');
+    public function destroy(ContactGroup $cg) 
+    {
+        ContactGroup::whereIdOrParentId($cg->id,$cg->id)->delete();
+        return Redirect::to(route('contactGroup'))
+                        ->with('flash_alert_notice', 'Contact Group successfully deleted.');
     }
 
-    public function show(Category $category) {
+    public function show(ContactGroup $cg) {
         
     }
 

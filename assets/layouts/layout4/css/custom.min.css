@@ -1,0 +1,91 @@
+.post-detail-left {
+    float: left;
+    width: 75%;
+    padding: 15px;
+    border-right: 1px solid #ccc;
+}
+.detail-pic-name {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+.pic-name-left {
+    float: left;
+    width: 16%;
+    padding-right: 15px;
+}
+.pic-name-right {
+    float: left;
+    width: 84%;
+}
+.pic-name-right h4 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+span.follow-ico {
+    float: right;
+    margin-top: 0px;
+}
+.pic-name-right p {
+    font-size: 14px;
+}
+.post-description {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+.post-description p {
+    font-size: 14px;
+    color: #484848;
+}
+.post-detail-right {
+    float: left;
+    width: 25%;
+    padding: 15px;
+}
+.post-detail-right h4 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.rate {
+    background: #34495e;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.popup-location {
+    float: left;
+    width: 100%;
+}
+.pop-location-nav {
+    float: left;
+    width: 15%;
+    font-size: 18px;
+}
+.pop-location-desc {
+    float: left;
+    width: 85%;
+}
+.popup-location {
+    float: left;
+    width: 100%;
+}
+.pop-location-desc h5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #000;
+    font-weight: 600;
+}
+.pop-location-desc p {
+    color: #484848;
+    line-height: 16px;
+    font-size: 13px;
+}
+
+p.main-price {    font-size: 21px;    color: #efeb10;}
+p.main-price span {    font-size: 13px;    display: block;    color: #fff;}
+.main-price span {    font-size: 13px;    display: block;    color: #fff;}
+.make-offer a {    background: #eee;    padding: 8px 10px;    border-radius: 20px;    display: block;    
+    color: #333;    width: 80%;    margin: 0 auto;    font-weight: 600;}

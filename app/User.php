@@ -43,5 +43,41 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
     
+    public function saveTask()
+    {
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId');
+    }
+
+   
+    public function reportedDetails()
+    {
+        return $this->hasMany('App\Models\Complains','postedUserId')->with('reportedUser');
+    }
+
+    public function openTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','open');
+    }
+    public function pendingTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','pending');
+    }
+    public function assignedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','assigned');
+    }
+    public function completedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','completed');
+    }
+    public function offer_task()
+    {
+       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+    }
+
+
 }

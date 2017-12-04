@@ -1,7 +1,9 @@
 /node_modules
 /public/storage
+storage/framework/views
 /vendor
 /.idea
 Homestead.json
 Homestead.yaml
 .env
+.bash_history

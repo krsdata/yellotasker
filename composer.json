@@ -12,9 +12,9 @@
         "illuminate/html": "^5.0",
         "laracasts/utilities": "~2.0",
         "barryvdh/laravel-dompdf": "0.6.*",
-        "maatwebsite/excel": "^2.0",
         "phpmailer/phpmailer": "^5.2",
-        "atayahmet/laravel-nestable": "^0.8.0"
+        "atayahmet/laravel-nestable": "^0.8.1",
+         "maatwebsite/excel": "~2.1.0"
 
     },
     "require-dev": {
@@ -32,7 +32,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Modules\\Admin\\": "modules/Admin/src/" 		 
+            "Modules\\Admin\\": "modules/Admin/src/"
         },
         "files": [
           "app/Helpers/Helper.php"

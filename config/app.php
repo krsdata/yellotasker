@@ -168,6 +168,7 @@ return [
        Barryvdh\DomPDF\ServiceProvider::class,
        Way\Generators\GeneratorsServiceProvider::class,
        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class, 
+       Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -219,7 +220,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'Helper'    =>  App\Helpers\Helper::class,
         'PDF' => Barryvdh\DomPDF\Facade::class, 
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];
