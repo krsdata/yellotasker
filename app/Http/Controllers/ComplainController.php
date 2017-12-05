@@ -88,7 +88,7 @@ class ComplainController extends Controller {
                 )
             );
         } 
-
+ 
         $validator = Validator::make($request->all(), $reportValidation);
         /** Return Error Message **/
         if ($validator->fails()) {

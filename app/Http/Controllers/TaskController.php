@@ -642,7 +642,8 @@ class TaskController extends Controller {
     public function makeOffer(Request $request)
     {
         $validator = Validator::make($request->all(), [
-               'taskId' => 'required'
+               'taskId' => 'required',
+               'interestedUsreId'=>'required'
         ]);
             /** Return Error Message **/
             if ($validator->fails()) {
@@ -660,7 +661,20 @@ class TaskController extends Controller {
                 );
          }   
 
+        $is_savtask = DB::table('offers')->where('taskId',$request->get('taskId'))->where('interestedUsreId',$request->get('interestedUsreId'))->first(); 
          
+        $task_action = $request->get('action');
+
+         if($is_savtask!=null && $task_action!='update'){
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'Offer already exists.Do you want to update?',
+                    'data'  =>  $is_savtask 
+                    )
+                );
+         }
+
         $data = [];
         $table_cname = \Schema::getColumnListing('offers');
         $except = ['id','created_at','updated_at'];
@@ -672,13 +686,25 @@ class TaskController extends Controller {
            $data[$value] = $request->get($value);
         }
         
-        $rs =  DB::table('offers')->insert($data); 
+       // $rs =  DB::table('offers')->insert($data); 
 
+        if($is_savtask!=null && $task_action=='update'){
+            $rs =  DB::table('offers')
+                    ->where('id',$request->get('taskId'))
+                        ->where('interestedUsreId',$request->get('interestedUsreId'))
+                            ->update($data); 
+        }else{
+            $rs =  DB::table('offers')->insert($data); 
+        }
+
+        $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
+            $q->where('users.id',$request->get('interestedUsreId'));
+        }])->where('id',$request->get('taskId'))->get(); 
         return Response::json(array(
                     'status' => 1,
                     'code'=>200,
                     'message' => 'Offer posted successfully.',
-                    'data'  =>  []
+                    'data'  =>  $offetData
                     )
                 );
 
@@ -686,8 +712,7 @@ class TaskController extends Controller {
 
     public function taskOffer(Request $request, $taskId=null)
     {
-      $offers =  Tasks::with('interestedUsers')->where('id',$taskId)->get();
- 
+      $offers =  Tasks::with('interestedUsers')->where('id',$taskId)->get(); 
  
       return  response()->json([ 
                     "status"=>($offers->count())?1:0,
