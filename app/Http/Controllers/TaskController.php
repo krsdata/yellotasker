@@ -660,7 +660,7 @@ class TaskController extends Controller {
                 );
          }   
 
-
+         
         $data = [];
         $table_cname = \Schema::getColumnListing('offers');
         $except = ['id','created_at','updated_at'];
@@ -696,8 +696,6 @@ class TaskController extends Controller {
                     'data' => $offers
                    ]
                 );
-
-
     }
 
     public function getSaveTask(Request $request, $uid=null){
@@ -715,7 +713,7 @@ class TaskController extends Controller {
 
     public function getTask(Request $request, $uid=null){
         
-        $offers =  User::with('saveTask','openTask','pendingTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
+        $offers =  User::with('saveTask','openTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
 
        
 
@@ -751,6 +749,19 @@ class TaskController extends Controller {
                 );
          }   
 
+         $is_savtask = DB::table('saveTask')->where('taskId',$request->get('taskId'))->where('userId',$request->get('userId'))->first(); 
+         
+         $task_action = $request->get('action');
+
+         if($is_savtask!=null && $task_action!='update'){
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'This task already saved.Do you want to update?',
+                    'data'  =>  $is_savtask 
+                    )
+                );
+         }
 
         $data = [];
         $table_cname = \Schema::getColumnListing('saveTask');
@@ -762,8 +773,17 @@ class TaskController extends Controller {
            } 
            $data[$value] = $request->get($value);
         }
+  
+        // saveTask update      
+        if($is_savtask!=null && $task_action=='update'){
+            $rs =  DB::table('saveTask')
+                    ->where('id',$request->get('taskId'))
+                        ->where('userId',$request->get('userId'))
+                            ->update($data); 
+        }else{
+            $rs =  DB::table('saveTask')->insert($data); 
+        }
         
-        $rs =  DB::table('saveTask')->insert($data); 
         return $this->getSaveTask($request,$request->get('userId'));
         
         return Response::json(array(

@@ -48,7 +48,8 @@ class User extends Authenticatable
     public function saveTask()
     {
 
-        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+         
     }
 
    
@@ -77,7 +78,7 @@ class User extends Authenticatable
     {
        // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
 
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
 
