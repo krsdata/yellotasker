@@ -738,7 +738,7 @@ class TaskController extends Controller {
 
     public function getTask(Request $request, $uid=null){
         
-        $offers =  User::with('saveTask','openTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
+        $offers =  User::with('saveTask','postedTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
 
        
 

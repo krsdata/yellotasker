@@ -60,19 +60,23 @@ class User extends Authenticatable
 
     public function openTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->where('status','open');
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
+    }
+    public function postedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
     }
     public function pendingTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->where('status','pending');
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','pending');
     }
     public function assignedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->where('status','assigned');
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','assigned');
     }
     public function completedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->where('status','completed');
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','completed');
     }
     public function offer_task()
     {
