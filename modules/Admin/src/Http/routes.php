@@ -6,12 +6,12 @@
     Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');  
     Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout');  
 
-    Route::post('admin/login',function(App\Admin $user){
+    Route::post('admin/login',function(App\User $user){
    
     $credentials = ['email' => Input::get('email'), 'password' => Input::get('password')]; 
     
    // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456]; 
-    $auth = auth()->guard('admin');
+    $auth = auth()->guard('web');
     
 
         if ($auth->attempt($credentials)) {

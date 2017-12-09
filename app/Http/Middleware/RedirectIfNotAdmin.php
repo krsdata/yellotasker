@@ -19,9 +19,9 @@ class RedirectIfNotAdmin
      */
 
     protected $redirectTo = 'admin';
-    protected $guard = 'admin';
+    protected $guard = 'web';
 
-    public function handle($request, Closure $next, $guard = 'admin')
+    public function handle($request, Closure $next, $guard = 'web')
     {   
 
       // dd(Auth::guard('admin')->attempt($credentials,true));

@@ -60,7 +60,8 @@ class AdminController extends Controller {
        // dd(Session::getId());
         $page_title = "";
         $page_action = "";
-        $professor = User::where('role_type',1)->count();
+       
+        $professor = User::where('role_type','>=',$request->user()->role_type)->count();
          
         $user = User::count();
         $viewPage = "Admin";
