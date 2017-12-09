@@ -32,19 +32,19 @@
                             <a href="javascript:;" class="nav-link nav-toggle">
                                  <i class="glyphicon glyphicon-user"></i>
                                 <span class="title">Manage User</span>
-                                <span class="arrow {{ (isset($page_title) && $page_title=='User')?'open':'' }}"></span>
+                                <span class="arrow {{ (isset($page_title) && $page_title=='Admin User')?'open':'' }}"></span>
                             </a>
 
-                           <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='User')?'block':'none' }}">
+                           <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Admin User')?'block':'none' }}">
 
-                                <li class="nav-item  {{ (isset($page_title) && $page_title=='User')?'open':'' }}">
+                               <li class="nav-item  {{ (isset($page_title) && $page_title=='Admin User')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="icon-user"></i>
-                                    <span class="title">Manage User</span>
-                                    <span class="arrow {{ (isset($page_title) && $page_title=='User')?'open':'' }}"></span>
+                                    <span class="title">Manage Admin User</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='Admin User')?'open':'' }}"></span>
                                 </a>
-                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='User')?'block':'none' }}">
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create User')?'active':'' }}">
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Admin User')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Admin User')?'active':'' }}">
                                             <a href="{{ route('user.create') }}" class="nav-link ">
                                                 <i class="glyphicon glyphicon-plus-sign"></i> 
                                                 <span class="title">
@@ -53,7 +53,7 @@
                                             </a>
                                         </li>
 
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View User')?'active':'' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Admin User')?'active':'' }}">
                                             <a href="{{ route('user') }}" class="nav-link ">
                                                  <i class="glyphicon glyphicon-eye-open"></i> 
                                                 <span class="title">
@@ -64,7 +64,36 @@
                                       
                                      
                                     </ul>
+                                </li> 
+                               <li class="nav-item  {{ (isset($page_title) && $page_title=='Client User')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-user"></i>
+                                    <span class="title">Manage Client User</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='Client User')?'open':'' }}"></span>
+                                </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Client User')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Client User')?'active':'' }}">
+                                            <a href="{{ route('clientuser.create') }}" class="nav-link ">
+                                                <i class="glyphicon glyphicon-plus-sign"></i> 
+                                                <span class="title">
+                                                    Create User
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Client User')?'active':'' }}">
+                                            <a href="{{ route('clientuser') }}" class="nav-link ">
+                                                 <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Users
+                                                </span>
+                                            </a>
+                                        </li>
+                                      
+                                     
+                                    </ul>
                                 </li>
+                                
                             </ul>  
                         </li>
                        
@@ -271,24 +300,27 @@
                                 </li>
                             </ul>  
                         </li>
+                        
                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Compaint Managment')?'open':'' }}">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-user"></i>
-                                <span class="title">Compaint Managment</span>
-                                <span class="selected"></span>
-                                <span class="arrow open"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item start active open">
-                                    <a href="{{ route('compaint') }}" class="nav-link ">
-                                        <i class="glyphicon glyphicon-eye-open"></i>
-                                        <span class="title">View</span>
-                                        <span class="selected"></span>
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                        <span class="title">Compaint Managment</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Compaint Managment')?'open':'' }}"></span>
                                     </a>
-                                </li>
-                                
-                            </ul>
-                        </li>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='View Managment')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Compaint')?'active':'' }}">
+                                            <a href="{{ route('compaint') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Complaint 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                       
+                                     
+                                    </ul>
+                                     
+                            </li> 
                         <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->

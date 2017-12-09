@@ -6,18 +6,17 @@
     Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');  
     Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout');  
 
-    Route::post('admin/login',function(App\User $user){
+    Route::post('admin/login',function(App\Admin $user){
    
     $credentials = ['email' => Input::get('email'), 'password' => Input::get('password')]; 
     
    // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456]; 
-    $auth = auth()->guard('web');
-    
-
+    $auth = auth()->guard('admin');
+    Session::set('role','admin');
+   
         if ($auth->attempt($credentials)) {
             return Redirect::to('admin');
         }else{ 
-           //return Redirect::to('admin/login')->withError(['message'=>'Invalid Credential!']);
             return redirect()
                         ->back()
                         ->withInput()  
@@ -44,6 +43,18 @@
                 'store' => 'user.store',
                 'index' => 'user',
                 'create' => 'user.create',
+            ]
+                ]
+        );
+        Route::resource('admin/clientuser', 'Modules\Admin\Http\Controllers\ClientUsersController', [
+            'names' => [
+                'edit' => 'clientuser.edit',
+                'show' => 'clientuser.show',
+                'destroy' => 'clientuser.destroy',
+                'update' => 'clientuser.update',
+                'store' => 'clientuser.store',
+                'index' => 'clientuser',
+                'create' => 'clientuser.create',
             ]
                 ]
         );

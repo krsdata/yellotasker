@@ -102,6 +102,7 @@ class AuthController extends Controller
 	public function login(Request $request)
 	{
 		$credentials = array('email' => Input::get('email'), 'password' => Input::get('password')); 
+                
         if (Auth::attempt($credentials, true)) {
             return Redirect::to('testAdmin');
         }

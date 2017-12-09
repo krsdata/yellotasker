@@ -61,7 +61,7 @@ class AdminController extends Controller {
         $page_title = "";
         $page_action = "";
        
-        $professor = User::where('role_type','>=',$request->user()->role_type)->count();
+        $professor = User::where('role_type',1)->count();
          
         $user = User::count();
         $viewPage = "Admin";
