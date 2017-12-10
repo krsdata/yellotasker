@@ -61,6 +61,8 @@ class Offers extends Authenticatable {
     {
         return $this->hasOne('App\Models\Tasks','id','taskId');
     }
+ 
+
 
     
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Modules\Admin\Http\Requests\SyllabusRequest;
 use App\Models\Tasks;
+use App\Models\Offers;
 use Input;
 use Validator;
 use Auth;
@@ -709,7 +710,133 @@ class TaskController extends Controller {
 
     }
 
-    public function makeOffer(Request $request)
+    public function getMyOffer(Request $request)
+    {
+    	$validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'userId'=>'required'
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+        $offers =  User::with('myOffer')->where('id',$request->get('userId'))->get();
+ 
+      	return  response()->json([ 
+                    "status"=>($offers->count())?1:0,
+                    "code"=> ($offers->count())?200:404,
+                    "message"=>($offers->count())?"User Task offer list":"Record not found",
+                    'data' => $offers
+                   ]
+                ); 
+
+
+
+    }
+
+    public function getAlloffers(Request $request)
+    {
+    	$taskId = $request->get('taskId');
+    	$taskOwnerId = $request->get('taskOwnerId');
+
+    	$offers = Tasks::with(['allOffers'=>function($q)use($taskId,$taskOwnerId){
+    			$q->where('taskId',$taskId);
+    	}])->where('userId',$taskOwnerId)->get();
+
+		return  response()->json([ 
+                "status"=>($offers)?1:0,
+                "code"=> ($offers)?200:404,
+                "message"=>($offers)?"All offers list found":"Record not found for given input!",
+                'data' => $offers
+               ]
+            );  
+
+    }
+
+    public function deleteOffer(Request $request)
+    {
+
+    	$offers = Offers::where('userId',$request->get('userId'))
+    				->where('offerId',$request->get('offerId'))->delete();
+
+		return  response()->json([ 
+                "status"=>($offers)?1:0,
+                "code"=> ($offers)?200:404,
+                "message"=>($offers)?"offer deleted successfully":"Record not found for given input!",
+                'data' => []
+               ]
+            ); 
+		 
+
+    }
+
+    public function updateOffer(Request $request,$id=null)
+    {
+         /** Return Error Message **/
+            if ($id==null) {
+                        
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'offerId required',
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+         
+
+        $data = [];
+        $table_cname = \Schema::getColumnListing('offers');
+        $except = ['id','created_at','updated_at'];
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           }  
+
+           if($request->get($value)){
+           			 $data[$value] = $request->get($value);
+   			} 
+
+          
+        }
+         
+        $rs =  DB::table('offers')
+                    ->where('id',$id) 
+                            ->update($data); 
+         
+
+        $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
+            $q->where('users.id',$request->get('interestedUsreId'));
+        }])->where('id',$request->get('taskId'))->get(); 
+
+
+
+        return Response::json(array(
+                    'status' => 1,
+                    'code'=>200,
+                    'message' => 'Offer updated successfully.',
+                    'data'  =>  $request->all()
+                    )
+                );
+
+    }
+
+    public function makeOffer(Request $request,$id=null)
     {
         $validator = Validator::make($request->all(), [
                'taskId' => 'required',
@@ -753,7 +880,15 @@ class TaskController extends Controller {
            if(in_array($value, $except )){
                 continue;
            } 
-           $data[$value] = $request->get($value);
+           if($task_action=='update'){
+           		if($request->get($value)){
+           			 $data[$value] = $request->get($value);
+       			} 
+           }else{
+           		 $data[$value] = $request->get($value);
+           }
+
+          
         }
         
        // $rs =  DB::table('offers')->insert($data); 

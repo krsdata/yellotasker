@@ -129,6 +129,28 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@makeOffer'
                 ]
             );
+
+             Route::match(['get','post'],'deleteOffer',[
+                'as' => 'deleteOffer',
+                'uses' => 'TaskController@deleteOffer'
+                ]
+            );
+
+              Route::match(['get','post'],'getAlloffers',[
+                'as' => 'Alloffers',
+                'uses' => 'TaskController@getAlloffers'
+                ]
+            );
+
+             
+
+
+            Route::match(['get','post'],'updateOffer/{id}',[
+                'as' => 'updateOffer',
+                'uses' => 'TaskController@updateOffer'
+                ]
+            );
+
              Route::match(['get','post'],'taskOffer/{id}',[
                 'as' => 'taskOffer',
                 'uses' => 'TaskController@taskOffer'
@@ -183,6 +205,15 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'ComplainController@reportBy'
                 ]
             ); 
+
+            Route::match(['get','post'],'getMyOffer',[
+                'as' => 'getMyOffer',
+                'uses' => 'TaskController@getMyOffer'
+                ]
+            ); 
+
+
+           
 
              
  
