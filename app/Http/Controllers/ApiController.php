@@ -100,6 +100,42 @@ class ApiController extends Controller
                         );  
     }   
     
+
+    public function deactivateUser($user_id=null)
+    {
+         $user = User::find($user_id);
+
+         
+        /** Return Error Message **/
+        if (!$user) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                    
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => 'Invalid User id',
+                'data'  =>  $request->all()
+                )
+            );
+        }   
+         $user->status=0;
+         $user->save();
+
+         return Response::json(array(
+                'status' => 1,
+                'code'=> 200,
+                'message' => 'Account deativated',
+                'data'  =>  []
+                )
+            );
+
+
+
+    }
+
    /* @method : register
     * @param : email,password,deviceID,firstName,lastName
     * Response : json
@@ -276,7 +312,7 @@ class ApiController extends Controller
     public function login(Request $request)
     {    
         $input = $request->all();
-        if (!$token = JWTAuth::attempt(['email'=>$request->get('email'),'password'=>$request->get('password')])) {
+        if (!$token = JWTAuth::attempt(['email'=>$request->get('email'),'password'=>$request->get('password'),'status'=>1])) {
             return response()->json([ "status"=>0,"message"=>"Invalid email or password. Try again!" ,'data' => '' ]);
         }
          

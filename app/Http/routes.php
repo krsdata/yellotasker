@@ -42,7 +42,10 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'category','ApiController@category');
         Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
         Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
+        
+         Route::match(['post','get'],'account/deactivate/{id}','ApiController@deactivateUser'); 
        
+
        
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
