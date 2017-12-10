@@ -44,8 +44,11 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
         Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
         
-         Route::match(['post','get'],'account/deactivate/{id}','ApiController@deactivateUser'); 
+        Route::match(['post','get'],'account/deactivate/{id}','ApiController@deactivateUser'); 
+        
+        Route::match(['post','get'],'userDetail/{id}','ApiController@userDetail'); 
        
+
 
        
         Route::group(['middleware' => 'jwt-auth'], function () 
@@ -137,6 +140,14 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@saveTask'
                 ]
             );
+
+            Route::match(['get','post'],'updateTaskStatus',[
+                'as' => 'updateTaskStatus',
+                'uses' => 'TaskController@updateTaskStatus'
+                ]
+            );
+
+             
 
              Route::match(['get','post'],'getSaveTask/{id}',[
                 'as' => 'getSaveTask',

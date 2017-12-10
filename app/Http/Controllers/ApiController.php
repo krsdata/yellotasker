@@ -222,7 +222,18 @@ class ApiController extends Controller
         }
         
     }
+public function userDetail($id=null)
+{
+    $user = User::find($id);
+    return Response::json(array(
+                'status' => ($user)?1:0,
+                'code' => ($user)?200:500,
+                'message' => ($user)?'User data fetched.':'Record not found!',
+                'data'  =>  $user
+                )
+            ); 
 
+}
 
 /* @method : update User Profile
     * @param : email,password,deviceID,firstName,lastName
