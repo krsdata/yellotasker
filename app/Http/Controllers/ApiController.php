@@ -104,8 +104,6 @@ class ApiController extends Controller
     public function deactivateUser($user_id=null)
     {
          $user = User::find($user_id);
-
-         
         /** Return Error Message **/
         if (!$user) {
                     $error_msg  =   [];
@@ -233,9 +231,10 @@ class ApiController extends Controller
     * Author : kundan Roy
     * Calling Method : get  
     */
-    public function updateProfile(Request $request,User $user)
+    public function updateProfile(Request $request,$userId=null)
     {       
-        if(!Helper::isUserExist($request->get('user_id')))
+             
+        if((User::find($userId))==null)
         {
             return Response::json(array(
                 'status' => 0,
@@ -245,17 +244,24 @@ class ApiController extends Controller
                 )
             );
         } 
-        $user = User::find($request->get('user_id')); 
-        $role_type  = $user->role_type;
+        $user = User::find($userId); 
 
-        $data = [
-                    'user_id'=>$user->id,
-                    'first_name'=>$user->first_name,
-                    'last_name'=>$user->first_name,
-                    'email'=>$user->email,
-                    'role_type' => $user->role_type
-                ];
-
+         
+        $table_cname = \Schema::getColumnListing('users');
+        $except = ['id','created_at','updated_at','profile_image'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+            if($request->get($value)){
+                $user->$value = $request->get($value);
+           }
+        }
+         
+        $user->role_type = 3 ;
+ 
         if($request->get('profile_image')){  ;
             $profile_image = $this->createImage($request->get('profile_image')); 
             if($profile_image==false){
@@ -269,16 +275,7 @@ class ApiController extends Controller
             }
             $user->profile_image  = $profile_image;       
         }        
-          
-         
-        foreach ($request->all() as $key => $value) {
-             if($key=="email" || $key=="user_id" || $key == "profile_image")
-             {
-                continue;
-             }else{
-               $user->$key=$value; 
-             }
-        }
+           
 
         try{
             $user->save();
@@ -290,14 +287,13 @@ class ApiController extends Controller
             $code  = 500;
             $message =$e->getMessage();
         }
-        $data = User::find($request->get('user_id'));  
-
+         
         return response()->json(
                             [ 
                             "status" =>$status,
                             'code'   => $code,
                             "message"=> $message,
-                            'data'=>$data
+                            'data'=>isset($user)?$user:[]
                             ]
                         );
          
