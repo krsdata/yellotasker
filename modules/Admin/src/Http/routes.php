@@ -11,7 +11,8 @@
     $credentials = ['email' => Input::get('email'), 'password' => Input::get('password')]; 
     
    // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456]; 
-    $auth = auth()->guard('admin');
+    
+    $auth = auth()->guard('web');
     Session::set('role','admin');
    
         if ($auth->attempt($credentials)) {
