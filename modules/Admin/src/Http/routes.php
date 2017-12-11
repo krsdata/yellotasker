@@ -200,6 +200,26 @@
                 ]
         );  
 
+
+        // programs
+         Route::bind('reason', function($value, $route) {
+            return Modules\Admin\Models\Reason::find($value);
+        });
+ 
+        Route::resource('admin/reason', 'Modules\Admin\Http\Controllers\ReasonController', [
+            'names' => [
+                'edit' => 'reason.edit',
+                'show' => 'reason.show',
+                'destroy' => 'reason.destroy',
+                'update' => 'reason.update',
+                'store' => 'reason.store',
+                'index' => 'reason',
+                'create' => 'reason.create',
+            ]
+                ]
+        );  
+
+
          Route::get('admin/createGroup', 'Modules\Admin\Http\Controllers\ContactController@createGroup');  
          Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');  
 

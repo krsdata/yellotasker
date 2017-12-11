@@ -36,13 +36,7 @@ class SavedTask extends Authenticatable {
      *
      * @var array
      */
-    
-
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
-
-
-     
-    
 
     public function user()
     {
@@ -52,6 +46,11 @@ class SavedTask extends Authenticatable {
     public function task()
     {
         return $this->hasMany('App\Models\Tasks','id','taskId');
+    }
+
+    public function mytask()
+    {
+        return $this->hasOne('App\Models\Tasks','id','taskId');
     }
 
     

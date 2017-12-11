@@ -15,6 +15,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With, auth-token');
 header('Access-Control-Allow-Credentials: true');
+header("Access-Control-Allow-Origin: *");
 
 Route::get('/', function () {
 
@@ -32,7 +33,7 @@ Route::group(['prefix' => 'api/v1'], function()
     Route::group(['middleware' => 'api'], function () {
 
         Route::match(['post','get'],'user/signup','ApiController@register');  
-        Route::match(['post','get'],'user/updateProfile','ApiController@updateProfile'); 
+        Route::match(['post','get'],'user/updateProfile/{id}','ApiController@updateProfile'); 
         Route::match(['post','get'],'user/login', 'ApiController@login'); 
         Route::match(['post','get'],'email_verification','ApiController@emailVerification');   
         Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword'); 
@@ -42,7 +43,13 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'category','ApiController@category');
         Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
         Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
+        
+        Route::match(['post','get'],'account/deactivate/{id}','ApiController@deactivateUser'); 
+        
+        Route::match(['post','get'],'userDetail/{id}','ApiController@userDetail'); 
        
+
+
        
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
@@ -122,6 +129,28 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@makeOffer'
                 ]
             );
+
+             Route::match(['get','post'],'deleteOffer',[
+                'as' => 'deleteOffer',
+                'uses' => 'TaskController@deleteOffer'
+                ]
+            );
+
+              Route::match(['get','post'],'getAlloffers',[
+                'as' => 'Alloffers',
+                'uses' => 'TaskController@getAlloffers'
+                ]
+            );
+
+             
+
+
+            Route::match(['get','post'],'updateOffer/{id}',[
+                'as' => 'updateOffer',
+                'uses' => 'TaskController@updateOffer'
+                ]
+            );
+
              Route::match(['get','post'],'taskOffer/{id}',[
                 'as' => 'taskOffer',
                 'uses' => 'TaskController@taskOffer'
@@ -134,11 +163,59 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
+            Route::match(['get','post'],'updateTaskStatus',[
+                'as' => 'updateTaskStatus',
+                'uses' => 'TaskController@updateTaskStatus'
+                ]
+            );
+
+             
+
              Route::match(['get','post'],'getSaveTask/{id}',[
                 'as' => 'getSaveTask',
                 'uses' => 'TaskController@getSaveTask'
                 ]
+            ); 
+
+            Route::match(['get','post'],'getUserTask/{id}',[
+                'as' => 'getUserTask',
+                'uses' => 'TaskController@getTask'
+                ]
+            ); 
+
+              Route::match(['get','post'],'getReason',[
+                'as' => 'getReason',
+                'uses' => 'ReasonController@getReason'
+                ]
             );
+
+           Route::match(['get','post'],'getReport/user/{id}',[
+                'as' => 'getReport',
+                'uses' => 'ComplainController@getReport'
+                ]
+            );
+           Route::match(['get','post'],'getReport/task/{id}',[
+                'as' => 'getReport',
+                'uses' => 'ComplainController@getReport'
+                ]
+            );
+
+           Route::match(['get','post'],'report/{name}',[
+                'as' => 'reportBy',
+                'uses' => 'ComplainController@reportBy'
+                ]
+            ); 
+
+            Route::match(['get','post'],'getMyOffer',[
+                'as' => 'getMyOffer',
+                'uses' => 'TaskController@getMyOffer'
+                ]
+            ); 
+
+
+           
+
+             
  
         
     });

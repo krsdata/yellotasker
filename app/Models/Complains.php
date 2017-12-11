@@ -31,12 +31,31 @@ class Complains extends Eloquent {
      * The attributes that should be hidden for arrays.
      *
      * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
+     */ 
+    
 
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
+
+
+    public  function reportedUser()
+    {
+        return $this->hasMany('App\User','id','reportedUserId') ;
+    }
+
+    public  function postedUser()
+    {
+        return $this->hasOne('App\User','id','postedUserId') ;
+    }
+
+    public function task()
+    {
+        return $this->belongsTo('App\Models\Tasks','taskId','id');
+    }
+
+    public function reason()
+    {
+        return $this->belongsTo('Modules\Admin\Models\Reason','reasonId','id');
+    }
     
     public  function userDetail()
     {
@@ -50,7 +69,7 @@ class Complains extends Eloquent {
 
     public  function taskDetail()
     {
-        return $this->hasOne('App\Models\Tasks','id','taskId');
+        return $this->hasOne('App\Models\Tasks','id','taskId'); 
     }
 
     

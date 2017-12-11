@@ -45,9 +45,55 @@ class User extends Authenticatable
 
 
     
-     public function saveTask()
+    public function saveTask()
     {
-        return $this->hasMany('App\Models\SavedTask','userId','id')->with('task');
+
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+         
     }
+
+   
+    public function reportedDetails()
+    {
+        return $this->hasMany('App\Models\Complains','postedUserId')->with('reportedUser');
+    }
+
+    public function openTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
+    }
+    public function postedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
+    }
+    public function pendingTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','pending');
+    }
+    public function assignedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','assigned');
+    }
+    public function completedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','completed');
+    }
+    public function offer_task()
+    {
+       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+    }
+
+    public function myOffer()
+    {
+       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+    }
+
+   
+
     
+
 }

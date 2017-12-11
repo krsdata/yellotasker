@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Modules\Admin\Http\Requests\SyllabusRequest;
 use App\Models\Tasks;
+use App\Models\Offers;
 use Input;
 use Validator;
 use Auth;
@@ -110,6 +111,76 @@ class TaskController extends Controller {
                 'data'    => $data
                 ]; 
     }
+
+ 	public function updateTaskStatus(Request $request)
+    { 
+        $post_request = $request->all(); 
+         //Server side valiation
+        $validator = Validator::make($request->all(), [
+           'taskId' => 'required', 
+           'status' => 'required'
+        ]);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }   
+        $taskId = $request->get('taskId'); 
+        $task = Tasks::find($taskId);
+        if ($task==null) {
+            $task_data = Tasks::find($taskId);
+            if (empty($task_data)) {
+                return
+                    [ 
+                    "status"  => '0',
+                    'code'    => '500',
+                    "message" => 'No match found for the given task id.',
+                    'data'    => []
+                    ];
+                
+            } 
+        }   
+         
+        $table_cname = \Schema::getColumnListing('post_tasks');
+        $except = ['id','created_at','updated_at'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+           if($request->get($value)){
+                $task->$value = $request->get($value);
+           }
+           
+        }
+        $task->save();
+        $status  = 1;
+        $code    = 200;
+        $message = 'Task status changed successfully';
+        $data    = $task; 
+        
+        return 
+                [ 
+                "status"  =>$status,
+                'code'    => $code,
+                "message" =>$message,
+                'data'    => $data
+                ];
+                       
+
+    } 
+
 
     public function updatePostTask(Request $request)
     { 
@@ -639,10 +710,11 @@ class TaskController extends Controller {
 
     }
 
-    public function makeOffer(Request $request)
+    public function getMyOffer(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-               'taskId' => 'required'
+    	$validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'userId'=>'required'
         ]);
             /** Return Error Message **/
             if ($validator->fails()) {
@@ -660,6 +732,145 @@ class TaskController extends Controller {
                 );
          }   
 
+        $offers =  User::with('myOffer')->where('id',$request->get('userId'))->get();
+ 
+      	return  response()->json([ 
+                    "status"=>($offers->count())?1:0,
+                    "code"=> ($offers->count())?200:404,
+                    "message"=>($offers->count())?"User Task offer list":"Record not found",
+                    'data' => $offers
+                   ]
+                ); 
+
+
+
+    }
+
+    public function getAlloffers(Request $request)
+    {
+    	$taskId = $request->get('taskId');
+    	$taskOwnerId = $request->get('taskOwnerId');
+
+    	$offers = Tasks::with(['allOffers'=>function($q)use($taskId,$taskOwnerId){
+    			$q->where('taskId',$taskId);
+    	}])->where('userId',$taskOwnerId)->get();
+
+		return  response()->json([ 
+                "status"=>($offers)?1:0,
+                "code"=> ($offers)?200:404,
+                "message"=>($offers)?"All offers list found":"Record not found for given input!",
+                'data' => $offers
+               ]
+            );  
+
+    }
+
+    public function deleteOffer(Request $request)
+    {
+
+    	$offers = Offers::where('userId',$request->get('userId'))
+    				->where('offerId',$request->get('offerId'))->delete();
+
+		return  response()->json([ 
+                "status"=>($offers)?1:0,
+                "code"=> ($offers)?200:404,
+                "message"=>($offers)?"offer deleted successfully":"Record not found for given input!",
+                'data' => []
+               ]
+            ); 
+		 
+
+    }
+
+    public function updateOffer(Request $request,$id=null)
+    {
+         /** Return Error Message **/
+            if ($id==null) {
+                        
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'offerId required',
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+         
+
+        $data = [];
+        $table_cname = \Schema::getColumnListing('offers');
+        $except = ['id','created_at','updated_at'];
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           }  
+
+           if($request->get($value)){
+           			 $data[$value] = $request->get($value);
+   			} 
+
+          
+        }
+         
+        $rs =  DB::table('offers')
+                    ->where('id',$id) 
+                            ->update($data); 
+         
+
+        $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
+            $q->where('users.id',$request->get('interestedUsreId'));
+        }])->where('id',$request->get('taskId'))->get(); 
+
+
+
+        return Response::json(array(
+                    'status' => 1,
+                    'code'=>200,
+                    'message' => 'Offer updated successfully.',
+                    'data'  =>  $request->all()
+                    )
+                );
+
+    }
+
+    public function makeOffer(Request $request,$id=null)
+    {
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'interestedUsreId'=>'required'
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+        $is_savtask = DB::table('offers')->where('taskId',$request->get('taskId'))->where('interestedUsreId',$request->get('interestedUsreId'))->first(); 
+         
+        $task_action = $request->get('action');
+
+         if($is_savtask!=null && $task_action!='update'){
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'Offer already exists.Do you want to update?',
+                    'data'  =>  $is_savtask 
+                    )
+                );
+         }
 
         $data = [];
         $table_cname = \Schema::getColumnListing('offers');
@@ -669,16 +880,36 @@ class TaskController extends Controller {
            if(in_array($value, $except )){
                 continue;
            } 
-           $data[$value] = $request->get($value);
+           if($task_action=='update'){
+           		if($request->get($value)){
+           			 $data[$value] = $request->get($value);
+       			} 
+           }else{
+           		 $data[$value] = $request->get($value);
+           }
+
+          
         }
         
-        $rs =  DB::table('offers')->insert($data); 
+       // $rs =  DB::table('offers')->insert($data); 
 
+        if($is_savtask!=null && $task_action=='update'){
+            $rs =  DB::table('offers')
+                    ->where('id',$request->get('taskId'))
+                        ->where('interestedUsreId',$request->get('interestedUsreId'))
+                            ->update($data); 
+        }else{
+            $rs =  DB::table('offers')->insert($data); 
+        }
+
+        $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
+            $q->where('users.id',$request->get('interestedUsreId'));
+        }])->where('id',$request->get('taskId'))->get(); 
         return Response::json(array(
                     'status' => 1,
                     'code'=>200,
                     'message' => 'Offer posted successfully.',
-                    'data'  =>  []
+                    'data'  =>  $offetData
                     )
                 );
 
@@ -686,8 +917,8 @@ class TaskController extends Controller {
 
     public function taskOffer(Request $request, $taskId=null)
     {
-      $offers =  Tasks::with('OfferTask')->where('id',$taskId)->get();
-
+      $offers =  Tasks::with('interestedUsers')->where('id',$taskId)->get(); 
+ 
       return  response()->json([ 
                     "status"=>($offers->count())?1:0,
                     "code"=> ($offers->count())?200:404,
@@ -695,18 +926,31 @@ class TaskController extends Controller {
                     'data' => $offers
                    ]
                 );
-
-
     }
 
     public function getSaveTask(Request $request, $uid=null){
-        
-         $offers =  User::with('saveTask')->where('id',$uid)->get();
+      
+        $offers =  User::with('saveTask')->where('id',$uid)->get();
 
-      return  response()->json([ 
+        return  response()->json([ 
                     "status"=>($offers->count())?1:0,
                     "code"=> ($offers->count())?200:404,
                     "message"=>($offers->count())?"Saved task offer list":"Record not found",
+                    'data' => $offers
+                   ]
+                );
+    }
+
+    public function getTask(Request $request, $uid=null){
+        
+        $offers =  User::with('saveTask','postedTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
+
+       
+
+        return  response()->json([ 
+                    "status"=>($offers->count())?1:0,
+                    "code"=> ($offers->count())?200:404,
+                    "message"=>($offers->count())?"All task list":"Record not found",
                     'data' => $offers
                    ]
                 );
@@ -735,6 +979,19 @@ class TaskController extends Controller {
                 );
          }   
 
+         $is_savtask = DB::table('saveTask')->where('taskId',$request->get('taskId'))->where('userId',$request->get('userId'))->first(); 
+         
+         $task_action = $request->get('action');
+
+         if($is_savtask!=null && $task_action!='update'){
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'This task already saved.Do you want to update?',
+                    'data'  =>  $is_savtask 
+                    )
+                );
+         }
 
         $data = [];
         $table_cname = \Schema::getColumnListing('saveTask');
@@ -746,8 +1003,17 @@ class TaskController extends Controller {
            } 
            $data[$value] = $request->get($value);
         }
+  
+        // saveTask update      
+        if($is_savtask!=null && $task_action=='update'){
+            $rs =  DB::table('saveTask')
+                    ->where('id',$request->get('taskId'))
+                        ->where('userId',$request->get('userId'))
+                            ->update($data); 
+        }else{
+            $rs =  DB::table('saveTask')->insert($data); 
+        }
         
-        $rs =  DB::table('saveTask')->insert($data); 
         return $this->getSaveTask($request,$request->get('userId'));
         
         return Response::json(array(
