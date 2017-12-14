@@ -43,7 +43,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function expiredTask()
+    {
 
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser');
+         
+    }
     
     public function saveTask()
     {
@@ -72,7 +77,7 @@ class User extends Authenticatable
     }
     public function assignedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser')->where('status','assigned');
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser');
     }
     public function completedTask()
     {
