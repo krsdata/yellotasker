@@ -259,7 +259,7 @@ public function userDetail($id=null)
 
          
         $table_cname = \Schema::getColumnListing('users');
-        $except = ['id','created_at','updated_at','profile_image'];
+        $except = ['id','created_at','updated_at','profile_image','modeOfreach'];
         
         foreach ($table_cname as $key => $value) {
            
@@ -270,7 +270,11 @@ public function userDetail($id=null)
                 $user->$value = $request->get($value);
            }
         }
-         
+        if(count($request->get('modeOfreach'))>0){
+       		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
+        }
+        
+
         $user->role_type = 3 ;
  
         if($request->get('profile_image')){  ;
