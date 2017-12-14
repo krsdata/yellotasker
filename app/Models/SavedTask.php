@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Admin\Models\Group;
-use Modules\Admin\Models\Position;
 use Auth;
 
 class SavedTask extends Authenticatable {

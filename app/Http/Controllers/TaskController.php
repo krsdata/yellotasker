@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Modules\Admin\Http\Requests\SyllabusRequest;
 use App\Models\Tasks;
 use App\Models\Offers;
 use Input;
@@ -930,7 +929,17 @@ class TaskController extends Controller {
 
     public function getSaveTask(Request $request, $uid=null){
       
-        $offers =  User::with('saveTask')->where('id',$uid)->get();
+        
+        $offers = User::with(['expiredTask'=>function($q){
+                        $q->whereDate('dueDate','<',Carbon::today()->toDateString());
+                        $q->where('status','open');
+                    }])->with(['assignedTask'=>function($q) use($uid){
+                        $q->where('taskDoerId','!=',$uid);
+                        $q->where('status','!=','open');
+                    }])->with(['openTask'=>function($q){
+                        $q->whereDate('dueDate','>=',Carbon::today()->toDateString());
+                    }])->where('id',$uid)
+                    ->get();
 
         return  response()->json([ 
                     "status"=>($offers->count())?1:0,
@@ -941,11 +950,17 @@ class TaskController extends Controller {
                 );
     }
 
-    public function getTask(Request $request, $uid=null){
-        
-        $offers =  User::with('saveTask','postedTask','assignedTask','completedTask','offer_task')->where('id',$uid)->get();
+    public function getTask(Request $request, $uid=null){ 
 
-       
+        $offers =  User::with(['expiredTask'=>function($q){
+                    $q->whereDate('dueDate','<',Carbon::today()->toDateString());
+                     $q->where('status','open');
+                    }])->with(['assignedTask'=>function($q) use($uid){
+                        $q->where('taskDoerId','!=',$uid);
+                         $q->where('status','!=','open');
+                    }])->with('postedTask','offer_task')->where('id',$uid)
+                    ->get();
+ 
 
         return  response()->json([ 
                     "status"=>($offers->count())?1:0,
