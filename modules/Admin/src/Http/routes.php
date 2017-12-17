@@ -11,13 +11,13 @@
     $credentials = ['email' => Input::get('email'), 'password' => Input::get('password')]; 
     
    // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456]; 
-    $auth = auth()->guard('admin');
     
-
+    $auth = auth()->guard('web');
+    Session::set('role','admin');
+   
         if ($auth->attempt($credentials)) {
             return Redirect::to('admin');
         }else{ 
-           //return Redirect::to('admin/login')->withError(['message'=>'Invalid Credential!']);
             return redirect()
                         ->back()
                         ->withInput()  
@@ -44,6 +44,18 @@
                 'store' => 'user.store',
                 'index' => 'user',
                 'create' => 'user.create',
+            ]
+                ]
+        );
+        Route::resource('admin/clientuser', 'Modules\Admin\Http\Controllers\ClientUsersController', [
+            'names' => [
+                'edit' => 'clientuser.edit',
+                'show' => 'clientuser.show',
+                'destroy' => 'clientuser.destroy',
+                'update' => 'clientuser.update',
+                'store' => 'clientuser.store',
+                'index' => 'clientuser',
+                'create' => 'clientuser.create',
             ]
                 ]
         );
@@ -167,6 +179,8 @@
             ]
                 ]
         );  
+
+        Route::get('admin/mytask/{id}','Modules\Admin\Http\Controllers\PostTaskController@mytask');
 
 
 

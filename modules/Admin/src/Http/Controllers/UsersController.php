@@ -43,9 +43,9 @@ class UsersController extends Controller {
      */
     public function __construct() {
         $this->middleware('admin');
-        View::share('viewPage', 'user');
+        View::share('viewPage', 'Admin User');
         View::share('helper',new Helper);
-        View::share('heading','Users');
+        View::share('heading','Admin Users');
         View::share('route_url',route('user'));
 
         $this->record_per_page = Config::get('app.record_per_page');
@@ -59,8 +59,8 @@ class UsersController extends Controller {
 
     public function index(User $user, Request $request) 
     { 
-        $page_title = 'User';
-        $page_action = 'View User'; 
+        $page_title = 'Admin User';
+        $page_action = 'Admin View User'; 
         if ($request->ajax()) {
             $id = $request->get('id');
             $status = $request->get('status');
@@ -88,12 +88,11 @@ class UsersController extends Controller {
                             $status =  ($status=='active')?1:0;
                             $query->Where('status',$status);
                         }
-                    })->Paginate($this->record_per_page);
+                    })->where('role_type','!=',3)->Paginate($this->record_per_page);
         } else {
-            $users = User::orderBy('id','desc')->Paginate(10);
+            $users = User::orderBy('id','desc')->where('role_type','!=',3)->Paginate(10);
             
-        }
-        
+        } 
         $roles = Roles::all();
 
         $js_file = ['common.js','bootbox.js','formValidate.js'];
@@ -106,7 +105,7 @@ class UsersController extends Controller {
 
     public function create(User $user) 
     {
-        $page_title = 'User';
+        $page_title = 'Admin User';
         $page_action = 'Create User';
         $roles = Roles::all();
         $role_id = null;
@@ -121,11 +120,22 @@ class UsersController extends Controller {
     public function store(UserRequest $request, User $user) {
         $user->fill(Input::all());
         $user->password = Hash::make($request->get('password'));
-        $user->role_type = $request->get('role'); 
+
+        $action = $request->get('submit');
+
+
+        if($action=='avtar'){ 
+            if ($request->file('profile_image')) {
+                $profile_image = User::createImage($request,'profile_image');
+                $request->merge(['profilePic'=> $profile_image]);
+               $user->profile_image = $request->get('profilePic'); 
+            }
+           
+        }
         $user->save();
         $js_file = ['common.js','bootbox.js','formValidate.js'];
         return Redirect::to(route('user'))
-                            ->with('flash_alert_notice', 'New user  successfully created.');
+                            ->with('flash_alert_notice', 'New record successfully created.');
         }
 
     /*
@@ -136,7 +146,7 @@ class UsersController extends Controller {
 
     public function edit(User $user) {
 
-        $page_title = 'User';
+        $page_title = 'Admin User';
         $page_action = 'Show Users';
         $role_id = $user->role_type;
         $roles = Roles::all();
@@ -147,7 +157,31 @@ class UsersController extends Controller {
     public function update(Request $request, User $user) {
         
         $user->fill(Input::all());
-        $user->password = Hash::make($request->get('password'));
+        if(!empty($request->get('password')))
+        {
+            $user->password = Hash::make($request->get('password'));
+        }
+       
+        $user->fill(Input::all());
+        $action = $request->get('submit');
+        $user->role_type= $request->get('role_type');
+
+        if($action=='avtar'){ 
+            if ($request->file('profile_image')) {
+                $profile_image = User::createImage($request,'profile_image');
+                $request->merge(['profilePic'=> $profile_image]);
+               $user->profile_image = $request->get('profilePic'); 
+            }
+           
+        }
+        elseif($action=='businessInfo'){
+        }
+        elseif($action=='paymentInfo'){
+
+        }else{
+
+        }
+
 
         $validator_email = User::where('email',$request->get('email'))
                             ->where('id','!=',$user->id)->first();
@@ -161,13 +195,19 @@ class UsersController extends Controller {
                  );
                  
             }
-        }else{
-           $user->save(); 
-        }
+        } 
 
+        $user->save(); 
+         
+
+        if($request->get('role')==3){
+            $Redirect = 'clientuser';
+        }else{
+            $Redirect = 'user';
+        }
        
-        return Redirect::to(route('user'))
-                        ->with('flash_alert_notice', 'User   successfully updated.');
+        return Redirect::to(route($Redirect))
+                        ->with('flash_alert_notice', 'Record successfully updated.');
     }
     /*
      *Delete User

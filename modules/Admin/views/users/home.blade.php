@@ -53,6 +53,14 @@
                                         </div> 
                                         </div>
                                     </div>
+
+                                     @if(Session::has('flash_alert_notice'))
+                                         <div class="alert alert-success alert-dismissable" style="margin:10px">
+                                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                          <i class="icon fa fa-check"></i>  
+                                         {{ Session::get('flash_alert_notice') }} 
+                                         </div>
+                                    @endif
                                      
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
@@ -61,7 +69,7 @@
                                                 <th> Full Name </th>
                                                 <th> Email </th>
                                                 <th> Phone </th>
-                                                <th> Role </th>
+                                                <th> {{($heading=='Admin Users')?'User Type':''}} </th>
                                                 <th>Signup Date</th>
                                                 <th>Status</th>
                                                 <th>Action</th> 
@@ -70,27 +78,32 @@
                                         <tbody>
                                         @foreach($users as $key => $result)
                                             <tr>
-                                                 <td> {{++$key}} </td>
+                                                <td> {{++$key}} </td>
                                                 <td> {{$result->first_name.'  '.$result->last_name}} </td>
                                                 <td> {{$result->email}} </td>
                                                 <td> {{$result->phone}} </td>
-                                                <td class="center">  @if($result->role_type==1)
-                                                    Admin
-                                                    @elseif($result->role_type==2)
-                                                    Business
+                                                <td class="center"> 
+                                               
+                                                    @if($result->role_type==3)
+                                                    <a href="{{url('admin/mytask/'.$result->id)}}">
+                                                        View Task
+                                                        <i class="glyphicon glyphicon-eye-open" title="edit"></i> 
+
+                                                    </a>
                                                     @else
-                                                    Superadmin
-                                                    @endif</td>
-                                                     <td>
-                                                        {!! Carbon\Carbon::parse($result->created_at)->format('Y-m-d'); !!}
-                                                    </td>
-                                                    <td>
-                                                        <span class="label label-{{ ($result->status==1)?'success':'warning'}} status" id="{{$result->id}}"  data="{{$result->status}}"  onclick="changeStatus({{$result->id}},'user')" >
+                                                      {{ ($result->role_type==1)?'admin':($result->role_type==2)?'Sales':($result->role_type==4)?'Support':'Admin'}}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {!! Carbon\Carbon::parse($result->created_at)->format('Y-m-d'); !!}
+                                                </td>
+                                                <td>
+                                                    <span class="label label-{{ ($result->status==1)?'success':'warning'}} status" id="{{$result->id}}"  data="{{$result->status}}"  onclick="changeStatus({{$result->id}},'user')" >
                                                             {{ ($result->status==1)?'Active':'Inactive'}}
                                                         </span>
-                                                    </td>
-                                                    <td> 
-                                                        <a href="{{ route('user.edit',$result->id)}}">
+                                                </td>
+                                                <td> 
+                                                    <a href="{{ route('user.edit',$result->id)}}?role_type={{$result->role_type}}">
                                                             <i class="fa fa-fw fa-pencil-square-o" title="edit"></i> 
                                                         </a>
 

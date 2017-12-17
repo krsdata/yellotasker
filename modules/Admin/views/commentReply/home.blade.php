@@ -36,7 +36,7 @@
                                     <div class="table-toolbar">
                                          
                                          <div class="col-md-2 pull-right">
-                                             <a href="{{ route('comment') }}">   <input type="button" value="Back" class="btn btn-primary form-control"> </a>
+                                             <a href="{{ URL::previous() }}">   <input type="button" value="Back" class="btn btn-primary form-control"> </a>
                                         </div>
                                        
                                         </div>
