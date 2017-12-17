@@ -132,15 +132,7 @@
                                        
 
                                     </table>
-
-
-                                    <br>
-                                    <h4>Requirement</h4>
-                                    <p>{{$postTasks->title}}</p>
-                                    <p>
-                                        <img src="{{url('storage/image/map.jpg')}}" alt="" width="100%;">
-                                    </p>
-
+ 
                                     <div><b>Comments :</b></div>
                                     <div >
                                         
