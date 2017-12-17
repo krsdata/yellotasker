@@ -298,8 +298,7 @@ class PostTaskController extends Controller {
         $page_action = 'View Post Task Detail'; 
 
         $postTasks = PostTask::with('user')->where('id',$postTask->id)->first();
-
-        dd( $postTasks);
+ 
 //echo Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
         $postBy = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
         
