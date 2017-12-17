@@ -148,7 +148,7 @@ class ApiController extends Controller
         $input['last_name']     = $request->input('last_name'); 
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
-        $input['role_type']     = ($request->input('role_type'))?$request->input('role_type'):'';
+        $input['role_type']     = 3;
          
         if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
@@ -274,9 +274,6 @@ public function userDetail($id=null)
        		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
         }
         
-
-        $user->role_type = 3 ;
- 
         if($request->get('profile_image')){  ;
             $profile_image = $this->createImage($request->get('profile_image')); 
             if($profile_image==false){
