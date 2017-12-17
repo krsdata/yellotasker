@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Admin\Models\Group;
 use Modules\Admin\Models\Position;
 use Auth;
+use URL;
 
 class User extends Authenticatable {
 
@@ -34,14 +35,34 @@ class User extends Authenticatable {
      *
      * @var array
      */
-    protected $fillable = [
-                            'name',
+   protected $fillable = [
+                            'first_name',
+                            'last_name',
+                            'about_me',
+                            'profile_image',
                             'phone',
                             'mobile',
                             'email', 
                             'role_type',
-                            'remember_token'
-                        ];  // All field of user table here    
+                            'password',
+                            'status',
+                            'tagLine',
+                            'address',
+                            'birthday',
+                            'skills',
+                            'modeOfreach',
+                            'language',
+                            'qualification',
+                            'workExperience',
+                            'percentageCompletion',
+                            'rating', 
+                            'position',
+                            'extension',
+                            'dateOfBirth',
+                            'companyLogo',
+                            'occupation',
+                            'interests'
+                        ];  // All field of user table h
 
 
     /**
@@ -62,6 +83,28 @@ class User extends Authenticatable {
             return User::find($id); 
         }
         return User::all();
+    }
+
+      public static function createImage($request, $fielName)
+    {
+        try{
+           
+            if ($request->file($fielName)) {
+                $photo = $request->file($fielName);
+
+                $destinationPath = storage_path('uploads/profile/');
+                $photo->move($destinationPath, time().$photo->getClientOriginalName());
+                $photo_name = time().$photo->getClientOriginalName();
+                return  URL::asset('storage/uploads/profile/'.$photo_name);
+                //$request->merge(['photo'=>$photo_name]);
+            }else{
+                 return false;
+            }  
+            
+        }catch(Exception $e){
+            return false;
+        }
+        
     }
 
 

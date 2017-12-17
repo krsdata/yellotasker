@@ -112,6 +112,24 @@ class PostTaskController extends Controller {
     { 
     }
 
+    public function mytask(Request $request, $uid=112)
+    {
+        $page_title = "Task";
+        $page_action = "Task";
+        $sub_page_title = "My Task";
+
+        $user = User::find($uid);
+
+        $postTasks =  PostTask::where('userId',$uid)->where('status','open')->get();
+        $expireTasks =  PostTask::where('userId',$uid)->where('status','open')
+                        ->whereDate('dueDate','<',\Carbon\Carbon::today()->toDateString())->get();
+        $completedTasks =  PostTask::where('taskDoerId',$uid)->where('status','completed')->get();
+        $inprogressTasks =  PostTask::where('taskDoerId',$uid)->where('status','inprogresss')->get();
+          
+       // dd($postTasks);
+        return view('packages::users.mytask', compact('user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title'));
+    }
+
     /*
      * Save Group method
      * */
@@ -280,6 +298,8 @@ class PostTaskController extends Controller {
         $page_action = 'View Post Task Detail'; 
 
         $postTasks = PostTask::with('user')->where('id',$postTask->id)->first();
+
+        dd( $postTasks);
 //echo Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
         $postBy = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
         

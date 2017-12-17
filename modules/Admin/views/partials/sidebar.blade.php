@@ -28,19 +28,19 @@
                         
                         
 
-                        <li class="nav-item  start active  {{ (isset($page_title) && $page_title=='Category')?'open':'' }}">
+                        <li class="nav-item  start active  {{ (isset($page_title) && ($page_title=='Admin User' || $page_title=='Client User') )?'open':'' }}">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                  <i class="glyphicon glyphicon-user"></i>
                                 <span class="title">Manage User</span>
                                 <span class="arrow {{ (isset($page_title) && $page_title=='Admin User')?'open':'' }}"></span>
                             </a>
 
-                           <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Admin User')?'block':'none' }}">
+                           <ul class="sub-menu" style="display: {{ (isset($page_title) && ($page_title=='Admin User' OR $page_title=='Client User' ))?'block':'none' }}">
 
                                <li class="nav-item  {{ (isset($page_title) && $page_title=='Admin User')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="icon-user"></i>
-                                    <span class="title">Manage Admin User</span>
+                                    <span class="title">Admin User</span>
                                     <span class="arrow {{ (isset($page_title) && $page_title=='Admin User')?'open':'' }}"></span>
                                 </a>
                                     <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Admin User')?'block':'none' }}">
@@ -68,18 +68,18 @@
                                <li class="nav-item  {{ (isset($page_title) && $page_title=='Client User')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="icon-user"></i>
-                                    <span class="title">Manage Client User</span>
+                                    <span class="title">Client User</span>
                                     <span class="arrow {{ (isset($page_title) && $page_title=='Client User')?'open':'' }}"></span>
                                 </a>
                                     <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Client User')?'block':'none' }}">
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Client User')?'active':'' }}">
+                                        <!-- <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Client User')?'active':'' }}">
                                             <a href="{{ route('clientuser.create') }}" class="nav-link ">
                                                 <i class="glyphicon glyphicon-plus-sign"></i> 
                                                 <span class="title">
                                                     Create User
                                                 </span>
                                             </a>
-                                        </li>
+                                        </li> -->
 
                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='View Client User')?'active':'' }}">
                                             <a href="{{ route('clientuser') }}" class="nav-link ">

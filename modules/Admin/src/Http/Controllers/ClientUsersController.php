@@ -46,7 +46,7 @@ class ClientUsersController extends Controller {
         View::share('viewPage', 'View Client User');
         View::share('helper',new Helper);
         View::share('heading','Client Users');
-        View::share('route_url',route('user'));
+        View::share('route_url',route('clientuser'));
 
         $this->record_per_page = Config::get('app.record_per_page');
     }
@@ -60,10 +60,9 @@ class ClientUsersController extends Controller {
     public function index(User $user, Request $request) 
     { 
         
-        $page_title = 'User';
-        $page_action = 'View User'; 
-        if ($request->ajax()) {
-            $id = $request->get('id');
+        $page_title = 'Client User';
+        $page_action = 'Client View User'; 
+        if ($request->ajax()) { 
             $status = $request->get('status');
             $user = User::where('role_type','>=',$request->user()->role_type)->find($id);
             $s = ($status == 1) ? $status = 0 : $status = 1;
@@ -90,15 +89,11 @@ class ClientUsersController extends Controller {
                             $query->Where('status',$status);
                         }
                     })
-                            ->where('role_type','>=',$request->user()->role_type)
-                            ->where('role_type','!=',1)
-                            ->where('status','=',1)
+                           	->where('role_type',3)
                             ->Paginate($this->record_per_page);
         } else {
             $users = User::orderBy('id','desc')
-                            ->where('role_type','>=',$request->user()->role_type)
-                            ->where('role_type','!=',1)
-                            ->where('status','=',1)->Paginate(10);
+                            ->where('role_type',3)->Paginate(15);
             
         }
         
@@ -114,12 +109,12 @@ class ClientUsersController extends Controller {
 
     public function create(User $user) 
     {
-        $page_title = 'User';
-        $page_action = 'Create User';
+        $page_title = 'Client User';
+        $page_action = 'Create Client User';
         $roles = Roles::all();
         $role_id = null;
         $js_file = ['common.js','bootbox.js','formValidate.js'];
-        return view('packages::users.create', compact('js_file','role_id','roles', 'user', 'page_title', 'page_action', 'groups'));
+        return view('packages::users.createClient', compact('js_file','role_id','roles', 'user', 'page_title', 'page_action', 'groups'));
     }
 
     /*
@@ -132,7 +127,7 @@ class ClientUsersController extends Controller {
         $user->role_type = $request->get('role'); 
         $user->save();
         $js_file = ['common.js','bootbox.js','formValidate.js'];
-        return Redirect::to(route('user'))
+        return Redirect::to(route('clientuser'))
                             ->with('flash_alert_notice', 'New user  successfully created.');
         }
 
@@ -149,7 +144,7 @@ class ClientUsersController extends Controller {
         $role_id = $user->role_type;
         $roles = Roles::all();
         $js_file = ['common.js','bootbox.js','formValidate.js'];
-        return view('packages::users.edit', compact('js_file','role_id','roles','user', 'page_title', 'page_action'));
+        return view('packages::clientuser.edit', compact('js_file','role_id','roles','user', 'page_title', 'page_action'));
     }
 
     public function update(Request $request, User $user) {
@@ -174,7 +169,7 @@ class ClientUsersController extends Controller {
         }
 
        
-        return Redirect::to(route('user'))
+        return Redirect::to(route('clientuser'))
                         ->with('flash_alert_notice', 'User   successfully updated.');
     }
     /*
@@ -186,7 +181,7 @@ class ClientUsersController extends Controller {
         
         User::where('id',$user->id)->delete();
 
-        return Redirect::to(route('user'))
+        return Redirect::to(route('clientuser'))
                         ->with('flash_alert_notice', 'User  successfully deleted.');
     }
 

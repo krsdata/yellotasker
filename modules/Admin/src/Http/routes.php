@@ -180,6 +180,8 @@
                 ]
         );  
 
+        Route::get('admin/mytask/{id}','Modules\Admin\Http\Controllers\PostTaskController@mytask');
+
 
 
         // programs

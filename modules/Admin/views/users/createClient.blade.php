@@ -13,10 +13,8 @@
              <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
-                    <!-- BEGIN PAGE HEAD-->
-                    
-                      @include('packages::partials.breadcrumb')
-
+                    <!-- BEGIN PAGE HEAD-->  
+                    @include('packages::partials.breadcrumb') 
                     <div class="row">
                         <div class="col-md-12">
                             <!-- BEGIN PROFILE SIDEBAR -->
@@ -25,13 +23,7 @@
                                 <div class="portlet light profile-sidebar-portlet bordered">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                    @if(!empty($user->profile_image))
-                                    
-                                     <img src="{{$user->profile_image}}" class="img-responsive" alt=""> </div>
-                                    @else
-                                     <img src="{{ URL::asset('assets/img/user.png')}}" class="img-responsive" alt=""> </div>
-                                    @endif
-                                      
+                                        <img src="{{ URL::asset('assets/img/user.png')}}" class="img-responsive" alt=""> </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
@@ -43,11 +35,6 @@
                                     <div class="profile-userbuttons">
                                         <button type="button" class="btn btn-circle green btn-sm">Email</button>
                                         <button type="button" class="btn btn-circle red btn-sm">Message</button>
-                                      @if($user->role_type==3)
-                                        <a href="{{url('admin/mytask/'.$user->id)}}">
-                                         <button type="button" class="btn btn-circle green btn-sm">Task</button>
-                                         </a>
-                                         @endif
                                     </div>
                                     <!-- END SIDEBAR BUTTONS -->
                                     <!-- SIDEBAR MENU -->
@@ -74,35 +61,25 @@
                                 <div class="portlet light bordered">
                                     <!-- STAT -->
                                     <div class="row list-separated profile-stat">
-                                      <!--   <div class="col-md-4 col-sm-4 col-xs-6">
+                                        <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="uppercase profile-stat-title"> 37 </div>
                                             <div class="uppercase profile-stat-text"> Projects </div>
-                                        </div> -->
+                                        </div>
                                         <div class="col-md-4 col-sm-4 col-xs-6">
-                                            <div class="uppercase profile-stat-title"> 0 </div>
+                                            <div class="uppercase profile-stat-title"> 51 </div>
                                             <div class="uppercase profile-stat-text"> Tasks </div>
                                         </div>
-                                      <!--   <div class="col-md-4 col-sm-4 col-xs-6">
+                                        <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="uppercase profile-stat-title"> 61 </div>
                                             <div class="uppercase profile-stat-text"> Uploads </div>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <!-- END STAT -->
                                     <div>
                                         <h4 class="profile-desc-title">About {{$user->first_name}}</h4>
                                         <span class="profile-desc-text">{{$user->about_me}}</span>
-                                        <div class="margin-top-20 profile-desc-link">
-                                            <i class="fa fa-globe"></i>
-                                            {{$user->companyName}}
-                                        </div>
-                                       <!--  <div class="margin-top-20 profile-desc-link">
-                                            <i class="fa fa-twitter"></i>
-                                            <a href="http://www.twitter.com/keenthemes/">@keenthemes</a>
-                                        </div>
-                                        <div class="margin-top-20 profile-desc-link">
-                                            <i class="fa fa-facebook"></i>
-                                            <a href="http://www.facebook.com/keenthemes/">keenthemes</a>
-                                        </div> -->
+                                        
+                                       
                                     </div>
                                 </div>
                                 <!-- END PORTLET MAIN -->
@@ -125,14 +102,13 @@
                                                     <li>
                                                         <a href="#tab_1_2" data-toggle="tab">Change Avatar</a>
                                                     </li>
-                                                   
+                                                    
                                                     <li>
                                                         <a href="#tab_1_4" data-toggle="tab">  Payment Info</a>
                                                     </li>
                                                 </ul>
                                             </div>
-                                   {!! Form::model($user, ['method' => 'PATCH', 'route' => ['user.update', $user->id],'enctype'=>'multipart/form-data']) !!}
-                                   <input type="hidden" name="role" value="{{$_REQUEST['role_type']}}"> 
+                                    {!! Form::model($user, ['route' => ['user.store'],'class'=>'','id'=>'users_form']) !!}
                                     <div class="portlet-body">
                                         <div class="tab-content">
                                             <!-- PERSONAL INFO TAB --> 
@@ -158,9 +134,7 @@
                                             <!-- END CHANGE PASSWORD TAB -->
                                             <!-- PRIVACY SETTINGS TAB --> 
                                             @include('packages::users.formTab4', compact('user')) 
-                                            <!-- END PRIVACY SETTINGS TAB --> 
-
-                                           
+                                            <!-- END PRIVACY SETTINGS TAB -->  
                                         </div>
 
                                     </div>
@@ -172,12 +146,8 @@
                     <!-- END PAGE BASE CONTENT -->
                 </div>
                 <!-- END CONTENT BODY -->
-            </div>
-            
-            
+            </div> 
             <!-- END QUICK SIDEBAR -->
-        </div>
-        
-
+        </div> 
         
 @stop

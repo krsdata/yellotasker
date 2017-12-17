@@ -63,6 +63,7 @@
                                                 <th> Posted By </th>  
                                                 <th> Comment </th> 
                                                 <th> Reason Description </th> 
+                                                 <th> Reason Type </th> 
                                                 <th>Created Date</th> 
                                                  <th></th> 
                                                  <th>Action</th>
@@ -70,6 +71,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($comments as $key => $result)
+                                        @if( $result->userDetail!=null)
                                             <tr>
                                             <td>{{ ++$key }}</td>
                                               
@@ -81,8 +83,9 @@
                                                 @endif
 
                                                </td>
-                                                <td>{{ $result->comment}}</td>
-                                                <td>{{ $result->reasonDescription}}</td>
+                                                <td>{{ $result->comment }}</td>
+                                                <td>{{ $result->reason->reasonDescription or 'NA'}}</td>
+                                                <td>{{ $result->reason->reasonType or 'NA'}}</td>
                                                 <td>{{ $result->created_at}}</td>
                                                 <td><a href="{{route('comment.show',$result->id)}}"> View Reply </a></td>
                                                 <td> 
@@ -91,6 +94,7 @@
                                                     {!! Form::close() !!} 
                                                 </td> 
                                             </tr>
+                                            @endif
                                            @endforeach 
                                         </tbody>
                                     </table>

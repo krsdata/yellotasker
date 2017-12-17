@@ -42,13 +42,12 @@ class CompaintController extends Controller
                 if (!empty($taskdate)) {
                      $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
                 } 
-            })->with('userDetail','taskDetail','reportedUserDetail')->Paginate($this->record_per_page);
+            })->with('userDetail','taskDetail','reportedUserDetail','reason')->whereNotNull('postedUserId')->Paginate($this->record_per_page);
             
         } else {
-            $comments = Complains::with('userDetail','taskDetail','reportedUserDetail')->orderBy('id','desc')->Paginate($this->record_per_page);
-        }
-
-        
+            $comments = Complains::with('userDetail','taskDetail','reportedUserDetail','reason')->orderBy('id','desc')->whereNotNull('postedUserId')->Paginate($this->record_per_page);
+        } 
+      
         return view('packages::complains.index', compact('comments', 'page_title', 'page_action','sub_page_title')); 
     }
 }

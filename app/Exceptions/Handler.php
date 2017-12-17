@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
-    {   //dd($e); 
+    {   
        $path_info_url = $request->getpathInfo();
        $api_url='';
        $web_url ='';
@@ -83,8 +83,15 @@ class Handler extends ExceptionHandler
             } 
             exit(); 
         }    
-        if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e);
+        if ($e instanceof ModelNotFoundException) { 
+           $page_title = "404 Error";
+              $page_action = "Page";
+              $viewPage = "404 Error";
+              $msg = "page not found";
+              $error_msg = $e->getMessage(); //"Oops! Server is busy please try later."; 
+
+              return  Redirect::to(URL::previous())->with('flash_alert_notice', $error_msg); 
+
         }
         $error_from_route =0;
         if($e instanceof NotFoundHttpException)
