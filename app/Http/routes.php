@@ -213,6 +213,13 @@ Route::group(['prefix' => 'api/v1'], function()
             ); 
 
 
+            Route::match(['get','post'],'assignTask',[
+                'as' => 'assignTask',
+                'uses' => 'TaskController@assignTask'
+                ]
+            );
+
+
            
 
              
