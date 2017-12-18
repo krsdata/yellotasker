@@ -950,6 +950,61 @@ class TaskController extends Controller {
                 );
     }
 
+
+    public function assignTask(Request $request)
+    {
+        
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'assignUserId'=>'required',
+               'taskStatus' => 'required'
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }  
+
+
+        $taskId =  $request->get('taskId');
+        $task   = Tasks::find($taskId);
+
+        if($task){
+            $task->status = $request->get('taskStatus');
+            $task->taskDoerId  = $request->get('assignUserId'); 
+            $task->save();
+
+            return  response()->json([ 
+                    "status"=>1,
+                    "code"=> 200,
+                    "message"=>'Task Assigned successfully',
+                    'data' => $request->all()
+                   ]
+                );    
+        }else{
+            return  response()->json([ 
+                    "status"=>0,
+                    "code"=> 500,
+                    "message"=>'Task ID does not exist',
+                    'data' => $request->all()
+                   ]
+                );  
+        }
+        
+
+    }
+
+
     public function getTask(Request $request, $uid=null){ 
 
         $offers =  User::with(['expiredTask'=>function($q){
