@@ -1007,12 +1007,24 @@ class TaskController extends Controller {
 
     public function getTask(Request $request, $uid=null){ 
 
-        $offers =  User::with(['expiredTask'=>function($q){
+     /*   $offers =  User::with(['expiredTask'=>function($q){
                     $q->whereDate('dueDate','<',Carbon::today()->toDateString());
                      $q->where('status','open');
                     }])->with(['assignedTask'=>function($q) use($uid){
                         $q->where('taskDoerId','!=',$uid);
                          $q->where('status','!=','open');
+                    }])->with('postedTask','offer_task')->where('id',$uid)
+                    ->get();*/
+
+          $offers = User::with(['expiredTask'=>function($q){
+                        $q->whereDate('dueDate','<',Carbon::today()->toDateString());
+                        $q->where('status','open');
+                    }])->with(['assignedTask'=>function($q) use($uid){
+                        $q->where('taskDoerId','!=',$uid);
+                        $q->where('status','=','assigned');
+                    }])->with(['openTask'=>function($q){
+                        $q->whereDate('dueDate','>=',Carbon::today()->toDateString());
+                        $q->where('status','=','open');
                     }])->with('postedTask','offer_task')->where('id',$uid)
                     ->get();
  
