@@ -1015,18 +1015,48 @@ class TaskController extends Controller {
                          $q->where('status','!=','open');
                     }])->with('postedTask','offer_task')->where('id',$uid)
                     ->get();*/
+/*
+           $t = Tasks::where(function($q){
+            $q->WhereDate('dueDate','<',Carbon::today()->toDateString());
+           })->select(DB::raw('(CASE WHEN status = "open" 
+                    THEN "Expired"  
+                    ELSE "pending" END) AS 
+                    status'))->take(3)->get();         
 
-          $offers = User::with(['expiredTask'=>function($q){
-                        $q->whereDate('dueDate','<',Carbon::today()->toDateString());
-                        $q->where('status','open');
-                    }])->with(['assignedTask'=>function($q) use($uid){
-                        $q->where('taskDoerId','!=',$uid);
-                        $q->where('status','=','assigned');
-                    }])->with(['openTask'=>function($q){
-                        $q->whereDate('dueDate','>=',Carbon::today()->toDateString());
-                        $q->where('status','=','open');
-                    }])->with('postedTask','offer_task')->where('id',$uid)
-                    ->get();
+           dd($t);
+*/
+
+          
+
+
+          $offers = User::with(['saveTask'=>function($q){
+                         $q->when(Carbon::today()->toDateString(), function ($query) {
+
+                            return $query->WhereDate('dueDate','<',Carbon::today()->toDateString())->select(DB::raw('*,(CASE WHEN status = "open" 
+                                THEN "Expired"  
+                                ELSE "pending" END) AS 
+                                status'));
+                            })
+                            ->when(68, function ($query) {
+                                return $query->where('taskId',68);
+                            });
+
+
+                    }])
+                    ->with(['offers_accepting'=>function($q) use($uid)
+                        {
+                          $q->where('taskDoerId','!=',$uid);
+                          $q->where('taskDoerId','!=','');
+                          
+                        }
+                    ])->with(['offers_pending'=>function($q) use($uid)
+                    {
+                      $q->where('taskDoerId','!=',$uid);
+                      $q->where('taskDoerId','=',''); 
+                    }
+                    ])->with('postedTask')
+                        ->where('id',$uid)
+                            ->get();
  
 
         return  response()->json([ 

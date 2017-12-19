@@ -87,6 +87,11 @@ class Tasks extends Authenticatable {
     }
 
 
+    public function saveTasStatus()
+    {
+       return $this->hasMany('App\Models\SavedTask','taskId','id')->select('status');
+    }
+
 
     
 }

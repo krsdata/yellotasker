@@ -53,7 +53,7 @@ class User extends Authenticatable
     public function saveTask()
     {
 
-        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc')->select('id');
          
     }
 
@@ -89,6 +89,22 @@ class User extends Authenticatable
 
          return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
+
+     public function offers_pending()
+    {
+       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+    }
+
+      public function offers_accepting()
+    {
+       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+    }
+
+    
 
     public function myOffer()
     {
