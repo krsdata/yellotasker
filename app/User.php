@@ -53,7 +53,7 @@ class User extends Authenticatable
     public function saveTask()
     {
 
-        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc')->select('id');
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
          
     }
 
@@ -69,7 +69,15 @@ class User extends Authenticatable
     }
     public function postedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
+        return $this->hasMany('App\Models\Tasks','userId')->select('*','id as taskId',
+                 \DB::raw('(
+                        CASE 
+                        when COALESCE(dueDate,CURRENT_DATE) < current_date then "expired" 
+                        when post_tasks.taskDoerId!=0 then "assigned"
+                        when post_tasks.taskDoerId=0 then "open"
+                        ELSE 
+                        status end) as status'))->where('status','open')
+            ->with('taskPostedUser');
     }
     public function pendingTask()
     {
@@ -90,18 +98,23 @@ class User extends Authenticatable
          return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
-     public function offers_pending()
-    {
-       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
-
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
-    }
+    
 
       public function offers_accepting()
     {
        // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
 
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')
+             ->select('*',\DB::raw('
+                    (
+                        CASE 
+                        when post_tasks.taskDoerId=offers.interestedUsreId then "accepted"
+                        ELSE 
+                        status end)
+                         as status'
+                        )
+                    )
+             ->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
     
@@ -113,8 +126,33 @@ class User extends Authenticatable
          return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
-   
 
-    
+     public function save_task()
+    {
+
+        return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->select('*',
+                 \DB::raw('(
+                        CASE 
+                        when COALESCE(dueDate,CURRENT_DATE) < current_date then "expired" 
+                        when post_tasks.taskDoerId!=saveTask.userId then "assigned"
+                        ELSE 
+                        status end) as status'))->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+         
+    }
+
+    public function offers_pending()
+    {
+        return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')
+                ->select('*',\DB::raw('
+                    (
+                        CASE 
+                        when post_tasks.taskDoerId=offers.interestedUsreId then "accepted"
+                        when post_tasks.taskDoerId=0 then "pending"
+                        ELSE 
+                        "assigned" end)
+                         as status')
+                    )
+                ->with('taskPostedUser');
+    }
 
 }
