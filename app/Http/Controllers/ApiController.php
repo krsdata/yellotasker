@@ -834,6 +834,7 @@ public function userDetail($id=null)
                 $data2['category_image']   = $image_url.'/'.$result->category_image;
                 $data2['category_group_id'] = $result->parent_id;
                 $data2['category_group_name'] = $value->category_group_name;
+                $data2['description'] = $result->description;
                 $data['category'][] = $data2;
             }
             
