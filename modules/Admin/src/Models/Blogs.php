@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent; 
@@ -7,7 +6,7 @@ use Modules\Admin\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Response;
 
-class Product extends Eloquent {
+class Blogs extends Eloquent { 
 
    
     /**
@@ -15,7 +14,7 @@ class Product extends Eloquent {
      *
      * @var string
      */
-    protected $table = 'services';
+    protected $table = 'blogs';
     /**
      * The attributes that are mass assignable.
      *
@@ -33,13 +32,15 @@ class Product extends Eloquent {
      *
      * @var array
      */
-    protected $fillable = ['title','description','price','features','tax','images','monthly_price','yearly_price','half_yearly_price','quarterly_price'];  // All field of user table here    
+     protected $fillable = ['blog_title','blog_sub_title','blog_description','blog_image','blog_created_by']; // All field of user table here    
+
 
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
-     */ 
+     */
+     
   
 }

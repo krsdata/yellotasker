@@ -318,6 +318,22 @@
                 ]
         ); 
 
+         Route::bind('blog', function($value, $route) {
+            return Modules\Admin\Models\Blogs::find($value);
+        });
+ 
+        Route::resource('admin/blog', 'Modules\Admin\Http\Controllers\BlogController', [
+            'names' => [
+                'edit' => 'blog.edit',
+                'show' => 'blog.show',
+                'destroy' => 'blog.destroy',
+                'update' => 'blog.update',
+                'store' => 'blog.store',
+                'index' => 'blog',
+                'create' => 'blog.create',
+            ]
+                ]
+        );
 
         /*----------End---------*/    
         

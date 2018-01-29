@@ -1100,5 +1100,31 @@ class TaskController extends Controller {
 
     }
 
+    public function getBlog(Request $request)
+    {
+        $data = \DB::table('blogs')->get();
+        $input = [];
+        $arr=[];
+        foreach ($data as $key => $value) {
+            $input['id'] =  $value->id;
+            $input['blog_sub_title'] = $value->blog_sub_title;
+            $input['blog_description'] = $value->blog_description;
+            $input['blog_image'] = url('storage/blog/'.$value->blog_image); 
+            $input['author'] = "Admin";
+
+            $arr[] = $input;
+            $input = [];
+        } 
+ 
+         return Response::json(array(
+                    'status' => 1,
+                    'code'=>200,
+                    'message' => 'blogs.',
+                    'data'  =>  $arr
+                    )
+                );
+
+    }
+
 
 }

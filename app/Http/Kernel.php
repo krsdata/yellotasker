@@ -27,7 +27,7 @@ class Kernel extends HttpKernel
     protected $middlewareGroups = [
         'web' => [
            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class  
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         ],
 
         'api' => [
@@ -53,5 +53,9 @@ class Kernel extends HttpKernel
         'api'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'restApiAuth'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'jwt-auth' => \App\Http\Middleware\authJWT::class,
+
+        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
+        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
+        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
     ];
 }

@@ -61,6 +61,11 @@ Route::group(['prefix' => 'api/v1'], function()
 
           /*---------End---------*/   
 
+          Route::match(['post','get'],'getBlog',[
+                'as' => 'getBlog',
+                'uses' => 'TaskController@getBlog'
+                ]
+            );  
 
           Route::match(['post','get'],'postTask/createTask',[
                 'as' => 'post_task_create',
