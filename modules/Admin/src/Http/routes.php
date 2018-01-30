@@ -226,22 +226,22 @@
          Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');  
 
 
-         Route::bind('contacts', function($value, $route) {
-            return Modules\Admin\Models\Contact::find($value);
-        });
+        //  Route::bind('contacts', function($value, $route) {
+        //     return Modules\Admin\Models\Contact::find($value);
+        // });
 
-        Route::resource('admin/contacts', 'Modules\Admin\Http\Controllers\ContactController', [
-            'names' => [
-                'edit' => 'contacts.edit',
-                'show' => 'contacts.show',
-                'destroy' => 'contacts.destroy',
-                'update' => 'contacts.update',
-                'store' => 'contacts.store',
-                'index' => 'contacts',
-                'create' => 'contacts.create',
-            ]
-                ]
-        );  
+        // Route::resource('admin/contacts', 'Modules\Admin\Http\Controllers\ContactController', [
+        //     'names' => [
+        //         'edit' => 'contacts.edit',
+        //         'show' => 'contacts.show',
+        //         'destroy' => 'contacts.destroy',
+        //         'update' => 'contacts.update',
+        //         'store' => 'contacts.store',
+        //         'index' => 'contacts',
+        //         'create' => 'contacts.create',
+        //     ]
+        //         ]
+        // );  
 
 
 
@@ -301,23 +301,6 @@
         ); 
 
 
-          Route::bind('page', function($value, $route) {
-            return Modules\Admin\Models\Pages::find($value);    
-        });
- 
-        Route::resource('admin/page', 'Modules\Admin\Http\Controllers\PageController', [
-            'names' => [
-                'edit'      => 'page.edit',
-                'show'      => 'page.show',
-                'destroy'   => 'page.destroy',
-                'update'    => 'page.update',
-                'store'     => 'page.store',
-                'index'     => 'page',
-                'create'    => 'page.create',
-            ]
-                ]
-        ); 
-
          Route::bind('blog', function($value, $route) {
             return Modules\Admin\Models\Blogs::find($value);
         });
@@ -331,6 +314,24 @@
                 'store' => 'blog.store',
                 'index' => 'blog',
                 'create' => 'blog.create',
+            ]
+                ]
+        );
+
+
+        Route::bind('role', function($value, $route) {
+            return App\Role::find($value);
+        });
+ 
+        Route::resource('admin/role', 'Modules\Admin\Http\Controllers\RoleController', [
+            'names' => [
+                'edit' => 'role.edit',
+                'show' => 'role.show',
+                'destroy' => 'role.destroy',
+                'update' => 'role.update',
+                'store' => 'role.store',
+                'index' => 'role',
+                'create' => 'role.create',
             ]
                 ]
         );

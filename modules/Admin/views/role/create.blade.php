@@ -34,9 +34,9 @@
                                 <div class="portlet-body">
                                     <!-- BEGIN FORM-->
                                 
-                                  {!! Form::model($contact, ['route' => ['contact.store'],'class'=>'form-horizontal contact-form','id'=>'contact-form','enctype'=>'multipart/form-data']) !!}
+                                  {!! Form::model($role, ['route' => ['role.store'],'class'=>'form-horizontal user-form','id'=>'user-form','enctype'=>'multipart/form-data']) !!}
                                   
-                                  @include('packages::contact.form')
+                                  @include('packages::role.form')
                                   
                                   {!! Form::close() !!}   
                                     <!-- END FORM-->

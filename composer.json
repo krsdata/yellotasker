@@ -14,7 +14,9 @@
         "barryvdh/laravel-dompdf": "0.6.*",
         "phpmailer/phpmailer": "^5.2",
          "maatwebsite/excel": "^2.1",
-        "atayahmet/laravel-nestable": "^0.8.1"
+        "atayahmet/laravel-nestable": "^0.8.1",
+        "lavary/laravel-menu": "^1.7",
+        "zizaco/entrust": "^1.9"
 
     },
     "require-dev": {

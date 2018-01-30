@@ -28,17 +28,17 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">Create  {{$heading}}</span>
-                                    </div> 
+                                        <span class="caption-subject font-dark sbold uppercase">Edit role</span>
+                                    </div>
+                                    
                                 </div>
                                 <div class="portlet-body">
-                                    <!-- BEGIN FORM-->
-                                
-                                  {!! Form::model($contact, ['route' => ['contact.store'],'class'=>'form-horizontal contact-form','id'=>'contact-form','enctype'=>'multipart/form-data']) !!}
-                                  
-                                  @include('packages::contact.form')
-                                  
-                                  {!! Form::close() !!}   
+                                    <!-- BEGIN FORM--> 
+
+
+                                {!! Form::model($role, ['method' => 'PATCH', 'route' => ['role.update', $role->id],'class'=>'form-horizontal user-form','id'=>'form_sample_3','enctype'=>'multipart/form-data']) !!}
+                                    @include('packages::role.form', compact('role'))
+                                {!! Form::close() !!} 
                                     <!-- END FORM-->
                                 </div>
                                 <!-- END VALIDATION STATES-->

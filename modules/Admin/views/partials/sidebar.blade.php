@@ -23,9 +23,35 @@
                                     </a>
                                 </li>
                                 
-                            </ul>
+                                </ul>
                         </li> 
                         
+                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Role')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Roles</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='View Role')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Role')?'active':'' }}">
+                                            <a href="{{ route('role') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Roles 
+                                                </span>
+                                            </a>
+                                        </li> 
+
+                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Role')?'active':'' }}">
+                                            <a href="{{ route('role.create') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    Create Role 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>                    
                         
 
                         <li class="nav-item  start active  {{ (isset($page_title) && ($page_title=='Admin User' || $page_title=='Client User') )?'open':'' }}">
@@ -322,7 +348,7 @@
                                      
                             </li> 
 
-                             <li class="nav-item start active {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}">
+                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="glyphicon glyphicon-th"></i>
                                         <span class="title">Blogs</span>
@@ -346,11 +372,8 @@
                                                 </span>
                                             </a>
                                         </li> 
-                                       
-                                     
                                     </ul>
-                                     
-                            </li> 
+                                </li> 
                         <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
