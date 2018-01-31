@@ -52,8 +52,18 @@ class BlogController extends Controller {
         $this->record_per_page = Config::get('app.record_per_page');
     }
 
-    protected $categories;
+    public function ajax(Request $request, Blogs $blog){
+        
+        if ($request->file('file')) {  
 
+            $photo = $request->file('file');
+            $destinationPath = storage_path('blog');
+            $photo->move($destinationPath, time().$photo->getClientOriginalName());
+            $blog_image = time().$photo->getClientOriginalName();
+            $blog->blog_image   =   $blog_image;
+        }  
+       exit();
+    }
     /*
      * Dashboard
      * */
@@ -115,6 +125,7 @@ class BlogController extends Controller {
 
         $blog->blog_title     =   $request->get('blog_title');
         $blog->blog_description   =   $request->get('blog_description');
+        $blog->blog_created_by = $request->get('blog_created_by');
         $blog->save();
        return Redirect::to('admin/blog')
                             ->with('flash_alert_notice', 'Blog was successfully created !');
@@ -145,8 +156,9 @@ class BlogController extends Controller {
             $blog->blog_image   =   $blog_image; 
         } 
 
-        $blog->blog_title     =   $request->get('blog_title');
-        $blog->blog_description   =   $request->get('blog_description');
+        $blog->blog_title       =   $request->get('blog_title');
+        $blog->blog_description =   $request->get('blog_description');
+        $blog->blog_created_by  = $request->get('blog_created_by');
         $blog->save();
         return Redirect::to('admin/blog')
                         ->with('flash_alert_notice', 'Page was successfully updated!');

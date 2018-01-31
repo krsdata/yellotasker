@@ -4,7 +4,10 @@
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');
     Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');  
-    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout');  
+    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout'); 
+
+
+    Route::post('admin/blog/ajax', 'Modules\Admin\Http\Controllers\BlogController@ajax');
 
     Route::post('admin/login',function(App\Admin $user){
    

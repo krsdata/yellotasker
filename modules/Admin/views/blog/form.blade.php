@@ -26,6 +26,16 @@
             </div>
         </div> 
 
+         <div class="form-group {{ $errors->first('blog_created_by', 'has-error') }}">
+            <label class="control-label col-md-3">Author  </label>
+            <div class="col-md-4"> 
+                {!! Form::text('blog_created_by',null, ['class' => 'form-control'])  !!} 
+                
+                <span class="help-block">{{ $errors->first('blog_created_by', ':message') }}</span>
+            </div>
+        </div> 
+
+
 
 
          <div class="form-group {{ $errors->first('blog_image', ' has-error') }}">
@@ -52,7 +62,8 @@
 <div class="form-actions">
     <div class="row">
         <div class="col-md-offset-3 col-md-9">
-          {!! Form::submit(' Save ', ['class'=>'btn  btn-primary text-white','id'=>'saveBtn']) !!}
+         <!--  {!! Form::button(' Save ', ['class'=>'btn save  btn-primary text-white','id'=>'saveBtn']) !!} -->
+          {!! Form::submit('Save', ['class'=>'btn save btn-primary text-white','id'=>'saveBtn']) !!}
 
 
            <a href="{{route('blog')}}">
