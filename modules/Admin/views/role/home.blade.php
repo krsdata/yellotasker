@@ -77,7 +77,7 @@
                                              <td> {{$result->name }} </td>
                                                 <td> 
                                                     <ul>
-                                                      @if(isset($result->permission) && !empty($result->permission))
+                                                      @if(isset($result->permission) && $result->permission!="null")
                                                  @foreach(json_decode($result->permission) as $per )
                                                       {{$per}},
                                                         @endforeach
@@ -87,7 +87,7 @@
 
                                                    <td>  
                                                      <ul>
-                                                      @if(isset($result->modules) && !empty($result->modules))
+                                                      @if(isset($result->modules) && $result->modules!="null")
                                                     @foreach(json_decode($result->modules) as $mod )
                                                        {{$mod}},
                                                         @endforeach
