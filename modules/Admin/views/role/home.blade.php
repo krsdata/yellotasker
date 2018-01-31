@@ -82,17 +82,21 @@
                                              <td> {{$result->name }} </td>
                                                 <td> 
                                                     <ul>
+                                                      @if(isset($result->permission))
                                                  @foreach(json_decode($result->permission) as $per )
                                                       {{$per}},
                                                         @endforeach
+                                                        @endif
                                                     </ul>
                                                   </td>
 
                                                    <td>  
                                                      <ul>
+                                                      @if(isset($result->modules))
                                                     @foreach(json_decode($result->modules) as $mod )
                                                        {{$mod}},
                                                         @endforeach
+                                                        @endif
                                                          </ul>
                                                   </td>
                                                 
