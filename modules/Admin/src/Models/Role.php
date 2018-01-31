@@ -1,13 +1,12 @@
-<?php
+<?php 
 namespace  Modules\Admin\Models; 
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Roles extends Model
+class Role extends Model
 {
-    
-     /**
+	 /**
      * The database table used by the model.
      *
      * @var string
@@ -36,6 +35,4 @@ class Roles extends Model
         return $this->belongsTo('Modules\Admin\Models\User','role','id');
     }
     /*--Syllabus--*/
-    
-
 }

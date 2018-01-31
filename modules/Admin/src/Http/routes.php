@@ -338,6 +338,9 @@
             ]
                 ]
         );
+		
+	 
+        Route::match(['get','post'],'admin/permission', 'Modules\Admin\Http\Controllers\RoleController@permission');
 
         /*----------End---------*/    
         

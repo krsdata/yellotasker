@@ -1,18 +1,19 @@
 <?php 
-namespace App;
+namespace  Modules\Admin\Models;
 
 use Auth;
 use Session;
+use Illuminate\Foundation\Auth\User;
 use Eloquent;
 
-class Role extends Eloquent
+class Permission extends Eloquent
 {
 	/**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'roles';
+    protected $table = 'permissions';
     /**
      * The attributes that are mass assignable.
      *

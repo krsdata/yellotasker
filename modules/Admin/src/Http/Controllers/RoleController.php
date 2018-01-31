@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Modules\Admin\Models\User;
 use Modules\Admin\Models\Settings;
 use Modules\Admin\Http\Requests\RoleRequest;
+use Modules\Admin\Models\Permission;
 use App\Role;
 use Input;
 use Validator;
@@ -172,5 +173,30 @@ class RoleController extends Controller {
     public function show(Role $role) {
         
     }
+	
+	public function permission(Request $request,Permission $premission){
+		$page_title = 'Permission';
+		$page_action = 'Update Permission'; 
+		if($request->method()=="GET"){
+                    
+		 $roles = Role::all();
+                 return view('packages::role.permission', compact( 'roles','page_title', 'page_action'));
+		}
+		if($request->method()=="POST"){
+                   
+                    $permission = $request->get('permission');
+                    foreach($permission as $role_id=>$controllers){
+                    $role = Role::find($role_id);
+                    $role->permission = json_encode($controllers);
+                    $role->modules = NULL;
+                    $role->save();
+                    }
+                    
+                    return Redirect::to('admin/permission')
+                        ->with('flash_alert_notice', 'Permission was successfully changed!');
+		}
+		
+		
+	}
 
 }

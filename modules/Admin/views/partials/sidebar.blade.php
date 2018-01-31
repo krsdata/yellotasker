@@ -50,6 +50,14 @@
                                                 </span>
                                             </a>
                                         </li> 
+										 <li class="nav-item  {{ (isset($page_title) && $page_action=='Update Permission')?'active':'' }}">
+                                            <a href="{{ url('admin/permission') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    Set Permission 
+                                                </span>
+                                            </a>
+                                        </li> 
                                     </ul>
                                 </li>                    
                         
