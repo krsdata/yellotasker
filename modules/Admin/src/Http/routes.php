@@ -4,7 +4,10 @@
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');
     Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');  
-    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout');  
+    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout'); 
+
+
+    Route::post('admin/blog/ajax', 'Modules\Admin\Http\Controllers\BlogController@ajax');
 
     Route::post('admin/login',function(App\Admin $user){
    
@@ -226,22 +229,22 @@
          Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');  
 
 
-         Route::bind('contacts', function($value, $route) {
-            return Modules\Admin\Models\Contact::find($value);
-        });
+        //  Route::bind('contacts', function($value, $route) {
+        //     return Modules\Admin\Models\Contact::find($value);
+        // });
 
-        Route::resource('admin/contacts', 'Modules\Admin\Http\Controllers\ContactController', [
-            'names' => [
-                'edit' => 'contacts.edit',
-                'show' => 'contacts.show',
-                'destroy' => 'contacts.destroy',
-                'update' => 'contacts.update',
-                'store' => 'contacts.store',
-                'index' => 'contacts',
-                'create' => 'contacts.create',
-            ]
-                ]
-        );  
+        // Route::resource('admin/contacts', 'Modules\Admin\Http\Controllers\ContactController', [
+        //     'names' => [
+        //         'edit' => 'contacts.edit',
+        //         'show' => 'contacts.show',
+        //         'destroy' => 'contacts.destroy',
+        //         'update' => 'contacts.update',
+        //         'store' => 'contacts.store',
+        //         'index' => 'contacts',
+        //         'create' => 'contacts.create',
+        //     ]
+        //         ]
+        // );  
 
 
 
@@ -301,23 +304,40 @@
         ); 
 
 
-          Route::bind('page', function($value, $route) {
-            return Modules\Admin\Models\Pages::find($value);    
+         Route::bind('blog', function($value, $route) {
+            return Modules\Admin\Models\Blogs::find($value);
         });
  
-        Route::resource('admin/page', 'Modules\Admin\Http\Controllers\PageController', [
+        Route::resource('admin/blog', 'Modules\Admin\Http\Controllers\BlogController', [
             'names' => [
-                'edit'      => 'page.edit',
-                'show'      => 'page.show',
-                'destroy'   => 'page.destroy',
-                'update'    => 'page.update',
-                'store'     => 'page.store',
-                'index'     => 'page',
-                'create'    => 'page.create',
+                'edit' => 'blog.edit',
+                'show' => 'blog.show',
+                'destroy' => 'blog.destroy',
+                'update' => 'blog.update',
+                'store' => 'blog.store',
+                'index' => 'blog',
+                'create' => 'blog.create',
             ]
                 ]
-        ); 
+        );
 
+
+        Route::bind('role', function($value, $route) {
+            return App\Role::find($value);
+        });
+ 
+        Route::resource('admin/role', 'Modules\Admin\Http\Controllers\RoleController', [
+            'names' => [
+                'edit' => 'role.edit',
+                'show' => 'role.show',
+                'destroy' => 'role.destroy',
+                'update' => 'role.update',
+                'store' => 'role.store',
+                'index' => 'role',
+                'create' => 'role.create',
+            ]
+                ]
+        );
 
         /*----------End---------*/    
         

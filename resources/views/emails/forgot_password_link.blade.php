@@ -52,7 +52,7 @@
          <a href="<?php echo 'http://yellotasker.co/#/update-password;token='.$content['temp_password'].';key='.$content['encrypt_key']; ?>" style="background:#efeb10; color:#000; padding:10px 25px; float:right; text-decoration:none; border-radius:40px;">Reset Password</a>
 
 
-</div>
+     div>
 </td>
 </tr>
 </tbody></table>

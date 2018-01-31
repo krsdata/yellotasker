@@ -15,7 +15,7 @@ class Product extends Eloquent {
      *
      * @var string
      */
-    protected $table = 'products';
+    protected $table = 'services';
     /**
      * The attributes that are mass assignable.
      *
@@ -33,20 +33,13 @@ class Product extends Eloquent {
      *
      * @var array
      */
-    protected $fillable = ['product_title','product_category','price','description','discount'];  // All field of user table here    
+    protected $fillable = ['title','description','price','features','tax','images','monthly_price','yearly_price','half_yearly_price','quarterly_price'];  // All field of user table here    
 
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
-     */
-    
-
-    public function category()
-    {
-       
-        return $this->belongsTo('Modules\Admin\Models\Category','product_category','id');
-    }
+     */ 
   
 }

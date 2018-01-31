@@ -118,7 +118,7 @@ class ContactController extends Controller {
         $category  = Category::all();
         $categories  = Category::all();
   
-        return view('packages::contact.create', compact('categories', 'html','category','sub_category_name', 'page_title', 'page_action'));
+        return view('packages::contact.create', compact('categories','contact', 'html','category','sub_category_name', 'page_title', 'page_action'));
     }
 
     public function createGroup(Request $request)
@@ -291,7 +291,7 @@ class ContactController extends Controller {
         $categories  = Category::all();
         $category_id  = explode(',',$contact->categoryName);
         
-        return view('packages::contact.edit', compact('category_id','categories', 'url','contact', 'page_title', 'page_action'));
+        return view('packages::contact.edit', compact('category_id','categories','contact' ,'url','contact', 'page_title', 'page_action'));
     }
 
     public function update(Request $request, Contact $contact) {
