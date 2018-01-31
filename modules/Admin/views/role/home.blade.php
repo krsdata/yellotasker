@@ -27,12 +27,7 @@
                                                     <button  class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Role</button> 
                                                 </a>
                                             </div>
-                                        </div> 
-
-                                          
-
-                                      
-                                     
+                                        </div>  
                                 </div>
                                   
                                     @if(Session::has('flash_alert_notice'))
@@ -82,7 +77,7 @@
                                              <td> {{$result->name }} </td>
                                                 <td> 
                                                     <ul>
-                                                      @if(isset($result->permission))
+                                                      @if(isset($result->permission) && !empty($result->permission))
                                                  @foreach(json_decode($result->permission) as $per )
                                                       {{$per}},
                                                         @endforeach
@@ -92,7 +87,7 @@
 
                                                    <td>  
                                                      <ul>
-                                                      @if(isset($result->modules))
+                                                      @if(isset($result->modules) && !empty($result->modules))
                                                     @foreach(json_decode($result->modules) as $mod )
                                                        {{$mod}},
                                                         @endforeach
