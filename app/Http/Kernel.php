@@ -52,10 +52,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
         'api'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'restApiAuth'   =>  \App\Http\Middleware\ApiMiddleware::class,
-        'jwt-auth' => \App\Http\Middleware\authJWT::class,
-
-        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
-        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
-        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+        'jwt-auth' => \App\Http\Middleware\authJWT::class
     ];
 }

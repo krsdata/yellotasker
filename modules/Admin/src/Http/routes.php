@@ -15,10 +15,13 @@
     
    // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456]; 
     
-    $auth = auth()->guard('web');
-    Session::set('role','admin');
+   // $auth = auth()->guard('web');
+   // Session::set('role','admin');
    
-        if ($auth->attempt($credentials)) {
+    $admin_auth = auth()->guard('admin'); 
+    $user_auth =  auth()->guard('web'); //Auth::attempt($credentials); 
+
+    if ($admin_auth->attempt($credentials) OR $user_auth->attempt($credentials)) {
             return Redirect::to('admin');
         }else{ 
             return redirect()
