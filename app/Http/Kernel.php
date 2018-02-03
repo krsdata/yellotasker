@@ -53,9 +53,6 @@ class Kernel extends HttpKernel
         'api'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'restApiAuth'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'jwt-auth' => \App\Http\Middleware\authJWT::class,
-
-        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
-        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
-        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+         'userpermission' => \App\Http\Middleware\RolePermissionMiddleware::class,
     ];
 }

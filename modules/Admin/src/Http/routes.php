@@ -27,8 +27,8 @@
                         ->withErrors(['message'=>'Invalid email or password. Try again!']);
             } 
     }); 
-      
-    Route::group(['middleware' => ['admin']], function () { 
+    
+    Route::group(['middleware' => ['admin','userpermission']], function () {
 
         Route::get('admin', 'Modules\Admin\Http\Controllers\AdminController@index');
         
