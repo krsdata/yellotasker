@@ -16,6 +16,7 @@ use JWTExceptionTokenInvalidException;
 use App\Helpers\Helper as Helper;
 use App\User; 
 use App\Model\Tasks;
+use App\Models\Notification;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
 use App\Http\Requests\UserRequest;  
@@ -190,6 +191,8 @@ class ApiController extends Controller
                 ];
 
         //$verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
+        $notification = new Notification;
+        $notification->addNotification('user_register',$user->id,$user->id,'User register','');
        
         return response()->json(
                             [ 

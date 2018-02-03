@@ -25,6 +25,7 @@ use Illuminate\Http\Dispatcher;
 use Modules\Api\Resources\TaskResource; 
 use App\User;
 use App\Models\Comments;
+use App\Models\Notification;
 
 /**
  * Class AdminController
@@ -102,6 +103,8 @@ class TaskController extends Controller {
         $message = 'Task  created successfully.';
         $data    = $task; 
         
+        $notification = new Notification;
+        $notification->addNotification('task_add',$task->id,$request->get('userId'),'New Task Added',$task->title);
         return 
                 [ 
                 "status"  =>$status,
@@ -238,7 +241,9 @@ class TaskController extends Controller {
         $code    = 200;
         $message = 'Task  updated successfully.';
         $data    = $task; 
-        
+        $notification = new Notification;
+        $notification->addNotification('task_update',$task->id,$request->get('userId'),'Task updated',$task->title);
+     
         return 
                 [ 
                 "status"  =>$status,
@@ -589,7 +594,7 @@ class TaskController extends Controller {
                     )
                 );
             }   
-
+ 
              $getComment = $this->replyComment($request->all()); 
              
              return Response::json(array(
@@ -616,6 +621,8 @@ class TaskController extends Controller {
            
         }
         $comment->save();
+        $notification = new Notification;
+        $notification->addNotification('comment_add',$comment->id,$request->get('userId'),'Comment Added',$comment->commentDescription);
 
         $comments = Comments::with('userDetail')->where('id',$comment->id)->get();
         $status  = 1;
@@ -649,6 +656,9 @@ class TaskController extends Controller {
            
         }
         $comment->save();
+
+        $notification = new Notification;
+        $notification->addNotification('comment_replied',$comment->id,$request->get('userId'),'Comment replied',$comment->commentDescription);
 
         $comments = Comments::with('userDetail','commentReply')
                         ->where('id',$request['commentId'])
@@ -899,8 +909,14 @@ class TaskController extends Controller {
                     ->where('id',$request->get('taskId'))
                         ->where('interestedUsreId',$request->get('interestedUsreId'))
                             ->update($data); 
+        $notification = new Notification;
+        $notification->addNotification('offers_update',$rs->id,$request->get('interestedUsreId'),'Offer updated','');
+            
         }else{
             $rs =  DB::table('offers')->insert($data); 
+            $notification = new Notification;
+            $notification->addNotification('offers_add',$rs->id,$request->get('interestedUsreId'),'Offer posted','');
+
         }
 
         $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){

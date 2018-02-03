@@ -47,7 +47,7 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'account/deactivate/{id}','ApiController@deactivateUser'); 
         
         Route::match(['post','get'],'userDetail/{id}','ApiController@userDetail'); 
-        Route::match(['get'],'notifications','ApiController@notifications'); 
+        Route::match(['get'],'notifications','NotificationController@getAllNotification'); 
        
 
 
