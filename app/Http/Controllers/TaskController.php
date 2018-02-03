@@ -274,7 +274,7 @@ class TaskController extends Controller {
         $end_week   = \Carbon\Carbon::now()->endOfWeek()->toDateString();
         $today      = \Carbon\Carbon::today()->toDateString();
         $startOfMonth = \Carbon\Carbon::now()->startOfMonth()->toDateString();
-        $endOfMonth = \Carbon\Carbon::now()->subMonth()->toDateString();
+        $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->toDateString();
         $tomorrow   = \Carbon\Carbon::tomorrow()->toDateString();
 
         $due_today          = $request->get('due_today');
