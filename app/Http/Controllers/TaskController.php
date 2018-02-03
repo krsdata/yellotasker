@@ -768,7 +768,9 @@ class TaskController extends Controller {
     {
 
     	$offers = Offers::where('userId',$request->get('userId'))
-    				->where('offerId',$request->get('offerId'))->delete();
+    				->where('offerId',$request->get('offerId'))
+                    ->where('taskId',$request->get('taskId'))
+                    ->delete();
 
 		return  response()->json([ 
                 "status"=>($offers)?1:0,
@@ -1030,6 +1032,51 @@ class TaskController extends Controller {
                 );
     }
 
+    public function saveTaskDelete(Request $request){
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'userId' => 'required'
+        ]); 
+
+         if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+         $delete_savetask = DB::table('saveTask')->where('taskId',$request->get('taskId'))->where('userId',$request->get('userId'))->delete(); 
+
+         if($delete_savetask){
+            $status     = 1;
+            $code       = 200;
+            $message    = "Save Task deleted successfully.";
+         }else{
+            $status = 0;
+            $code = 500;
+            $message = "Task ID or user ID does not match!";
+         }
+
+         return  response()->json([ 
+                    "status"=>$status,
+                    "code"=> $code,
+                    "message"=>$message,
+                    'data' => []
+                   ]
+                );
+
+
+
+    }
+
     public function saveTask(Request $request)
     {
        
@@ -1102,9 +1149,25 @@ class TaskController extends Controller {
 
     public function getBlog(Request $request)
     {
-        $data = \DB::table('blogs')->get();
+        
+        $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
+        $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+        
+        if($page_num==1 && $page_size==20){  
+           $data =  \DB::table('blogs')->take($page_size)->orderBy('id', 'desc')->get();
+        }
+        elseif($page_num!=1 || $page_size!=20){
+            if($page_num>1){
+                  $offset = $page_size*($page_num-1);
+            }else{
+                  $offset = 0;
+            }  
+            $data =  \DB::table('blogs')->orderBy('id', 'desc')->skip($offset)->take($page_size)->get(); 
+        }
+
         $input = [];
         $arr=[];
+
         foreach ($data as $key => $value) {
             $input['id'] =  $value->id;
             $input['blog_sub_title'] = $value->blog_sub_title;
@@ -1115,9 +1178,12 @@ class TaskController extends Controller {
             $arr[] = $input;
             $input = [];
         } 
- 
+    
+        $c = \DB::table('blogs')->get();
+
          return Response::json(array(
                     'status' => 1,
+                    'total_record' => count($c),
                     'code'=>200,
                     'message' => 'blogs.',
                     'data'  =>  $arr

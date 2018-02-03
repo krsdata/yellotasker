@@ -84,7 +84,8 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'post_task_delete',
                 'uses' => 'TaskController@deletePostTask'
                 ]
-            );  
+            ); 
+
 
             Route::match(['post','get'],'postTask/deleteByUser/{id}',[
                 'as' => 'post_task_delete_buyser',
@@ -168,6 +169,14 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@saveTask'
                 ]
             );
+
+
+             Route::match(['get','post'],'saveTask/delete',[
+                'as' => 'saveTaskDelete',
+                'uses' => 'TaskController@saveTaskDelete'
+                ]
+            );
+             
 
             Route::match(['get','post'],'updateTaskStatus',[
                 'as' => 'updateTaskStatus',

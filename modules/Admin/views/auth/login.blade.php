@@ -10,6 +10,8 @@
     <head>
         <meta charset="utf-8" />
         <title>CMS Login</title>
+        <link rel="shortcut icon" type="image/png" href="{{asset('assets/img/fav.png')}}" /> 
+        
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #4 for " name="description" />
@@ -33,10 +35,7 @@
 
         <link href="{{ URL::asset('assets/pages/css/login.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-        <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
-    <!-- END HEAD -->
+        <!-- END HEAD -->
 
     <body class=" login">
         <!-- BEGIN LOGO -->

@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
         'api'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'restApiAuth'   =>  \App\Http\Middleware\ApiMiddleware::class,
         'jwt-auth' => \App\Http\Middleware\authJWT::class,
-         'userpermission' => \App\Http\Middleware\RolePermissionMiddleware::class,
+        'userpermission' => \App\Http\Middleware\RolePermissionMiddleware::class,
+
     ];
 }
