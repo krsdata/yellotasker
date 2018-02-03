@@ -282,6 +282,10 @@ class TaskController extends Controller {
         $due_current_week   = $request->get('due_current_week');
         $due_current_month  = $request->get('due_current_month');
         $search_by_date     = $request->get('search_by_date');
+
+        $search_locationType = $request->get('locationType');
+        $search_city         = $request->get('city');
+        $search_totalAmount  = $request->get('totalAmount');
         
         $tasks  = Tasks::with('userDetail')->where(function($q)
                 use(
@@ -300,7 +304,10 @@ class TaskController extends Controller {
                         $due_tomorrow,
                         $due_current_week,
                         $due_current_month,
-                        $search_by_date
+                        $search_by_date,
+                        $search_locationType,
+                        $search_city,
+                        $search_totalAmount
                     )
                 {
                     if($title){
@@ -331,6 +338,20 @@ class TaskController extends Controller {
                     }
                     if($taskId){
                         $q->where('id',$taskId);
+                    }
+                    if($search_locationType){
+                        $q->where('locationType',$search_locationType);
+                    }
+                    if($search_city){
+                        $q->where('address','like',"%$search_city%");
+                    }
+                    if($search_totalAmount){
+                        $search_totalAmountRange = explode('-', $search_totalAmount);
+                        if(isset($search_totalAmountRange[1]) && $search_totalAmountRange[1]){
+                          $q->whereBetween('totalAmount',$search_totalAmountRange);   
+                        }else{
+                         $q->where('totalAmount',$search_totalAmount);
+                        }    
                     }
                      
                 });
