@@ -852,9 +852,7 @@ class TaskController extends Controller {
     public function updateOffer(Request $request,$id=null)
     {
          /** Return Error Message **/
-            if ($id==null) {
-                        
-                                
+            if ($id==null || !$id) {                
                 return Response::json(array(
                     'status' => 0,
                     'code'=>500,
@@ -863,8 +861,6 @@ class TaskController extends Controller {
                     )
                 );
          }   
-
-         
 
         $data = [];
         $table_cname = \Schema::getColumnListing('offers');
@@ -876,21 +872,20 @@ class TaskController extends Controller {
            }  
 
            if($request->get($value)){
-           			 $data[$value] = $request->get($value);
-   			} 
+            $data[$value] = $request->get($value);
+   	} 
 
           
         }
-         
-        $rs =  DB::table('offers')
+        if($data){
+            $rs =  DB::table('offers')
                     ->where('id',$id) 
-                            ->update($data); 
+                            ->update($data);
+        }
          
-
-        $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
+      /*  $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
             $q->where('users.id',$request->get('interestedUserId'));
-        }])->where('id',$request->get('taskId'))->get(); 
-
+        }])->where('id',$request->get('taskId'))->get(); */
 
 
         return Response::json(array(
