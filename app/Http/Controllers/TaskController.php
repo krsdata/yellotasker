@@ -288,6 +288,30 @@ class TaskController extends Controller {
         $search_city         = $request->get('city');
         $search_totalAmount  = $request->get('totalAmount');
         
+         $validatorFields=[];
+         if($search_locationType=='Work remotely'){
+           $search_city='';//no need to search city for online work  
+         }
+        if($search_locationType=='Come to work place'){
+         $validatorFields['city'] = 'required';
+        }
+        $validator = Validator::make($request->all(), $validatorFields);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  ''
+                )
+            );
+        }  
+        
         $tasks  = Tasks::with('userDetail')->where(function($q)
                 use(
                         $status,
