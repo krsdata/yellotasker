@@ -63,8 +63,6 @@
                                                 <th>  Sno. </th> 
                                                 <th> Name </th>
                                                  <th> Type </th>
-                                                <th> Permission </th>
-                                                <th> Modules </th> 
                                                 <th>Created date</th> 
                                                 <th>Action</th> 
                                             </tr>
@@ -75,26 +73,6 @@
                                              <th> {{++$key}} </th>
                                              <td> {{$result->display_name }} </td>
                                              <td> {{$result->name }} </td>
-                                                <td> 
-                                                    <ul>
-                                                      @if(isset($result->permission) && $result->permission!="null")
-                                                 @foreach(json_decode($result->permission) as $per )
-                                                      {{$per}},
-                                                        @endforeach
-                                                        @endif
-                                                    </ul>
-                                                  </td>
-
-                                                   <td>  
-                                                     <ul>
-                                                      @if(isset($result->modules) && $result->modules!="null")
-                                                    @foreach(json_decode($result->modules) as $mod )
-                                                       {{$mod}},
-                                                        @endforeach
-                                                        @endif
-                                                         </ul>
-                                                  </td>
-                                                
                                                      <td>
                                                         {!! Carbon\Carbon::parse($result->created_at)->format('Y-m-d'); !!}
                                                     </td>

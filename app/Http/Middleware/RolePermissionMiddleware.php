@@ -25,21 +25,21 @@ class RolePermissionMiddleware
     {   
 
       // dd(Auth::guard('admin')->attempt($credentials,true));
-        if (!Auth::guard($guard)->check()) {
-
-            return redirect('admin/login');
+        if (!Auth::guard('admin')->user()) {
+          return $next($request);
         }
         
         $validAccess =false;
         $user = Auth::guard($guard)->user();
-        $role = \App\Role::find(Auth::guard($guard)->user()->role_type);
+        $role_type = isset($user->role_type) && $user->role_type?$user->role_type:'Guest';
+        $role = \App\Role::find($role_type);
         $controllerAction = class_basename(Route::getCurrentRoute()->getActionName());
         list($controller, $action) = explode('@', $controllerAction);
         $routeName = Route::currentRouteName();
       
         $controller = str_replace('Controller', '', $controller);
                 
-        $permission = (array)json_decode($role->permission);
+        $permission =$role?(array)json_decode($role->permission):array();
      
         $isControllerExist= key_exists($controller,$permission);
         if($controller && $isControllerExist){
@@ -68,12 +68,19 @@ class RolePermissionMiddleware
         }
         }else if(in_array($controller,array('Admin','Role'))){
          $validAccess=$request->method()=='GET'?true:false;
+        }else{
+         $validAccess =TRUE;   
         }
        
         if($validAccess){
          return $next($request);
         }else{
-         return redirect('admin')->withErrors(['message'=>'Invalid email or password. Try again!']);; 
+         $page_title = '403';
+         $heading  = 'Permission Denied.';
+         $sub_page_title = '403';
+         $page_action = '403'; 
+         $route_url = Route::getCurrentRoute()->getPath(); 
+         return view('packages::errors.403', compact('route_url','heading','page_title', 'page_action','sub_page_title'));
         }
         
         
