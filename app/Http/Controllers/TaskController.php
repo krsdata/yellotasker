@@ -262,6 +262,7 @@ class TaskController extends Controller {
         $userId = $request->get('userId');
         $title  = $request->get('title');
         $taskId  = $request->get('taskId'); 
+        $categoryId  = $request->get('categoryId'); 
         $page_number = $request->get('page_num');
         if($page_number){
             $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
@@ -293,6 +294,7 @@ class TaskController extends Controller {
                         $limit,
                         $taskId,
                         $userId,
+                        $categoryId,
                         $title,
                         $start_week,
                         $end_week ,
@@ -319,6 +321,10 @@ class TaskController extends Controller {
                    
                     if($userId){
                         $q->where('userId', $userId); 
+                    }
+
+                    if($categoryId){
+                        $q->where('categoryId', $categoryId); 
                     }
 
                     if($due_today){
