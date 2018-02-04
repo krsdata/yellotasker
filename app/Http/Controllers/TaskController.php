@@ -803,9 +803,9 @@ class TaskController extends Controller {
 
    public function getMyPendingOffers(Request $request)
     {
-    	$interestedUserId= $request->get('interestedUserId');
+       $uid = $request->get('userId');
         $validator = Validator::make($request->all(), [
-               'interestedUserId' => 'required',
+               'userId' => 'required',
         ]);
             /** Return Error Message **/
             if ($validator->fails()) {
@@ -822,17 +822,20 @@ class TaskController extends Controller {
                     )
                 );
          } 
-    	$offers = Offers::with(['mytask'=>function($q)use($interestedUserId){
-    			$q->where('taskDoerId','!=',$interestedUserId);
-    	}])->where('interestedUserId',$interestedUserId)->get();
-       // dd($offers);
-        return  response()->json([ 
-        "status"=>($offers)?1:0,
-        "code"=> ($offers)?200:404,
-        "message"=>($offers)?"All Pending offers list found":"Record not found for given input!",
-        'data' => $offers
-       ]
-    );  
+    	  $offers = User::with(['offers_pending'=>function($q) use($uid)
+                    {
+                      $q->where('taskDoerId','!=',$uid);
+                    }
+                ])->where('id',$uid)
+                        ->get();
+                
+    return  response()->json([ 
+                "status"=>($offers->count())?1:0,
+                "code"=> ($offers->count())?200:404,
+                "message"=>($offers->count())?"All task list":"Record not found",
+                'data' => $offers
+               ]
+            );
 
     }
 
