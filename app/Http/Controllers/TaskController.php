@@ -795,6 +795,41 @@ class TaskController extends Controller {
 
     }
 
+   public function getMyPendingOffers(Request $request)
+    {
+    	$interestedUserId= $request->get('interestedUserId');
+        $validator = Validator::make($request->all(), [
+               'interestedUserId' => 'required',
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         } 
+    	$offers = Offers::with(['mytask'=>function($q)use($interestedUserId){
+    			$q->where('taskDoerId','!=',$interestedUserId);
+    	}])->where('interestedUserId',$interestedUserId)->get();
+       // dd($offers);
+        return  response()->json([ 
+        "status"=>($offers)?1:0,
+        "code"=> ($offers)?200:404,
+        "message"=>($offers)?"All Pending offers list found":"Record not found for given input!",
+        'data' => $offers
+       ]
+    );  
+
+    }
+
     public function deleteOffer(Request $request)
     {
 
@@ -853,7 +888,7 @@ class TaskController extends Controller {
          
 
         $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
-            $q->where('users.id',$request->get('interestedUsreId'));
+            $q->where('users.id',$request->get('interestedUserId'));
         }])->where('id',$request->get('taskId'))->get(); 
 
 
@@ -872,7 +907,7 @@ class TaskController extends Controller {
     {
         $validator = Validator::make($request->all(), [
                'taskId' => 'required',
-               'interestedUsreId'=>'required'
+               'interestedUserId'=>'required'
         ]);
             /** Return Error Message **/
             if ($validator->fails()) {
@@ -890,7 +925,7 @@ class TaskController extends Controller {
                 );
          }   
 
-        $is_savtask = DB::table('offers')->where('taskId',$request->get('taskId'))->where('interestedUsreId',$request->get('interestedUsreId'))->first(); 
+        $is_savtask = DB::table('offers')->where('taskId',$request->get('taskId'))->where('interestedUserId',$request->get('interestedUserId'))->first(); 
          
         $task_action = $request->get('action');
 
@@ -928,20 +963,20 @@ class TaskController extends Controller {
         if($is_savtask!=null && $task_action=='update'){
             $rs =  DB::table('offers')
                     ->where('id',$request->get('taskId'))
-                        ->where('interestedUsreId',$request->get('interestedUsreId'))
+                        ->where('interestedUserId',$request->get('interestedUserId'))
                             ->update($data); 
         $notification = new Notification;
-        $notification->addNotification('offers_update',$rs->id,$request->get('interestedUsreId'),'Offer updated','');
+        $notification->addNotification('offers_update',$rs->id,$request->get('interestedUserId'),'Offer updated','');
             
         }else{
             $rs =  DB::table('offers')->insert($data); 
             $notification = new Notification;
-            $notification->addNotification('offers_add',$rs->id,$request->get('interestedUsreId'),'Offer posted','');
+            $notification->addNotification('offers_add',$rs->id,$request->get('interestedUserId'),'Offer posted','');
 
         }
 
         $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
-            $q->where('users.id',$request->get('interestedUsreId'));
+            $q->where('users.id',$request->get('interestedUserId'));
         }])->where('id',$request->get('taskId'))->get(); 
         return Response::json(array(
                     'status' => 1,

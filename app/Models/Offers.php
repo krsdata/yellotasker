@@ -46,7 +46,7 @@ class Offers extends Authenticatable {
 
     public  function interestedUser()
     {
-        return $this->hasMany('App\User','id','interestedUsreId')->select('id','first_name','last_name') ;
+        return $this->hasMany('App\User','id','interestedUserId')->select('id','first_name','last_name') ;
     }
 
     public function task()

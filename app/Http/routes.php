@@ -149,8 +149,13 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
-             
+              Route::match(['get','post'],'getMyPendingOffers',[
+                'as' => 'MyPendingOffers',
+                'uses' => 'TaskController@getMyPendingOffers'
+                ]
+            );
 
+             
 
             Route::match(['get','post'],'updateOffer/{id}',[
                 'as' => 'updateOffer',

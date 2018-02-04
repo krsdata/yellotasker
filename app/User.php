@@ -94,22 +94,22 @@ class User extends Authenticatable
     }
     public function offer_task()
     {
-       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+       // return $this->hasMany('App\Models\Offers','interestedUserId')->with('mytask');
 
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
     
 
       public function offers_accepting()
     {
-       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+       // return $this->hasMany('App\Models\Offers','interestedUserId')->with('mytask');
 
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')
              ->select('*',\DB::raw('
                     (
                         CASE 
-                        when post_tasks.taskDoerId=offers.interestedUsreId then "accepted"
+                        when post_tasks.taskDoerId=offers.interestedUserId then "accepted"
                         ELSE 
                         status end)
                          as status'
@@ -122,9 +122,9 @@ class User extends Authenticatable
 
     public function myOffer()
     {
-       // return $this->hasMany('App\Models\Offers','interestedUsreId')->with('mytask');
+       // return $this->hasMany('App\Models\Offers','interestedUserId')->with('mytask');
 
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
 
@@ -143,11 +143,11 @@ class User extends Authenticatable
 
     public function offers_pending()
     {
-        return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUsreId','taskId')
+        return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')
                 ->select('*',\DB::raw('
                     (
                         CASE 
-                        when post_tasks.taskDoerId=offers.interestedUsreId then "accepted"
+                        when post_tasks.taskDoerId=offers.interestedUserId then "accepted"
                         when post_tasks.taskDoerId=0 then "pending"
                         ELSE 
                         "assigned" end)
