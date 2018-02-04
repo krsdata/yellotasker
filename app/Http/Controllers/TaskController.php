@@ -1224,24 +1224,34 @@ class TaskController extends Controller {
         
         $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
         $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+        $blogId = $request->get('blogId'); 
+        $blog_title = $request->get('blogTitle'); 
         
-        if($page_num==1 && $page_size==20){  
-           $data =  \DB::table('blogs')->take($page_size)->orderBy('id', 'desc')->get();
-        }
-        elseif($page_num!=1 || $page_size!=20){
-            if($page_num>1){
-                  $offset = $page_size*($page_num-1);
-            }else{
-                  $offset = 0;
-            }  
-            $data =  \DB::table('blogs')->orderBy('id', 'desc')->skip($offset)->take($page_size)->get(); 
-        }
+        if($page_num>1){
+            $offset = $page_size*($page_num-1);
+        }else{
+           $offset = 0;
+        }  
+        $data =  \DB::table('blogs')
+                 ->Where(function ($query) use($blogId,$blog_title){
+                    if($blogId){
+                    $query->where('id',$blogId);
+                    }
+                    if($blog_title){
+                     $query->where('blog_title','LIKE',"%$blog_title%");
+                    }
+                 })
+                ->orderBy('id', 'desc')
+                ->skip($offset)
+                ->take($page_size)
+                ->get(); 
 
         $input = [];
         $arr=[];
 
         foreach ($data as $key => $value) {
             $input['id'] =  $value->id;
+            $input['blog_title'] = $value->blog_title;
             $input['blog_sub_title'] = $value->blog_sub_title;
             $input['blog_description'] = $value->blog_description;
             $input['blog_image'] = url('storage/blog/'.$value->blog_image); 
@@ -1251,7 +1261,14 @@ class TaskController extends Controller {
             $input = [];
         } 
     
-        $c = \DB::table('blogs')->get();
+        $c = \DB::table('blogs');
+        if($blogId){
+        $c->where('id',$blogId);
+        }
+        if($blog_title){
+         $c->where('blog_title','LIKE',"%$blog_title%");
+        }
+        $c=$c->get();
 
          return Response::json(array(
                     'status' => 1,
