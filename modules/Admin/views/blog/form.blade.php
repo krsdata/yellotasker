@@ -14,17 +14,19 @@
                 
                 <span class="help-block">{{ $errors->first('blog_title', ':message') }}</span>
             </div>
-        </div>  
-
-
-         <div class="form-group {{ $errors->first('blog_description', ' has-error') }}">
-            <label class="control-label col-md-3">Blog description  </label>
-            <div class="col-md-4"> 
-                {!! Form::text('blog_description',null, ['class' => 'form-control'])  !!} 
-                
-                <span class="help-block">{{ $errors->first('blog_description', ':message') }}</span>
-            </div>
         </div> 
+
+         <div class="form-group{{ $errors->first('blog_description', ' has-error') }}">
+        <label class="control-label col-md-3">Blog Description</label>
+        <div class="col-md-8"> 
+            {!! Form::textarea('blog_description',null, ['class' => 'form-control ckeditor form-cascade-control input-small'])  !!}
+            <span class="label label-danger">{{ $errors->first('blog_description', ':message') }}</span>
+            @if(Session::has('flash_alert_notice')) 
+            <span class="label label-danger">
+                {{ Session::get('flash_alert_notice') }} 
+            </span>@endif
+        </div>
+    </div> 
 
          <div class="form-group {{ $errors->first('blog_created_by', 'has-error') }}">
             <label class="control-label col-md-3">Author  </label>
