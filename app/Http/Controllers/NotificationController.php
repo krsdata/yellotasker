@@ -39,7 +39,7 @@ class NotificationController extends Controller {
     {
     
     $notifications =  \DB::table('notifications')->orderBy('id', 'desc')->limit(50)->get();
-    return  response()->json([ 
+    return  response()->json([
                 "status"=>($notifications)?1:0,
                 "code"=> ($notifications)?200:404,
                 "message"=>($notifications)?"Notification list found":"Record not found for given input!",

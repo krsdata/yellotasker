@@ -236,6 +236,17 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'assignTask',
                 'uses' => 'TaskController@assignTask'
             ]);
+
+
+            Route::match(['get','post'],'taskCompleteFromPoster',[
+                'as' => 'taskCompleteFromPoster',
+                'uses' => 'TaskController@taskCompleteFromPoster'
+            ]);
+
+            Route::match(['get','post'],'taskCompleteFromDoer',[
+                'as' => 'taskCompleteFromDoer',
+                'uses' => 'TaskController@taskCompleteFromDoer'
+            ]);
         
     });
 });    

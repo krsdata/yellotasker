@@ -825,6 +825,98 @@ class TaskController extends Controller {
 
     }
 
+      public function taskCompleteFromDoer(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'taskId' => 'required',
+            'taskdoerId'=>'required',
+            'status' => 'required'
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+        $task =  Tasks::where('id',$request->get('taskId'))
+                    ->where('taskDoerId',$request->get('taskdoerId'))
+                    ->first();
+        if($task){
+            $task   = Tasks::find($task->id);
+            $task->status = $request->get('status');
+            $task->save();
+            $msg    = "Task completed successfully from doer";
+        }else{
+            $msg    = "Invalid input";
+        }
+        return  response()->json([ 
+                "status"=>($task)?1:0,
+                "code"=> ($task)?200:404,
+                "message"=>$msg,
+                'data' => $task
+               ]
+            ); 
+    }
+    /*
+    taskCompleteFromPoster
+    */
+    public function taskCompleteFromPoster(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'taskId' => 'required',
+            'taskposterid'=>'required',
+            'status' => 'required'
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+
+        $task =  Tasks::where('id',$request->get('taskId'))
+                    ->where('taskOwnerId',$request->get('taskposterid'))
+                    ->first();
+        if($task){
+            $task   = Tasks::find($task->id);
+            $task->status = $request->get('status');
+            $task->save();
+            $msg    = "Task completed successfully from poster";
+        }else{
+            $msg    = "Invalid input";
+        }
+        return  response()->json([ 
+                "status"=>($task)?1:0,
+                "code"=> ($task)?200:404,
+                "message"=>$msg,
+                'data' => $task
+               ]
+            ); 
+    }
+    /*
+    getMyPendingOffers
+    */
    public function getMyPendingOffers(Request $request)
     {
        $uid = $request->get('userId');
