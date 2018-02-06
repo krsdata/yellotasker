@@ -312,7 +312,7 @@ class TaskController extends Controller {
             );
         }  
         
-        $tasks  = Tasks::with('userDetail')->where(function($q)
+        $tasks  = Tasks::with('taskPostedUser')->where(function($q)
                 use(
                         $status,
                         $limit,
@@ -1110,17 +1110,21 @@ class TaskController extends Controller {
     public function getTask(Request $request, $uid=null){ 
 
         $offers = User::with('save_task')
-                    ->with(['offers_accepting'=>function($q) use($uid)
-                        {
-                          $q->where('taskDoerId','=',$uid);
-                        }
-                    ])->with(['offers_pending'=>function($q) use($uid)
-                    {
-                      $q->where('taskDoerId','!=',$uid);
-                    }
-                ])->with('postedTask')
                     ->where('id',$uid)
-                        ->get();
+                    ->get();
+
+         // $offers = User::with('save_task')
+         //            ->with(['offers_accepting'=>function($q) use($uid)
+         //                {
+         //                  $q->where('taskDoerId','=',$uid);
+         //                }
+         //            ])->with(['offers_pending'=>function($q) use($uid)
+         //            {
+         //              $q->where('taskDoerId','!=',$uid);
+         //            }
+         //        ])->with('postedTask')
+         //            ->where('id',$uid)
+         //                ->get();
         
 
         return  response()->json([ 
