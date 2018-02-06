@@ -98,7 +98,7 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@getUserTasks'
                 ]
             );
- 
+            
             Route::match(['get','post'],'getPostTask',[
                 'as' => 'getPostTask',
                 'uses' => 'TaskController@getPostTask'
@@ -243,11 +243,10 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@taskCompleteFromPoster'
             ]);
 
-            Route::match(['get','post'],'   ',[
+            Route::match(['get','post'],'taskCompleteFromDoer',[
                 'as' => 'taskCompleteFromDoer',
                 'uses' => 'TaskController@taskCompleteFromDoer'
             ]);
-        
     });
 });    
 

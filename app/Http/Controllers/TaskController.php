@@ -269,8 +269,6 @@ class TaskController extends Controller {
             $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
         }
        
-            
-
         $start_week = \Carbon\Carbon::now()->startOfWeek()->toDateString();
         $end_week   = \Carbon\Carbon::now()->endOfWeek()->toDateString();
         $today      = \Carbon\Carbon::today()->toDateString();
@@ -312,7 +310,7 @@ class TaskController extends Controller {
             );
         }  
         
-        $tasks  = Tasks::with('taskPostedUser')->where(function($q)
+        $tasks  = Tasks::with('userDetail')->where(function($q)
                 use(
                         $status,
                         $limit,
@@ -830,7 +828,7 @@ class TaskController extends Controller {
 
         $validator = Validator::make($request->all(), [
             'taskId' => 'required',
-            'taskdoerId'=>'required',
+            'taskDoerId'=>'required',
             'status' => 'required'
         ]);
             /** Return Error Message **/
@@ -849,11 +847,10 @@ class TaskController extends Controller {
                 );
          }   
 
-        $task =  Tasks::where('id',$request->get('taskId'))
-                    ->where('taskDoerId',$request->get('taskdoerId'))
-                    ->first();
+        $task =  Tasks::find($request->get('taskId'));
         if($task){
             $task   = Tasks::find($task->id);
+            $task->taskDoerId = $request->get('taskDoerId');
             $task->status = $request->get('status');
             $task->save();
             $msg    = "Task completed successfully from doer";
@@ -876,7 +873,7 @@ class TaskController extends Controller {
 
         $validator = Validator::make($request->all(), [
             'taskId' => 'required',
-            'taskposterid'=>'required',
+            'taskPosterId'=>'required',
             'status' => 'required'
         ]);
             /** Return Error Message **/
@@ -895,11 +892,10 @@ class TaskController extends Controller {
                 );
          }   
 
-        $task =  Tasks::where('id',$request->get('taskId'))
-                    ->where('taskOwnerId',$request->get('taskposterid'))
-                    ->first();
+        $task =  Tasks::find($request->get('taskId')); 
         if($task){
             $task   = Tasks::find($task->id);
+            $task->taskOwnerId = $request->get('taskPosterId');
             $task->status = $request->get('status');
             $task->save();
             $msg    = "Task completed successfully from poster";
@@ -1149,9 +1145,10 @@ class TaskController extends Controller {
     {
         
         $validator = Validator::make($request->all(), [
-               'taskId' => 'required',
-               'assignUserId'=>'required',
-               'taskStatus' => 'required'
+               'taskId'     => 'required',
+               'taskOwnerID'=>'required',
+               'taskDoerID' => 'required',
+               'status'     => 'required'
         ]);
             /** Return Error Message **/
             if ($validator->fails()) {
@@ -1174,8 +1171,9 @@ class TaskController extends Controller {
         $task   = Tasks::find($taskId);
 
         if($task){
-            $task->status = $request->get('taskStatus');
-            $task->taskDoerId  = $request->get('assignUserId'); 
+            $task->taskOwnerId = $request->get('taskOwnerID');
+            $task->taskDoerId  = $request->get('taskDoerID');
+            $task->status      = $request->get('status'); 
             $task->save();
 
             return  response()->json([ 
