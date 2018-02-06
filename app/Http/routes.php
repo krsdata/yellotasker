@@ -243,7 +243,7 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@taskCompleteFromPoster'
             ]);
 
-            Route::match(['get','post'],'taskCompleteFromDoer',[
+            Route::match(['get','post'],'   ',[
                 'as' => 'taskCompleteFromDoer',
                 'uses' => 'TaskController@taskCompleteFromDoer'
             ]);
