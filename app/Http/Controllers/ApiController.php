@@ -961,9 +961,9 @@ public function userDetail($id=null)
 
         return response()->json(
                         [
-                            "status" =>1,
-                            'code' => 200,
-                            "message" => "Success",
+                            "status" =>count($data)?1:0,
+                            'code' => count($data)?200:404,
+                            "message" =>count($data)?"Message found":"Message not found",
                             'data' => $data
                         ]
         );
