@@ -92,6 +92,13 @@ class Tasks extends Authenticatable {
        return $this->hasMany('App\Models\SavedTask','taskId','id')->select('status');
     }
 
-
+    public function postUserDetail()
+    {
+        return $this->belongsTo('App\User', 'taskOwnerId','id');//->select('id','first_name','rating');
+    } 
+    public function seekerUserDetail()
+    {
+        return $this->belongsTo('App\User', 'taskDoerId','id');//->select('id','first_name','rating');
+    } 
     
 }

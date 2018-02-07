@@ -156,4 +156,14 @@ class User extends Authenticatable
                 ->with('taskPostedUser');
     }
 
+    public function postTaskSeeker()
+    {
+        return $this->hasMany('App\Models\Tasks', 'taskDoerId');
+    }
+
+    public function taskTransaction()
+    {
+        return $this->hasMany('App\Models\Tasks', 'taskOwnerId');
+    }
+
 }

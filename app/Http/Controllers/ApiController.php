@@ -17,6 +17,7 @@ use App\Helpers\Helper as Helper;
 use App\User; 
 use App\Model\Tasks;
 use App\Models\Notification;
+use App\Messges;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
 use App\Http\Requests\UserRequest;  
@@ -877,11 +878,95 @@ public function userDetail($id=null)
     }
     //array_msort($array, $cols)
 
-    public function makeOffer(Request $request)
-    {   
+    public function addPersonalMessage(Request $request){
+        
+        $rs = $request->all();
+        $validator = Validator::make($request->all(), [
+            'taskId' => "required", 
+            'userId' => "required",
+            'comments'=> "required"
+        ]);
 
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
 
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => $request->all()
+                            )
+            );
+        } 
+        $input=[];
+        foreach ($rs as $key => $val){
+            $input[$key] = $val;
+        }
+        
+        DB::table('messges')->insert($input); 
+            return response()->json(
+                        [
+                            "status" =>1,
+                            'code' => 200,
+                            "message" => "Message added successfully.",
+                            'data' => $input
+                        ]
+        );
+    }
+    public function getPersonalMessage(Request $request){
+        
+        $rs = $request->all();
+        $validator = Validator::make($request->all(), [
+            'taskId' => "required", 
+           // 'poster_userid' => "required"
+        ]);
+        
+         if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
 
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => $request->all()
+                            )
+            );
+        }
+        $posteduserid   = $request->get('postedUserId');
+        $doerUserid     = $request->get('doerUserid');
+        
+        $data = Messges::with('commentPostedUser')
+                    ->with(['taskDetails'=> function($q)use($posteduserid,$doerUserid,$request){
+                        if($doerUserid){
+                            $q->where('taskDoerId',$doerUserid);
+                        }if($posteduserid){
+                            $q->where('taskOwnerId',$posteduserid);    
+                        }
+                    }])
+                    ->where('taskId',$request->get('taskId'))
+                    ->where(function($q)use($posteduserid,$doerUserid,$request){
+                        if($posteduserid){
+                            $q->where('userId',$posteduserid);      
+                        }
+                        if($doerUserid){
+                            $q->where('userId',$doerUserid);      
+                        }
+                    })->get();  
+
+        return response()->json(
+                        [
+                            "status" =>1,
+                            'code' => 200,
+                            "message" => "Success",
+                            'data' => $data
+                        ]
+        );
     }
 
     

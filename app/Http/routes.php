@@ -49,8 +49,6 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'userDetail/{id}','ApiController@userDetail'); 
         Route::match(['get'],'notifications','NotificationController@getAllNotification'); 
        
-
-
        
         Route::group(['middleware' => 'jwt-auth'], function () 
         { 
@@ -247,6 +245,10 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'taskCompleteFromDoer',
                 'uses' => 'TaskController@taskCompleteFromDoer'
             ]);
+
+            Route::match(['post','get'],'getPersonalMessage', 'ApiController@getPersonalMessage'); 
+            Route::match(['post','get'],'addPersonalMessage', 'ApiController@addPersonalMessage'); 
+            
     });
 });    
 
