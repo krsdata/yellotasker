@@ -257,24 +257,25 @@ class TaskController extends Controller {
 
     public function getPostTask(Request $request){
 
-        $status = $request->get('taskStatus');
-        $limit  = $request->get('limit');
-        $userId = $request->get('userId');
-        $title  = $request->get('title');
-        $taskId  = $request->get('taskId'); 
-        $categoryId  = $request->get('categoryId'); 
-        $page_number = $request->get('page_num');
+        $status         =   $request->get('taskStatus');
+        $limit          =   $request->get('limit');
+        $userId         =   $request->get('userId');
+        $title          =   $request->get('title');
+        $taskId         =   $request->get('taskId'); 
+        $categoryId     =   $request->get('categoryId'); 
+        $page_number    =   $request->get('page_num');
+
         if($page_number){
-            $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
-            $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+            $page_num   =   ($request->get('page_num'))?$request->get('page_num'):1;
+            $page_size  =   ($request->get('page_size'))?$request->get('page_size'):20; 
         }
        
-        $start_week = \Carbon\Carbon::now()->startOfWeek()->toDateString();
-        $end_week   = \Carbon\Carbon::now()->endOfWeek()->toDateString();
-        $today      = \Carbon\Carbon::today()->toDateString();
-        $startOfMonth = \Carbon\Carbon::now()->startOfMonth()->toDateString();
-        $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->toDateString();
-        $tomorrow   = \Carbon\Carbon::tomorrow()->toDateString();
+        $start_week     =   \Carbon\Carbon::now()->startOfWeek()->toDateString();
+        $end_week       =   \Carbon\Carbon::now()->endOfWeek()->toDateString();
+        $today          =   \Carbon\Carbon::today()->toDateString();
+        $startOfMonth   =   \Carbon\Carbon::now()->startOfMonth()->toDateString();
+        $endOfMonth     =   \Carbon\Carbon::now()->endOfMonth()->toDateString();
+        $tomorrow       =   \Carbon\Carbon::tomorrow()->toDateString();
 
         $due_today          = $request->get('due_today');
         $due_tomorrow       = $request->get('due_tomorrow');
@@ -286,13 +287,17 @@ class TaskController extends Controller {
         $search_city         = $request->get('city');
         $search_totalAmount  = $request->get('totalAmount');
         
-         $validatorFields=[];
+         $validatorFields    = [];
          if($search_locationType=='Work remotely'){
-           $search_city='';//no need to search city for online work  
+            $search_city='';//no need to search city for online work  
          }
-        if($search_locationType=='Come to work place'){
-         $validatorFields['city'] = 'required';
+        if($search_locationType == 'Come to work place'){
+            $validatorFields['city'] = 'required';
         }
+        if(!$userId){
+            $validatorFields['userId']  = 'required';
+        }
+
         $validator = Validator::make($request->all(), $validatorFields);
         /** Return Error Message **/
         if ($validator->fails()) {
@@ -470,11 +475,7 @@ class TaskController extends Controller {
                     "message" =>$message,
                     'data'    => $data
                     ];
-    }
-
-
-
-  
+    } 
 
     public function getUserTasks(Request $request,$usrt_id)
     {
@@ -881,7 +882,7 @@ class TaskController extends Controller {
                         $error_msg  =   [];
                 foreach ( $validator->messages()->all() as $key => $value) {
                             array_push($error_msg, $value);     
-                        }
+                        }   
                                 
                 return Response::json(array(
                     'status' => 0,
@@ -1197,31 +1198,56 @@ class TaskController extends Controller {
     }
 
 
-    public function getTask(Request $request, $uid=null){ 
-
-        $offers = User::with('save_task')
-                    ->where('id',$uid)
-                    ->get();
-
-         // $offers = User::with('save_task')
-         //            ->with(['offers_accepting'=>function($q) use($uid)
-         //                {
-         //                  $q->where('taskDoerId','=',$uid);
-         //                }
-         //            ])->with(['offers_pending'=>function($q) use($uid)
-         //            {
-         //              $q->where('taskDoerId','!=',$uid);
-         //            }
-         //        ])->with('postedTask')
-         //            ->where('id',$uid)
-         //                ->get();
+    public function getTask(Request $request, $uid=null)
+    { 
+        $action     =   $request->get('action');
         
+        $data = [];
+        switch ($action) {
+            case 'saveTask':
+                $data['save_task']      = User::with('save_task')
+                    ->where('id',$uid)  
+                    ->get();            
+                break;                  
+            case 'offerAccepting':      
+                  $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
+                        {               
+                          $q->where('taskDoerId','=',$uid);
+                        }               
+                    ])->where('id',$uid)
+                        ->get();        
+                break;                  
+            case 'offerPending':
+                 $data['offers_pending'] = User::with(['offers_pending'=>function($q) use($uid)
+                        {               
+                          $q->where('taskDoerId','!=',$uid);
+                        }
+                    ])->where('id',$uid)
+                        ->get();
+                break;
+            case 'postedTask':
+                $data['postedTask'] =  User::with('postedTask')
+                        ->where('id',$uid)
+                        ->get();
+                break;
+            
+            default:
+                
+                return  response()->json([ 
+                    "status" => 0,
+                    "code"   => 404,
+                    "message"=> "action not define",
+                    'data'   => $data
+                   ]
+                );
+                break;
+        }
 
         return  response()->json([ 
-                    "status"=>($offers->count())?1:0,
-                    "code"=> ($offers->count())?200:404,
-                    "message"=>($offers->count())?"All task list":"Record not found",
-                    'data' => $offers
+                    "status"    =>  ($data)?1:0,
+                    "code"      =>  ($data)?200:404,
+                    "message"   =>  ($data)?"All task list":"Record not found",
+                    'data'      =>  $data
                    ]
                 );
     }
