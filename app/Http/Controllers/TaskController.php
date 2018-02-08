@@ -953,7 +953,7 @@ class TaskController extends Controller {
     public function deleteOffer(Request $request)
     {
 
-    	$offers = Offers::where('userId',$request->get('userId'))
+    	$offers = Offers::where('interestedUserId',$request->get('userId'))
     				->where('offerId',$request->get('offerId'))
                     ->where('taskId',$request->get('taskId'))
                     ->delete();
