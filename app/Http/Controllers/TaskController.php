@@ -294,9 +294,7 @@ class TaskController extends Controller {
         if($search_locationType == 'Come to work place'){
             $validatorFields['city'] = 'required';
         }
-        if(!$userId){
-            $validatorFields['userId']  = 'required';
-        }
+        
 
         $validator = Validator::make($request->all(), $validatorFields);
         /** Return Error Message **/
