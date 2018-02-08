@@ -954,7 +954,7 @@ class TaskController extends Controller {
     {
 
     	$offers = Offers::where('interestedUserId',$request->get('userId'))
-    				->where('offerId',$request->get('offerId'))
+    				->where('id',$request->get('offerId'))
                     ->where('taskId',$request->get('taskId'))
                     ->delete();
 
