@@ -1053,8 +1053,12 @@ class TaskController extends Controller {
                 );
          }   
 
-        $is_savtask = DB::table('offers')->where('taskId',$request->get('taskId'))->where('interestedUserId',$request->get('interestedUserId'))->first(); 
-         
+        $is_savtask = DB::table('offers')
+                        ->where('taskId',$request->get('taskId'))
+                            ->where('interestedUserId',$request->get('interestedUserId'))
+                                ->first(); 
+
+
         $task_action = $request->get('action');
 
          if($is_savtask!=null && $task_action!='update'){
@@ -1093,26 +1097,30 @@ class TaskController extends Controller {
                     ->where('id',$request->get('taskId'))
                         ->where('interestedUserId',$request->get('interestedUserId'))
                             ->update($data); 
-
-        if($rs){
-            $notification = new Notification;
-            $notification->addNotification('offers_update',$rs->id,$request->get('interestedUserId'),'Offer updated','');
-        }                  
             
         }else{
-            $rs =  DB::table('offers')->insert($data); 
+
+            $id =  DB::table('offers')->insertGetId($data); 
             $notification = new Notification;
-            $notification->addNotification('offers_add',$rs->id,$request->get('interestedUserId'),'Offer posted','');
+            $notification->addNotification('offers_add',$id,$request->get('interestedUserId'),'Offer posted','');
 
         }
 
         $offetData =  Tasks::with(['interestedUsers'=>function($q) use($request){
             $q->where('users.id',$request->get('interestedUserId'));
         }])->where('id',$request->get('taskId'))->get(); 
+
+
+        $msg = "Offer posted successfully.";
+
+        if($task_action){
+            $msg = "Offer updated successfully.";            
+        }
+
         return Response::json(array(
                     'status' => 1,
                     'code'=>200,
-                    'message' => 'Offer posted successfully.',
+                    'message' => $msg,
                     'data'  =>  $offetData
                     )
                 );
