@@ -1080,8 +1080,11 @@ class TaskController extends Controller {
                     ->where('id',$request->get('taskId'))
                         ->where('interestedUserId',$request->get('interestedUserId'))
                             ->update($data); 
-        $notification = new Notification;
-        $notification->addNotification('offers_update',$rs->id,$request->get('interestedUserId'),'Offer updated','');
+
+        if($rs){
+            $notification = new Notification;
+            $notification->addNotification('offers_update',$rs->id,$request->get('interestedUserId'),'Offer updated','');
+        }                  
             
         }else{
             $rs =  DB::table('offers')->insert($data); 
