@@ -103,8 +103,12 @@ class TaskController extends Controller {
         $message = 'Task  created successfully.';
         $data    = $task; 
         
+        if($task){
+
         $notification = new Notification;
         $notification->addNotification('task_add',$task->id,$request->get('userId'),'New Task Added',$task->title);
+   
+        }
         return 
                 [ 
                 "status"  =>$status,
@@ -241,9 +245,13 @@ class TaskController extends Controller {
         $code    = 200;
         $message = 'Task  updated successfully.';
         $data    = $task; 
-        $notification = new Notification;
-        $notification->addNotification('task_update',$task->id,$request->get('userId'),'Task updated',$task->title);
-     
+
+        if($task){
+            $notification = new Notification;
+            $notification->addNotification('task_update',$task->id,$request->get('userId'),'Task updated',$task->title);
+        }
+
+        
         return 
                 [ 
                 "status"  =>$status,
@@ -669,8 +677,11 @@ class TaskController extends Controller {
            
         }
         $comment->save();
-        $notification = new Notification;
-        $notification->addNotification('comment_add',$comment->id,$request->get('userId'),'Comment Added',$comment->commentDescription);
+        if($comment){
+            $notification = new Notification;
+            $notification->addNotification('comment_add',$comment->id,$request->get('userId'),'Comment Added',$comment->commentDescription);
+
+        }
 
         $comments = Comments::with('userDetail')->where('id',$comment->id)->get();
         $status  = 1;
@@ -704,9 +715,11 @@ class TaskController extends Controller {
            
         }
         $comment->save();
-
-        $notification = new Notification;
-        $notification->addNotification('comment_replied',$comment->id,$request->get('userId'),'Comment replied',$comment->commentDescription);
+        if($comment){
+            $notification = new Notification;
+            $notification->addNotification('comment_replied',$comment->id,$request->get('userId'),'Comment replied',$comment->commentDescription);
+        }
+        
 
         $comments = Comments::with('userDetail','commentReply')
                         ->where('id',$request['commentId'])
