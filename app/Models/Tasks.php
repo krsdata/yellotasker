@@ -62,7 +62,7 @@ class Tasks extends Authenticatable {
     }
 
      public function interestedUsers() {
-        return $this->belongsToMany('App\User', 'offers', 'taskId', 'interestedUserId')->groupBy('offers.taskId')->orderBy('offers.id','desc'); 
+        return $this->belongsToMany('App\User', 'offers', 'taskId', 'interestedUserId')->orderBy('offers.id','desc'); 
     }
 
     public function saveTask()
