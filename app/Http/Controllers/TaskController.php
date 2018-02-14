@@ -1251,9 +1251,10 @@ class TaskController extends Controller {
                 break;
             case 'postedTask':
                 $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){
-                     $q->where('taskOwnerId',$uid);
-                }])->get();
-                
+                     $q->where('taskDoerId',$uid);
+                }])
+                        ->where('id',$uid)
+                        ->get();
                 break;
             
             default:

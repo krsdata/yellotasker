@@ -77,9 +77,8 @@ class User extends Authenticatable
                         when post_tasks.taskDoerId!=0 then "assigned"
                         when post_tasks.taskDoerId=0 then "open"
                         ELSE 
-                        status end) as status'))->where('status','open')
-            ->with('taskPostedUser');
-            
+                        status end) as status'))->with('taskPostedUser');
+
     }
     public function pendingTask()
     {
