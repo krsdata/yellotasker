@@ -1250,7 +1250,9 @@ class TaskController extends Controller {
                         ->get();
                 break;
             case 'postedTask':
-                $data['postedTask'] =  User::with('postedTask')
+                $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){
+                     $q->where('taskOwnerId',$uid);
+                }])
                         ->where('id',$uid)
                         ->get();
                 break;
@@ -1466,5 +1468,48 @@ class TaskController extends Controller {
 
     }
 
+
+    public function getFollowedTask()
+    {
+        //
+    }
+
+
+    public function followTask(Request $request)
+    {
+          $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'userId' => 'required'
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }   
+    
+        $data['taskId'] = $request->get('taskId');
+        $data['userId'] = $request->get('userId');
+
+        $id =  DB::table('follow_tasks')->insertGetId($data); 
+
+        return Response::json(array(
+                    'status' =>1,
+                    'code'=>200,
+                    'message' => 'Task followed successfully',
+                    'data'  =>  []
+                    )
+                ); 
+        
+    }
 
 }

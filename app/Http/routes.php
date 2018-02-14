@@ -246,6 +246,15 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@taskCompleteFromDoer'
             ]);
 
+            
+            Route::match(['get','post'],'followTask',[
+                'as' => 'followTask',
+                'uses' => 'TaskController@followTask'
+            ]);
+
+            
+
+
             Route::match(['post','get'],'getPersonalMessage', 'ApiController@getPersonalMessage'); 
             Route::match(['post','get'],'addPersonalMessage', 'ApiController@addPersonalMessage'); 
             

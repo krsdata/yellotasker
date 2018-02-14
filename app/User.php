@@ -79,6 +79,7 @@ class User extends Authenticatable
                         ELSE 
                         status end) as status'))->where('status','open')
             ->with('taskPostedUser');
+            
     }
     public function pendingTask()
     {
