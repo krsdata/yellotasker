@@ -9,6 +9,7 @@ use Modules\Admin\Models\User;
 use Modules\Admin\Models\Settings;
 use Modules\Admin\Http\Requests\BlogRequest;
 use Modules\Admin\Models\Blogs;
+use Modules\Admin\Models\Category;
 use Input;
 use Validator;
 use Auth;
@@ -102,9 +103,10 @@ class BlogController extends Controller {
     public function create(Blogs $blog)  
     {
         $page_title = 'Blog';
-        $page_action = 'Create Blog';
-
-        return view('packages::blog.create', compact('blog','page_title', 'page_action'));
+        $page_action = 'Create Blog'; 
+         $categories  = Category::all();
+         $type = ['Stories'=>'Stories','News'=>'News','Tips'=>'Tips'];  
+        return view('packages::blog.create', compact('blog','page_title', 'page_action','categories','type'));
      }
 
     /*
@@ -112,7 +114,7 @@ class BlogController extends Controller {
      * */
 
     public function store(BlogRequest $request, Blogs $blog) 
-    {   
+    {    
         if ($request->file('blog_image')) {  
 
             $photo = $request->file('blog_image');
@@ -122,10 +124,32 @@ class BlogController extends Controller {
             $blog->blog_image   =   $blog_image;
             
         } 
+       
+        $categoryName = $request->get('blog_category');
+        $cn= '';
+        foreach ($categoryName as $key => $value) {
+            $cn = ltrim($cn.','.$value,',');
+        }
+        
+        $table_cname = \Schema::getColumnListing('blogs');
+        $except = ['id','create_at','updated_at','blog_category','blog_image'];
+        $input = $request->all();
+        $blog->blog_category = $cn;
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           }
+
+           if(isset($input[$value])) {
+               $blog->$value = $request->get($value); 
+           } 
+        }  
 
         $blog->blog_title     =   $request->get('blog_title');
         $blog->blog_description   =   $request->get('blog_description');
         $blog->blog_created_by = $request->get('blog_created_by');
+
         $blog->save();
        return Redirect::to('admin/blog')
                             ->with('flash_alert_notice', 'Blog was successfully created !');
@@ -138,14 +162,18 @@ class BlogController extends Controller {
 
     public function edit(Blogs $blog) {
 
-        $page_title = 'Blog';
-        $page_action = 'Edit Blog'; 
+        $page_title     = 'Blog';
+        $page_action    = 'Edit Blog'; 
+        $categories     = Category::all();
+       $type = ['Stories'=>'Stories','News'=>'News','Tips'=>'Tips'];  
+        $category_id  = explode(',',$blog->blog_category);
          
-         return view('packages::blog.edit', compact( 'blog','banner' ,'page_title', 'page_action'));
+         return view('packages::blog.edit', compact( 'blog','banner' ,'page_title', 'page_action','categories','type','category_id'));
     }
 
     public function update(BlogRequest $request, Blogs $blog) 
     {
+        $blog = Blogs::find($blog->id); 
         
         if ($request->file('blog_image')) {  
 
@@ -156,9 +184,23 @@ class BlogController extends Controller {
             $blog->blog_image   =   $blog_image; 
         } 
 
-        $blog->blog_title       =   $request->get('blog_title');
-        $blog->blog_description =   $request->get('blog_description');
-        $blog->blog_created_by  = $request->get('blog_created_by');
+
+        $categoryName = $request->get('blog_category');
+        $cn= '';
+        foreach ($categoryName as $key => $value) {
+            $cn = ltrim($cn.','.$value,',');
+        }
+    
+    
+        if($cn!=''){
+            $blog->blog_category =  $cn;
+        }
+        $request = $request->except('_method','_token','blog_category','blog_image');
+        
+        foreach ($request as $key => $value) {
+            $blog->$key = $value;
+        }  
+
         $blog->save();
         return Redirect::to('admin/blog')
                         ->with('flash_alert_notice', 'Page was successfully updated!');

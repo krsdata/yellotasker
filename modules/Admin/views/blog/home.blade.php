@@ -64,6 +64,7 @@
                                                 <th>Sno</th> 
                                                     <th>Blog Title</th>
                                                     <th>Blog description</th>
+                                                     <th>Blog type</th>
                                                     <th>image </th> 
                                                     <th>Created Date</th> 
                                                     <th>Action</th>
@@ -91,10 +92,14 @@
                                                    
                                                     <td>{!! substr(strip_tags($result->blog_description),0,50) !!}...<a href="{{ route('blog.edit',$result->id)}}">
                                                             <i class="glyphicon glyphicon-eye-open" title="view"></i> 
-                                                        </a></td>
-                                                     <td> 
+                                                        </a>
+                                                    </td>
+
+                                                    <td>{!! ucfirst($result->blog_type) !!} </td>
+
+                                                    <td>
                                                       <!--   {!!  substr(html_entity_decode($result->description, ENT_QUOTES, 'UTF-8'),0,50)  !!}.. -->
-                                                      @if(file_exists(storage_path('blog/'.$result->blog_image)))
+                                                      @if(file_exists(storage_path('blog/'.$result->blog_image)) && $result->blog_image!=null)
                                                       <img src="{{url('storage/blog/'.$result->blog_image)}}" width="100px"> 
                                                       @else
                                                        NA

@@ -1,4 +1,11 @@
- 
+<style type="text/css">
+ li.multiselect-all,li.multiselect-item {
+    margin-left: 25px;
+  }
+  ul.multiselect-container > li{
+     margin-left: 25px;
+  }
+</style> 
 
 <div class="form-body">
     <div class="alert alert-danger display-hide">
@@ -27,6 +34,43 @@
             </span>@endif
         </div>
     </div> 
+
+
+       <div class="form-group {{ $errors->first('blog_category', ' has-error') }}">
+        <label class="control-label col-md-3">Select Blog Category
+            <span class="required">  </span>
+        </label>
+        <div class="col-md-4"> 
+        <div class="portlet-body">
+             <select class="mt-multiselect btn btn-default" multiple="multiple" data-label="right" data-select-all="true" data-width="100%"  name="blog_category[]" data-action-onchange="true">
+                @foreach($categories as $key=>$value)
+                <option value="{{$value->id}}" @if(isset($category_id) && (in_array($value->id,$category_id))) {{ 'selected="selected"'}}  @endif
+
+                @if($value->id==old('blog_category'))  {{ 'selected="selected"'}} @endif
+                  >
+
+                {{ $value->category_name }}
+                
+                </option>
+                @endforeach
+            </select>
+            </div>
+            <span class="help-block">{{ $errors->first('blog_category', ':message') }}</span>
+        </div>
+    </div> 
+
+     
+
+
+         <div class="form-group {{ $errors->first('blog_type', 'has-error') }}">
+            <label class="control-label col-md-3">Blog Type  </label>
+            <div class="col-md-4">  
+               {{ Form::select('blog_type',$type, array_search($blog->blog_type, $type), ['class' => 'form-control']) }}
+                
+                <span class="help-block">{{ $errors->first('blog_type', ':message') }}</span>
+            </div>
+        </div> 
+
 
          <div class="form-group {{ $errors->first('blog_created_by', 'has-error') }}">
             <label class="control-label col-md-3">Author  </label>
