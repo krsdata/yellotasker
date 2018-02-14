@@ -70,6 +70,11 @@ class Tasks extends Authenticatable {
         return $this->belongsToMany('App\User', 'offers', 'taskId', 'interestedUserId')->orderBy('offers.id','desc'); 
     }
 
+    public function offerDetails(){
+        return $this->hasMany('App\Models\Offers','taskId','id')->with('interestedUser','assignUser');
+    }
+
+  
     public function saveTask()
     {
          return $this->hasMany('App\Models\SavedTask','taskId','id');

@@ -1126,7 +1126,9 @@ class TaskController extends Controller {
 
     public function taskOffer(Request $request, $taskId=null)
     {
-      $offers =  Tasks::with('interestedUsers')->where('id',$taskId)->get(); 
+      $offers =  Tasks::with(['offerDetails'=>function($q)use($taskId){
+                        $q->where('taskId',$taskId);
+                    }])->where('id',$taskId)->get(); 
  
       return  response()->json([ 
                     "status"=>($offers->count())?1:0,
@@ -1191,7 +1193,13 @@ class TaskController extends Controller {
         $task   = Tasks::find($taskId);
 
         if(isset($task->taskDoerID) && $task->taskDoerID!=null){
-
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => 'Task already assigned',
+                    'data'  =>  $request->all()
+                    )
+                );
         }    
 
 
