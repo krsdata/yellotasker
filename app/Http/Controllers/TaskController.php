@@ -26,6 +26,8 @@ use Modules\Api\Resources\TaskResource;
 use App\User;
 use App\Models\Comments;
 use App\Models\Notification;
+use Modules\Admin\Models\Category;
+use Modules\Admin\Models\CategoryDashboard; 
 
 /**
  * Class AdminController
@@ -1411,11 +1413,14 @@ class TaskController extends Controller {
                      $query->where('blog_title','LIKE',"%$blog_title%");
                     }
                  })
+                 ->where('id',21)
                 ->orderBy('id', 'desc')
                 ->skip($offset)
                 ->take($page_size)
                 ->get(); 
 
+         
+ 
         $input = [];
         $arr=[];
 
@@ -1424,8 +1429,18 @@ class TaskController extends Controller {
             $input['blog_title'] = $value->blog_title;
             $input['blog_sub_title'] = $value->blog_sub_title;
             $input['blog_description'] = $value->blog_description;
+            $input['author'] = ($value->blog_created_by)?$value->blog_created_by:'Admin';
+           
             $input['blog_image'] = url('storage/blog/'.$value->blog_image); 
-            $input['author'] = "Admin";
+            $input['category_image_basepath'] = url('/storage/uploads/category/');
+
+            $myCategoryIdArray = explode(',', $value->blog_category); 
+            $category= [];
+            if(count($myCategoryIdArray)){
+                $url = url('/');
+                $category = Category::whereIn('id',$myCategoryIdArray)->get();
+            }
+           $input['category'] = $category;
 
             $arr[] = $input;
             $input = [];
