@@ -166,4 +166,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Tasks', 'taskOwnerId');
     }
 
+
+    public function followTaskDetail()
+    {
+        return $this->belongsToMany('App\Models\Tasks', 'follow_tasks','userId','taskId')->with('taskPostedUser')->orderBy('follow_tasks.id','desc');
+         
+    }
+
 }

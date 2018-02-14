@@ -252,6 +252,11 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@followTask'
             ]);
 
+            Route::match(['get','post'],'getFollowedTask/{uid}',[
+                'as' => 'getFollowedTask',
+                'uses' => 'TaskController@getFollowedTask'
+            ]);
+            
             
 
 

@@ -51,6 +51,11 @@ class Tasks extends Authenticatable {
          return $this->belongsTo('App\User', 'userId', 'id');
     }
 
+    public  function taskFollowedUser()
+    {
+         return $this->belongsTo('App\User', 'userId', 'id');
+    }
+
     public function OfferTask()
     {
         return $this->hasMany('App\Models\Offers','taskId','id');

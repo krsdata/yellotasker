@@ -1467,9 +1467,50 @@ class TaskController extends Controller {
     }
 
 
-    public function getFollowedTask()
+    public function getFollowedTask(Request $request,$uid=null)
     {
-        //
+         
+        $myTask = Tasks::where('userId',$uid)->lists('id')->toArray();
+
+
+        $myFollower =  User::with('followTaskDetail')
+                    ->where('id',$uid)  
+                    ->whereIn('taskId',$myTask)
+                    ->get();
+
+        $data['my_task_follower'] = $myFollower;
+
+        $taskFollowed =  User::with('followTaskDetail')
+                    ->whereNotIn('taskId',$myTask)
+                    ->where('id',$uid) 
+                    ->get();
+       
+       $toal_task_followed = \App\Models\FollowTask::whereNotIn('taskId',$myTask)
+                            ->where('userId',$uid) 
+                                ->get(); 
+
+
+        $total_follower = \App\Models\FollowTask::whereIn('taskId',$myTask)
+                                        ->get();
+
+
+        $data['task_followed'] = $taskFollowed;
+
+        if(count($total_follower)==0 || count($toal_task_followed)==0){
+            $msg = "Follow Task not found";
+            $code = 404;
+            $status =0;
+        }
+
+         return Response::json(array(
+                    'status' => isset($status)?:1,
+                    'total_follower' => count($total_follower),
+                    'toal_task_followed' =>(count($toal_task_followed)),
+                    'code'=>isset($code)?:200,
+                    'message' => isset($msg)?:'Task followed list',
+                    'data'  =>  $data
+                    )
+                );       
     }
 
 
@@ -1497,6 +1538,19 @@ class TaskController extends Controller {
     
         $data['taskId'] = $request->get('taskId');
         $data['userId'] = $request->get('userId');
+
+        
+        $isFollowed = DB::table('follow_tasks')->where($request->all())->get();         
+
+        if($isFollowed){
+            return Response::json(array(
+                    'status' =>0,
+                    'code'=>500,
+                    'message' => 'Task already followed',
+                    'data'  =>  []
+                    )
+                );             
+        }
 
         $id =  DB::table('follow_tasks')->insertGetId($data); 
 
