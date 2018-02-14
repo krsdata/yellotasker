@@ -298,12 +298,7 @@ class TaskController extends Controller {
         $search_totalAmount  = $request->get('totalAmount');
         
          $validatorFields    = [];
-         if($search_locationType=='Work remotely'){
-            $search_city='';//no need to search city for online work  
-         }
-        if($search_locationType == 'Come to work place'){
-            $validatorFields['city'] = 'required';
-        }
+        
         
 
         $validator = Validator::make($request->all(), $validatorFields);
@@ -381,7 +376,7 @@ class TaskController extends Controller {
                         $q->where('id',$taskId);
                     }
                     if($search_locationType){
-                        $q->where('locationType',$search_locationType);
+                        $q->where('locationType','like',"%$search_locationType%");
                     }
                     if($search_city){
                         $q->where('address','like',"%$search_city%");
@@ -395,8 +390,7 @@ class TaskController extends Controller {
                         }    
                     }
                      
-                });
-               
+                }); 
 
       
         if($limit){  
@@ -431,6 +425,7 @@ class TaskController extends Controller {
 
         return [ 
                     "status"  =>$status,
+                    'total_record'  => count($data),
                     'code'    => $code,
                     "message" =>$message,
                     'data'    => $data
@@ -1195,6 +1190,11 @@ class TaskController extends Controller {
         $taskId =  $request->get('taskId');
         $task   = Tasks::find($taskId);
 
+        if(isset($task->taskDoerID) && $task->taskDoerID!=null){
+
+        }    
+
+
         if($task){
             $task->taskOwnerId = $request->get('taskOwnerID');
             $task->taskDoerId  = $request->get('taskDoerID');
@@ -1221,7 +1221,7 @@ class TaskController extends Controller {
 
     }
 
-
+    //
     public function getTask(Request $request, $uid=null)
     { 
         $action     =   $request->get('action');
