@@ -1233,7 +1233,8 @@ class TaskController extends Controller {
                 );
         }    
 
-
+        $task   = Tasks::find($taskId);
+            
         if($task){
             $task->taskOwnerId = $request->get('taskOwnerID');
             $task->taskDoerId  = $request->get('taskDoerID');
