@@ -68,7 +68,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
     }
-    public function postedTask()
+    public function postedTask2()
     {
         return $this->hasMany('App\Models\Tasks','userId')->select('*','id as taskId',
                  \DB::raw('(
@@ -78,6 +78,12 @@ class User extends Authenticatable
                         when post_tasks.taskDoerId=0 then "open"
                         ELSE 
                         status end) as status'))->with('taskPostedUser');
+
+    }
+
+     public function postedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser');
 
     }
     public function pendingTask()
