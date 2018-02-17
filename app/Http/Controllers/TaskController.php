@@ -37,15 +37,13 @@ class TaskController extends Controller {
     protected $stockSettings = array();
     protected $modelNumber = '';
 
-    private    $sub_sql =  "( case when  COALESCE(dueDate,CURRENT_DATE) < current_date then 1 when status = 'open'then 3 when status = 'assigned' then 2   when status = 'completed' then 0 end )as rank";
+    private    $sub_sql =  "( case when status = 'completed' then 0 when  COALESCE(dueDate,CURRENT_DATE) < current_date then 1 when status = 'open'then 3 when status = 'assigned' then 2    end )as rank";
     private    $sub_sql_offer_count = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
     private    $sub_sql_comment_count = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
 
     private $sub_status = '(
                         CASE 
-                        when COALESCE(dueDate,CURRENT_DATE) < current_date then "expired" 
-                        when post_tasks.taskDoerId!=0 then "assigned"
-                        when post_tasks.taskDoerId=0 then "open"
+                        when COALESCE(dueDate,CURRENT_DATE) < current_date AND status !="completed" then "expired"
                         ELSE 
                         status end) as status'; 
 
@@ -1270,8 +1268,11 @@ class TaskController extends Controller {
         switch ($action) {
             case 'saveTask':
                 $data['save_task']  = User::with(['save_task'=>function($q) {
-                                        $q->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
-                                            ->orderBy('rank','DESC')
+                                        $q->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                         )->orderBy('rank','DESC')
                                                 ->orderBy('post_tasks.id','DESC');
                                         }])
                                             ->where('id',$uid)  
@@ -1282,7 +1283,11 @@ class TaskController extends Controller {
                   $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
                         {               
                           $q->where('userId','=',$uid)
-                                ->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
+                                ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
                                      ->orderBy('rank','DESC')
                                      ->orderBy('post_tasks.id','DESC');
                         }               
@@ -1294,7 +1299,11 @@ class TaskController extends Controller {
                         {               
                           $q->where('userId','!=',$uid)
                            ->orWhere('userId',$uid)
-                                    ->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
+                                    ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
                                      ->orderBy('rank','DESC')
                                      ->orderBy('post_tasks.id','DESC');
 
