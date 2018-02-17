@@ -1192,7 +1192,7 @@ class TaskController extends Controller {
         $taskId =  $request->get('taskId');
         $task   = Tasks::find($taskId);
 
-        if(isset($task->taskDoerID) && $task->taskDoerID!=null){
+        if(isset($task->taskDoerId) && $task->taskDoerId!=null){
             return Response::json(array(
                     'status' => 0,
                     'code'=>500,
