@@ -110,5 +110,10 @@ class Tasks extends Authenticatable {
     {
         return $this->belongsTo('App\User', 'taskDoerId','id');//->select('id','first_name','rating');
     } 
+
+    public function offer_count()
+    {
+         return   $this->hasMany('App\Models\Offers','taskId','id'); //->select(\DB::raw('count(*) as total_offer'));
+    }
     
 }

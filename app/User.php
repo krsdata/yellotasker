@@ -68,7 +68,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Tasks','userId')->where('status','open')->with('taskPostedUser');
     }
-    public function postedTask()
+    public function postedTask2()
     {
         return $this->hasMany('App\Models\Tasks','userId')->select('*','id as taskId',
                  \DB::raw('(
@@ -78,6 +78,12 @@ class User extends Authenticatable
                         when post_tasks.taskDoerId=0 then "open"
                         ELSE 
                         status end) as status'))->with('taskPostedUser');
+
+    }
+
+     public function postedTask()
+    {
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser');
 
     }
     public function pendingTask()
@@ -170,6 +176,28 @@ class User extends Authenticatable
     public function followTaskDetail()
     {
         return $this->belongsToMany('App\Models\Tasks', 'follow_tasks','userId','taskId')->with('taskPostedUser')->orderBy('follow_tasks.id','desc');
+         
+    }
+
+
+    public function offer_count()
+    {
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->select(\DB::raw('count(*) as total_offer'));
+    }
+
+    public function doerReview()
+    {
+        return $this->hasMany('App\Models\Review', 'taskDoerId','id');
+    }
+
+    public function posterReview()
+    {
+        return $this->hasMany('App\Models\Review', 'posterUserId','id');
+    }
+
+    public function reviewDetails()
+    {
+        return $this->belongsToMany('App\Models\Tasks', 'review','userId','taskId');
          
     }
 

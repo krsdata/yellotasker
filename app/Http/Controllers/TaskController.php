@@ -28,6 +28,7 @@ use App\Models\Comments;
 use App\Models\Notification;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
+use App\Models\Review;
 
 /**
  * Class AdminController
@@ -36,6 +37,19 @@ class TaskController extends Controller {
 
     protected $stockSettings = array();
     protected $modelNumber = '';
+
+    private    $sub_sql =  "( case when status = 'completed' then 0 when  COALESCE(dueDate,CURRENT_DATE) < current_date then 1 when status = 'open'then 3 when status = 'assigned' then 2    end )as rank";
+    private    $sub_sql_offer_count = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
+    private    $sub_sql_comment_count = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
+
+    private $sub_status = '(
+                        CASE 
+                        when COALESCE(dueDate,CURRENT_DATE) < current_date AND status !="completed" then "expired"
+                        ELSE 
+                        status end) as status'; 
+
+
+
 
     // return object of userModel
     protected function getModel() {
@@ -91,7 +105,6 @@ class TaskController extends Controller {
 
         $table_cname = \Schema::getColumnListing('post_tasks');
         $except = ['id','created_at','updated_at','status'];
-        
         foreach ($table_cname as $key => $value) {
            
            if(in_array($value, $except )){
@@ -99,6 +112,8 @@ class TaskController extends Controller {
            } 
            $task->$value = $request->get($value);
         }
+        $task->taskOwnerId = $request->get('userId');
+        
         $task->save();
         $status  = 1;
         $code    = 200;
@@ -518,15 +533,32 @@ class TaskController extends Controller {
        // delete Blog
     public function deletePostTask(Request $request,$id=null)
     {
-        Tasks::where('id',$id)->delete();
+        $t = Tasks::where('id',$id)->where('status','open')->delete();
 
-        return  response()->json([ 
+        if($t){
+            $delete_savetask = DB::table('saveTask')
+                                ->where('taskId',$id)
+                                    ->delete(); 
+
+             return  response()->json([ 
                     "status"=>1,
                     "code"=> 200,
                     "message"=>"Post deleted successfully.",
                     'data' => []
                    ]
                 );
+        }else{
+
+        return  response()->json([ 
+                    "status"=>0,
+                    "code"=> 500,
+                    "message"=>"You can't delete open task.",
+                    'data' => []
+                   ]
+                );
+        }
+
+
     }
     public function deletePostTaskByUser(Request $request, $id=null)
     {
@@ -1192,7 +1224,7 @@ class TaskController extends Controller {
         $taskId =  $request->get('taskId');
         $task   = Tasks::find($taskId);
 
-        if(isset($task->taskDoerID) && $task->taskDoerID!=null){
+        if(isset($task->taskDoerId) && $task->taskDoerId!=null){
             return Response::json(array(
                     'status' => 0,
                     'code'=>500,
@@ -1202,7 +1234,8 @@ class TaskController extends Controller {
                 );
         }    
 
-
+        $task   = Tasks::find($taskId);
+            
         if($task){
             $task->taskOwnerId = $request->get('taskOwnerID');
             $task->taskDoerId  = $request->get('taskDoerID');
@@ -1237,14 +1270,44 @@ class TaskController extends Controller {
         $data = [];
         switch ($action) {
             case 'saveTask':
-                $data['save_task']      = User::with('save_task')
-                    ->where('id',$uid)  
-                    ->get();            
+                $data['save_task']  = User::with(['save_task'=>function($q) {
+                                        $q->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                         )->orderBy('rank','DESC')
+                                                ->orderBy('post_tasks.id','DESC');
+                                        }])
+                                            ->where('id',$uid)  
+                                            ->get();  
+
                 break;                  
             case 'offerAccepting':      
                   $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
                         {               
-                          $q->where('taskDoerId','=',$uid);
+                          $q->where('taskDoerId','=',$uid)
+                                ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
+                        }               
+                    ])->where('id',$uid)
+                        ->get();        
+                break;
+                case 'offersAccepting':      
+                  $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
+                        {               
+                          $q->where('taskDoerId','=',$uid)
+                                ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
                         }               
                     ])->where('id',$uid)
                         ->get();        
@@ -1252,15 +1315,33 @@ class TaskController extends Controller {
             case 'offerPending':
                  $data['offers_pending'] = User::with(['offers_pending'=>function($q) use($uid)
                         {               
-                          $q->where('taskDoerId','!=',$uid);
+                          $q->where('userId','!=',$uid)
+                           ->orWhere('userId',$uid)
+                                    ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
+
                         }
                     ])->where('id',$uid)
                         ->get();
                 break;
             case 'postedTask':
+
                 $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){
-                     $q->where('taskOwnerId',$uid);
-                }])->where('id',$uid)->get();
+                                    $q->where('taskOwnerId',$uid)
+                                    ->orWhere('userId',$uid)
+                                    ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
+                            }])->where('id',$uid)->get();
                 break;
             
             default:
@@ -1275,6 +1356,8 @@ class TaskController extends Controller {
                 break;
         }
 
+
+        
         return  response()->json([ 
                     "status"    =>  ($data)?1:0,
                     "code"      =>  ($data)?200:404,
@@ -1570,6 +1653,71 @@ class TaskController extends Controller {
                     )
                 ); 
         
+    }
+
+    public function reviewRating(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'taskDoerId' => 'required',
+               'review' => 'required',
+               'rating' => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }  
+
+        $table_cname = \Schema::getColumnListing('reviews');
+
+        $except = ['id','created_at','updated_at','status'];
+
+        $review = Review::firstOrNew(
+                    [
+                        'taskId'=> $request->get('taskId'),
+                        'taskDoerId'=> $request->get('taskDoerId')
+                    ]);
+
+        foreach ($table_cname as $key => $value) {
+               
+           if(in_array($value, $except )){
+                continue;
+           } 
+           $review->$value = $request->get($value);
+        }
+        $review->save();
+        return Response::json(array(
+                    'status' =>1,
+                    'code'=>200,
+                    'message' => 'Feedback submitted successfully',
+                    'data'  =>  $request->all()
+                    )
+                ); 
+    }
+
+    //Get Review    
+    public function getReview(Request $request, $userId=null)
+    {
+        $user = User::with('doerReview','posterReview','reviewDetails')->where('id',$userId)->first();
+        return Response::json(array(
+                'status' => ($user)?1:0,
+                'code' => ($user)?200:500,
+                'message' => ($user)?'User review':'Record not found!',
+                'data'  =>  $user
+                )
+            ); 
     }
 
 }
