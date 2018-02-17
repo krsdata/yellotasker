@@ -518,15 +518,32 @@ class TaskController extends Controller {
        // delete Blog
     public function deletePostTask(Request $request,$id=null)
     {
-        Tasks::where('id',$id)->delete();
+        $t = Tasks::where('id',$id)->where('status','open')->delete();
 
-        return  response()->json([ 
+        if($t){
+            $delete_savetask = DB::table('saveTask')
+                                ->where('taskId',$id)
+                                    ->delete(); 
+                                    
+             return  response()->json([ 
                     "status"=>1,
                     "code"=> 200,
                     "message"=>"Post deleted successfully.",
                     'data' => []
                    ]
                 );
+        }else{
+
+        return  response()->json([ 
+                    "status"=>0,
+                    "code"=> 500,
+                    "message"=>"You can't delete open task.",
+                    'data' => []
+                   ]
+                );
+        }
+
+
     }
     public function deletePostTaskByUser(Request $request, $id=null)
     {
