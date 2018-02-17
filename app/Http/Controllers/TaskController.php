@@ -37,6 +37,11 @@ class TaskController extends Controller {
     protected $stockSettings = array();
     protected $modelNumber = '';
 
+    private    $sub_sql =  "( case when status = 'open'then 3 when status = 'assigned' then 2 when status = 'completed' then 1 end )as rank";
+    private    $sub_sql_offer_count = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
+    private    $sub_sql_comment_count = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
+
+
     // return object of userModel
     protected function getModel() {
         return new Task();
@@ -524,7 +529,7 @@ class TaskController extends Controller {
             $delete_savetask = DB::table('saveTask')
                                 ->where('taskId',$id)
                                     ->delete(); 
-                                    
+
              return  response()->json([ 
                     "status"=>1,
                     "code"=> 200,
@@ -1254,14 +1259,22 @@ class TaskController extends Controller {
         $data = [];
         switch ($action) {
             case 'saveTask':
-                $data['save_task']      = User::with('save_task')
-                    ->where('id',$uid)  
-                    ->get();            
+                $data['save_task']  = User::with(['save_task'=>function($q) {
+                                        $q->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
+                                            ->orderBy('rank','DESC')
+                                                ->orderBy('post_tasks.id','DESC');
+                                        }])
+                                            ->where('id',$uid)  
+                                            ->get();  
+
                 break;                  
             case 'offerAccepting':      
                   $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
                         {               
-                          $q->where('userId','=',$uid);
+                          $q->where('userId','=',$uid)
+                                ->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
                         }               
                     ])->where('id',$uid)
                         ->get();        
@@ -1269,15 +1282,24 @@ class TaskController extends Controller {
             case 'offerPending':
                  $data['offers_pending'] = User::with(['offers_pending'=>function($q) use($uid)
                         {               
-                          $q->where('userId','!=',$uid);
+                          $q->where('userId','!=',$uid)
+                           ->orWhere('userId',$uid)
+                                    ->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
+
                         }
                     ])->where('id',$uid)
                         ->get();
                 break;
             case 'postedTask':
+
                 $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){
                                     $q->where('taskOwnerId',$uid)
-                                    ->orWhere('userId',$uid);
+                                    ->orWhere('userId',$uid)
+                                    ->select('*',\DB::raw($this->sub_sql),\DB::raw($this->sub_sql_offer_count),\DB::raw($this->sub_sql_comment_count))
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
                             }])->where('id',$uid)->get();
                 break;
             
@@ -1293,6 +1315,8 @@ class TaskController extends Controller {
                 break;
         }
 
+
+        
         return  response()->json([ 
                     "status"    =>  ($data)?1:0,
                     "code"      =>  ($data)?200:404,

@@ -173,4 +173,10 @@ class User extends Authenticatable
          
     }
 
+
+    public function offer_count()
+    {
+         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->select(\DB::raw('count(*) as total_offer'));
+    }
+
 }
