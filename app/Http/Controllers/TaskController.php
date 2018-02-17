@@ -91,7 +91,7 @@ class TaskController extends Controller {
 
         $table_cname = \Schema::getColumnListing('post_tasks');
         $except = ['id','created_at','updated_at','status'];
-        
+        $task->taskOwnerId = $request->get('userId');
         foreach ($table_cname as $key => $value) {
            
            if(in_array($value, $except )){
@@ -1244,7 +1244,7 @@ class TaskController extends Controller {
             case 'offerAccepting':      
                   $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
                         {               
-                          $q->where('taskDoerId','=',$uid);
+                          $q->where('userId','=',$uid);
                         }               
                     ])->where('id',$uid)
                         ->get();        
@@ -1252,15 +1252,16 @@ class TaskController extends Controller {
             case 'offerPending':
                  $data['offers_pending'] = User::with(['offers_pending'=>function($q) use($uid)
                         {               
-                          $q->where('taskDoerId','!=',$uid);
+                          $q->where('userId','!=',$uid);
                         }
                     ])->where('id',$uid)
                         ->get();
                 break;
             case 'postedTask':
                 $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){
-                     $q->where('taskOwnerId',$uid);
-                }])->where('id',$uid)->get();
+                                    $q->where('taskOwnerId',$uid)
+                                    ->orWhere('userId',$uid);
+                            }])->where('id',$uid)->get();
                 break;
             
             default:
