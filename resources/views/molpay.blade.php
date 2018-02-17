@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head></head>
-<body><?php 
-if(!$show_button){
-    $fields = array(
-        'orderid​'=>$orderid,
-        'amount'=>(float)$amount,
-        'bill_name'=>$bill_name,
-        'bill_email'=>$bill_email,
-        'bill_mobile'=>$bill_mobile,
-        'country'=>$country,
-        'currency'=>$currency,
-        'vcode'=>$vcode,
-        'returnurl'=> urlencode($returnurl),
-        'bill_desc'=>implode("\n",$prod_desc),
-    );
-    $query= http_build_query($fields);
-
-echo '<a href="'.$action.'?'.$query.'"> Pay via MOLPay </a>';
-} else {  ?>
-
 <form action="<?php echo $action; ?>" method="post" id="payment">
 
   <input type="hidden" name="amount" value="<?php echo $amount; ?>" />
@@ -39,6 +17,3 @@ echo '<a href="'.$action.'?'.$query.'"> Pay via MOLPay </a>';
     </div>
   </div>
 </form>
-<?php } ?>
-    </body>
-</html>

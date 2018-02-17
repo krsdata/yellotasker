@@ -66,6 +66,7 @@ class MolpayPaymentController extends Controller
         
             $userId = $request->get('userId');
             $taskId = $request->get('taskId');
+            $show_html_flag =(int)$request->get('show_html');
             
             $user = User::find($userId);
             if(!$user) return Response::json(array(
@@ -88,7 +89,6 @@ class MolpayPaymentController extends Controller
             $amount = $request->get('amount');
             $order =  $this->createOrder($task, $user,$amount,'Task Payment : '.$task->title);
 
-            $data['show_button'] =true;
             $data['amount'] =$amount;
             $data['orderid'] =$order->transaction_id;
             $data['bill_name'] = $user->first_name.' '.$user->last_name;
@@ -121,14 +121,14 @@ class MolpayPaymentController extends Controller
         'bill_desc'=>implode("\n",$prod_desc),
         );
         $query= http_build_query($fields);
-           
+
+        $fields['href']=$action.'?'.$query;
+        if($show_html_flag==0)
         return Response::json(array(
             'status' => 1,
             'code'=>200,
             'message' =>'Success',
-            'data'  => [ 
-                'href'=>$action.'?'.$query,
-            ]
+            'data'  =>$fields
             )
         );
        return  $output;  //HTML return     
