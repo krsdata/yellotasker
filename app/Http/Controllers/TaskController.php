@@ -111,7 +111,7 @@ class TaskController extends Controller {
            } 
            $task->$value = $request->get($value);
         }
-        $task->taskOwnerId = $user_id;
+        $task->taskOwnerId = $request->get('userId');
         
         $task->save();
         $status  = 1;
