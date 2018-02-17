@@ -104,7 +104,6 @@ class TaskController extends Controller {
 
         $table_cname = \Schema::getColumnListing('post_tasks');
         $except = ['id','created_at','updated_at','status'];
-        $task->taskOwnerId = $request->get('userId');
         foreach ($table_cname as $key => $value) {
            
            if(in_array($value, $except )){
@@ -112,6 +111,8 @@ class TaskController extends Controller {
            } 
            $task->$value = $request->get($value);
         }
+        $task->taskOwnerId = $user_id;
+        
         $task->save();
         $status  = 1;
         $code    = 200;
@@ -1282,7 +1283,22 @@ class TaskController extends Controller {
             case 'offerAccepting':      
                   $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
                         {               
-                          $q->where('userId','=',$uid)
+                          $q->where('taskDoerId','=',$uid)
+                                ->select('*',\DB::raw($this->sub_sql),
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
+                                        )
+                                     ->orderBy('rank','DESC')
+                                     ->orderBy('post_tasks.id','DESC');
+                        }               
+                    ])->where('id',$uid)
+                        ->get();        
+                break;
+                case 'offersAccepting':      
+                  $data['offers_accepting'] = User::with(['offers_accepting'=>function($q) use($uid)
+                        {               
+                          $q->where('taskDoerId','=',$uid)
                                 ->select('*',\DB::raw($this->sub_sql),
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
