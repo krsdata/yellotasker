@@ -276,6 +276,11 @@ Route::get('/login','Adminauth\AuthController@showLoginForm');
 Route::post('password/reset','ApiController@resetPassword');  
 
  Route::post('password/email','ApiController@resetPassword'); 
+ Route::get('molpay','MolpayPaymentController@index'); 
+ Route::post('molpay/return_ipn','MolpayPaymentController@return_ipn'); 
+ Route::post('molpay/notification_ipn','MolpayPaymentController@notification_ipn'); 
+ Route::get('molpay/payment/success','MolpayPaymentController@success'); 
+ Route::post('molpay/payment/failed','MolpayPaymentController@failed'); 
 
 Route::get('admin/404',function(){
     if(Auth::guard('admin')->check()==false){
