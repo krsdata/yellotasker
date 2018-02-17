@@ -185,4 +185,20 @@ class User extends Authenticatable
          return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->select(\DB::raw('count(*) as total_offer'));
     }
 
+    public function doerReview()
+    {
+        return $this->hasMany('App\Models\Review', 'taskDoerId','id');
+    }
+
+    public function posterReview()
+    {
+        return $this->hasMany('App\Models\Review', 'posterUserId','id');
+    }
+
+    public function reviewDetails()
+    {
+        return $this->belongsToMany('App\Models\Tasks', 'review','userId','taskId');
+         
+    }
+
 }

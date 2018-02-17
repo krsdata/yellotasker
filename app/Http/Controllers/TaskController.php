@@ -28,6 +28,7 @@ use App\Models\Comments;
 use App\Models\Notification;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
+use App\Models\Review;
 
 /**
  * Class AdminController
@@ -1652,6 +1653,71 @@ class TaskController extends Controller {
                     )
                 ); 
         
+    }
+
+    public function reviewRating(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'taskDoerId' => 'required',
+               'review' => 'required',
+               'rating' => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }  
+
+        $table_cname = \Schema::getColumnListing('reviews');
+
+        $except = ['id','created_at','updated_at','status'];
+
+        $review = Review::firstOrNew(
+                    [
+                        'taskId'=> $request->get('taskId'),
+                        'taskDoerId'=> $request->get('taskDoerId')
+                    ]);
+
+        foreach ($table_cname as $key => $value) {
+               
+           if(in_array($value, $except )){
+                continue;
+           } 
+           $review->$value = $request->get($value);
+        }
+        $review->save();
+        return Response::json(array(
+                    'status' =>1,
+                    'code'=>200,
+                    'message' => 'Feedback submitted successfully',
+                    'data'  =>  $request->all()
+                    )
+                ); 
+    }
+
+    //Get Review    
+    public function getReview(Request $request, $userId=null)
+    {
+        $user = User::with('doerReview','posterReview','reviewDetails')->where('id',$userId)->first();
+        return Response::json(array(
+                'status' => ($user)?1:0,
+                'code' => ($user)?200:500,
+                'message' => ($user)?'User review':'Record not found!',
+                'data'  =>  $user
+                )
+            ); 
     }
 
 }

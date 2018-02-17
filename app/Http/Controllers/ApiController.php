@@ -229,6 +229,9 @@ class ApiController extends Controller
 public function userDetail($id=null)
 {
     $user = User::find($id);
+
+    //$review = \DB::table('reviews')->where('')
+
     return Response::json(array(
                 'status' => ($user)?1:0,
                 'code' => ($user)?200:500,

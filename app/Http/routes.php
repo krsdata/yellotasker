@@ -256,7 +256,13 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'getFollowedTask',
                 'uses' => 'TaskController@getFollowedTask'
             ]);
-            
+
+			Route::match(['get','post'],'reviewRating',[
+                'as' => 'reviewRating',
+                'uses' => 'TaskController@reviewRating'
+            ]);
+
+
             
 
 
