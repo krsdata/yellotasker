@@ -47,7 +47,8 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'account/deactivate/{id}','ApiController@deactivateUser'); 
         
         Route::match(['post','get'],'userDetail/{id}','ApiController@userDetail'); 
-        Route::match(['get'],'notifications','NotificationController@getAllNotification'); 
+        Route::match(['get'],'notifications','NotificationController@getAllNotification');
+        Route::get('molpay','MolpayPaymentController@index'); 
        
        
         Route::group(['middleware' => 'jwt-auth'], function () 
