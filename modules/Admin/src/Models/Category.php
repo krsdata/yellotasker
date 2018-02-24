@@ -44,7 +44,7 @@ class Category extends Eloquent {
      * @var array
      */
 
-     public function subcategory()
+    public function subcategory()
     {
        
         return $this->belongsTo('Modules\Admin\Models\Category','id','parent_id');

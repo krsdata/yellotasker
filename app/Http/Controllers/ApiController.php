@@ -972,5 +972,99 @@ public function userDetail($id=null)
         );
     }
 
+    public function generateOtp(Request $request){
+        $rs = $request->all();
+        $validator = Validator::make($request->all(), [
+            'userId' => "required",
+           // 'mobileNumber' => 'required'
+        ]);
+        
+         if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => $request->all()
+                            )
+            );
+        }
+
+        $otp = mt_rand(100000, 999999);
+
+        $data['otp'] = $otp;
+        $data['userId'] = $request->get('userId');
+
+        $this->sendSMS($request->get('mobileNumber'));
+
+        \DB::table('mobile_otp')->insert($data);
+
+        return response()->json(
+                        [
+                            "status"    =>  count($data)?1:0,
+                            'code'      =>  count($data)?200:500,
+                            "message"   =>  count($data)?"Otp generated":"Something went wrong",
+                            'data'      =>  $data
+                        ]
+        );
+
+    }
+
+    public function verifyOtp(Request $request){
+        $rs = $request->all();
+        $validator = Validator::make($request->all(), [
+            'otp' => "required",
+            'userId' => 'required'
+        ]);
+        
+         if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => $request->all()
+                            )
+            );
+        }
+ 
+
+        $data = \DB::table('mobile_otp')
+                    ->where('otp',$request->get('otp'))
+                        ->where('userId',$request->get('userId'))
+                            ->where('is_verified','!=',1)->get();
+
+        if($data){
+            \DB::table('mobile_otp')
+                    ->where('otp',$request->get('otp'))
+                        ->where('userId',$request->get('userId'))->update(['is_verified'=>1]);
+        }
+         
+            return response()->json(
+                            [
+                                "status"    =>  count($data)?1:0,
+                                'code'      =>  count($data)?200:500,
+                                "message"   =>  count($data)?"Otp Verified":"Invalid Otp",
+                                'data'      =>  $request->all()
+                            ]
+                ); 
+    }
+
+    public function sendSMS($mobileNumber=null)
+    {
+        $url = "";
+        return true; 
+
+    }
+
+
     
 } 

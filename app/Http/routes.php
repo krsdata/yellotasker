@@ -263,7 +263,41 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@reviewRating'
             ]);
 
+            Route::match(['get','post'],'generateOtp',[
+                'as' => 'generateOtp',
+                'uses' => 'ApiController@generateOtp'
+            ]);
 
+            Route::match(['get','post'],'verifyOtp',[
+                'as' => 'verifyOtp',
+                'uses' => 'ApiController@verifyOtp'
+            ]);
+
+             Route::match(['get','post'],'getArticle/{id}',[
+                'as' => 'verifyOtp',
+                'uses' => 'ComplainController@getArticle'
+            ]);
+
+          	Route::match(['get','post'],'getRelatedArticle/{id}',[
+                'as' => 'verifyOtp',
+                'uses' => 'ComplainController@getRelatedArticle'
+            ]);
+
+            Route::match(['get','post'],'supportListing',[
+                'as' => 'verifyOtp',
+                'uses' => 'ComplainController@supportListing'
+            ]);
+
+             Route::match(['get','post'],'getArticleCategory',[
+                'as' => 'verifyOtp',
+                'uses' => 'ComplainController@getArticleCategory'
+            ]);
+
+         	Route::match(['get','post'],'submitSupportRequest',[
+                'as' => 'verifyOtp',
+                'uses' => 'ComplainController@submitSupportRequest'
+            ]);
+            
             
 
 

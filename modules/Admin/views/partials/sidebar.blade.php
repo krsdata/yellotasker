@@ -362,7 +362,7 @@
                                         <span class="title">Blogs</span>
                                         <span class="arrow {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}"></span>
                                     </a>
-                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='View Blog')?'block':'none' }}">
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Blog')?'block':'none' }}">
                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='View Blog')?'active':'' }}">
                                             <a href="{{ route('blog') }}" class="nav-link ">
                                                <i class="glyphicon glyphicon-eye-open"></i> 
@@ -374,9 +374,66 @@
 
                                          <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Blog')?'active':'' }}">
                                             <a href="{{ route('blog.create') }}" class="nav-link ">
-                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                               <i class="glyphicon glyphicon-plus-sign"></i> 
                                                 <span class="title">
                                                     Create Blog 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li> 
+
+
+                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Article Type')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Article Category</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Article Type')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Article Type')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Article Type')?'active':'' }}">
+                                            <a href="{{ route('articleType') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Article Type 
+                                                </span>
+                                            </a>
+                                        </li> 
+
+                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Article Type')?'active':'' }}">
+                                            <a href="{{ route('articleType.create') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-plus-sign"></i> 
+                                                <span class="title">
+                                                    Create Article Type 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>
+
+
+
+                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Article')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Article</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Article')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Article')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Article')?'active':'' }}">
+                                            <a href="{{ route('article') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Article 
+                                                </span>
+                                            </a>
+                                        </li> 
+
+                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Article')?'active':'' }}">
+                                            <a href="{{ route('article.create') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-plus-sign"></i> 
+                                                <span class="title">
+                                                    Create Article 
                                                 </span>
                                             </a>
                                         </li> 

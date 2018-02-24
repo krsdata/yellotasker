@@ -48,5 +48,11 @@ class SupportTicket extends Eloquent {
        
         return $this->belongsTo('Modules\Admin\Models\User','user_id','id');
     }
+
+     public function supportType()
+    {
+       
+        return $this->belongsTo('Modules\Admin\Models\ArticleType','support_type','id');
+    }
   
 }

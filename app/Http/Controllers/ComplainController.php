@@ -169,8 +169,182 @@ class ComplainController extends Controller {
                 'message' => 'Report posted successfully',
                 'data'  =>  $report
                 )
-            );
-        
+            ); 
     } 
+
+    public function submitSupportRequest(Request $request,\Modules\Admin\Models\SupportTicket $support_ticket){
+
+        $validator = Validator::make($request->all(), [
+               'support_type' => 'required|numeric',
+               'email'  => 'required',
+               'subject' => 'required',
+               'description'  => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+            }  
+
+        $table_cname = \Schema::getColumnListing('support_tickets');
+        $except = ['id','created_at','updated_at'];
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+           $support_ticket->$value = $request->get($value);
+        }
+        $support_ticket->status     = 'open';
+        $tid  = random_int(111111, 999999);
+        $support_ticket->ticket_id = $tid;
+
+
+        $attachment = $request->get('attachment');
+        $url = []; 
+        
+        if(is_array($attachment)){
+            foreach ($attachment as $key => $value) {
+                $url[] = $this->createDocFromBase64($base64);
+            }
+        }elseif($attachment){
+           $url[] = $this->createDocFromBase64($base64); 
+        }
+
+        if(count($url)){
+            $fileName = implode(',', $url);
+            $support_ticket->attachment = $fileName;
+        }
+       
+
+        $support_ticket->save();
+
+        $request->merge(['status'=>'open','ticket_id'=>$tid]);
+
+        return Response::json(array(
+                'status' => 1,
+                'code'=>200,
+                'message' => 'request submit successfully with ticket id '.$tid.'.Team will get back to you shortly',
+                'data'  =>  $request->all()
+                )
+            ); 
+
+
+    }
+
+    public function createDocFromBase64($base64)
+    {  
+        $dtype = ['spreadsheetml',
+                    'excel',
+                    'pdf',
+                    'msword',
+                    'jpeg',
+                    'png',
+                    'gif',
+                    'officedocument',
+                    'wordprocessingml'
+                    ];
+        
+        $file = explode(',', $base64);
+        
+        if(count($file)<=0)
+        {
+            return false;
+        }
+        
+        
+        if(isset($file[0]) && str_contains($file[0], 'spreadsheetml')){
+            $file_name = time() . '.xlsx'; 
+        }
+        if(isset($file[0]) && str_contains($file[0], 'excel')){
+            $file_name = time() . '.csv'; 
+        }
+        if(isset($file[0]) && str_contains($file[0], 'pdf')){
+            $file_name = time() . '.pdf'; 
+        }
+        if(isset($file[0]) && str_contains($file[0], 'msword')){
+            $file_name = time() . '.doc'; 
+        }
+        if(isset($file[0]) && (str_contains($file[0], 'jpeg') || str_contains($file[0], 'jpg'))){
+            $file_name = time() . '.jpeg'; 
+        }
+        if(isset($file[0]) && (str_contains($file[0], 'png') || str_contains($file[0], 'PNG'))){
+            $file_name = time() . '.png'; 
+        }
+        if(isset($file[0]) && str_contains($file[0], 'gif')){
+            $file_name = time() . '.gif'; 
+        }
+        
+        if(isset($file[0]) && str_contains($file[0], 'wordprocessingml')){
+            $file_name = time() . '.docx'; 
+        } 
+        
+        $final_file = base64_decode($file[1]); 
+        $path = storage_path() . "/docs/" . $file_name;
+
+        file_put_contents($path, $final_file);
+        return 'storage/docs/' . $file_name; 
+    }
+    
+
+    public function getArticleCategory(Request $request){
+
+        $data = \DB::table('article_type')->select('id','article_type as article_category','resolution_department')->get();
+        return Response::json(array(
+                'status' => count($data)?1:0,
+                'code'=>count($data)?200:404,
+                'message' => count($data)?'Article category list':'not found',
+                'data'  =>  $data
+                )
+            ); 
+
+    }
+    public function supportListing(Request $request){
+        
+         $data = \Modules\Admin\Models\ArticleType::with('article')->get();
+        return Response::json(array(
+                'status' => count($data)?1:0,
+                'code'=>count($data)?200:404,
+                'message' => count($data)?'Article list':'not found',
+                'data'  =>  $data
+                )
+            );
+    }
+    public function getRelatedArticle(Request $request,$id=null){
+
+        $data = \Modules\Admin\Models\Article::with('articleCategory')->where('id',$id)->get();
+        return Response::json(array(
+                'status' => count($data)?1:0,
+                'code'=>count($data)?200:404,
+                'message' => count($data)?'Article list':'not found',
+                'data'  =>  $data
+                )
+            );
+       
+
+    }
+    public function getArticle(Request $request),$id=null){
+
+        $data = \DB::table('articles')->where('id',$id)->get();
+        return Response::json(array(
+                'status' => count($data)?1:0,
+                'code'=>count($data)?200:404,
+                'message' => count($data)?'Article list':'not found',
+                'data'  =>  $data
+                )
+            );
+
+    }
  
 }

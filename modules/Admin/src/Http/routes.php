@@ -30,6 +30,12 @@
                         ->withErrors(['message'=>'Invalid email or password. Try again!']);
             } 
     }); 
+
+
+    Route::get('admin/supportTicket', 'Modules\Admin\Http\Controllers\ArticleTypeController@supportTicket')->name('supportTicket'); 
+
+    Route::post('admin/supportTicket', 'Modules\Admin\Http\Controllers\ArticleTypeController@supportTicketAddreply')->name('supportTicket'); 
+ 
     
     Route::group(['middleware' => ['admin','userpermission']], function () {
 
@@ -341,6 +347,40 @@
             ]
                 ]
         );
+
+      
+
+        Route::resource('admin/articleType', 'Modules\Admin\Http\Controllers\ArticleTypeController', [
+            'names' => [
+                'edit' => 'articleType.edit',
+                'show' => 'articleType.show',
+                'destroy' => 'articleType.destroy',
+                'update' => 'articleType.update',
+                'store' => 'articleType.store',
+                'index' => 'articleType',
+                'create' => 'articleType.create',
+            ]
+                ]
+        );
+
+
+        Route::bind('article', function($value, $route) {
+            return Modules\Admin\Models\Article::find($value);
+        });
+ 
+        Route::resource('admin/article', 'Modules\Admin\Http\Controllers\ArticleController', [
+            'names' => [
+                'edit' => 'article.edit',
+                'show' => 'article.show',
+                'destroy' => 'article.destroy',
+                'update' => 'article.update',
+                'store' => 'article.store',
+                'index' => 'article',
+                'create' => 'article.create',
+            ]
+                ]
+        );
+        
 		
 	 
         Route::match(['get','post'],'admin/permission', 'Modules\Admin\Http\Controllers\RoleController@permission');
