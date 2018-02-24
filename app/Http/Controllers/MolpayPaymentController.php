@@ -29,8 +29,8 @@ class MolpayPaymentController extends Controller
             $input = Input::all();
 
             $this->input = $input;
-            $this->payment_success_url = url('molpay/payment/success');
-            $this->payment_failed_url = url('molpay/payment/failed');
+            $this->payment_success_url = ('http://yellotasker.co/#/paymentSuccess');
+            $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied');
     }
     public function index(Request $request) {
             $data['molpay_mid']=$this->molpay_mid;
@@ -109,6 +109,7 @@ class MolpayPaymentController extends Controller
     
             extract($data)  ;
         $fields = array(
+        'action_url'=>$action,
         'orderid​'=>$orderid,
         'amount'=>(float)$amount,
         'bill_name'=>$bill_name,
@@ -194,11 +195,11 @@ class MolpayPaymentController extends Controller
         $this->updateOrderStatus($orderid, $order_status_id);
             echo '<html>' . "\n";
             echo '<head>'  . "\n";
-            echo '  <meta http-equiv="Refresh" content="0; url=' . $responseURL . '">' . "\n";
+            echo '  <meta http-equiv="Refresh" content="0; url=' . $responseURL . '?txnID='.$tranID.'">' . "\n";
             echo '</head>' . "\n";
             echo '<body>' . "\n";
             echo '  <p>Please Don\'t refresh browser '. "\n";
-            echo '  <p>Please follow <a href="' . $responseURL . '">link</a>!</p>' . "\n";
+            echo '  <p>Please follow <a href="' . $responseURL . '?txnID='.$tranID.'">link</a>!</p>' . "\n";
             echo '</body>' . "\n";
             echo '</html>' . "\n";
             exit();
