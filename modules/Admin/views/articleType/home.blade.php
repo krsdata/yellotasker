@@ -89,7 +89,7 @@
                                                 <td> <a class="btn btn-primary" href="{{ url('admin/supportTicket')}}"> View Tickts </a> </td> 
                                             
                                                  <td>
-                                                    {!! Carbon\Carbon::parse($result->created_at)->format('m-d-Y'); !!}
+                                                    {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
                                                 </td>
                                                 
                                                 <td> 

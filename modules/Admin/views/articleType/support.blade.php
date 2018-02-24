@@ -97,7 +97,7 @@
                                                 <td> <a class="btn-circle btn btn-success" href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}"> #{{$result->ticket_id}} </a> </td> 
                                             	<td>  {{$result->status}} </td>
                                                  <td>
-                                                    {!! Carbon\Carbon::parse($result->created_at)->format('m-d-Y'); !!}
+                                                    {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
                                                 </td>
                                                 
                                                 <td> 
