@@ -324,9 +324,10 @@ class ComplainController extends Controller {
     public function getRelatedArticle(Request $request,$id=null){
 
         $data = \Modules\Admin\Models\Article::with('articleCategory')->where('id',$id)->get();
+
         return Response::json(array(
                 'status' => count($data)?1:0,
-                'code'=>count($data)?200:404,
+                'code'=> count($data)?200:404,
                 'message' => count($data)?'Article list':'not found',
                 'data'  =>  $data
                 )
@@ -334,7 +335,7 @@ class ComplainController extends Controller {
        
 
     }
-    public function getArticle(Request $request),$id=null){
+    public function getArticle(Request $request,$id=null){
 
         $data = \DB::table('articles')->where('id',$id)->get();
         return Response::json(array(
