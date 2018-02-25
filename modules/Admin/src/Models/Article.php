@@ -41,7 +41,7 @@ class Article extends Eloquent {
 
     public function articleCategory()
     {  
-        return $this->hasOne('Modules\Admin\Models\articleType','id','article_type');
+        return $this->belongsTo('Modules\Admin\Models\ArticleType','article_type','id');
     }
     
   

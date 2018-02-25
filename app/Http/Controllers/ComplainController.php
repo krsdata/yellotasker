@@ -322,8 +322,8 @@ class ComplainController extends Controller {
             );
     }
     public function getRelatedArticle(Request $request,$id=null){
-
         $data = \Modules\Admin\Models\Article::with('articleCategory')->where('id',$id)->get();
+
 
         return Response::json(array(
                 'status' => count($data)?1:0,
