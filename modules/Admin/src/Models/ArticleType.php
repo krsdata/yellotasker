@@ -41,7 +41,7 @@ class ArticleType extends Eloquent {
 
     public function article()
     {  
-        return $this->hasMany('Modules\Admin\Models\article','article_type');
+        return $this->hasMany('Modules\Admin\Models\Article','article_type');
     }
     
     
