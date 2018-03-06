@@ -90,7 +90,7 @@ class MolpayPaymentController extends Controller
             $order =  $this->createOrder($task, $user,$amount,'Task Payment : '.$task->title);
 
             $data['amount'] =$amount;
-            $data['orderid'] =$order->transaction_id;
+            $data['orderid'] =strval($order->transaction_id);
             $data['bill_name'] = $user->first_name.' '.$user->last_name;
             $data['bill_email'] = $user->email;
             $data['bill_mobile'] = $user->phone;
