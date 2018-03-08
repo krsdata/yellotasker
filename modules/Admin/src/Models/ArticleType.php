@@ -44,6 +44,13 @@ class ArticleType extends Eloquent {
         return $this->hasMany('Modules\Admin\Models\Article','article_type');
     }
     
+    public function relatedArticle()
+    {  
+        return $this->hasMany('Modules\Admin\Models\Article','article_type');
+    }
+    
+    
+    
     
   
 }

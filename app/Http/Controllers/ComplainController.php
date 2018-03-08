@@ -327,7 +327,7 @@ class ComplainController extends Controller {
         //             $q->where('id',$id);
         //         }])->where('article_type',$id)->get();  
 
-        $data = \Modules\Admin\Models\ArticleType::with('article')->where('id',$id)->get();  
+        $data = \Modules\Admin\Models\ArticleType::with('relatedArticle')->where('id',$id)->get();  
 
 
         return Response::json(array(
