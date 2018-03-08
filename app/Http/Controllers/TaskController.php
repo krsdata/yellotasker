@@ -44,7 +44,7 @@ class TaskController extends Controller {
 
     private $sub_status = '(
                         CASE 
-                        when COALESCE(dueDate,CURRENT_DATE) < current_date AND status !="completed" then "expired"
+                        when COALESCE(dueDate,CURRENT_DATE) < current_date AND status ="open" then "expired"
                         ELSE 
                         status end) as status'; 
 
@@ -1561,7 +1561,7 @@ class TaskController extends Controller {
                     if($blog_title){
                         $query->where('blog_title','LIKE',"%$blog_title%");
                     }
-                    
+
                  })
                 // ->where('id',21)
                 ->orderBy('id', 'desc')

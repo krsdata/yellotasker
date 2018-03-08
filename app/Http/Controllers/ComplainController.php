@@ -62,7 +62,7 @@ class ComplainController extends Controller {
 
     public function reportBy(Request $request,Complains $report,$reportType)
     { 
-         //Server side valiation
+        //Server side valiation
         if($reportType=='user'){
              $reportValidation = [
              'reasonId' => 'required',
