@@ -322,7 +322,10 @@ class ComplainController extends Controller {
             );
     }
     public function getRelatedArticle(Request $request,$id=null){
-        $data = \Modules\Admin\Models\Article::with('articleCategory')->where('id',$id)->get();
+
+        $data = \Modules\Admin\Models\Article::whereHas('articleCategory',function($q) use($id){
+                    $q->where('id',$id);
+                })->get();
 
 
         return Response::json(array(

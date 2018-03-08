@@ -130,6 +130,12 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
+            Route::match(['get','post'],'comment/delete',[
+                'as' => 'commentDelete',
+                'uses' => 'TaskController@commentDelete'
+                ]
+            );
+
             Route::match(['get','post'],'makeOffer',[
                 'as' => 'makeOffer',
                 'uses' => 'TaskController@makeOffer'

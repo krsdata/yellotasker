@@ -596,6 +596,52 @@ class TaskController extends Controller {
                 );
     }
 
+    public function commentDelete(Comments $comment, Request $request){
+        $post_request = $request->all(); 
+         //Server side valiation
+        $id =  $request->get('id');
+        $taskId =  $request->get('taskId');
+        $userId =  $request->get('userId');
+        
+         
+
+        $validator = Validator::make($request->all(), [
+           'taskId' => 'required',
+           'userId' => 'required',
+           'id'     => 'required'
+        ]);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  $post_request
+                )
+            );
+        } 
+
+        Comments::where('taskId',$request->get('taskId'))
+                    ->where('userId',$request->get('userId'))
+                        ->where('id',$request->get('id'))
+                            ->delete();
+
+         return Response::json(array(
+                'status' => 1,
+                'code'=>200,
+                'message' => 'Comment deleted successfully.',
+                'data'  =>  []
+                )
+            );
+
+
+    }    
+
     public function Comment(Comments $comment, Request $request){
 
         $post_request = $request->all(); 
@@ -1489,6 +1535,9 @@ class TaskController extends Controller {
         $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
         $blogId = $request->get('blogId'); 
         $blog_title = $request->get('blogTitle'); 
+        $blog_type = $request->get('type');
+
+        $category = $request->get('category');
         
         if($page_num>1){
             $offset = $page_size*($page_num-1);
@@ -1496,13 +1545,23 @@ class TaskController extends Controller {
            $offset = 0;
         }  
         $data =  \DB::table('blogs')
-                 ->Where(function ($query) use($blogId,$blog_title){
+                 ->Where(function ($query) use($blogId,$blog_title,$category,$blog_type){
                     if($blogId){
-                    $query->where('id',$blogId);
+                        $query->where('id',$blogId);
                     }
+                    if($category){
+                        //$query->where(FIND_IN_SET($category, 'blog_category'));
+                         $query->whereRaw("FIND_IN_SET($category,blog_category)");
+                    }
+                    
+                    if($blog_type){
+                        $query->where('blog_type','LIKE',"%$blog_type%");
+                    }
+                    
                     if($blog_title){
-                     $query->where('blog_title','LIKE',"%$blog_title%");
+                        $query->where('blog_title','LIKE',"%$blog_title%");
                     }
+                    
                  })
                 // ->where('id',21)
                 ->orderBy('id', 'desc')
@@ -1519,6 +1578,7 @@ class TaskController extends Controller {
             $input['id'] =  $value->id;
             $input['blog_title'] = $value->blog_title;
             $input['blog_sub_title'] = $value->blog_sub_title;
+            $input['blog_type'] = $value->blog_type;
             $input['blog_description'] = $value->blog_description;
             $input['author'] = ($value->blog_created_by)?$value->blog_created_by:'Admin';
            
