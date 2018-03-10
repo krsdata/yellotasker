@@ -125,7 +125,7 @@ class MolpayPaymentController extends Controller
         );
         $query= http_build_query($fields);
 
-        $fields['href']=$action.'?'.$query;
+        $fields['href']=$action;
         if($show_html_flag==0)
         return Response::json(array(
             'status' => 1,
