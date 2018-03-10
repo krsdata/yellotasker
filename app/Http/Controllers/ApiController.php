@@ -822,6 +822,66 @@ public function userDetail($id=null)
     }
 
 
+
+    
+    public function otherCategory(Request $request)
+    {
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+        $catId = null;
+        if($request->get('categoryId')){
+            $catId      = $request->get('categoryId');
+            $category   = Category::where('id',$catId)->first();
+            $name       = 'otherCategory';
+            $id         = $category->parent_id;
+            
+        }
+        if($request->get('groupId')){
+            $catId      = $request->get('groupId');
+            $category   = Category::where('id',$catId)->first();
+            $id         = $category->id;
+            $name       = 'groupCategory';
+        }
+
+        try{
+            $categoryDashboard = Category::where('parent_id',$id)->where('parent_id','!=',0)->get();
+        
+            $data = [];
+            $data['category_id']            = $category->id;
+            $data['group_id']               = ($category->parent_id==0)?$category->id:$category->parent_id;
+            $data['category_group_name']    = $category->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$category->category_group_image;
+            $data[$name]         = $categoryDashboard;
+
+        }catch(\Exception $e){
+            $data = [];
+            $status = 0;
+            $code   = 500;
+            $msg    = "Id does not exist";
+        }
+        
+       
+           
+          
+        if(count($data)){
+            $status = 1;
+            $code   = 200;
+            $msg    = "Category of other Category list";
+        }else{
+            $status = 0;
+            $code   = 404;
+            $msg    = "Record not  found!";
+        }
+
+        return  response()->json([ 
+                "status"=>$status,
+                "code"=> $code,
+                "message"=> $msg,
+                'data' => $data
+            ]
+        );
+
+    }
+
     public function category(){ 
 
        // $cd = CategoryDashboard::all 

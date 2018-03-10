@@ -280,6 +280,88 @@ class TaskController extends Controller {
 
     } 
 
+      public function getPostTaskByGroupCategory(Request $request){
+        $categoryId         =   $request->get('groupId'); 
+        $data = [];
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+       
+        try{
+            $category       =   Category::where('id',$categoryId)->first();
+            $allCategoryId  =   Category::where('parent_id',$category->id)->where('parent_id','!=',0)->lists('id');
+            $task           =  Tasks::whereIn('categoryId',$allCategoryId)->get(); 
+
+
+            $data['category_id']            = $category->id;
+            $data['group_id']               = ($category->parent_id==0)?$category->id:$category->parent_id;
+            $data['category_group_name']    = $category->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$category->category_group_image;
+            $data['posted_task'] = $task;
+
+           
+          
+        }catch(\Exception $e){ dd($e->getMessage());
+            $data = [];
+            $status = 0;
+            $code   = 500;
+            $msg    = "Task by group Id found";
+        return 
+                [ 
+                "status"  => count($data)?1:0,
+                'code'    => count($data)?200:500,
+                "message" => $msg,
+                'data'    => $data
+                ];
+        }
+
+         return 
+                [ 
+                "status"  => count($data)?1:0,
+                'code'    => count($data)?200:404,
+                "message" => count($data)?"Task by group Id found":"Task by group Id not found",
+                'data'    => $data
+                ];
+    }
+
+    public function getPostTaskByCategory(Request $request){
+        $categoryId         =   $request->get('categoryId'); 
+        $data = [];
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+       
+        try{
+            $task           =  Tasks::where('categoryId',$categoryId)->get(); 
+
+            $data['category_id']            = $category->id;
+            $data['group_id']               = ($category->parent_id==0)?$category->id:$category->parent_id;
+            $data['category_group_name']    = $category->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$category->category_group_image;
+            $data['posted_task'] = $task;
+
+           
+          
+        }catch(\Exception $e){ dd($e->getMessage());
+            $data = [];
+            $status = 0;
+            $code   = 500;
+            $msg    = "Task by group Id found";
+        return 
+                [ 
+                "status"  => count($data)?1:0,
+                'code'    => count($data)?200:500,
+                "message" => $msg,
+                'data'    => $data
+                ];
+        }
+
+         return 
+                [ 
+                "status"  => count($data)?1:0,
+                'code'    => count($data)?200:404,
+                "message" => count($data)?"Task by group Id found":"Task by group Id not found",
+                'data'    => $data
+                ];
+    }
+
+
     public function getPostTask(Request $request){
 
         $status         =   $request->get('taskStatus');

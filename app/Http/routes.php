@@ -40,7 +40,13 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::post('password/reset','ApiController@resetPassword');  
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
         Route::match(['post','get'],'categoryDashboard','ApiController@categoryDashboard');
+        
         Route::match(['post','get'],'category','ApiController@category');
+
+        Route::match(['post','get'],'otherCategory','ApiController@otherCategory');
+        Route::match(['post','get'],'getCategoryByGroupId','ApiController@otherCategory');
+
+
         Route::match(['post','get'],'getTaskByDueDate','ApiController@getTaskByDueDate');
         Route::match(['post','get'],'user/updatePassword','ApiController@changePassword'); 
         
@@ -103,6 +109,20 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@getPostTask'
                 ]
             );
+
+             Route::match(['get','post'],'getPostTaskByCategory',[
+                'as' => 'getPostTaskByCategory',
+                'uses' => 'TaskController@getPostTaskByCategory'
+                ]
+            );
+
+			
+         	Route::match(['get','post'],'getPostTaskByGroupCategory',[
+                'as' => 'getPostTaskByGroupCategory',
+                'uses' => 'TaskController@getPostTaskByGroupCategory'
+                ]
+            );
+            
 
             Route::match(['get'],'getOpenTasks',[
                 'as' => 'get_open_tasks',

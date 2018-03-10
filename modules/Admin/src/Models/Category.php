@@ -69,6 +69,16 @@ class Category extends Eloquent {
     {
         return $this->hasOne('Modules\Admin\Models\CategoryDashboard', 'category_id','id');
     } 
+
+    public function otherCategory()
+    {
+        return $this->hasMany('Modules\Admin\Models\Category', 'parent_id','id');
+    }
     
+    public function taskByCategory()
+    {
+        return $this->hasMany('App\Models\Tasks', 'categoryId','id')->with('postUserDetail');
+    }
+      
   
 }
