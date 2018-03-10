@@ -91,6 +91,7 @@ class MolpayPaymentController extends Controller
 
             $data['amount'] =$amount;
             $data['orderid'] =strval($order->transaction_id);
+            $data['order_id'] = $order->transaction_id;
             $data['bill_name'] = $user->first_name.' '.$user->last_name;
             $data['bill_email'] = $user->email;
             $data['bill_mobile'] = $user->phone;
