@@ -303,7 +303,7 @@ class TaskController extends Controller {
             $data = [];
             $status = 0;
             $code   = 500;
-            $msg    = "Task by group Id found";
+            $msg    = "Task by group Id not  found";
         return 
                 [ 
                 "status"  => count($data)?1:0,
@@ -343,7 +343,7 @@ class TaskController extends Controller {
             $data = [];
             $status = 0;
             $code   = 500;
-            $msg    = "Task by group Id found";
+            $msg    = "Task by category Id not found";
         return 
                 [ 
                 "status"  => count($data)?1:0,
@@ -357,7 +357,7 @@ class TaskController extends Controller {
                 [ 
                 "status"  => count($data)?1:0,
                 'code'    => count($data)?200:404,
-                "message" => count($data)?"Task by group Id found":"Task by group Id not found",
+                "message" => count($data)?"Task by category Id found":"Task by category Id not found",
                 'data'    => $data
                 ];
     }
