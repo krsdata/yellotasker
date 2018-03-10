@@ -299,7 +299,7 @@ class TaskController extends Controller {
 
            
           
-        }catch(\Exception $e){ dd($e->getMessage());
+        }catch(\Exception $e){ 
             $data = [];
             $status = 0;
             $code   = 500;
@@ -338,7 +338,7 @@ class TaskController extends Controller {
 
            
           
-        }catch(\Exception $e){ dd($e->getMessage());
+        }catch(\Exception $e){
             $data = [];
             $status = 0;
             $code   = 500;
