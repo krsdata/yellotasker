@@ -329,7 +329,8 @@ class TaskController extends Controller {
        
         try{
             $task           =  Tasks::where('categoryId',$categoryId)->get(); 
-
+            $category       =   Category::where('id',$categoryId)->first();
+            
             $data['category_id']            = $category->id;
             $data['group_id']               = ($category->parent_id==0)?$category->id:$category->parent_id;
             $data['category_group_name']    = $category->category_group_name;
