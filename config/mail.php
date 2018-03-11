@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+    'host' => env('MAIL_HOST', 'smtp.postmarkapp.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'kroy.iips@gmail.com', 'name' => 'kandy'],
+    'from' => ['address' => 'kundan.roy@krsdata.net', 'name' => 'kandy'],
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME','kroy.iips@gmail.com'),
+    'username' => env('MAIL_USERNAME','kandy'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     |
     */
 
-    'password' => env('MAIL_PASSWORD','godfather@123!'),
+    'password' => env('MAIL_PASSWORD','godfather@1'),
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,5 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
-
-     'pretend' => false,
 
 ];

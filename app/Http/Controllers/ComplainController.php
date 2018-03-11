@@ -25,6 +25,7 @@ use Modules\Api\Resources\TaskResource;
 use App\User;
 use App\Models\Complains;
 use Modules\Admin\Models\Reason;
+use App\Helpers\Helper as Helper;
 
 /**
  * Class AdminController
@@ -231,6 +232,18 @@ class ComplainController extends Controller {
         $support_ticket->save();
 
         $request->merge(['status'=>'open','ticket_id'=>$tid]);
+
+
+        $helper = new Helper;
+        $subject = "Yellotasker Support acknowledgement | Ticket ID :".$tid;
+
+        $email_content = [
+                'receipent_email'=> $request->input('email'),
+                'subject'=>$subject,
+                'ticket_id'=> $tid
+                ];
+
+        $support_email = $helper->sendMail($email_content,'support_acknowledge');
 
         return Response::json(array(
                 'status' => 1,
