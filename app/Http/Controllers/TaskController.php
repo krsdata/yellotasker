@@ -808,9 +808,8 @@ class TaskController extends Controller {
                     )
                 );
             }   
- 
+    
              $getComment = $this->replyComment($request->all()); 
-             
              return Response::json(array(
                     'status' => 1,
                     'code'=>200,
@@ -856,7 +855,7 @@ class TaskController extends Controller {
                 ];
     }
 
-    public function replyComment($request)
+    public function replyComment($request) 
     {
         $table_cname = \Schema::getColumnListing('comments');
         $except = ['id','created_at','updated_at'];
@@ -875,12 +874,12 @@ class TaskController extends Controller {
         $comment->save();
         if($comment){
             $notification = new Notification;
-            $notification->addNotification('comment_replied',$comment->id,$request->get('userId'),'Comment replied',$comment->commentDescription);
+            $userId  = isset($request['userId'])?$request['userId']:null;
+            $notification->addNotification('comment_replied',$comment->id,$userId,'Comment replied',$comment->commentDescription);
         }
-        
-
+        $cid = isset($request['commentId'])?$request['commentId']:null;
         $comments = Comments::with('userDetail','commentReply')
-                        ->where('id',$request['commentId'])
+                        ->where('id',$cid)
                         ->get();
         return $comments;
 

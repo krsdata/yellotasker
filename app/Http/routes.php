@@ -146,7 +146,7 @@ Route::group(['prefix' => 'api/v1'], function()
            
             Route::match(['get','post'],'comment/post',[
                 'as' => 'commentPost',
-                'uses' => 'TaskController@comment'
+                'uses' => 'TaskController@Comment'
                 ]
             );
 
