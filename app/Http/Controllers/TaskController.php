@@ -1666,6 +1666,7 @@ class TaskController extends Controller {
            
             $input['blog_image'] = url('storage/blog/'.$value->blog_image); 
             $input['category_image_basepath'] = url('/storage/uploads/category/');
+            $input['created_date'] = $value->created_at;
 
             $myCategoryIdArray = explode(',', $value->blog_category); 
             $category= [];
