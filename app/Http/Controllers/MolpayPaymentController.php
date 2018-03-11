@@ -112,7 +112,8 @@ class MolpayPaymentController extends Controller
         $fields = array(
         'action_url'=>$action,
         'orderid​'=>$orderid,
-        'order_id​'=>$order_id,
+        'order_id​'=> strval($order_id),
+        'oid'=> strval($order_id),
         'amount'=>(float)$amount,
         'bill_name'=>$bill_name,
         'bill_email'=>$bill_email,
