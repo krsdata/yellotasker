@@ -25,6 +25,10 @@ Route::get('/', function () {
 
 Route::get('sendMail','ApiController@sendMail'); 
 
+Route::get('ip',function(){
+    echo \Request::getClientIp(true);
+ });
+
 /*
 * Rest API Request , auth  & Route
 */ 
