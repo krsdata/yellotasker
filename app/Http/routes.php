@@ -323,6 +323,11 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'verifyOtp',
                 'uses' => 'ComplainController@submitSupportRequest'
             ]);
+
+            Route::match(['get','post'],'getTransaction/{id}',[
+                'as' => 'getTransaction',
+                'uses' => 'TaskController@getTransaction'
+            ]);
             
             
 

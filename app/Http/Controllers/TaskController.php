@@ -1872,4 +1872,16 @@ class TaskController extends Controller {
             ); 
     }
 
+    public function getTransaction(Request $request, $tid=null)
+    {
+        $order = \App\Order::with('userDetails','taskDetails')->where('transaction_id',$tid)->get();
+        return Response::json(array(
+                'status' => ($order)?1:0,
+                'code' => ($order)?200:500,
+                'message' => ($order)?'Transaction details!':'record not found',
+                'data'  =>  $order
+                )
+            ); 
+    }
+
 }
