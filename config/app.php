@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' =>  isset($timezone)?$timezone:'Asia/Kolkata',
+    'timezone' =>  'Asia/Kolkata',
 
     /*
     |--------------------------------------------------------------------------
