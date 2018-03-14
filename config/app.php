@@ -1,6 +1,6 @@
 <?php
 
-        $ip =  \Request::ip(); //$_SERVER['REMOTE_ADDR']
+        $ip =  \Request::getClientIp(true);
         $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
         $ipInfo = json_decode($ipInfo);
         
@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' =>  'Asia/Kolkata',
+    'timezone' =>  $timezone, //'Asia/Kolkata',
 
     /*
     |--------------------------------------------------------------------------

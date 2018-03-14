@@ -29,7 +29,7 @@ class UpdateStatus extends Command
      */
     public function handle()
     {
-        echo date_default_timezone_get();
+        echo \Request::getClientIp(true);
 
          DB::table('post_tasks')
             ->where('dueDate', '<',date('Y-m-d'))
