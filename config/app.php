@@ -1,16 +1,16 @@
 <?php
 
-        $ip =  \Request::getClientIp(true);
-        $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
-        $ipInfo = json_decode($ipInfo);
+        // $ip =  \Request::getClientIp(true);
+        // $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+        // $ipInfo = json_decode($ipInfo);
         
-        if($ipInfo->status=="success"){
+        // if($ipInfo->status=="success"){
              
-            $timezone = $ipInfo->timezone;
+        //     $timezone = $ipInfo->timezone;
      
-        }else{
-            $timezone = date_default_timezone_get();
-        }
+        // }else{
+        //     $timezone = date_default_timezone_get();
+        // }
 
 
 
@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' =>  $timezone, //'Asia/Kolkata',
+    'timezone' =>  date_default_timezone_get(), //'Asia/Kolkata',
 
     /*
     |--------------------------------------------------------------------------
