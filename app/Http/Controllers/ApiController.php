@@ -1036,7 +1036,7 @@ public function userDetail($id=null)
         $rs = $request->all();
         $validator = Validator::make($request->all(), [
             'userId' => "required",
-           // 'mobileNumber' => 'required'
+            'mobileNumber' => 'required'
         ]);
         
          if ($validator->fails()) {
@@ -1059,7 +1059,7 @@ public function userDetail($id=null)
         $data['otp'] = $otp;
         $data['userId'] = $request->get('userId');
 
-        $this->sendSMS($request->get('mobileNumber'));
+        $this->sendSMS($request->get('mobileNumber'),$otp);
 
         \DB::table('mobile_otp')->insert($data);
 
@@ -1118,13 +1118,40 @@ public function userDetail($id=null)
                 ); 
     }
 
-    public function sendSMS($mobileNumber=null)
+    public function sendSMS($mobileNumber=null,$otp=null)
     {
-        $url = "";
-        return true; 
 
+        $curl = curl_init();
+
+            $modelNumber = $mobileNumber;
+            $message = "Your verification OTP is : ".$otp;
+            $authkey = "199925AiC41I3G5a93c1f8";
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "http://control.msg91.com/api/sendotp.php?template=&otp_length=6&authkey=$authkey&message=$message&sender=YTASKR&mobile=$modelNumber&otp=$otp&otp_expiry=&email=kroy@mailinator.com",
+
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => "",
+              CURLOPT_SSL_VERIFYHOST => 0,
+              CURLOPT_SSL_VERIFYPEER => 0,
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              return false;
+            } else {
+              return true;
+            }
     }
-
 
     
 } 
