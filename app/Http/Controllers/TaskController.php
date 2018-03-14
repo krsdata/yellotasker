@@ -494,7 +494,8 @@ class TaskController extends Controller {
         if($limit){  
            $task = $tasks->take($limit)->orderBy('id', 'desc')->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
-                                            \DB::raw($this->sub_sql_comment_count)
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
                                         )->get()->toArray();  
         }
         elseif($page_number){
@@ -505,13 +506,15 @@ class TaskController extends Controller {
             }  
             $task =  $tasks->orderBy('id', 'desc')->skip($offset)->take($page_size)->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
-                                            \DB::raw($this->sub_sql_comment_count)
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
                                         )->get(); 
         }
         else{
            $task =  $tasks->take(20)->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
-                                            \DB::raw($this->sub_sql_comment_count)
+                                            \DB::raw($this->sub_sql_comment_count),
+                                            \DB::raw($this->sub_status)
                                         )->get()->toArray();
         }  
         $my_data = $this->array_msort($task, array('dueDate'=>SORT_ASC));
