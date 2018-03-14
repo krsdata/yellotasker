@@ -81,9 +81,9 @@ class User extends Authenticatable
 
     }
 
-     public function postedTask()
+    public function postedTask()
     {
-        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser');
+        return $this->hasMany('App\Models\Tasks','userId')->with('taskPostedUser','taskAssignedUser');
 
     }
     public function pendingTask()
