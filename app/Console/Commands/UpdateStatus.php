@@ -29,7 +29,8 @@ class UpdateStatus extends Command
      */
     public function handle()
     {
-
+        echo \Request::ip();
+        
          DB::table('post_tasks')
             ->where('dueDate', '<',date('Y-m-d'))
             ->where('status','open')
