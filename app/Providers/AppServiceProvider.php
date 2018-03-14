@@ -42,6 +42,19 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
+        $ip =  \Request::getClientIp(true);
+        $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+        $ipInfo = json_decode($ipInfo);
+        
+        if($ipInfo->status=="success"){
+             
+            $timezone = $ipInfo->timezone;
+     
+        }else{
+            $timezone = date_default_timezone_get();
+        }
+        
+        config(['app.timezone' => $timezone]);
 
         View::share('controllers',$controllers);
     }

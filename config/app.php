@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' =>  date_default_timezone_get(), //'Asia/Kolkata',
+    'timezone' =>  'Asia/Kolkata',
 
     /*
     |--------------------------------------------------------------------------
