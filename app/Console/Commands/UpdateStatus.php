@@ -29,8 +29,8 @@ class UpdateStatus extends Command
      */
     public function handle()
     {
-        echo \Request::ip();
-        
+        echo date_default_timezone_get();
+
          DB::table('post_tasks')
             ->where('dueDate', '<',date('Y-m-d'))
             ->where('status','open')
