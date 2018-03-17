@@ -29,7 +29,7 @@ class MolpayPaymentController extends Controller
             $input = Input::all();
 
             $this->input = $input;
-            $this->payment_success_url = ('http://yellotasker.co/#/paymentSuccess');
+            $this->payment_success_url = ('http://yellotasker.co/#/payment/acknowledgement');
           //  $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied'); 
             $this->payment_failed_url = ('http://yellotasker.co/#/payment/acknowledgement'); 
 
