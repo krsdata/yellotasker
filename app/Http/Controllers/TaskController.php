@@ -1699,11 +1699,12 @@ class TaskController extends Controller {
         if($blog_title){
          $c->where('blog_title','LIKE',"%$blog_title%");
         }
-        $c=$c->get();
+
+        $c = $c->get();
 
          return Response::json(array(
                     'status' => 1,
-                    'total_record' => count($c),
+                    'total_record' => count($data),
                     'code'=>200,
                     'message' => 'blogs.',
                     'data'  =>  $arr
