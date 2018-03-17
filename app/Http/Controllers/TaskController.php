@@ -1703,10 +1703,10 @@ class TaskController extends Controller {
         $c = $c->get();
 
          return Response::json(array(
-                    'status' => 1,
+                    'status' => count($data)?1:0,
                     'total_record' => count($data),
-                    'code'=>200,
-                    'message' => 'blogs.',
+                    'code'=>count($data)?200:404,
+                    'message' => count($data)?'blogs found':'blog not found',
                     'data'  =>  $arr
                     )
                 );
