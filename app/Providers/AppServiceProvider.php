@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         try{
-            $ip =  \Request::getClientIp(true);
+            $ip =  $_SERVER['SERVER_ADDR'];
             $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
             $ipInfo = json_decode($ipInfo);
             

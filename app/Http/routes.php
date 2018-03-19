@@ -30,7 +30,6 @@ Route::get('ip',function(){
     echo "<br>";
     print_r($_SERVER['SERVER_ADDR']);
     echo "<br>";
-    echo getenv('HTTP_CLIENT_IP');
  });
 
 /*
