@@ -27,6 +27,8 @@ Route::get('sendMail','ApiController@sendMail');
 
 Route::get('ip',function(){
     echo \Request::getClientIp(true);
+    echo \Request::ip();
+    print_r($_SERVER['SERVER_ADDR']);
  });
 
 /*
