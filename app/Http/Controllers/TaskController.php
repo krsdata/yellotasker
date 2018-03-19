@@ -1247,7 +1247,8 @@ class TaskController extends Controller {
     {
         $validator = Validator::make($request->all(), [
                'taskId' => 'required',
-               'interestedUserId'=>'required'
+               'interestedUserId'=>'required',
+               'offerPrice' => 'required'
         ]);
             /** Return Error Message **/
             if ($validator->fails()) {
@@ -1302,9 +1303,21 @@ class TaskController extends Controller {
           
         }
         
+        if($request->get('interestedUserId') == $request->get('assignUserId')){
+
+                return Response::json(array(
+                            'status' => 0,
+                            'code'=>500,
+                            'message' => "interested User and assigned user can't be same",
+                            'data'  =>  $request->all()
+                            )
+                        );    
+            }
+            
        // $rs =  DB::table('offers')->insert($data); 
 
         if($is_savtask!=null && $task_action=='update'){
+
             $rs =  DB::table('offers')
                     ->where('id',$request->get('taskId'))
                         ->where('interestedUserId',$request->get('interestedUserId'))
