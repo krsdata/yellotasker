@@ -1313,7 +1313,7 @@ class TaskController extends Controller {
                             )
                         );    
             }
-            
+
        // $rs =  DB::table('offers')->insert($data); 
 
         if($is_savtask!=null && $task_action=='update'){
@@ -1749,7 +1749,7 @@ class TaskController extends Controller {
             $input['blog_description'] = $value->blog_description;
             $input['author'] = ($value->blog_created_by)?$value->blog_created_by:'Admin';
            
-            $input['blog_image'] = url('storage/blog/'.$value->blog_image); 
+            $input['blog_image'] = !empty($value->blog_image)?url('storage/blog/'.$value->blog_image):null; 
             $input['category_image_basepath'] = url('/storage/uploads/category/');
             $input['created_date'] = $value->created_at;
 
