@@ -1058,6 +1058,7 @@ public function userDetail($id=null)
 
         $data['otp'] = $otp;
         $data['userId'] = $request->get('userId');
+        $data['timezone'] = config('app.timezone');
 
         $this->sendSMS($request->get('mobileNumber'),$otp);
 

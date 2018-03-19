@@ -50,9 +50,11 @@ class AppServiceProvider extends ServiceProvider
             if($ipInfo->status=="success"){
                  
                 $timezone = $ipInfo->timezone;
-         
+
+                
             }else{
                 $timezone = date_default_timezone_get();
+
             }
         }catch(\Exception $e){
             $timezone = date_default_timezone_get();
