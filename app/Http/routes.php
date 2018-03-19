@@ -218,7 +218,17 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
-             
+            //
+
+            Route::match(['get','post'],'getCategoryByGroup/{gid}',[
+                'as'=> 'getCategoryByGroup',
+                'uses' => 'TaskController@getCategoryByGroup'
+            ]);
+
+            Route::match(['get','post'],'getSaveTaskByUser/{uid}',[
+                'as'=> 'getSaveTaskByUser',
+                'uses' => 'TaskController@getSaveTaskByUser'
+            ]);
 
              Route::match(['get','post'],'getSaveTask/{id}',[
                 'as' => 'getSaveTask',

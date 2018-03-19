@@ -278,9 +278,52 @@ class TaskController extends Controller {
                 ];
                        
 
-    } 
+    }
 
-      public function getPostTaskByGroupCategory(Request $request){
+    public function getCategoryByGroup(Request $request, $gid=null){
+        $categoryId         =   $gid;
+        $data = [];
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+       
+        try{
+            $category       =   Category::where('id',$categoryId)->first();
+            $allCategoryId  =   Category::where('parent_id',$category->id)->where('parent_id','!=',0)->get();
+
+            $data['category_id']            = $category->id;
+            $data['group_id']               = ($category->parent_id==0)?$category->id:$category->parent_id;
+            $data['category_group_name']    = $category->category_group_name;
+            $data['category_group_image']   = $image_url.'/'.$category->category_group_image;
+            $data['category']               = $allCategoryId;
+
+           
+          
+        }catch(\Exception $e){ 
+            $data = [];
+            $status = 0;
+            $code   = 500;
+            $msg    = "Category by group Id not  found";
+        return 
+                [ 
+                "status"  => count($data)?1:0,
+                'code'    => count($data)?200:500,
+                "message" => $msg,
+                'data'    => $data
+                ];
+        }
+
+         return 
+                [ 
+                "status"  => count($data)?1:0,
+                'code'    => count($data)?200:404,
+                "message" => count($data)?"Category by group Id found":"Category by group Id not found",
+                'data'    => $data
+                ];
+
+            
+
+    }
+
+    public function getPostTaskByGroupCategory(Request $request){
         $categoryId         =   $request->get('groupId'); 
         $data = [];
         $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
@@ -1310,7 +1353,24 @@ class TaskController extends Controller {
                    ]
                 );
     }
+    /*getSaveTaskByUser*/
+    public function getSaveTaskByUser(Request $request, $uid=null){
+        
+        $saveTask = User::with(['saveTask'=>function($q){
+                            $q->whereDate('dueDate','<',Carbon::today()->toDateString());
+                            $q->where('status','open');
+                        }])->where('id',$uid)
+                            ->get();
 
+        return  response()->json([ 
+                    "status"=>($saveTask->count())?1:0,
+                    "code"=> ($saveTask->count())?200:404,
+                    "message"=>($saveTask->count())?"Saved offer list":"Record not found",
+                    'data' => $saveTask
+                   ]
+                );
+    }
+    /*getSaveTask*/
     public function getSaveTask(Request $request, $uid=null){
       
         
