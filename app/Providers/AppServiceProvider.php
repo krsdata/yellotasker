@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
         }catch(\Exception $e){
             $timezone = date_default_timezone_get();
         }
-        $timezone = 'Asia/Kolkata';
+       // $timezone = 'Asia/Kolkata';
         config(['app.timezone' => $timezone]);
         
         View::share('controllers',$controllers);

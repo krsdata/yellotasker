@@ -43,5 +43,15 @@ class Notification extends Eloquent{
         $this->status = $status;
         $this->save();
     }
+
+    public function userDetails()
+    {
+        return $this->belongsTo('App\User','user_id','id')->select('id','first_name','last_name','email');
+    }
+
+    public function taskDetails()
+    {
+        return $this->hasMany('App\Models\Tasks','id','entity_id');
+    }
  
 }
