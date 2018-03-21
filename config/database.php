@@ -1,5 +1,17 @@
 <?php
 
+  date_default_timezone_set(config('app.timezone'));
+  $zones_array = array();        
+  $timestamp = time();         
+  # to maintain the original timezone, store before
+  $default_timezone = date_default_timezone_get();
+  $zones_array =  date('P', $timestamp);
+
+  $default_timezone = date_default_timezone_get();
+  # to maintain the original timezone, re-set after
+  date_default_timezone_set($default_timezone);    
+
+
 return [
 
     /*
@@ -64,7 +76,7 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
-            'timezone' => '+05:30'
+            'timezone' => isset($zones_array)?$zones_array:'+05:30'
         ],
 
         'pgsql' => [
