@@ -72,6 +72,7 @@ class NotificationController extends Controller {
 
                  $arr[] =   $data;              
         }
+ 
 
       //  dd($arr);
 

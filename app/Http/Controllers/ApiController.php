@@ -843,8 +843,10 @@ public function userDetail($id=null)
         }
 
         try{
-            $categoryDashboard = Category::where('parent_id',$id)->where('parent_id','!=',0)->get();
+            $categoryDashboard = Category::where('parent_id',$id)->where('id','!=',$catId)->where('parent_id','!=',0)->get();
+          //  $categoryDashboard = Category::where('parent_id',$id)->get();
         
+
             $data = [];
             $data['category_id']            = $category->id;
             $data['group_id']               = ($category->parent_id==0)?$category->id:$category->parent_id;
