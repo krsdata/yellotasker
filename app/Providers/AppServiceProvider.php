@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         try{
-            $ip =  $_SERVER['SERVER_ADDR'];
+            $ip =  $_SERVER['HTTP_X_FORWARDED_FOR'];
             $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
             $ipInfo = json_decode($ipInfo);
             

@@ -26,10 +26,11 @@ Route::get('/', function () {
 Route::get('sendMail','ApiController@sendMail'); 
 
 Route::get('ip',function(){
-    echo \Request::getClientIp(true);
+    echo $_SERVER['REMOTE_ADDR'];
     echo "<br>";
     print_r($_SERVER['SERVER_ADDR']);
     echo "<br>";
+	dd($_SERVER);
  });
 
 /*
