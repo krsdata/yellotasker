@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' =>   env('TIME_ZONE',config('app.timezone')),
+    'timezone' =>   config('app.timezone'),
 
     /*
     |--------------------------------------------------------------------------
