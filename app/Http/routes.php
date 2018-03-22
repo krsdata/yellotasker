@@ -79,7 +79,9 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'getBlog',
                 'uses' => 'TaskController@getBlog'
                 ]
-            );  
+            ); 
+
+
 
           Route::match(['post','get'],'postTask/createTask',[
                 'as' => 'post_task_create',
@@ -306,6 +308,20 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'reviewRating',
                 'uses' => 'TaskController@reviewRating'
             ]);
+
+
+            Route::match(['get','post'],'getReview/{uid}',[
+                'as' => 'getReview',
+                'uses' => 'TaskController@getReview'
+            ]);
+
+            Route::match(['post','get'],'getPublicProfile/{uid}',[
+                'as' => 'getReview',
+                'uses' => 'TaskController@getReview'
+                ]
+            );      
+
+            
 
             Route::match(['get','post'],'generateOtp',[
                 'as' => 'generateOtp',

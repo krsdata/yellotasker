@@ -49,12 +49,26 @@ class TaskController extends Controller {
                         status end) as status'; 
 
 
+    private $doerRating = '(SELECT ROUND( AVG(rating),1) from reviews LEFT  JOIN post_tasks on reviews.taskId=post_tasks.id ) as doerAvgRating';
+    private $posterRating = '(SELECT ROUND(AVG(rating),1) from reviews LEFT JOIN post_tasks on reviews.posterUserId=post_tasks.userId) as posterAvgRating';
+                                         
+
+
 
 
     // return object of userModel
     protected function getModel() {
         return new Task();
     }
+
+    public function getPublic(Request $request, $uid=null){
+
+        $user = User::with('task')->where('id',$uid)->get();
+
+        return $user;
+
+    }
+
     // get all user
     public function getUser($id=null) {
 
@@ -1939,11 +1953,16 @@ class TaskController extends Controller {
     //Get Review    
     public function getReview(Request $request, $userId=null)
     {
-        $user = User::with('doerReview','posterReview','reviewDetails')->where('id',$userId)->first();
+        $user = User::with('taskAsPoster')
+                                    ->with('taskAsDoer')
+                                    ->where('id',$userId)
+                                    ->first();
+
+
         return Response::json(array(
                 'status' => ($user)?1:0,
                 'code' => ($user)?200:500,
-                'message' => ($user)?'User review':'Record not found!',
+                'message' => ($user)?'User public profile':'Record not found!',
                 'data'  =>  $user
                 )
             ); 
