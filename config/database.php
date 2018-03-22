@@ -1,16 +1,30 @@
 <?php
 
-  date_default_timezone_set(config('app.timezone'));
+  try{
+        $ip =  $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+        $ipInfo = json_decode($ipInfo);
+        
+        if($ipInfo->status=="success"){ 
+             
+            $timezone = $ipInfo->timezone; 
+            
+        }else{
+            $timezone = 'Asia/Kolkata';
+
+        }
+    }catch(\Exception $e){
+        $timezone = 'Asia/Kolkata';
+    }  
+
+  date_default_timezone_set($timezone);
   $zones_array = array();        
   $timestamp = time();         
   # to maintain the original timezone, store before
-  $default_timezone = date_default_timezone_get();
   $zones_array =  date('P', $timestamp);
-
   $default_timezone = date_default_timezone_get();
   # to maintain the original timezone, re-set after
   date_default_timezone_set($default_timezone);    
-
 
 return [
 
