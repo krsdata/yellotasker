@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class BankAccount extends Model
 {    protected $primaryKey = 'id';
 
-    protected $table = 'bankaccounts';
+    protected $table = 'bank_accounts';
     //
 }
