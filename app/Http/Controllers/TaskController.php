@@ -29,6 +29,7 @@ use App\Models\Notification;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
 use App\Models\Review;
+use App\Models\Portfolio;
 
 /**
  * Class AdminController
@@ -1978,6 +1979,185 @@ class TaskController extends Controller {
                 'data'  =>  $order
                 )
             ); 
+    }
+
+    public function getPortfolioImage(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'userId' => 'required', 
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }
+
+        $result = Portfolio::where('userId',$request->get('userId'))->get();
+
+        $data = [];
+        foreach ($result as $key => $value) {
+            $data['imageId'] = $value->id;
+            $data['userId'] = $value->userId;
+            $data['taskId'] = $value->taskId;
+            $data['images'] = url($value->images);
+               
+        }
+        
+        return Response::json(array(
+                'status' => count($result)?1:0,
+                'code' => count($result)?200:500,
+                'message' => count($result)?'Portfolio Image found':'Record not found',
+                'data'  =>  $data
+                )
+            );
+
+    }
+
+    public function deletePortfolioImage(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'imageId' => 'required',
+               'userId' => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
+
+        $result = Portfolio::where('id',$request->get('imageId'))->where('userId',$request->get('userId'))->delete();
+
+        return Response::json(array(
+                'status' => ($result)?1:0,
+                'code' => ($result)?200:500,
+                'message' => ($result)?'Portfolio Image deleted':'record not found',
+                'data'  =>  $result
+                )
+            ); 
+
+
+
+    }
+
+    public function uploadPortfolioImage(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'userId' => 'required',
+               'images' => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
+
+        $result = new Portfolio;
+         
+        $table_cname = \Schema::getColumnListing('portfolio');
+        $except = ['id','created_at','updated_at','images'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+            if($request->get($value)){
+                $result->$value = $request->get($value);
+           }
+        }
+        
+        if($request->get('images')){  ;
+            $profile_image = $this->createImage($request->get('images')); 
+            if($profile_image==false){
+                return Response::json(array(
+                    'status' => 0,
+                     'code' => 500,
+                    'message' => 'Invalid Image format!',
+                    'data'  =>  $request->all()
+                    )
+                );
+            }
+            $result->images  = $profile_image;       
+        }        
+           
+
+        try{
+            $result->save();
+            $status = 1;
+            $code  = 200;
+            $message ="Portfolio Images added successfully";
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+            $message =$e->getMessage();
+        }
+         
+        return response()->json(
+                            [ 
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
+                            'data'=>isset($result)?$result:[]
+                            ]
+                        );
+
+
+    }
+
+    public function createImage($base64)
+    {
+        try{
+            $img  = explode(',',$base64);
+            if(is_array($img) && isset($img[1])){
+                $image = base64_decode($img[1]);
+                $image_name= time().'.jpg';
+                $path = storage_path() . "/image/" . $image_name;
+              
+                file_put_contents($path, $image); 
+                return 'storage/image/'.$image_name;
+            }else{
+                return false; 
+            }
+
+            
+        }catch(Exception $e){
+            return false;
+        }
+        
     }
 
 }
