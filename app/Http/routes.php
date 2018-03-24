@@ -150,6 +150,13 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
+             Route::match(['get','post'],'allCategory',[
+                'as' => 'allCategory',
+                'uses' => 'ApiController@allCategory'
+                ]
+            );
+
+            
             
             
 
