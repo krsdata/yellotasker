@@ -70,6 +70,7 @@ Route::group(['prefix' => 'api/v1'], function()
         
         Route::match(['get','post'],'user/withdrawals','MolpayPaymentController@getWithdrawals'); 
         Route::match(['get','post'],'user/withdrawal/newrequest','MolpayPaymentController@addWithdrawalRequest'); 
+        Route::match(['get','post'],'user/withdrawal/approve','MolpayPaymentController@approveWithdrawal'); 
         
         Route::match(['get','post'],'user/bank_detail/list','MolpayPaymentController@getBankDetailList'); 
         Route::match(['get','post'],'user/bank_detail/add','MolpayPaymentController@addBankDetail'); 

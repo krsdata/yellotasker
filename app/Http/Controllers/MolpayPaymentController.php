@@ -26,6 +26,11 @@ class MolpayPaymentController extends Controller
     private $molpay_failed_status_id =3;
     private $molpay_pending_status_id =2;
     private $molpay_default_status_id =0;
+    private $molpay_withdrawal_status_pending =1;
+    private $molpay_withdrawal_status_proccess =2;
+    private $molpay_withdrawal_status_completed =3;
+    private $molpay_withdrawal_status_declined =4;
+    private $molpay_withdrawal_status_cancel =0;
     private $paymnet_currency='MYR';
     private $payment_service_commision=10;//10%
     private $withdrawal_service_charge=0;//flat
@@ -567,13 +572,14 @@ class MolpayPaymentController extends Controller
         $data = array();
         $userId = $request->get('userId');
         $amount = (float) $request->get('amount');
+        $currency = $this->paymnet_currency;
         $bankId = $request->get('bankId');
         $user = User::where('id', $userId)->first(['current_balance', 'total_balance']);
         $current_balance = isset($user['current_balance']) ? $user['current_balance'] : 0;
         $service_charge = $this->withdrawal_service_charge; //flat charge now
         $payable_amount = $amount - $service_charge;
         $actual_amount = $current_balance - $service_charge;
-        $bank = BankAccount::where('id', $bankId)->first();
+        $bank = BankAccount::where('id', $bankId)->where('user_id', $userId)->first();
         $status = 0;
         $message = 'Something Wrong with Server.';
         if (!$user) {
@@ -582,14 +588,14 @@ class MolpayPaymentController extends Controller
             $message = 'Your wallet balance is empty.';
         } else if ($current_balance <$this->payment_minimum_withdrawal) {
             $message = 'Your wallet balance is empty.';
-            $min = '$' .$this->payment_minimum_withdrawal ;
-            $minCB = '$' .$current_balance ;
+            $min = $this->formatePrice($this->payment_minimum_withdrawal,$currency) ;
+            $minCB = $this->formatePrice($current_balance , $currency) ;
             $message = 'You wallet balance('.$minCB.') is lower than minimum required amount (' . $min . ').';
         } else if ($amount > $current_balance) {
-            $min = '$' . $current_balance;
+            $min = $this->formatePrice( $current_balance,$currency) ;
             $message = 'You are not allowed to withdrawal amount more than your current wallet balance(' . $min . ').';
         } else if ($amount < $this->payment_minimum_withdrawal) {
-            $min = '$' .$this->payment_minimum_withdrawal ;
+            $min = $this->formatePrice($this->payment_minimum_withdrawal,$currency) ;
             $message = 'You can\'t withdrawal lower than minimum required amount (' . $min . ').';
         } else if (!$bank) {
             $message = 'Bank Not Found.';
@@ -605,8 +611,9 @@ class MolpayPaymentController extends Controller
                 $this->addPaymentHistory($userId, 0, $amount, $service_charge, $payable_amount, 'DR', $this->paymnet_currency, 1, $remarks);
                 $message = 'Withdrawal request added succesfully.';
                 $data = User::where('id', $userId)->first(['current_balance', 'total_balance']);
-                $data['currency'] = $this->paymnet_currency;
+                $data['currency'] =$currency;
                 $data['txnID'] = $txnId;
+                $data['amount'] =  $this->formatePrice($amount,$currency);
                 $this->notifyOnWithdrawal($user,$withdrawal);
             }
         }
@@ -636,6 +643,82 @@ class MolpayPaymentController extends Controller
         return $transition;
     }
 
+    public function approveWithdrawal(Request $request){
+         $validator = Validator::make($request->all(), [
+                    'withdrawalId' => 'required',
+        ]); 
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+        $withdrawalId = $request->get('withdrawalId');
+        $withdrawal = Withdrawal::find($withdrawalId);
+        $message ='Error Occured. Please try again.';
+        $status = 0;
+        if(!$withdrawal){
+         $message ='withdrawal request not found.';   
+        }else if($withdrawal['status']== $this->molpay_withdrawal_status_pending){ //pending
+           $paymentMethod= json_decode($withdrawal['paymentMethod']);
+            if (json_last_error() !==JSON_ERROR_NONE) {
+            $message ='Payment withdrawal method is not valid.';        
+            }else{
+             $message ='Payment withdrawal method is  valid.'; 
+             $reference_id = $withdrawal['txn_id'];
+             $amount = $withdrawal['payable_amount'];
+             $currency = $withdrawal['currency'];
+             $payee = User::where('id',$withdrawal['userId'])->get(['email','phone'])->first()->toArray();
+             if($payee){
+             $payee_email =$payee['email'];
+             $payee_mobile =$payee['phone'];
+             $payee_bank_name = $paymentMethod->bank_name;
+             $payee_bank_code = $paymentMethod->ifsc_code;
+             $payee_back_acc_name = $paymentMethod->account_name;
+             $payee_bank_acc_number = $paymentMethod->account_number;
+             $payeeID = $paymentMethod->molplayProfile_id;
+             if($payeeID){ //Let do
+                $response = $this->payMolepayPayeeByPayeeID($payeeID, $amount, $currency);
+             }else{
+              $response = $this->payMolepayPayeeByBank($reference_id, $amount, $currency, $payee_email, $payee_mobile, $payee_bank_name, $payee_bank_code, $payee_back_acc_name, $payee_bank_acc_number);
+             
+              print_r($response);die;
+             }
+             }else{
+              $message ='User not register in the system.';   
+             }
+            }
+          die;
+          
+         //$withdrawal->update();   
+        }else if($withdrawal['status']== $this->molpay_withdrawal_status_proccess){ //proccess
+         
+        }else if($withdrawal['status']== $this->molpay_withdrawal_status_completed){ //completed
+         
+        }else if($withdrawal['status']== $this->molpay_withdrawal_status_declined){ //declined
+         
+        }else if($withdrawal['status']== $this->molpay_withdrawal_status_cancel){ //cancel
+         
+        }
+        
+          return Response::json(array(
+                    'status' => $status,
+                    'code' =>$status? 200:500,
+                    'message' => $message,
+                    'data' => $withdrawal,
+                        )
+        );
+
+    }
+    
     public function getWithdrawals(Request $request) {
         $validator = Validator::make($request->all(), [
                     'userId' => 'required',
@@ -867,12 +950,9 @@ class MolpayPaymentController extends Controller
         return $result;
     }
 
-    private function payMolepayPayeeByPayeeID() {
+    private function payMolepayPayeeByPayeeID($payeeID,$amount,$currency) {
 
-        $payeeID = 12; //from previous api
         $operator = $this->molpay_mid;
-        $amount = 50;
-        $currency = 'MYR'; //MYR
         $skey = md5($operator . $payeeID . $amount . $currency . SHA1($this->molpay_vkey));
         $inputs = array(
             'operator' => $operator,
@@ -898,35 +978,36 @@ class MolpayPaymentController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSLVERSION     , 3);
         $result = curl_exec($ch);
         curl_close($ch);
-      
-        return $result;
+        $response= (array)json_decode($result);
+        if (json_last_error() ===JSON_ERROR_NONE) {
+         return $response;
+        }
+        return false;
     }
 
-    private function payMolepayPayeeByBank() {
+    private function payMolepayPayeeByBank($reference_id,$amount,$currency,$payee_email,$payee_mobile,$payee_bank_name,$payee_bank_code,$payee_back_acc_name,$payee_bank_acc_number) {
 
         $payee = array(
             'Country' => '',//INR
-            'Bank_Name' => 'SBI', //required*
-            'Bank_Code' => 'SBIN000256', //Bank_Code/Swift_Code 
-            'Bank_AccName' => 'NARU', //required*
-            'Bank_AccNumber' => '2008554478503', //required*,
+            'Bank_Name' => $payee_bank_name, //required*
+            'Bank_Code' => $payee_bank_code, //Bank_Code/Swift_Code 
+            'Bank_AccName' =>$payee_back_acc_name, //required*
+            'Bank_AccNumber' => $payee_bank_acc_number, //required*,
             'Bank_Address'=>'',// (non-Malaysian)
             'Beneficery_Address'=>'',// (non-Malaysian)
-            'Email' => 'nlkeer@mailinator.com', //required*
-            'Mobile' => '9799733954' //required*
+            'Email' => $payee_email, //required*
+            'Mobile' => $payee_mobile //required*
         );
+     
         $payee = json_encode($payee);
         $operator = $this->molpay_mid;
-        $currency = 'MYR'; //MYR
-        $amount = 10;
-        $reference_id = str_random(10);
         $notify_url = '';
         $skey = md5($operator . $amount . $currency . $payee . $reference_id . $notify_url . SHA1($this->molpay_vkey));
         $inputs = array(
@@ -963,7 +1044,12 @@ class MolpayPaymentController extends Controller
         //curl_setopt($ch, CURLOPT_SSLVERSION     , 3);
         $result = curl_exec($ch);
         curl_close($ch);
-       return $result;
+        
+        $response= (array)json_decode($result);
+        if (json_last_error() ===JSON_ERROR_NONE) {
+            return $response;
+        }
+        return false;
     }
 
     private function notifyOnWithdrawal($user,$withdrawal){
@@ -972,6 +1058,22 @@ class MolpayPaymentController extends Controller
     
     private function notifyUserOnTaskPaymentRelease($user,$doer,$task){
         //TODO
+    }
+    
+    private function formatePrice($amount,$currency){
+        $prefix = '';
+        $suffix = '';
+     if($currency =='USD'){
+          $prefix = '$';
+          $suffix = '';
+     }else if($currency =='MYR'){
+         $prefix = '';
+         $suffix = 'RM';  
+     }else if($currency =='INR'){
+         $prefix = 'Rs.';
+         $suffix = '';  
+     }  
+     return $prefix.$amount.$suffix;
     }
     public function success(){
      return "success";
