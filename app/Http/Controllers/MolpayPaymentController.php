@@ -11,9 +11,13 @@ use App\Http\Requests;
 use \App\Models\Tasks;
 use App\User;
 use App\Order;
+use App\PaymentHistory;
+use App\Withdrawal;
+use App\BankAccount;
 class MolpayPaymentController extends Controller
 {
     private $molpay_vkey = 'f1d0fd1176dafad977b52a52a2ba2e24';
+    private $molpay_skey = '6b959200bb1233fce28e069422e23ece';
     private $molpay_mid = 'SB_yellotasker';
     private $payment_success_url =null;
     private $payment_failed_url =null;
@@ -22,6 +26,10 @@ class MolpayPaymentController extends Controller
     private $molpay_failed_status_id =3;
     private $molpay_pending_status_id =2;
     private $molpay_default_status_id =0;
+    private $paymnet_currency='MYR';
+    private $payment_service_commision=10;//10%
+    private $withdrawal_service_charge=0;//flat
+    private $payment_minimum_withdrawal=20;//Any Minimum Flat amount.
     protected $input = array();
 
     public function __construct()
@@ -30,21 +38,21 @@ class MolpayPaymentController extends Controller
 
             $this->input = $input;
             $this->payment_success_url = ('http://yellotasker.com/#/payment/acknowledgement');
-          //  $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied'); 
+          //  $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied');
             $this->payment_failed_url = ('http://yellotasker.com/#/payment/acknowledgement');
 
     }
     public function index(Request $request) {
             $data['molpay_mid']=$this->molpay_mid;
-            
-            if($this->sandbox){
-            $data['action'] = 'https://sandbox.molpay.com/MOLPay/pay/'.$this->molpay_mid.'/';    
-            }else{//Production
-             $data['action'] = 'https://www.onlinepayment.com.my/MOLPay/pay/'.$this->molpay_mid.'/'; 
-            }
-            
 
-            
+            if($this->sandbox){
+            $data['action'] = 'https://sandbox.molpay.com/MOLPay/pay/'.$this->molpay_mid.'/';
+            }else{//Production
+             $data['action'] = 'https://www.onlinepayment.com.my/MOLPay/pay/'.$this->molpay_mid.'/';
+            }
+
+
+
         $validator = Validator::make($request->all(), [
            'userId' => 'required',
            'taskId' => 'required',
@@ -54,9 +62,9 @@ class MolpayPaymentController extends Controller
         if ($validator->fails()) {
                     $error_msg  =   [];
             foreach ( $validator->messages()->all() as $key => $value) {
-                        array_push($error_msg, $value);     
+                        array_push($error_msg, $value);
                     }
-                            
+
             return Response::json(array(
                 'status' => 0,
                 'code'=>500,
@@ -64,12 +72,12 @@ class MolpayPaymentController extends Controller
                 'data'  =>  ''
                 )
             );
-        }   
-        
+        }
+
             $userId = $request->get('userId');
             $taskId = $request->get('taskId');
             $show_html_flag =(int)$request->get('show_html');
-            
+
             $user = User::find($userId);
             if(!$user) return Response::json(array(
                 'status' => 0,
@@ -78,7 +86,7 @@ class MolpayPaymentController extends Controller
                 'data'  =>  ''
                 )
             );
-            
+
             $task = Tasks::find($taskId);
             if(!$task) return Response::json(array(
                 'status' => 0,
@@ -87,7 +95,7 @@ class MolpayPaymentController extends Controller
                 'data'  =>  ''
                 )
             );
-            
+
             $amount = $request->get('amount');
             $order =  $this->createOrder($task, $user,$amount,'Task Payment : '.$task->title);
 
@@ -109,7 +117,7 @@ class MolpayPaymentController extends Controller
             $data['notification_url'] = url('molpay/notification_ipn');
             $data['returnurl'] = url('molpay/return_ipn');
             $output = view('molpay',$data);
-    
+
             extract($data)  ;
         $fields = array(
         'action_url'=>$action,
@@ -137,13 +145,13 @@ class MolpayPaymentController extends Controller
             'data'  =>$fields
             )
         );
-       return  $output;  //HTML return     
+       return  $output;  //HTML return
     }
 
     public function return_ipn() {
      $vkey = $this->molpay_vkey;
     $this->input['treq']=   1;
-  
+
     $tranID = (isset($this->input['tranID']) && !empty($this->input['tranID'])) ? $this->input['tranID'] : '';
     $orderid = (isset($this->input['orderid']) && !empty($this->input['orderid'])) ? $this->input['orderid'] : '';
     $status = (isset($this->input['status']) && !empty($this->input['status'])) ? $this->input['status'] : '';
@@ -180,10 +188,10 @@ class MolpayPaymentController extends Controller
     $key1 = md5($paydate.$domain.$key0.$appcode.$vkey);
 
     $responseURL ='';
-        if ( $skey != $key1 ) 
+        if ( $skey != $key1 )
             $status = -1 ;
 
-        $order_status_id = $this->molpay_default_status_id; 
+        $order_status_id = $this->molpay_default_status_id;
 
         if ( $status == "00" )  {
          $order_status_id = $this->molpay_completed_status_id;
@@ -195,7 +203,7 @@ class MolpayPaymentController extends Controller
          $order_status_id = $this->molpay_failed_status_id;
         $responseURL = $this->payment_failed_url;
         }
-       
+
         $this->save();
         $this->updateOrderStatus($orderid, $order_status_id);
             echo '<html>' . "\n";
@@ -214,7 +222,7 @@ class MolpayPaymentController extends Controller
     * Callback with IPN(Instant Payment Notification)
     ******************************************************/
     public function callback_ipn()   {
-        
+
     $this->load->model('checkout/order');
 
     $vkey = $this->molpay_vkey;
@@ -279,7 +287,7 @@ class MolpayPaymentController extends Controller
 
     if ($nbcb == 2) {
         echo "CBTOKEN:MPSTATOK";
-        
+
         $order_status_id = 0;
 
         if ( $status == "00" )  {
@@ -336,16 +344,16 @@ class MolpayPaymentController extends Controller
 
             return $molpay;
     }
-    
+
     protected function createOrder($task,$user,$amount,$order_details='',$payment_method='molpay'){
-       
+
         $order= Order::where('status', '=', -1)
                 ->where('user_id', '=', $user->id)
                 ->where('task_id', '=', $task->id)
                 ->first();
           if (is_null($order)){
                  $order = new Order;
-                 
+
             }
        $order->transaction_id= time();
        $order->user_id  = $user->id;
@@ -356,13 +364,13 @@ class MolpayPaymentController extends Controller
        $order->total_price=$amount;
        $order->discount_price=$amount;
        $order->order_details= $order_details;
-     
+
        $order->save();
      return $order;
     }
-   
+
     protected function updateOrderStatus($molpay_order_id,$order_status){
-    
+
     $order= Order::where('transaction_id', '=', $molpay_order_id)->first();
     if (is_null($order)){
      return false;
@@ -371,11 +379,605 @@ class MolpayPaymentController extends Controller
       $order->save();
       return $order;
     }
-    
-    public function success(){
-     return "success";   
+
+    public function releaseTaskFund(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+                    'taskId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $taskId = $request->get('taskId');
+        $user = User::where('id', $userId)->first(['current_balance', 'total_balance']);
+        $task = Tasks::where('id', $taskId)->first(['id', 'title', 'status', 'userId', 'taskDoerId', 'taskOwnerId', 'totalAmount', 'is_paid']);
+
+        $status = 0;
+        $message = 'Something Wrong with Server.';
+        if (!$user) {
+            $message = 'User Not Found.';
+        } else if (!$task) {
+            $message = 'Task Not Found.';
+        } else {
+            $status = 1;
+            if ($task['is_paid'] == 0) {
+                $taskDoer = User::find($task['taskDoerId']);
+                if (!$taskDoer) {
+                    $message = 'Task is not assigned to any doer.';
+                } else {
+                    $message = $this->addTaskPaymentCredit($user, $task, $taskDoer);
+                }
+            } else {
+                $message = 'Task is already paid.';
+            }
+        }
+
+        return Response::json(array(
+                    'status' => $status,
+                    'code' => $status ? 200 : 500,
+                    'message' => $message,
+                    'data' => ''
+        ));
     }
+
+    private function addTaskPaymentCredit($user, $task, $taskDoer) {
+        $message = 'Task Payment done succesfully.';
+
+        $taskId = $task['id'];
+        $taskDoerId = $task['taskDoerId'];
+        $taskOwnerId = $task['taskOwnerId'];
+        $totalAmount = $task['totalAmount'];
+        $commisionAmount = (float) $totalAmount * (float) $this->payment_service_commision / 100;
+        $netAmount = $totalAmount - $commisionAmount;
+        //Add Credit
+        $model = User::find($taskDoerId);
+        if ($model) {
+            $model->increment('current_balance', $netAmount);
+            $model->increment('total_balance', $netAmount);
+
+            $remarks = 'You Have received payment:$' . $netAmount . ' For task ' . $task['title'];
+            Tasks::find($taskId)->update(['is_paid'=>1]);//change status
+            $this->addPaymentHistory($taskDoerId, $taskId, $totalAmount, $commisionAmount, $netAmount, 'CR', $this->paymnet_currency, 1, $remarks);
+            $this->notifyUserOnTaskPaymentRelease($user,$model,$task);
+        }
+        return $message;
+    }
+
+    public function getCurrentBalance(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $user = User::where('id', $userId)->first(['current_balance', 'total_balance']);
+        $status = 0;
+        $message = 'User Not found.';
+        if ($user) {
+            $status = 1;
+            $message = "Record found.";
+            $user['currency'] = $this->paymnet_currency;
+        }
+        return Response::json(array(
+                    'status' => $status,
+                    'code' => $status ? 200 : 500,
+                    'message' => $message,
+                    'data' => $user
+                        )
+        );
+    }
+
+    public function getPaymentHistory(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $logs = PaymentHistory::where('userId', $userId)->orderBy('created_at', 'DESC')->get();
+        return Response::json(array(
+                    'status' => 1,
+                    'code' => 200,
+                    'message' => $logs ? 'Payment histroy found.' : 'No Result found.',
+                    'data' => $logs
+                        )
+        );
+    }
+
+    private function addPaymentHistory($userId, $taskId, $amount, $service_charge, $payable_amount, $mode, $currency, $status, $remarks) {
+
+        $transition = new PaymentHistory;
+        $transition->userId = $userId;
+        $transition->taskId = $taskId;
+        $transition->amount = $amount;
+        $transition->service_charge = $service_charge;
+        $transition->payable_amount = $payable_amount;
+        $transition->mode = $mode; //CR/DR
+        $transition->currency = $currency;
+        $transition->status = (int) $status;
+        $transition->remarks = $remarks;
+        $transition->save();
+
+        return $transition;
+    }
+
+    public function addWithdrawalRequest(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+                    'amount' => 'required',
+                    'bankId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+        $data = array();
+        $userId = $request->get('userId');
+        $amount = (float) $request->get('amount');
+        $bankId = $request->get('bankId');
+        $user = User::where('id', $userId)->first(['current_balance', 'total_balance']);
+        $current_balance = isset($user['current_balance']) ? $user['current_balance'] : 0;
+        $service_charge = $this->withdrawal_service_charge; //flat charge now
+        $payable_amount = $amount - $service_charge;
+        $actual_amount = $current_balance - $service_charge;
+        $bank = BankAccount::where('id', $bankId)->first();
+        $status = 0;
+        $message = 'Something Wrong with Server.';
+        if (!$user) {
+            $message = 'User Not Found.';
+        } else if (!$current_balance) {
+            $message = 'Your wallet balance is empty.';
+        } else if ($current_balance <$this->payment_minimum_withdrawal) {
+            $message = 'Your wallet balance is empty.';
+            $min = '$' .$this->payment_minimum_withdrawal ;
+            $minCB = '$' .$current_balance ;
+            $message = 'You wallet balance('.$minCB.') is lower than minimum required amount (' . $min . ').';
+        } else if ($amount > $current_balance) {
+            $min = '$' . $current_balance;
+            $message = 'You are not allowed to withdrawal amount more than your current wallet balance(' . $min . ').';
+        } else if ($amount < $this->payment_minimum_withdrawal) {
+            $min = '$' .$this->payment_minimum_withdrawal ;
+            $message = 'You can\'t withdrawal lower than minimum required amount (' . $min . ').';
+        } else if (!$bank) {
+            $message = 'Bank Not Found.';
+        } else {
+            $status = 1;
+            $model = User::find($userId);
+
+            if ($model) {
+                $model->increment('current_balance', -$amount);
+                $txnId = strtoupper(str_random(10));
+                $remarks = 'You have intiate withdrawal request(' . $txnId . ') for $' . $amount;
+                $withdrawal = $this->saveWithdrawal($txnId, $userId, $bank, $amount, $service_charge, $payable_amount, $this->paymnet_currency, $remarks);
+                $this->addPaymentHistory($userId, 0, $amount, $service_charge, $payable_amount, 'DR', $this->paymnet_currency, 1, $remarks);
+                $message = 'Withdrawal request added succesfully.';
+                $data = User::where('id', $userId)->first(['current_balance', 'total_balance']);
+                $data['currency'] = $this->paymnet_currency;
+                $data['txnID'] = $txnId;
+                $this->notifyOnWithdrawal($user,$withdrawal);
+            }
+        }
+
+
+        return Response::json(array(
+                    'status' => $status,
+                    'code' => $status ? 200 : 500,
+                    'message' => $message,
+                    'data' => $data
+        ));
+    }
+
+    private function saveWithdrawal($txnId, $userId, $bank, $amount, $service_charge, $payable_amount, $currency, $remarks) {
+
+        $transition = new Withdrawal;
+        $transition->userId = $userId;
+        $transition->txn_id = $txnId;
+        $transition->amount = $amount;
+        $transition->service_charge = $service_charge;
+        $transition->payable_amount = $payable_amount;
+        $transition->currency = $currency;
+        $transition->paymentMethod = json_encode($bank);
+        $transition->status = 1;
+        $transition->remarks = $remarks;
+        $transition->save();
+        return $transition;
+    }
+
+    public function getWithdrawals(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $withdrawals = Withdrawal::where('userId', $userId)->orderBy('created_at', 'DESC')->get();
+        return Response::json(array(
+                    'status' => 1,
+                    'code' => 200,
+                    'message' => $withdrawals ? 'Withdrawals List found.' : 'No Result found.',
+                    'data' => $withdrawals
+                        )
+        );
+    }
+
+    public function addBankDetail(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+                    'bankName' => 'required',
+                    'accountName' => 'required',
+                    'accountNumber' => 'required',
+                    'ifscCode' => 'required',
+                    'bankBranch' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $bankName = $request->get('bankName');
+        $accountName = $request->get('accountName');
+        $accountNumber = $request->get('accountNumber');
+        $ifscCode = $request->get('ifscCode');
+        $bankBranch = $request->get('bankBranch');
+        $user = User::where('id', $userId)->first(['id']);
+        $status = 0;
+        $data = array();
+        if ($user) {
+
+            $bankAccount = new BankAccount;
+            $bankAccount->user_id = $userId;
+            $bankAccount->bank_name = $bankName;
+            $bankAccount->account_name = $accountName;
+            $bankAccount->account_number = $accountNumber;
+            $bankAccount->ifsc_code = $ifscCode;
+            $bankAccount->bank_branch = $bankBranch;
+            $bankAccount->status = 1;
+            $bankAccount->bankdetails = '';
+            $bankAccount->save();
+            $status = 1;
+            $message = 'Bank Details added succesfully.';
+            $data = $bankAccount;
+        } else {
+            $message = 'User not found.';
+        }
+        return Response::json(array(
+                    'status' => $status,
+                    'code' => $status ? 200 : 500,
+                    'message' => $message,
+                    'data' => $data
+                        )
+        );
+    }
+
+    public function removeBankDetail(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+                    'bankId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $bankId = $request->get('bankId');
+        $user = User::where('id', $userId)->first(['id']);
+        $bank = BankAccount::where('id', $bankId)->where('user_id', $userId)->first(['id']);
+        $status = 0;
+        if (!$user) {
+            $message = 'User not found.';
+        } else if (!$bank) {
+            $message = 'Bank Detail not found.';
+        } else {
+            $status = 1;
+            $bank = BankAccount::where('id', $bankId)->where('user_id', $userId)->delete();
+            $message = 'Bank Detail deleted succesfully.';
+        }
+        return Response::json(array(
+                    'status' => $status,
+                    'code' => $status ? 200 : 500,
+                    'message' => $message,
+                    'data' => ''
+                        )
+        );
+    }
+
+    public function getBankDetailList(Request $request){
+       $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+        
+        $userId = $request->get('userId');        
+        $user = User::where('id', $userId)->first(['id']);
+        $banks = BankAccount::where('user_id', $userId)->get();
+        $status = 0;
+        if (!$user) {
+            $message = 'User not found.';
+            $banks=[];
+        }else {
+            $status = 1;
+            $message = $banks?'Records found.':'Result not found';
+        }
+        return Response::json(array(
+                    'status' => $status,
+                    'code' => $status ? 200 : 500,
+                    'message' => $message,
+                    'data' => $banks
+                        )
+        );
+    }
+    
+    private function createMolepayPayee() {
+
+        $profile = array(
+            'payeeID' => '9', // (empty for new registration)
+            'Type' => 'Individual', //: Individual / Business *
+            'Full_Name' => 'Naru LAL',
+            'NRIC_Passport' => 'TEST',
+            'Company_Name' => 'PUNE',
+            'ROB_ROC' => '',
+            'Country' => 'INDIA',
+            'Bank_Name' => 'State bank of india', //required *
+            'Bank_Code' => 'SBIN0000256', // required *
+            'Bank_AccName' => 'SBi', // required *
+            'Bank_AccNumber' => '200885411223', // required *     
+            'Email' => 'nlkeer@mailinator.com', //required *
+            'Mobile' => '9799733954', //required **/
+        );
+        $profile = json_encode($profile);
+        $operator = $this->molpay_mid;
+        $func = 'new';
+        $profile_hash = str_random(10);
+        $skey = md5($func . $operator . $profile . $profile_hash . SHA1($this->molpay_vkey));
+        $inputs = array(
+            'operator' => $this->molpay_mid,
+            'skey' => $skey,
+            'func' => $func, //modify,new,disable
+            'profile' => $profile,
+            'profile_hash' => $profile_hash,
+        );
+
+        while (list($k, $v) = each($inputs)) {
+            $postData[] = $k . "=" . $v;
+        }
+
+        if ($this->sandbox) {
+            $url = 'https://sandbox.molpay.com';
+        } else {//Production
+            $url = 'https://www.onlinepayment.com.my';
+        }
+        $url .= '/MOLPay/API/MassPayment/payee_profile.php';
+        $postdata = implode("&", $postData);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        //curl_setopt($ch, CURLOPT_SSLVERSION     , 3);
+        $result = @curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
+
+    private function payMolepayPayeeByPayeeID() {
+
+        $payeeID = 12; //from previous api
+        $operator = $this->molpay_mid;
+        $amount = 50;
+        $currency = 'MYR'; //MYR
+        $skey = md5($operator . $payeeID . $amount . $currency . SHA1($this->molpay_vkey));
+        $inputs = array(
+            'operator' => $operator,
+            'skey' => $skey,
+            'payeeID' => $payeeID,
+            'amount' => $amount,
+            'currency' => $currency,
+        );
+
+        while (list($k, $v) = each($inputs)) {
+            $postData[] = $k . "=" . $v;
+        }
+
+        if ($this->sandbox) {
+            $url = 'https://sandbox.molpay.com';
+        } else {//Production
+            $url = 'https://www.onlinepayment.com.my';
+        }
+        $url .= '/MOLPay/API/MassPayment/SI_by_payee.php';
+
+        $postdata = implode("&", $postData);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSLVERSION     , 3);
+        $result = curl_exec($ch);
+        curl_close($ch);
+      
+        return $result;
+    }
+
+    private function payMolepayPayeeByBank() {
+
+        $payee = array(
+            'Country' => '',//INR
+            'Bank_Name' => 'SBI', //required*
+            'Bank_Code' => 'SBIN000256', //Bank_Code/Swift_Code 
+            'Bank_AccName' => 'NARU', //required*
+            'Bank_AccNumber' => '2008554478503', //required*,
+            'Bank_Address'=>'',// (non-Malaysian)
+            'Beneficery_Address'=>'',// (non-Malaysian)
+            'Email' => 'nlkeer@mailinator.com', //required*
+            'Mobile' => '9799733954' //required*
+        );
+        $payee = json_encode($payee);
+        $operator = $this->molpay_mid;
+        $currency = 'MYR'; //MYR
+        $amount = 10;
+        $reference_id = str_random(10);
+        $notify_url = '';
+        $skey = md5($operator . $amount . $currency . $payee . $reference_id . $notify_url . SHA1($this->molpay_vkey));
+        $inputs = array(
+            'operator' => $operator,
+            'skey' => $skey,
+            'amount' => $amount,
+            'currency' => $currency,
+            'payee' => $payee,
+            'reference_id' => $reference_id,
+            'notify_url' => $notify_url,
+        );
+
+        while (list($k, $v) = each($inputs)) {
+            $postData[] = $k . "=" . $v;
+        }
+
+        if ($this->sandbox) {
+            $url = 'https://sandbox.molpay.com';
+        } else {//Production
+            $url = 'https://www.onlinepayment.com.my';
+        }
+        $url .= '/MOLPay/API/MassPayment/direct_SI.php';
+
+        $postdata = implode("&", $postData);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE); //TRUE TO SHOW HEADER RESPONSE
+       // curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        //curl_setopt($ch, CURLOPT_SSLVERSION     , 3);
+        $result = curl_exec($ch);
+        curl_close($ch);
+       return $result;
+    }
+
+    private function notifyOnWithdrawal($user,$withdrawal){
+        //TODO
+    }
+    
+    private function notifyUserOnTaskPaymentRelease($user,$doer,$task){
+        //TODO
+    }
+    public function success(){
+     return "success";
+    }
+
     public function failed(){
-     return "failed";   
+     return "failed";
     }
 }
