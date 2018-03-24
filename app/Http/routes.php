@@ -143,6 +143,14 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@getPostTaskByGroupCategory'
                 ]
             );
+
+            Route::match(['get','post'],'groupCategory',[
+                'as' => 'groupCategory',
+                'uses' => 'ApiController@groupCategory'
+                ]
+            );
+
+            
             
 
             Route::match(['get'],'getOpenTasks',[

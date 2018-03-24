@@ -1751,7 +1751,6 @@ class TaskController extends Controller {
                 ->take($page_size)
                 ->get(); 
 
-         
  
         $input = [];
         $arr=[];
@@ -1795,7 +1794,7 @@ class TaskController extends Controller {
                     'total_record' => count($data),
                     'code'=>count($data)?200:404,
                     'message' => count($data)?'blogs found':'blog not found',
-                    'data'  =>  $arr
+                    'data'  =>  ($arr)?$arr:$request->all()
                     )
                 );
 

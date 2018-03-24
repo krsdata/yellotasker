@@ -822,6 +822,62 @@ public function userDetail($id=null)
     }
 
 
+    public function groupCategory(Request $request)
+    {
+        $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
+        $catId = null;
+
+        try{
+            $categoryDashboard = Category::where('parent_id','=',0)->get(); 
+            $data = [];
+                              
+            foreach ($categoryDashboard as $key => $value) {
+                $data['category_id']            = $value->id;
+                $data['group_id']               = $value->parent_id;
+                $data['category_group_name']    = $value->category_group_name;
+                $data['category_group_image']   = $image_url.'/'.$value->category_group_image;
+               
+                foreach ($value as $key => $category) {
+
+                    $arr['category_id']            = $category->id;
+                    $arr['group_id']               = $category->parent_id;
+                    $arr['category_group_name']    = $category->category_group_name;
+                    $arr['category_group_image']   = $image_url.'/'.$category->category_group_image; 
+                
+                }
+
+                $data['category'] = $arr;
+            }
+
+        }catch(\Exception $e){
+            $data = [];
+            $status = 0;
+            $code   = 500;
+            $msg    = $e->getMessage();
+        }
+        
+        ]   
+          
+        if(count($data)){
+            $status = 1;
+            $code   = 200;
+            $msg    = "Category of other Category list";
+        }else{
+            $status = 0;
+            $code   = 404;
+            $msg    = "Record not  found!";
+        }
+
+        return  response()->json([ 
+                "status"=>$status,
+                "code"=> $code,
+                "message"=> $msg,
+                'data' => $data
+            ]
+        );
+
+    }
+
 
     
     public function otherCategory(Request $request)
