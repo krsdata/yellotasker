@@ -1902,13 +1902,12 @@ class TaskController extends Controller {
 
         $validator = Validator::make($request->all(), [
                'taskId' => 'required',
-               'taskDoerId' => 'required',
                'review' => 'required',
                'rating' => 'required'
 
         ]);
             /** Return Error Message **/
-            if ($validator->fails()) {
+        if ($validator->fails()) {
                         $error_msg  =   [];
                 foreach ( $validator->messages()->all() as $key => $value) {
                             array_push($error_msg, $value);     
@@ -1922,6 +1921,17 @@ class TaskController extends Controller {
                     )
                 );
          }  
+    
+               
+        if($request->get('taskDoerId')==null && $request->get('posterUserId')==null){
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => "taskDoerId or posterUserId is required",
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
 
         $table_cname = \Schema::getColumnListing('reviews');
 
@@ -2134,6 +2144,66 @@ class TaskController extends Controller {
                             ]
                         );
 
+
+    }
+
+
+    public function userDashboard(Request $request,$uid=0){
+        $user =  User::where('id',$uid)->first();
+
+        $u = User::where('id',$uid)->first()->toArray();
+        $count=0;
+        foreach ($u as $key => $value) {
+             if($value===null){
+                ++$count;
+             }
+        }
+        
+        $user->profile  = intval(((16-$count)/16)*100).'%';
+
+        
+
+         try{
+            $data = $user; 
+            $arr_doer['posted_offers'] = \DB::table('offers')->where('assignUserId',$uid)->count();
+
+            $arr_doer['assigned']   =  \DB::table('post_tasks')->where('taskDoerId',$uid)->where('status','assigned')->count();
+            $arr_doer['awaitingPayment']   = \DB::table('post_tasks')->where('taskDoerId',$uid)->where('status','completed')->count();
+            $arr_doer['completed '] =  \DB::table('post_tasks')->where('taskDoerId',$uid)->where('status','closed')->count();
+            
+
+          //  $data->as_doer = $arr_doer;
+
+            $arr_poster['posted_offers'] = \DB::table('offers')->where('interestedUserId',$uid)->count();
+
+            $arr_poster['assigned']   = \DB::table('post_tasks')->where('userId',$uid)->where('status','assigned')->count();
+            $arr_poster['completed_from_doer']    = \DB::table('post_tasks')->where('userId',$uid)->where('status','completed')->count();
+            $arr_poster['closed'] =  \DB::table('post_tasks')->where('userId',$uid)->where('status','closed')->count();
+            $arr_poster['reopen']  = \DB::table('post_tasks')->where('userId',$uid)->where('status','reopen')->count();  
+
+            $data->user_Task_Summary = ['as_doer'=>$arr_doer,'as_poster'=>$arr_poster];
+
+            $status = 1;
+            $code  = 200;
+            $message   = "User dashboard data";
+
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+            $message   = "user does not exit";
+
+         }
+         
+           return response()->json(
+                            [ 
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
+                            'data'=>isset($data)?$data:[]
+                            ]
+                        );   
+          
+    
 
     }
 

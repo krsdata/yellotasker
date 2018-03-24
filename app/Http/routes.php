@@ -335,6 +335,12 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@reviewRating'
             ]);
 
+            Route::match(['get','post'],'taskFeedback',[
+                'as' => 'reviewRating',
+                'uses' => 'TaskController@reviewRating'
+            ]);
+
+            
 
             Route::match(['get','post'],'getReview/{uid}',[
                 'as' => 'getReview',
@@ -405,6 +411,12 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'uploadPortfolioImage',
                 'uses' => 'TaskController@uploadPortfolioImage'
             ]);
+
+             Route::match(['post','get'],'userDashboard/{uid}',[
+                'as' => 'userDashboard',
+                'uses' => 'TaskController@userDashboard'
+                ]
+            ); 
             
             
 
