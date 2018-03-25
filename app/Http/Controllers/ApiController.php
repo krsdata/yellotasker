@@ -1064,7 +1064,7 @@ public function userDetail($id=null)
             $input[$key] = $val;
         }
         
-        DB::table('messges')->insert($input); 
+        \DB::table('messges')->insert($input); 
             return response()->json(
                         [
                             "status" =>1,
