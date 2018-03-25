@@ -60,6 +60,11 @@ class Category extends Eloquent {
         return $this->hasMany('Modules\Admin\Models\Category', 'parent_id','id');
     }
 
+    public function groupCategory()
+    {
+        return $this->hasMany('Modules\Admin\Models\Category', 'parent_id','id');
+    }
+
     public function category()
     {
         return $this->belongsTo('Modules\Admin\Models\Category', 'parent_id');

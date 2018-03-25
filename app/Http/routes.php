@@ -91,7 +91,9 @@ Route::group(['prefix' => 'api/v1'], function()
                 'as' => 'getBlog',
                 'uses' => 'TaskController@getBlog'
                 ]
-            );  
+            ); 
+
+
 
           Route::match(['post','get'],'postTask/createTask',[
                 'as' => 'post_task_create',
@@ -142,6 +144,21 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@getPostTaskByGroupCategory'
                 ]
             );
+
+            Route::match(['get','post'],'groupCategory',[
+                'as' => 'groupCategory',
+                'uses' => 'ApiController@groupCategory'
+                ]
+            );
+
+             Route::match(['get','post'],'allCategory',[
+                'as' => 'allCategory',
+                'uses' => 'ApiController@allCategory'
+                ]
+            );
+
+            
+            
             
 
             Route::match(['get'],'getOpenTasks',[
@@ -319,6 +336,26 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@reviewRating'
             ]);
 
+            Route::match(['get','post'],'taskFeedback',[
+                'as' => 'reviewRating',
+                'uses' => 'TaskController@reviewRating'
+            ]);
+
+            
+
+            Route::match(['get','post'],'getReview/{uid}',[
+                'as' => 'getReview',
+                'uses' => 'TaskController@getReview'
+            ]);
+
+            Route::match(['post','get'],'getPublicProfile/{uid}',[
+                'as' => 'getReview',
+                'uses' => 'TaskController@getReview'
+                ]
+            );      
+
+            
+
             Route::match(['get','post'],'generateOtp',[
                 'as' => 'generateOtp',
                 'uses' => 'ApiController@generateOtp'
@@ -359,6 +396,31 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@getTransaction'
             ]);
             
+
+            Route::match(['get','post'],'getPortfolioImage',[
+                'as' => 'getPortfolioImage',
+                'uses' => 'TaskController@getPortfolioImage'
+            ]);
+            
+            Route::match(['get','post'],'deletePortfolioImage',[
+                'as' => 'deletePortfolioImage',
+                'uses' => 'TaskController@deletePortfolioImage'
+            ]);
+            
+
+            Route::match(['get','post'],'uploadPortfolioImage',[
+                'as' => 'uploadPortfolioImage',
+                'uses' => 'TaskController@uploadPortfolioImage'
+            ]);
+
+             Route::match(['post','get'],'userDashboard/{uid}',[
+                'as' => 'userDashboard',
+                'uses' => 'TaskController@userDashboard'
+                ]
+            ); 
+            
+            
+
             
 
 

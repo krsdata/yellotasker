@@ -1,7 +1,8 @@
 <?php
 
   try{
-        $ip =  $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ip =  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
+
         $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
         $ipInfo = json_decode($ipInfo);
         
@@ -24,7 +25,7 @@
   $zones_array =  date('P', $timestamp);
   $default_timezone = date_default_timezone_get();
   # to maintain the original timezone, re-set after
-  date_default_timezone_set($default_timezone);    
+  date_default_timezone_set($default_timezone); 
 
 return [
 

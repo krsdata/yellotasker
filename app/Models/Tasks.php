@@ -48,7 +48,7 @@ class Tasks extends Authenticatable {
 
     public  function taskPostedUser()
     {
-         return $this->belongsTo('App\User', 'userId', 'id');
+         return $this->belongsTo('App\User', 'userId', 'id')->with('posterReview');
     }
 
     public  function taskAssignedUser()
@@ -115,6 +115,24 @@ class Tasks extends Authenticatable {
     {
         return $this->belongsTo('App\User', 'taskDoerId','id');//->select('id','first_name','rating');
     } 
+
+    public function doerUserDetail()
+    {
+        return $this->belongsTo('App\User', 'taskDoerId','id')->with('doerReview');//->select('id','first_name','rating');
+    } 
+
+
+    public function avgRatingByDoer()
+    {
+         return $this->hasMany('App\Models\Review', 'taskId','id');
+    } 
+
+    public function avgRatingByPoster()
+    {
+         return $this->hasMany('App\Models\Review', 'taskId','id');
+    } 
+
+
 
     public function offer_count()
     {

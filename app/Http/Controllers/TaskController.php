@@ -29,6 +29,7 @@ use App\Models\Notification;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
 use App\Models\Review;
+use App\Models\Portfolio;
 
 /**
  * Class AdminController
@@ -49,12 +50,26 @@ class TaskController extends Controller {
                         status end) as status'; 
 
 
+    private $doerRating = '(SELECT ROUND( AVG(rating),1) from reviews LEFT  JOIN post_tasks on reviews.taskId=post_tasks.id ) as doerAvgRating';
+    private $posterRating = '(SELECT ROUND(AVG(rating),1) from reviews LEFT JOIN post_tasks on reviews.posterUserId=post_tasks.userId) as posterAvgRating';
+                                         
+
+
 
 
     // return object of userModel
     protected function getModel() {
         return new Task();
     }
+
+    public function getPublic(Request $request, $uid=null){
+
+        $user = User::with('task')->where('id',$uid)->get();
+
+        return $user;
+
+    }
+
     // get all user
     public function getUser($id=null) {
 
@@ -1736,7 +1751,6 @@ class TaskController extends Controller {
                 ->take($page_size)
                 ->get(); 
 
-         
  
         $input = [];
         $arr=[];
@@ -1780,7 +1794,7 @@ class TaskController extends Controller {
                     'total_record' => count($data),
                     'code'=>count($data)?200:404,
                     'message' => count($data)?'blogs found':'blog not found',
-                    'data'  =>  $arr
+                    'data'  =>  ($arr)?$arr:$request->all()
                     )
                 );
 
@@ -1888,13 +1902,12 @@ class TaskController extends Controller {
 
         $validator = Validator::make($request->all(), [
                'taskId' => 'required',
-               'taskDoerId' => 'required',
                'review' => 'required',
                'rating' => 'required'
 
         ]);
             /** Return Error Message **/
-            if ($validator->fails()) {
+        if ($validator->fails()) {
                         $error_msg  =   [];
                 foreach ( $validator->messages()->all() as $key => $value) {
                             array_push($error_msg, $value);     
@@ -1908,6 +1921,17 @@ class TaskController extends Controller {
                     )
                 );
          }  
+    
+               
+        if($request->get('taskDoerId')==null && $request->get('posterUserId')==null){
+            return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => "taskDoerId or posterUserId is required",
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
 
         $table_cname = \Schema::getColumnListing('reviews');
 
@@ -1939,11 +1963,16 @@ class TaskController extends Controller {
     //Get Review    
     public function getReview(Request $request, $userId=null)
     {
-        $user = User::with('doerReview','posterReview','reviewDetails')->where('id',$userId)->first();
+        $user = User::with('taskAsPoster')
+                                    ->with('taskAsDoer')
+                                    ->where('id',$userId)
+                                    ->first();
+
+
         return Response::json(array(
                 'status' => ($user)?1:0,
                 'code' => ($user)?200:500,
-                'message' => ($user)?'User review':'Record not found!',
+                'message' => ($user)?'User public profile':'Record not found!',
                 'data'  =>  $user
                 )
             ); 
@@ -1959,6 +1988,245 @@ class TaskController extends Controller {
                 'data'  =>  $order
                 )
             ); 
+    }
+
+    public function getPortfolioImage(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'userId' => 'required', 
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+         }
+
+        $result = Portfolio::where('userId',$request->get('userId'))->get();
+
+        $data = [];
+        foreach ($result as $key => $value) {
+            $data['imageId'] = $value->id;
+            $data['userId'] = $value->userId;
+            $data['taskId'] = $value->taskId;
+            $data['images'] = url($value->images);
+               
+        }
+        
+        return Response::json(array(
+                'status' => count($result)?1:0,
+                'code' => count($result)?200:500,
+                'message' => count($result)?'Portfolio Image found':'Record not found',
+                'data'  =>  $data
+                )
+            );
+
+    }
+
+    public function deletePortfolioImage(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'imageId' => 'required',
+               'userId' => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
+
+        $result = Portfolio::where('id',$request->get('imageId'))->where('userId',$request->get('userId'))->delete();
+
+        return Response::json(array(
+                'status' => ($result)?1:0,
+                'code' => ($result)?200:500,
+                'message' => ($result)?'Portfolio Image deleted':'record not found',
+                'data'  =>  $result
+                )
+            ); 
+
+
+
+    }
+
+    public function uploadPortfolioImage(Request $request){
+
+        $validator = Validator::make($request->all(), [
+               'taskId' => 'required',
+               'userId' => 'required',
+               'images' => 'required'
+
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
+
+        $result = new Portfolio;
+         
+        $table_cname = \Schema::getColumnListing('portfolio');
+        $except = ['id','created_at','updated_at','images'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+            if($request->get($value)){
+                $result->$value = $request->get($value);
+           }
+        }
+        
+        if($request->get('images')){  ;
+            $profile_image = $this->createImage($request->get('images')); 
+            if($profile_image==false){
+                return Response::json(array(
+                    'status' => 0,
+                     'code' => 500,
+                    'message' => 'Invalid Image format!',
+                    'data'  =>  $request->all()
+                    )
+                );
+            }
+            $result->images  = $profile_image;       
+        }        
+           
+
+        try{
+            $result->save();
+            $status = 1;
+            $code  = 200;
+            $message ="Portfolio Images added successfully";
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+            $message =$e->getMessage();
+        }
+         
+        return response()->json(
+                            [ 
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
+                            'data'=>isset($result)?$result:[]
+                            ]
+                        );
+
+
+    }
+
+
+    public function userDashboard(Request $request,$uid=0){
+        $user =  User::where('id',$uid)->first();
+
+        $u = User::where('id',$uid)->first()->toArray();
+        $count=0;
+        foreach ($u as $key => $value) {
+             if($value===null){
+                ++$count;
+             }
+        }
+        
+        $user->profile  = intval(((16-$count)/16)*100).'%';
+
+        
+
+         try{
+            $data = $user; 
+            $arr_doer['posted_offers'] = \DB::table('offers')->where('assignUserId',$uid)->count();
+
+            $arr_doer['assigned']   =  \DB::table('post_tasks')->where('taskDoerId',$uid)->where('status','assigned')->count();
+            $arr_doer['awaitingPayment']   = \DB::table('post_tasks')->where('taskDoerId',$uid)->where('status','completed')->count();
+            $arr_doer['completed '] =  \DB::table('post_tasks')->where('taskDoerId',$uid)->where('status','closed')->count();
+            
+
+          //  $data->as_doer = $arr_doer;
+
+            $arr_poster['posted_offers'] = \DB::table('offers')->where('interestedUserId',$uid)->count();
+
+            $arr_poster['assigned']   = \DB::table('post_tasks')->where('userId',$uid)->where('status','assigned')->count();
+            $arr_poster['completed_from_doer']    = \DB::table('post_tasks')->where('userId',$uid)->where('status','completed')->count();
+            $arr_poster['closed'] =  \DB::table('post_tasks')->where('userId',$uid)->where('status','closed')->count();
+            $arr_poster['reopen']  = \DB::table('post_tasks')->where('userId',$uid)->where('status','reopen')->count();  
+
+            $data->user_Task_Summary = ['as_doer'=>$arr_doer,'as_poster'=>$arr_poster];
+
+            $status = 1;
+            $code  = 200;
+            $message   = "User dashboard data";
+
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+            $message   = "user does not exit";
+
+         }
+         
+           return response()->json(
+                            [ 
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
+                            'data'=>isset($data)?$data:[]
+                            ]
+                        );   
+          
+    
+
+    }
+
+    public function createImage($base64)
+    {
+        try{
+            $img  = explode(',',$base64);
+            if(is_array($img) && isset($img[1])){
+                $image = base64_decode($img[1]);
+                $image_name= time().'.jpg';
+                $path = storage_path() . "/image/" . $image_name;
+              
+                file_put_contents($path, $image); 
+                return 'storage/image/'.$image_name;
+            }else{
+                return false; 
+            }
+
+            
+        }catch(Exception $e){
+            return false;
+        }
+        
     }
 
 }
