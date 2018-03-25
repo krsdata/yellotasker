@@ -136,7 +136,7 @@ class MolpayPaymentController extends Controller
         'country'=>$country,
         'currency'=>$currency,
         'vcode'=>$vcode,
-        'returnurl'=> urlencode($returnurl),
+        'returnurl'=> ($returnurl),
         'bill_desc'=>implode("\n",$prod_desc),
         );
         $query= http_build_query($fields);
