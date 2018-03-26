@@ -1,31 +1,29 @@
 <?php
 
   try{
-        $ip =  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
+        // $ip =  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
 
-        $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
-        $ipInfo = json_decode($ipInfo);
+        // $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
+        // $ipInfo = json_decode($ipInfo);
         
-        if($ipInfo->status=="success"){ 
+        // if($ipInfo->status=="success"){ 
              
-            $timezone = $ipInfo->timezone; 
+        //     $timezone = $ipInfo->timezone; 
             
-        }else{
+        // }else{
             $timezone = 'Asia/Kolkata';
-
-        }
     }catch(\Exception $e){
         $timezone = 'Asia/Kolkata';
     }  
 
-  date_default_timezone_set($timezone);
-  $zones_array = array();        
-  $timestamp = time();         
-  # to maintain the original timezone, store before
-  $zones_array =  date('P', $timestamp);
-  $default_timezone = date_default_timezone_get();
-  # to maintain the original timezone, re-set after
-  date_default_timezone_set($default_timezone); 
+      date_default_timezone_set($timezone);
+      $zones_array = array();        
+      $timestamp = time();         
+      # to maintain the original timezone, store before
+      $zones_array =  date('P', $timestamp);
+      $default_timezone = date_default_timezone_get();
+      # to maintain the original timezone, re-set after
+      date_default_timezone_set($default_timezone); 
 
 return [
 
@@ -91,7 +89,7 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
-            'timezone' => isset($zones_array)?$zones_array:'+05:30'
+            'timezone' => '+05:30'
         ],
 
         'pgsql' => [
