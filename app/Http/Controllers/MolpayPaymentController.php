@@ -102,11 +102,11 @@ class MolpayPaymentController extends Controller
             );
 
             $amount = $request->get('amount');
-            $order =  $this->createOrder($task, $user,$amount,'Task Payment : '.$task->title);
+            $order =  $this->createOrder($task, $user,$amount,'Task Payment : '.$task->title,'Online');
 
             $data['amount'] =$amount;
-            $data['orderid'] =strval($order->transaction_id);
-            $data['order_id'] = $order->transaction_id;
+            $data['orderid'] =strval($order->order_id);
+            $data['order_id'] = $order->order_id;
             $data['bill_name'] = $user->first_name.' '.$user->last_name;
             $data['bill_email'] = $user->email;
             $data['bill_mobile'] = $user->phone;
@@ -156,7 +156,7 @@ class MolpayPaymentController extends Controller
     public function return_ipn() {
      $vkey = $this->molpay_vkey;
     $this->input['treq']=   1;
-
+    
     $tranID = (isset($this->input['tranID']) && !empty($this->input['tranID'])) ? $this->input['tranID'] : '';
     $orderid = (isset($this->input['orderid']) && !empty($this->input['orderid'])) ? $this->input['orderid'] : '';
     $status = (isset($this->input['status']) && !empty($this->input['status'])) ? $this->input['status'] : '';
@@ -210,14 +210,15 @@ class MolpayPaymentController extends Controller
         }
 
         $this->save();
-        $this->updateOrderStatus($orderid, $order_status_id);
+        $this->updateOrderStatus($orderid, $order_status_id,$tranID);
+       
             echo '<html>' . "\n";
             echo '<head>'  . "\n";
             echo '  <meta http-equiv="Refresh" content="0; url=' . $responseURL . '?txnID='.$tranID.'">' . "\n";
             echo '</head>' . "\n";
             echo '<body>' . "\n";
-            echo '  <p>Please Don\'t refresh browser '. "\n";
-            echo '  <p>Please follow <a href="' . $responseURL . '?txnID='.$tranID.'">link</a>!</p>' . "\n";
+            echo '  <p><center>Please Don\'t refresh browser '. "</center>\n";
+            echo '  <p><center>Please follow <a href="' . $responseURL . '?txnID='.$tranID.'">link</a>!<center></p>' . "\n";
             echo '</body>' . "\n";
             echo '</html>' . "\n";
             exit();
@@ -360,7 +361,8 @@ class MolpayPaymentController extends Controller
                  $order = new Order;
 
             }
-       $order->transaction_id= time();
+       $order->transaction_id= '';
+       $order->order_id= time();
        $order->user_id  = $user->id;
        $order->task_id   = $task->id;
        $order->task_title   = $task->title;
@@ -374,13 +376,14 @@ class MolpayPaymentController extends Controller
      return $order;
     }
 
-    protected function updateOrderStatus($molpay_order_id,$order_status){
+    protected function updateOrderStatus($molpay_order_id,$order_status,$txn_id){
 
-    $order= Order::where('transaction_id', '=', $molpay_order_id)->first();
+    $order= Order::where('order_id', '=', $molpay_order_id)->first();
     if (is_null($order)){
      return false;
      }
       $order->status = $order_status;
+      $order->transaction_id = $txn_id;
       $order->save();
       return $order;
     }

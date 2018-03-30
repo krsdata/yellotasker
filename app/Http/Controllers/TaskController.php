@@ -53,7 +53,14 @@ class TaskController extends Controller {
     private $doerRating = '(SELECT ROUND( AVG(rating),1) from reviews LEFT  JOIN post_tasks on reviews.taskId=post_tasks.id ) as doerAvgRating';
     private $posterRating = '(SELECT ROUND(AVG(rating),1) from reviews LEFT JOIN post_tasks on reviews.posterUserId=post_tasks.userId) as posterAvgRating';
                                          
-
+    private $trns_status = '(
+                        CASE 
+                        when  status=-1 then "Failed"
+                        when  status=1 then "Success"
+                        when  status=2 then "Pending"
+                        when  status=3 then "Failed" 
+                        ELSE 
+                        status end) as status'; 
 
 
 
@@ -1980,7 +1987,9 @@ class TaskController extends Controller {
 
     public function getTransaction(Request $request, $tid=null)
     {
-        $order = \App\Order::with('userDetails','taskDetails')->where('transaction_id',$tid)->get();
+        $order = \App\Order::with('userDetails','taskDetails')->where('transaction_id',$tid)
+                    ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) )->get();
+        
         return Response::json(array(
                 'status' => ($order)?1:0,
                 'code' => ($order)?200:500,
