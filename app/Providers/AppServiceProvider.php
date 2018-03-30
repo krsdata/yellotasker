@@ -41,26 +41,6 @@ class AppServiceProvider extends ServiceProvider
                 
             }
         }
-
-        try{
-            $ip =  $_SERVER['HTTP_X_FORWARDED_FOR'];
-            $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
-            $ipInfo = json_decode($ipInfo);
-            
-            if($ipInfo->status=="success"){ 
-                 
-                $timezone = $ipInfo->timezone; 
-                
-            }else{
-                $timezone = date_default_timezone_get();
-
-            }
-        }catch(\Exception $e){
-            $timezone = date_default_timezone_get();
-        }
-       // $timezone = 'Asia/Kolkata';
-        config(['app.timezone' => $timezone]);
-
         
         View::share('controllers',$controllers);
     }
