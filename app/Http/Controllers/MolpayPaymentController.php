@@ -36,6 +36,14 @@ class MolpayPaymentController extends Controller
     private $withdrawal_service_charge=0;//flat
     private $payment_minimum_withdrawal=20;//Any Minimum Flat amount.
     protected $input = array();
+private $trns_status = '(
+                CASE 
+                when  status=-1 then "Failed"
+                when  status=1 then "Success"
+                when  status=2 then "Pending"
+                when  status=3 then "Failed" 
+                ELSE 
+                status end) as status'; 
 
     public function __construct()
     {
@@ -503,6 +511,7 @@ class MolpayPaymentController extends Controller
         );
     }
 
+    //Used to show all withdrawal request
     public function getPaymentHistory(Request $request) {
         $validator = Validator::make($request->all(), [
                     'userId' => 'required',
@@ -523,17 +532,78 @@ class MolpayPaymentController extends Controller
             );
         }
 
+        $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
+        $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+        if($page_num>1){
+            $offset = $page_size*($page_num-1);
+        }else{
+           $offset = 0;
+        }   
         $userId = $request->get('userId');
-        $logs = PaymentHistory::where('userId', $userId)->orderBy('created_at', 'DESC')->get();
+        $paymentHistory = PaymentHistory::where('userId', $userId)->with('taskDetails')->orderBy('created_at', 'DESC')
+                 ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) );
+        $total_record= $paymentHistory->count();
+        $earned =$paymentHistory->skip($offset)
+                ->take($page_size)
+                ->get()->toArray();
+        $data['earned'] =$earned;
         return Response::json(array(
                     'status' => 1,
                     'code' => 200,
-                    'message' => $logs ? 'Payment histroy found.' : 'No Result found.',
-                    'data' => $logs
+                    'total_record' => $total_record,
+                    'message' => $earned ? 'Payment histroy found.' : 'No Result found.',
+                    'data' => $earned
                         )
         );
     }
 
+    public function getOrderHistry(Request $request){
+            $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
+        $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+
+        if($page_num>1){
+            $offset = $page_size*($page_num-1);
+        }else{
+           $offset = 0;
+        }        
+        $orders = Order::where('user_id', $userId)->with('taskDetails')->orderBy('created_at', 'DESC')
+                 ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) );
+        
+        $total_record= $orders->count();
+        $orders =$orders->skip($offset)
+                ->take($page_size)
+                ->get()->toArray();
+        $data['outgoing'] =$orders;
+        return Response::json(array(
+                    'status' => 1,
+                    'code' => 200,
+                    'total_record' => $total_record,
+                    'message' => $orders ? 'Payment histroy found.' : 'No Result found.',
+                    'data' => $data
+                        )
+        );   
+    }
+    
     private function addPaymentHistory($userId, $taskId, $amount, $service_charge, $payable_amount, $mode, $currency, $status, $remarks) {
 
         $transition = new PaymentHistory;
@@ -765,6 +835,7 @@ class MolpayPaymentController extends Controller
 
         $userId = $request->get('userId');
         $withdrawals = Withdrawal::where('userId', $userId)->orderBy('created_at', 'DESC')->get();
+        $withdrawals =$withdrawals->toArray();
         return Response::json(array(
                     'status' => 1,
                     'code' => 200,
