@@ -126,8 +126,8 @@ class MolpayPaymentController extends Controller
             extract($data)  ;
         $fields = array(
         'action_url'=>$action,
-        'orderid​'=>$orderid,
-        'order_id​'=> strval($order_id),
+        'orderid?'=>$orderid,
+        'order_id?'=> strval($order_id),
         'oid'=> strval($order_id),
         'amount'=>(float)$amount,
         'bill_name'=>$bill_name,
@@ -687,31 +687,52 @@ class MolpayPaymentController extends Controller
              $payee_bank_code = $paymentMethod->ifsc_code;
              $payee_back_acc_name = $paymentMethod->account_name;
              $payee_bank_acc_number = $paymentMethod->account_number;
-             $payeeID = $paymentMethod->molplayProfile_id;
+             $payeeID = 0;//$paymentMethod->molplayProfile_id;
              if($payeeID){ //Let do
                 $response = $this->payMolepayPayeeByPayeeID($payeeID, $amount, $currency);
              }else{
               $response = $this->payMolepayPayeeByBank($reference_id, $amount, $currency, $payee_email, $payee_mobile, $payee_bank_name, $payee_bank_code, $payee_back_acc_name, $payee_bank_acc_number);
-             
-              print_r($response);die;
+              if(isset($response['StatCode']) && $response['StatCode']=='00'){
+                 $status=1;
+                 $message ='Withdrawal request initialize successfully.'; 
+                  $withdrawal = Withdrawal::find($withdrawalId);
+                  if($withdrawal){
+                  $withdrawal->api_response = json_encode($response);
+                  $withdrawal->status = $this->molpay_withdrawal_status_proccess;
+                  $withdrawal->save(); 
+                  }
+              }else if(isset($response['StatCode']) && $response['StatCode']=='11'){
+                  $message ='Withdrawal request failed.';  
+              }else{
+                   $message ='Error Occured. Please try again.'; 
+              }
+              
              }
              }else{
               $message ='User not register in the system.';   
              }
-            }
-          die;
-          
-         //$withdrawal->update();   
+            }              
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_proccess){ //proccess
+            $message ='Withdrawal request already in progress.';
+            $status=1;
+            $withdrawal['status']='In Progress';
          
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_completed){ //completed
          
+            $message ='Withdrawal request completed successfully.';
+            $status=1;
+            $withdrawal['status']='Completed';
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_declined){ //declined
          
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_cancel){ //cancel
          
         }
         
+        if($withdrawal){
+            unset($withdrawal['paymentMethod']);
+            unset($withdrawal['api_response']);
+            unset($withdrawal['remarks']);
+        }
           return Response::json(array(
                     'status' => $status,
                     'code' =>$status? 200:500,
@@ -981,6 +1002,7 @@ class MolpayPaymentController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -1011,7 +1033,7 @@ class MolpayPaymentController extends Controller
      
         $payee = json_encode($payee);
         $operator = $this->molpay_mid;
-        $notify_url = '';
+        $notify_url = url('molpay/masspay/notify');
         $skey = md5($operator . $amount . $currency . $payee . $reference_id . $notify_url . SHA1($this->molpay_vkey));
         $inputs = array(
             'operator' => $operator,
@@ -1037,7 +1059,7 @@ class MolpayPaymentController extends Controller
         $postdata = implode("&", $postData);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, FALSE); //TRUE TO SHOW HEADER RESPONSE
@@ -1055,6 +1077,9 @@ class MolpayPaymentController extends Controller
         return false;
     }
 
+    public function massPayPaymentNotify(Request $request){
+        
+    }
     private function notifyOnWithdrawal($user,$withdrawal){
         //TODO
     }
