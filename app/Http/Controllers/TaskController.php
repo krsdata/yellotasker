@@ -2074,17 +2074,87 @@ class TaskController extends Controller {
                 'data'  =>  $result
                 )
             ); 
+    }
 
+    public function updatePortfolioImage(Request $request){
+        $validator = Validator::make($request->all(), [
+               'imageId' => 'required',
+               'image' => 'required'
 
+        ]);
+            /** Return Error Message **/
+            if ($validator->fails()) {
+                        $error_msg  =   [];
+                foreach ( $validator->messages()->all() as $key => $value) {
+                            array_push($error_msg, $value);     
+                        }
+                                
+                return Response::json(array(
+                    'status' => 0,
+                    'code'=>500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    )
+                );
+        }
 
+        $result = Portfolio::find($request->get('imageId'));
+         
+        $table_cname = \Schema::getColumnListing('portfolio');
+        $except = ['id','created_at','updated_at','image'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+            if($request->get($value)){
+                $result->$value = $request->get($value);
+           }
+        }
+        
+        if($request->get('image')){  ;
+            $profile_image = $this->createImage($request->get('image')); 
+            if($profile_image==false){
+                return Response::json(array(
+                    'status' => 0,
+                     'code' => 500,
+                    'message' => 'Invalid Image format!',
+                    'data'  =>  $request->all()
+                    )
+                );
+            }
+            $result->images  = $profile_image;       
+        }        
+           
+
+        try{
+            $result->save();
+            $status = 1;
+            $code  = 200;
+            $message ="Portfolio Images updated successfully";
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+            $message =$e->getMessage();
+        }
+         
+        return response()->json(
+                            [ 
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
+                            'data'=>isset($result)?$result:[]
+                            ]
+                        );
     }
 
     public function uploadPortfolioImage(Request $request){
 
         $validator = Validator::make($request->all(), [
-               'taskId' => 'required',
+               //'taskId' => 'required',
                'userId' => 'required',
-               'images' => 'required'
+               'image' => 'required'
 
         ]);
             /** Return Error Message **/
@@ -2106,7 +2176,7 @@ class TaskController extends Controller {
         $result = new Portfolio;
          
         $table_cname = \Schema::getColumnListing('portfolio');
-        $except = ['id','created_at','updated_at','images'];
+        $except = ['id','created_at','updated_at','image'];
         
         foreach ($table_cname as $key => $value) {
            
@@ -2118,8 +2188,8 @@ class TaskController extends Controller {
            }
         }
         
-        if($request->get('images')){  ;
-            $profile_image = $this->createImage($request->get('images')); 
+        if($request->get('image')){  ;
+            $profile_image = $this->createImage($request->get('image')); 
             if($profile_image==false){
                 return Response::json(array(
                     'status' => 0,
@@ -2137,7 +2207,7 @@ class TaskController extends Controller {
             $result->save();
             $status = 1;
             $code  = 200;
-            $message ="Portfolio Images added successfully";
+            $message ="Portfolio Images uploaded successfully";
         }catch(\Exception $e){
             $status = 0;
             $code  = 500;
@@ -2152,27 +2222,36 @@ class TaskController extends Controller {
                             'data'=>isset($result)?$result:[]
                             ]
                         );
-
-
     }
-
-
+    // 
     public function userDashboard(Request $request,$uid=0){
         $user =  User::where('id',$uid)->first();
 
-        $u = User::where('id',$uid)->first()->toArray();
+        $u = User::where('id',$uid)->first(['first_name','last_name','about_me','profile_image','tagLine','location','email','role_type','birthday'])->toArray();
         $count=0;
         foreach ($u as $key => $value) {
+            $col[] = $key;
              if($value===null){
                 ++$count;
              }
-        }
+        } 
         
-        $user->profile  = intval(((16-$count)/16)*100).'%';
+        $user->profile_completion  = intval(((9-$count)/9)*100).'%';
 
-        
+        $u = User::where('id',$uid)->first(['skills','language','qualification','workExperience'])->toArray();
 
-         try{
+        $count=0;
+        foreach ($u as $key => $value) {
+            $col[] = $key;
+             if($value===null){
+                ++$count;
+             }
+        }  
+
+        $user->skill_completion  = intval(((4-$count)/4)*100).'%'; 
+        $user->badges = "0%";
+  
+        try{
             $data = $user; 
             $arr_doer['posted_offers'] = \DB::table('offers')->where('assignUserId',$uid)->count();
 
@@ -2211,9 +2290,6 @@ class TaskController extends Controller {
                             'data'=>isset($data)?$data:[]
                             ]
                         );   
-          
-    
-
     }
 
     public function createImage($base64)

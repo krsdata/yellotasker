@@ -407,10 +407,16 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@deletePortfolioImage'
             ]);
             
-
+             
             Route::match(['get','post'],'uploadPortfolioImage',[
                 'as' => 'uploadPortfolioImage',
                 'uses' => 'TaskController@uploadPortfolioImage'
+            ]);
+
+
+            Route::match(['get','post'],'updatePortfolioImage',[
+                'as' => 'updatePortfolioImage',
+                'uses' => 'TaskController@updatePortfolioImage'
             ]);
 
              Route::match(['post','get'],'userDashboard/{uid}',[
