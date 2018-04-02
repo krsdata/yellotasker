@@ -76,7 +76,7 @@ class Tasks extends Authenticatable {
     }
 
     public function offerDetails(){
-        return $this->hasMany('App\Models\Offers','taskId','id')->with('interestedUser','assignUser');
+        return $this->hasMany('App\Models\Offers','taskId','id')->with('interestedUser');
     }
 
   

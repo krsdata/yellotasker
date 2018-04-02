@@ -1376,7 +1376,7 @@ class TaskController extends Controller {
 
     public function taskOffer(Request $request, $taskId=null)
     {
-      $offers =  Tasks::with(['offerDetails'=>function($q)use($taskId){
+      $offers =  Tasks::with('seekerUserDetail')->with(['offerDetails'=>function($q)use($taskId){
                         $q->where('taskId',$taskId);
                     }])->where('id',$taskId)->get(); 
  
