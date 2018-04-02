@@ -66,11 +66,14 @@ Route::group(['prefix' => 'api/v1'], function()
 
         Route::match(['get','post'],'user/task/release-fund','MolpayPaymentController@releaseTaskFund'); 
         Route::match(['get','post'],'user/current-balance','MolpayPaymentController@getCurrentBalance'); 
-        Route::match(['get','post'],'user/payment-logs','MolpayPaymentController@getPaymentHistory'); 
+        Route::match(['get','post'],'user/payments-histroy/outgoing','MolpayPaymentController@getOrderHistry'); 
+        Route::match(['get','post'],'user/payments-histroy/earned','MolpayPaymentController@getPaymentHistory'); 
+        Route::match(['get','post'],'user/withdrawals-histroy','MolpayPaymentController@getWithdrawals'); 
         
         Route::match(['get','post'],'user/withdrawals','MolpayPaymentController@getWithdrawals'); 
         Route::match(['get','post'],'user/withdrawal/newrequest','MolpayPaymentController@addWithdrawalRequest'); 
         Route::match(['get','post'],'user/withdrawal/approve','MolpayPaymentController@approveWithdrawal'); 
+        Route::match(['get','post'],'molpay/masspay/notify','MolpayPaymentController@massPayPaymentNotify'); 
         
         Route::match(['get','post'],'user/bank_detail/list','MolpayPaymentController@getBankDetailList'); 
         Route::match(['get','post'],'user/bank_detail/add','MolpayPaymentController@addBankDetail'); 

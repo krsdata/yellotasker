@@ -36,6 +36,14 @@ class MolpayPaymentController extends Controller
     private $withdrawal_service_charge=0;//flat
     private $payment_minimum_withdrawal=20;//Any Minimum Flat amount.
     protected $input = array();
+private $trns_status = '(
+                CASE 
+                when  status=-1 then "Failed"
+                when  status=1 then "Success"
+                when  status=2 then "Pending"
+                when  status=3 then "Failed" 
+                ELSE 
+                status end) as status'; 
 
     public function __construct()
     {
@@ -126,8 +134,8 @@ class MolpayPaymentController extends Controller
             extract($data)  ;
         $fields = array(
         'action_url'=>$action,
-        'orderid​'=>$orderid,
-        'order_id​'=> strval($order_id),
+        'orderid?'=>$orderid,
+        'order_id?'=> strval($order_id),
         'oid'=> strval($order_id),
         'amount'=>(float)$amount,
         'bill_name'=>$bill_name,
@@ -503,6 +511,7 @@ class MolpayPaymentController extends Controller
         );
     }
 
+    //Used to show all withdrawal request
     public function getPaymentHistory(Request $request) {
         $validator = Validator::make($request->all(), [
                     'userId' => 'required',
@@ -523,17 +532,78 @@ class MolpayPaymentController extends Controller
             );
         }
 
+        $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
+        $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+        if($page_num>1){
+            $offset = $page_size*($page_num-1);
+        }else{
+           $offset = 0;
+        }   
         $userId = $request->get('userId');
-        $logs = PaymentHistory::where('userId', $userId)->orderBy('created_at', 'DESC')->get();
+        $paymentHistory = PaymentHistory::where('userId', $userId)->with('taskDetails')->orderBy('created_at', 'DESC')
+                 ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) );
+        $total_record= $paymentHistory->count();
+        $earned =$paymentHistory->skip($offset)
+                ->take($page_size)
+                ->get()->toArray();
+        $data['earned'] =$earned;
         return Response::json(array(
                     'status' => 1,
                     'code' => 200,
-                    'message' => $logs ? 'Payment histroy found.' : 'No Result found.',
-                    'data' => $logs
+                    'total_record' => $total_record,
+                    'message' => $earned ? 'Payment histroy found.' : 'No Result found.',
+                    'data' => $earned
                         )
         );
     }
 
+    public function getOrderHistry(Request $request){
+            $validator = Validator::make($request->all(), [
+                    'userId' => 'required',
+        ]);
+        /** Return Error Message * */
+        if ($validator->fails()) {
+            $error_msg = [];
+            foreach ($validator->messages()->all() as $key => $value) {
+                array_push($error_msg, $value);
+            }
+
+            return Response::json(array(
+                        'status' => 0,
+                        'code' => 500,
+                        'message' => $error_msg[0],
+                        'data' => ''
+                            )
+            );
+        }
+
+        $userId = $request->get('userId');
+        $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
+        $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
+
+        if($page_num>1){
+            $offset = $page_size*($page_num-1);
+        }else{
+           $offset = 0;
+        }        
+        $orders = Order::where('user_id', $userId)->with('taskDetails')->orderBy('created_at', 'DESC')
+                 ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) );
+        
+        $total_record= $orders->count();
+        $orders =$orders->skip($offset)
+                ->take($page_size)
+                ->get()->toArray();
+        $data['outgoing'] =$orders;
+        return Response::json(array(
+                    'status' => 1,
+                    'code' => 200,
+                    'total_record' => $total_record,
+                    'message' => $orders ? 'Payment histroy found.' : 'No Result found.',
+                    'data' => $data
+                        )
+        );   
+    }
+    
     private function addPaymentHistory($userId, $taskId, $amount, $service_charge, $payable_amount, $mode, $currency, $status, $remarks) {
 
         $transition = new PaymentHistory;
@@ -687,31 +757,52 @@ class MolpayPaymentController extends Controller
              $payee_bank_code = $paymentMethod->ifsc_code;
              $payee_back_acc_name = $paymentMethod->account_name;
              $payee_bank_acc_number = $paymentMethod->account_number;
-             $payeeID = $paymentMethod->molplayProfile_id;
+             $payeeID = 0;//$paymentMethod->molplayProfile_id;
              if($payeeID){ //Let do
                 $response = $this->payMolepayPayeeByPayeeID($payeeID, $amount, $currency);
              }else{
               $response = $this->payMolepayPayeeByBank($reference_id, $amount, $currency, $payee_email, $payee_mobile, $payee_bank_name, $payee_bank_code, $payee_back_acc_name, $payee_bank_acc_number);
-             
-              print_r($response);die;
+              if(isset($response['StatCode']) && $response['StatCode']=='00'){
+                 $status=1;
+                 $message ='Withdrawal request initialize successfully.'; 
+                  $withdrawal = Withdrawal::find($withdrawalId);
+                  if($withdrawal){
+                  $withdrawal->api_response = json_encode($response);
+                  $withdrawal->status = $this->molpay_withdrawal_status_proccess;
+                  $withdrawal->save(); 
+                  }
+              }else if(isset($response['StatCode']) && $response['StatCode']=='11'){
+                  $message ='Withdrawal request failed.';  
+              }else{
+                   $message ='Error Occured. Please try again.'; 
+              }
+              
              }
              }else{
               $message ='User not register in the system.';   
              }
-            }
-          die;
-          
-         //$withdrawal->update();   
+            }              
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_proccess){ //proccess
+            $message ='Withdrawal request already in progress.';
+            $status=1;
+            $withdrawal['status']='In Progress';
          
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_completed){ //completed
          
+            $message ='Withdrawal request completed successfully.';
+            $status=1;
+            $withdrawal['status']='Completed';
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_declined){ //declined
          
         }else if($withdrawal['status']== $this->molpay_withdrawal_status_cancel){ //cancel
          
         }
         
+        if($withdrawal){
+            unset($withdrawal['paymentMethod']);
+            unset($withdrawal['api_response']);
+            unset($withdrawal['remarks']);
+        }
           return Response::json(array(
                     'status' => $status,
                     'code' =>$status? 200:500,
@@ -744,6 +835,7 @@ class MolpayPaymentController extends Controller
 
         $userId = $request->get('userId');
         $withdrawals = Withdrawal::where('userId', $userId)->orderBy('created_at', 'DESC')->get();
+        $withdrawals =$withdrawals->toArray();
         return Response::json(array(
                     'status' => 1,
                     'code' => 200,
@@ -981,6 +1073,7 @@ class MolpayPaymentController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLINFO_HEADER_OUT, TRUE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -1011,7 +1104,7 @@ class MolpayPaymentController extends Controller
      
         $payee = json_encode($payee);
         $operator = $this->molpay_mid;
-        $notify_url = '';
+        $notify_url = url('molpay/masspay/notify');
         $skey = md5($operator . $amount . $currency . $payee . $reference_id . $notify_url . SHA1($this->molpay_vkey));
         $inputs = array(
             'operator' => $operator,
@@ -1037,7 +1130,7 @@ class MolpayPaymentController extends Controller
         $postdata = implode("&", $postData);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, FALSE); //TRUE TO SHOW HEADER RESPONSE
@@ -1055,6 +1148,9 @@ class MolpayPaymentController extends Controller
         return false;
     }
 
+    public function massPayPaymentNotify(Request $request){
+        
+    }
     private function notifyOnWithdrawal($user,$withdrawal){
         //TODO
     }
