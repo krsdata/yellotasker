@@ -16,7 +16,7 @@ class Messges extends Model
     
     public function commentPostedUser()
     {
-        return $this->belongsTo('App\Models\Tasks', 'userId','id');
+        return $this->belongsTo('App\User', 'userId','id')->select('id','first_name','last_name','profile_image');
     } 
     
     public function taskDetails()
