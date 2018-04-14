@@ -555,7 +555,7 @@ class TaskController extends Controller {
                      
                 }); 
 
-      
+     
         if($limit){  
            $task = $tasks->take($limit)->orderBy('id', 'desc')->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
@@ -563,17 +563,30 @@ class TaskController extends Controller {
                                             \DB::raw($this->sub_status)
                                         )->get()->toArray();  
         }
-        elseif($page_number){
+        elseif($page_number){   
             if($page_number>1){
                   $offset = $page_size*($page_num-1);
             }else{
                   $offset = 0;
             }  
-            $task =  $tasks->orderBy('id', 'desc')->skip($offset)->take($page_size)->select('*',
+            
+            if($status){
+            	$task =  $tasks->orderBy('id', 'desc')->skip($offset)->take($page_size)->select('*',
+                                            \DB::raw($this->sub_sql_offer_count),
+                                            \DB::raw($this->sub_sql_comment_count)
+                                        )->get()->toArray();
+            }else{
+            	
+            	$task =  $tasks->orderBy('id', 'desc')->skip($offset)->take($page_size)->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
                                             \DB::raw($this->sub_status)
-                                        )->get(); 
+                                        )->get()->toArray();
+            }
+
+            
+
+             
         }
         else{
            $task =  $tasks->take(20)->select('*',
