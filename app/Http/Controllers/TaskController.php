@@ -1770,7 +1770,13 @@ class TaskController extends Controller {
             $input['blog_description'] = $value->blog_description;
             $input['author'] = ($value->blog_created_by)?$value->blog_created_by:'Admin';
            
-            $input['blog_image'] = !empty($value->blog_image)?url('storage/blog/'.$value->blog_image):null; 
+            
+            if(\File::exists('storage/blog/'.$value->blog_image)){
+                 $input['blog_image'] = !empty($value->blog_image)?url('storage/blog/'.$value->blog_image):null; 
+            }else{
+                 $input['blog_image'] = null; 
+            } 
+
             $input['category_image_basepath'] = url('/storage/uploads/category/');
             $input['created_date'] = $value->created_at;
 
