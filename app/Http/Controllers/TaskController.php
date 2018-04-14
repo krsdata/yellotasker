@@ -2028,13 +2028,16 @@ class TaskController extends Controller {
          }
 
         $result = Portfolio::where('userId',$request->get('userId'))->get();
-
+        $arr  = [];
         $data = [];
         foreach ($result as $key => $value) {
+
             $data['imageId'] = $value->id;
             $data['userId'] = $value->userId;
             $data['taskId'] = $value->taskId;
             $data['images'] = url($value->images);
+
+            $arr[] =  $data;
                
         }
         
@@ -2042,7 +2045,7 @@ class TaskController extends Controller {
                 'status' => count($result)?1:0,
                 'code' => count($result)?200:500,
                 'message' => count($result)?'Portfolio Image found':'Record not found',
-                'data'  =>  $data
+                'data'  =>  $arr
                 )
             );
 
