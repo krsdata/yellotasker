@@ -576,16 +576,13 @@ class TaskController extends Controller {
                                             \DB::raw($this->sub_sql_comment_count)
                                         )->get()->toArray();
             }else{
-            	
+
             	$task =  $tasks->orderBy('id', 'desc')->skip($offset)->take($page_size)->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
                                             \DB::raw($this->sub_status)
                                         )->get()->toArray();
-            }
-
-            
-
+            } 
              
         }
         else{
@@ -1405,7 +1402,7 @@ class TaskController extends Controller {
     public function getSaveTaskByUser(Request $request, $uid=null){
         
         $saveTask = User::with(['saveTask'=>function($q){
-                            $q->whereDate('dueDate','<',Carbon::today()->toDateString());
+                            $q->whereDate('dueDate','<=',Carbon::today()->toDateString());
                             $q->where('status','open');
                         }])->where('id',$uid)
                             ->get();

@@ -22,16 +22,33 @@ Route::get('/', function () {
    // dd(Hash::make('admin'));
      return redirect('admin');
 });
+ 
+use Twilio\Rest\Client;
+Route::get('sendsms',function(){
 
-Route::get('sendMail','ApiController@sendMail'); 
+    $accountId      = "ACd50949ffed4e27e55935a68492ab9f92";
+    $token          = "d16dd6a1b8d76f146f266c65bbfdd554";
+    $fromNumber     = "+13177932385";
+    $twilio = new Aloha\Twilio\Twilio($accountId, $token, $fromNumber);
 
-Route::get('ip',function(){
-    echo $_SERVER['REMOTE_ADDR'];
-    echo "<br>";
-    print_r($_SERVER['SERVER_ADDR']);
-    echo "<br>";
-	dd($_SERVER);
- });
+    $s = $twilio->message('+917974343960', 'Hey how are you?');
+
+
+
+    $client = new  Client($accountId, $token);
+    $message = $client->messages->create(
+      '+917974343960', // Text this number
+      array(
+        'from' => '+13177932385', // From a valid Twilio number
+        'body' => 'Hello from Twilio!'
+      )
+    );
+
+});
+
+
+Route::get('otp','ApiController@otp');
+
 
 /*
 * Rest API Request , auth  & Route

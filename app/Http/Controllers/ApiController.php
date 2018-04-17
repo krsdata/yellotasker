@@ -23,8 +23,7 @@ use Modules\Admin\Models\CategoryDashboard;
 use App\Http\Requests\UserRequest;  
 use Illuminate\Http\Dispatcher;   
 use Cookie; 
-
-
+use Twilio\Rest\Client;
 
 class ApiController extends Controller
 {
@@ -45,6 +44,41 @@ class ApiController extends Controller
         $user_id =  $request->input('user_id');
        
     } 
+
+    public function otp(){
+
+
+        // Your Account Sid and Auth Token from twilio.com/user/account
+        $sid = "ACd50949ffed4e27e55935a68492ab9f92";
+        $token = "d16dd6a1b8d76f146f266c65bbfdd554";
+        $client = new Client($sid, $token);
+
+        
+
+        $client = new  Client($sid, $token);
+        $message = $client->messages->create(
+          '+917974343960', // Text this number
+          array(
+            'from' => '3177932385', // From a valid Twilio number
+            'body' => 'Hello from Twilio!'
+          )
+        );
+ 
+
+       dd($message);
+
+       $client = new Client($sid, $token);
+
+        // Read TwiML at this URL when a call connects (hold music)
+        // $call = $client->calls->create(
+        //   '+917974343960', // Call this number
+        //   '3177932385', // From a valid Twilio number
+        //   array(
+        //       'url' => 'https://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient'
+        //   )
+        // );
+
+    }
 
     public function validateUser(Request $request,User $user){
 

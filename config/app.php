@@ -168,7 +168,7 @@ return [
        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
        Barryvdh\DomPDF\ServiceProvider::class,
        Way\Generators\GeneratorsServiceProvider::class,
-       Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class, 
+       Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,  
       // Maatwebsite\Excel\ExcelServiceProvider::class,
       // Zizaco\Entrust\EntrustServiceProvider::class,
     ],
@@ -223,7 +223,7 @@ return [
         'Helper'    =>  App\Helpers\Helper::class,
         'PDF' => Barryvdh\DomPDF\Facade::class, 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class, 
     ],
 
 ];
