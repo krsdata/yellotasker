@@ -199,22 +199,41 @@ private $trns_status = '(
 
     $key0 = md5($tranID.$orderid.$status.$domain.$amount.$currency);
     $key1 = md5($paydate.$domain.$key0.$appcode.$vkey);
+    $task_id = 0;
+    $ordObj = Order::find($orderid);
+
+    if($ordObj){
+        $task_id = $ordObj->task_id;
+    }
+
 
     $responseURL ='';
         if ( $skey != $key1 )
             $status = -1 ;
-
         $order_status_id = $this->molpay_default_status_id;
 
         if ( $status == "00" )  {
-         $order_status_id = $this->molpay_completed_status_id;
-        $responseURL = $this->payment_success_url;
-        } elseif( $status == "22" ) {
-         $order_status_id = $this->molpay_pending_status_id;
-        $responseURL = $this->payment_success_url;
-        } else {
-         $order_status_id = $this->molpay_failed_status_id;
-        $responseURL = $this->payment_failed_url;
+            $order_status_id = $this->molpay_completed_status_id;
+            if($task_id){
+                \DB::table('post_tasks')->where('id',$task_id)->update(['funded_by_poster'=>'Yes','payment_status'=>'completed']);
+            }
+            $responseURL = $this->payment_success_url;
+        } 
+        elseif( $status == "22" ) 
+        {
+            $order_status_id = $this->molpay_pending_status_id;
+            if($task_id){
+                \DB::table('post_tasks')->where('id',$task_id)->update(['funded_by_poster'=>'Yes','payment_status'=>'pending_from_bank']);
+            }
+            $responseURL = $this->payment_success_url;
+        }else 
+        {
+            $order_status_id = $this->molpay_failed_status_id;
+            $responseURL = $this->payment_failed_url;
+
+            if($task_id){
+                \DB::table('post_tasks')->where('id',$task_id)->update(['payment_status'=>'failed']);
+            }
         }
 
         $this->save();
@@ -420,7 +439,7 @@ private $trns_status = '(
         $userId = $request->get('userId');
         $taskId = $request->get('taskId');
         $user = User::where('id', $userId)->first(['current_balance', 'total_balance']);
-        $task = Tasks::where('id', $taskId)->first(['id', 'title', 'status', 'userId', 'taskDoerId', 'taskOwnerId', 'totalAmount', 'is_paid']);
+        $task = Tasks::where('id', $taskId)->first(['id', 'title', 'status', 'userId', 'taskDoerId', 'taskOwnerId', 'totalAmount', 'fund_released']);
 
         $status = 0;
         $message = 'Something Wrong with Server.';
@@ -430,7 +449,7 @@ private $trns_status = '(
             $message = 'Task Not Found.';
         } else {
             $status = 1;
-            if ($task['is_paid'] == 0) {
+            if ($task['fund_released'] == 0) {
                 $taskDoer = User::find($task['taskDoerId']);
                 if (!$taskDoer) {
                     $message = 'Task is not assigned to any doer.';
@@ -466,7 +485,7 @@ private $trns_status = '(
             $model->increment('total_balance', $netAmount);
 
             $remarks = 'You Have received payment:$' . $netAmount . ' For task ' . $task['title'];
-            Tasks::find($taskId)->update(['is_paid'=>1]);//change status
+            Tasks::find($taskId)->update(['fund_released'=>1]);//change status
             $this->addPaymentHistory($taskDoerId, $taskId, $totalAmount, $commisionAmount, $netAmount, 'CR', $this->paymnet_currency, 1, $remarks);
             $this->notifyUserOnTaskPaymentRelease($user,$model,$task);
         }
