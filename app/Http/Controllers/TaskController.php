@@ -134,6 +134,7 @@ class TaskController extends Controller {
            } 
            $task->$value = $request->get($value);
         }
+        $task->is_paid=0;
         $task->taskOwnerId = $request->get('userId');
         
         $task->save();

@@ -49,8 +49,8 @@ class ApiController extends Controller
 
 
         // Your Account Sid and Auth Token from twilio.com/user/account
-        $sid = "ACd50949ffed4e27e55935a68492ab9f92";
-        $token = "d16dd6a1b8d76f146f266c65bbfdd554";
+        $sid = "AC540c7f8bd91032a4ba28b0bd609ffda0";
+        $token = "ed0dc89b140e52e07c6e51f01b473785";
         $client = new Client($sid, $token);
 
         
@@ -59,7 +59,7 @@ class ApiController extends Controller
         $message = $client->messages->create(
           '+917974343960', // Text this number
           array(
-            'from' => '3177932385', // From a valid Twilio number
+            'from' => '+18317775872', // From a valid Twilio number
             'body' => 'Hello from Twilio!'
           )
         );

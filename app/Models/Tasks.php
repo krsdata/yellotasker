@@ -15,6 +15,9 @@ class Tasks extends Authenticatable {
      * @var string
      */
     protected $table = 'post_tasks';
+
+    public $is_paid = 0;
+
     /**
      * The attributes that are mass assignable.
      *
