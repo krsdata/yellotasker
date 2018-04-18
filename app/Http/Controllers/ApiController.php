@@ -36,6 +36,10 @@ class ApiController extends Controller
     * Calling Method : get  
     */
 
+
+    public    $sid      = "ACd50949ffed4e27e55935a68492ab9f92";
+    public    $token    = "d16dd6a1b8d76f146f266c65bbfdd554";
+
     public function __construct(Request $request) {
 
         if ($request->header('Content-Type') != "application/json")  {
@@ -62,21 +66,9 @@ class ApiController extends Controller
             'from' => '+18317775872', // From a valid Twilio number
             'body' => 'Hello from Twilio!'
           )
-        );
- 
-
-       dd($message);
-
+        ); 
        $client = new Client($sid, $token);
-
-        // Read TwiML at this URL when a call connects (hold music)
-        // $call = $client->calls->create(
-        //   '+917974343960', // Call this number
-        //   '3177932385', // From a valid Twilio number
-        //   array(
-        //       'url' => 'https://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient'
-        //   )
-        // );
+ 
 
     }
 
@@ -1189,7 +1181,24 @@ public function userDetail($id=null)
         $data['userId'] = $request->get('userId');
         $data['timezone'] = config('app.timezone');
 
-        $this->sendSMS($request->get('mobileNumber'),$otp);
+      //  $this->sendSMS($request->get('mobileNumber'),$otp);
+
+
+        $sid = $this->sid; //"AC540c7f8bd91032a4ba28b0bd609ffda0";
+        $token = $this->token; //"ed0dc89b140e52e07c6e51f01b473785";
+        $client = new Client($sid, $token);
+
+        
+
+        $client = new  Client($sid, $token);
+        $message = $client->messages->create(
+           '+'.$request->get('mobileNumber'),// Text this number
+          array(
+            'from' => '+18317775872', // From a valid Twilio number
+            'body' => 'Your otp is '.$otp
+          )
+        ); 
+       $client = new Client($sid, $token); 
 
         \DB::table('mobile_otp')->insert($data);
 
