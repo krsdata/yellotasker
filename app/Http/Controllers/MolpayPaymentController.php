@@ -200,12 +200,11 @@ private $trns_status = '(
     $key0 = md5($tranID.$orderid.$status.$domain.$amount.$currency);
     $key1 = md5($paydate.$domain.$key0.$appcode.$vkey);
     $task_id = 0;
-    $ordObj = Order::find($orderid);
+    $ordObj = Order::where('order_id',$orderid)->first();
 
     if($ordObj){
         $task_id = $ordObj->task_id;
     }
-
 
     $responseURL ='';
         if ( $skey != $key1 )
