@@ -192,7 +192,7 @@ class ApiController extends Controller
         ]);
         /** Return Error Message **/
         if ($validator->fails()) {
-                    $error_msg  =   [];
+            $error_msg      =   [];
             foreach ( $validator->messages()->all() as $key => $value) {
                         array_push($error_msg, $value);     
                     }
@@ -218,7 +218,10 @@ class ApiController extends Controller
                 'first_name'=> $request->input('first_name')
                 ];
 
-        //$verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
+        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
+        
+        //dd($verification_email);
+
         $notification = new Notification;
         $notification->addNotification('user_register',$user->id,$user->id,'User register','');
        
@@ -226,7 +229,7 @@ class ApiController extends Controller
                             [ 
                                 "status"=>1,
                                 "code"=>200,
-                                "message"=>"Thank you for registration",
+                                "message"=>"Thank you for registration.Verify your email address to get started",
                                 'data'=>$user
                             ]
                         );

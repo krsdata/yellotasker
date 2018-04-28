@@ -220,7 +220,7 @@ class Helper {
     {        
         $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
         $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:''; 
-        dd($email_content);
+       //dd($email_content);
         $mail = new PHPMailer;
         $html = view::make('emails.'.$template,['content' => $email_content]);
         $html = $html->render(); 
@@ -231,25 +231,25 @@ class Helper {
              
 
             $mail->SMTPAuth   = true;                  // enable SMTP authentication
-            $mail->Host       = "mail.infowaynic.com"; // sets the SMTP server
+            $mail->Host       = "6668.smtp.antispamcloud.com"; // sets the SMTP server
             $mail->Port       = 587;   
             $mail->SMTPSecure = 'false';                 // set the SMTP port for the GMAIL server
-            $mail->Username   = "no-reply@infowaynic.com"; // SMTP account username
-            $mail->Password   = "no-reply@123!"; 
+            $mail->Username   = "smtp@yellotasker.com"; // SMTP account username
+            $mail->Password   = "E84FFBnDdtsPFoMAHnKy"; 
 
-            $mail->setFrom("admin@yellotasker.co", "yellotasker");
+            $mail->setFrom("smtp@yellotasker.com", "yellotasker");
             $mail->Subject = $email_content['subject'];
             $mail->MsgHTML($html);
             $mail->addAddress($email_content['receipent_email'], "yellotasker");
-            $mail->addAddress("kroy.iips@gmail.com","yellotasker"); 
+            $mail->addAddress("kroy@mailinator.com","yellotasker"); 
 
             //$mail->addAttachment(‘/home/kundan/Desktop/abc.doc’, ‘abc.doc’); // Optional name
             $mail->SMTPOptions= array(
-            'ssl' => array(
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true
-            )
+                    'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
             );
 
             $mail->send();
