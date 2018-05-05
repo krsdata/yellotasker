@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model as Eloquent; 
+use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Auth;
 
-class Comments extends Eloquent {
+class Reviews extends Authenticatable {
 
    
     /**
@@ -12,7 +14,7 @@ class Comments extends Eloquent {
      *
      * @var string
      */
-    protected $table = 'comments';
+    protected $table = 'review';
     /**
      * The attributes that are mass assignable.
      *
@@ -32,27 +34,28 @@ class Comments extends Eloquent {
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
-
     protected $guarded = ['created_at' , 'updated_at' , 'id' ];
 
-    // user details
-    public  function userDetail()
+    public function user()
     {
-        return $this->hasOne('App\User','id','userId') ;
-    }
-
-    public  function commentReply()
-    {
-        return $this->hasMany('App\Models\Comments','commentId')->with('userDetail') ;
-    }
-
-    public  function taskDetail()
-    {
-        return $this->hasOne('App\Models\Tasks','id','taskId');
+        return $this->belongsTo('App\User','taskDoerId','id');
     }
 
 
+    public function taskDoerUser()
+    {
+        return $this->belongsTo('App\User','taskDoerId','id');
+    }
+
+    public function taskPostUser()
+    {
+        return $this->belongsTo('App\User','posterUserId','id');
+    }
+
+    public function task()
+    {
+        return $this->hasMany('App\Models\Tasks','id','taskId');
+    }
+
+    
 }

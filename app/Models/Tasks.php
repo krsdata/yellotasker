@@ -127,12 +127,12 @@ class Tasks extends Authenticatable {
 
     public function avgRatingByDoer()
     {
-         return $this->hasMany('App\Models\Review', 'taskId','id');
+         return $this->hasMany('App\Models\Reviews', 'taskId','id');
     } 
 
     public function avgRatingByPoster()
     {
-         return $this->hasMany('App\Models\Review', 'taskId','id');
+         return $this->hasMany('App\Models\Reviews', 'taskId','id');
     } 
 
 
