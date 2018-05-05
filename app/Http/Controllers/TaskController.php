@@ -29,6 +29,7 @@ use App\Models\Notification;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\CategoryDashboard; 
 use App\Models\Review;
+use App\Models\Reviews;
 use App\Models\Portfolio;
 
 /**
@@ -40,8 +41,8 @@ class TaskController extends Controller {
     protected $modelNumber = '';
 
     private    $sub_sql =  "( case when status = 'completed' then 0 when  COALESCE(dueDate,CURRENT_DATE) < current_date then 1 when status = 'open'then 3 when status = 'assigned' then 2    end )as rank";
-    private    $sub_sql_offer_count = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
-    private    $sub_sql_comment_count = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
+    private    $sub_sql_offer_count     = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
+    private    $sub_sql_comment_count   = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
 
     private $sub_status = '(
                         CASE 
@@ -50,8 +51,8 @@ class TaskController extends Controller {
                         status end) as status'; 
 
 
-    private $doerRating = '(SELECT ROUND( AVG(rating),1) from reviews LEFT  JOIN post_tasks on reviews.taskId=post_tasks.id ) as doerAvgRating';
-    private $posterRating = '(SELECT ROUND(AVG(rating),1) from reviews LEFT JOIN post_tasks on reviews.posterUserId=post_tasks.userId) as posterAvgRating';
+    private $doerRating     = '(SELECT ROUND( AVG(doerRating),1) from reviews LEFT  JOIN post_tasks on review.taskId=post_tasks.id ) as doerAvgRating';
+    private $posterRating   = '(SELECT ROUND(AVG(posterRating),1) from reviews LEFT JOIN post_tasks on review.posterUserId=post_tasks.userId) as posterAvgRating';
                                          
     private $trns_status = '(
                         CASE 
@@ -60,9 +61,46 @@ class TaskController extends Controller {
                         when  status=2 then "Pending"
                         when  status=3 then "Failed" 
                         ELSE 
-                        status end) as status'; 
+                        status end) as status';
+    // constructor
+    public function __construct(Request $request) {
 
+        try{
+            $uid = $request->get('user_id');
+            $user   =   User::where('id',$uid)->first();
+            if($user){ 
+                $u      =   User::where('id',$uid)->first(['first_name','last_name','about_me','profile_image','tagLine','location','email','role_type','birthday'])->toArray();
+               
+                $count=0;
+                foreach ($u as $key => $value) {
+                    $col[] = $key;
+                     if($value===null){
+                        ++$count;
+                     }
+                } 
+                
+                $user->profile_completion  = intval(((9-$count)/9)*100).'%';
 
+                $u = User::where('id',$uid)->first(['skills','language','qualification','workExperience'])->toArray();
+
+                $count=0;
+                foreach ($u as $key => $value) {
+                    $col[] = $key;
+                     if($value===null){
+                        ++$count;
+                     }
+                }  
+                $user->skill_completion  = intval(((4-$count)/4)*100).'%'; 
+                $user->badges = "0%";
+                
+                $user->save(); 
+                
+            } 
+        } catch(\Exception $e){ 
+
+             //
+        }
+    }
 
     // return object of userModel
     protected function getModel() {
@@ -1927,12 +1965,9 @@ class TaskController extends Controller {
     public function reviewRating(Request $request){
 
         $validator = Validator::make($request->all(), [
-               'taskId' => 'required',
-               'review' => 'required',
-               'rating' => 'required'
-
+               'taskId' => 'required'
         ]);
-            /** Return Error Message **/
+        /** Return Error Message **/
         if ($validator->fails()) {
                         $error_msg  =   [];
                 foreach ( $validator->messages()->all() as $key => $value) {
@@ -1959,23 +1994,35 @@ class TaskController extends Controller {
                 );
         }
 
-        $table_cname = \Schema::getColumnListing('reviews');
+        $table_cname = \Schema::getColumnListing('review');
 
-        $except = ['id','created_at','updated_at','status'];
+        $except = ['id','created_at','updated_at','status','IsDoerFeedbackEntered','IsPosterFeedbackEntered'];
 
-        $review = Review::firstOrNew(
+         
+        $review = Reviews::firstOrNew(
                     [
-                        'taskId'=> $request->get('taskId'),
-                        'taskDoerId'=> $request->get('taskDoerId')
-                    ]);
+                        'taskId'=> $request->get('taskId')
+                    ]);  
+        $review->IsDoerFeedbackEntered = "false";
+        if($request->get('taskDoerId')){
+            $review->IsDoerFeedbackEntered = "true"; 
+        }
+        $review->IsPosterFeedbackEntered = "false";
+        if($request->get('posterUserId')){
+            $review->IsPosterFeedbackEntered = "true"; 
+        }
+       
 
         foreach ($table_cname as $key => $value) {
                
            if(in_array($value, $except )){
                 continue;
-           } 
-           $review->$value = $request->get($value);
-        }
+           }  
+            if($request->get($value)){
+                $review->$value = $request->get($value);
+           }
+
+        } 
         $review->save();
         return Response::json(array(
                     'status' =>1,
@@ -1994,11 +2041,10 @@ class TaskController extends Controller {
                                     ->where('id',$userId)
                                     ->first();
 
-
         return Response::json(array(
                 'status' => ($user)?1:0,
                 'code' => ($user)?200:500,
-                'message' => ($user)?'User public profile':'Record not found!',
+                'message' => ($user)?'Review found':'Record not found!',
                 'data'  =>  $user
                 )
             ); 
