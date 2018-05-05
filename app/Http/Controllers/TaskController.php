@@ -2003,13 +2003,17 @@ class TaskController extends Controller {
                     [
                         'taskId'=> $request->get('taskId')
                     ]);  
-        $review->IsDoerFeedbackEntered = "false";
-        if($request->get('taskDoerId')){
-            $review->IsDoerFeedbackEntered = "true"; 
-        }
-        $review->IsPosterFeedbackEntered = "false";
-        if($request->get('posterUserId')){
-            $review->IsPosterFeedbackEntered = "true"; 
+        $review->IsDoerFeedbackEntered = "false"; 
+        $review->IsPosterFeedbackEntered = "false";  
+
+        $status = Reviews::where('taskId',$request->get('taskId'))->first();
+
+        if($status){
+            if($status->IsDoerFeedbackEntered){
+               $review->IsPosterFeedbackEntered = "true";   
+            }else{
+                $review->IsDoerFeedbackEntered = "true"; 
+            }
         }
        
 
