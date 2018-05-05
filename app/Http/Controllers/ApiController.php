@@ -247,6 +247,9 @@ class ApiController extends Controller
                 file_put_contents($path, $image); 
                 return url::to(asset('storage/image/'.$image_name));
             }else{
+                if(starts_with($base64,'http')){
+                    return $base64;
+                }
                 return false; 
             }
 
@@ -279,9 +282,10 @@ public function userDetail($id=null)
     * Author : kundan Roy
     * Calling Method : get  
     */
-    public function updateProfile(Request $request,$userId=null)
-    {       
-             
+    public function updateProfile(Request $request,$userId)
+    {      
+
+        $user = User::find($userId);  
         if((User::find($userId))==null)
         {
             return Response::json(array(
@@ -292,8 +296,6 @@ public function userDetail($id=null)
                 )
             );
         } 
-        $user = User::find($userId); 
-
          
         $table_cname = \Schema::getColumnListing('users');
         $except = ['id','created_at','updated_at','profile_image','modeOfreach'];
@@ -311,7 +313,7 @@ public function userDetail($id=null)
        		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
         }
         
-        if($request->get('profile_image')){  ;
+        if($request->get('profile_image')){ 
             $profile_image = $this->createImage($request->get('profile_image')); 
             if($profile_image==false){
                 return Response::json(array(
