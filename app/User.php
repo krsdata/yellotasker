@@ -187,12 +187,12 @@ class User extends Authenticatable
 
     public function doerReview()
     {
-        return $this->hasMany('App\Models\Review', 'taskDoerId','id')->select('id','taskId','taskDoerId','review','rating');;
+        return $this->hasMany('App\Models\Reviews', 'taskDoerId','id')->select('id','taskId','taskDoerId','doerReview','doerRating');;
     }
 
     public function posterReview()
     {
-        return $this->hasMany('App\Models\Review', 'posterUserId','id')->select('id','taskId','posterUserId','review','rating');
+        return $this->hasMany('App\Models\Reviews', 'posterUserId','id')->select('id','taskId','posterUserId','posterReview','posterRating');
     }
 
     public function reviewDetails()
@@ -204,15 +204,15 @@ class User extends Authenticatable
 
     public function taskAsPoster()
     {
-         return $this->hasMany('App\Models\Tasks', 'userId','id')->with('taskPostedUser','doerUserDetail')->with(['avgRatingByPoster'=>function($q){
-            $q->select('taskId','review',\DB::raw('(ROUND(avg(rating),1)) as avgRating'));
-        }]);   
+        return $this->hasMany('App\Models\Tasks', 'userId','id')->with('taskPostedUser','doerUserDetail')->with(['avgRatingByPoster'=>function($q){
+            $q->select('taskId','posterReview',\DB::raw('(ROUND(avg(posterRating),1)) as avgRating'));
+        }]); 
     }
 
     public function taskAsDoer()
     {
         return $this->hasMany('App\Models\Tasks', 'taskDoerId','id')->with('doerUserDetail')->with('taskPostedUser')->with(['avgRatingByDoer'=>function($q){
-            $q->select('taskId','review',\DB::raw('(ROUND(avg(rating),1)) as avgRating'));
+            $q->select('taskId','doerReview',\DB::raw('(ROUND(avg(doerRating),1)) as avgRating'));
         }]);   
     }
  

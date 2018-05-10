@@ -1297,6 +1297,5 @@ public function userDetail($id=null)
               return true;
             }
     }
-
     
 } 
