@@ -187,12 +187,12 @@ class User extends Authenticatable
 
     public function doerReview()
     {
-        return $this->hasMany('App\Models\Reviews', 'taskDoerId','id')->select('id','taskId','taskDoerId','doerReview','doerRating');;
+        return $this->hasMany('App\Models\Reviews', 'taskDoerId','id')->select('id','taskId','taskDoerId','doerReview','doerRating','IsDoerFeedbackEntered');
     }
 
     public function posterReview()
     {
-        return $this->hasMany('App\Models\Reviews', 'posterUserId','id')->select('id','taskId','posterUserId','posterReview','posterRating');
+        return $this->hasMany('App\Models\Reviews', 'posterUserId','id')->select('id','taskId','posterUserId','posterReview','posterRating','IsPosterFeedbackEntered');
     }
 
     public function reviewDetails()
