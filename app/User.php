@@ -205,14 +205,14 @@ class User extends Authenticatable
     public function taskAsPoster()
     {
         return $this->hasMany('App\Models\Tasks', 'userId','id')->with('taskPostedUser','doerUserDetail')->with(['avgRatingByPoster'=>function($q){
-            $q->select('taskId','posterReview',\DB::raw('(ROUND(avg(posterRating),1)) as avgRating'));
+            $q->select('taskId','posterReview','posterUserId','IsPosterFeedbackEntered',\DB::raw('(ROUND(avg(posterRating),1)) as avgRating'));
         }]); 
     }
 
     public function taskAsDoer()
     {
         return $this->hasMany('App\Models\Tasks', 'taskDoerId','id')->with('doerUserDetail')->with('taskPostedUser')->with(['avgRatingByDoer'=>function($q){
-            $q->select('taskId','doerReview',\DB::raw('(ROUND(avg(doerRating),1)) as avgRating'));
+            $q->select('taskId','doerReview','taskDoerId','IsDoerFeedbackEntered'\DB::raw('(ROUND(avg(doerRating),1)) as avgRating'));
         }]);   
     }
  
