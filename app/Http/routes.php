@@ -445,7 +445,7 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             ); 
 
-              Route::match(['post','get','PUT','PATCH'],'getPress',[
+            Route::match(['post','get','PUT','PATCH'],'getPress',[
                 'as' => 'press',
                 'uses' => 'ApiController@press'
                 ]
@@ -464,6 +464,11 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
             
+            Route::match(['post','get','PUT','PATCH','DELETE'],'deletePress',[
+                'as' => 'deletePress',
+                'uses' => 'ApiController@press'
+                ]
+            );
             
 
             

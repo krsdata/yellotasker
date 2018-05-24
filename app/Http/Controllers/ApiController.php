@@ -1395,14 +1395,46 @@ public function userDetail($id=null)
 
                        
                 break;
+             case 'DELETE':
+                    $id = $request->get('id');
+                    $checkId =  \DB::table('press_master')->where('id',$id)->get();
+
+                    if($checkId){
+                       
+                        $press = \DB::table('press_master')->where('id',$id)->delete();    
+                        return response()->json(
+                                        [
+                                    "status"    =>  1,
+                                    'code'      =>  200,
+                                    "message"   =>  "Press item deleted",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+                    }else{
+
+                        return response()->json(
+                                        [
+                                    "status"    =>  0,
+                                    'code'      =>  500,
+                                    "message"   =>  "Invalid press Id",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+
+                    }
+                    break;   
             
             default:
-                # code...
+                 return response()->json(
+                                        [
+                                    "status"    =>  0,
+                                    'code'      =>  500,
+                                    "message"   =>  "Method not allow. Try GET,POST,PATCH or DELETE method only",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
                 break;
         }
-
-
-         
 
     }
     
