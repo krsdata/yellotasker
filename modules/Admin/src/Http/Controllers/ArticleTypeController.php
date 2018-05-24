@@ -155,6 +155,7 @@ class ArticleTypeController extends Controller {
         } else {
             $results = SupportTicket::with('supportType')->Paginate($this->record_per_page);
         }
+        
         return view('packages::articleType.support', compact('results','articleType','page_title', 'page_action'));
     }
 

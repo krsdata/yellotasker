@@ -1,10 +1,15 @@
+
 <?php
 namespace Modules\Admin\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model as Eloquent; 
+use Modules\Admin\Models\Category;
+use Illuminate\Foundation\Http\FormRequest;
+use Response;
 
-class Reason extends Model {
+class Page extends Eloquent {
+
+
 
    
     /**
@@ -12,7 +17,7 @@ class Reason extends Model {
      *
      * @var string
      */
-    protected $table = 'reasons';
+    protected $table = ' pages';
     /**
      * The attributes that are mass assignable.
      *
@@ -29,20 +34,15 @@ class Reason extends Model {
      * The attributes that are mass assignable.
      *
      * @var array
+     */
+    protected $fillable = ['title','page_content','banner_image1']; // All field of user table here    
+
+
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-
-     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['reasonDescription','reasonType','userId'];  // All field of user table here    
-
-    
-    
+     
   
 }
