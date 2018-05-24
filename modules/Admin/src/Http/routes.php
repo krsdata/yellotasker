@@ -380,6 +380,25 @@
             ]
                 ]
         );
+
+
+
+        Route::bind('press', function($value, $route) {
+            return Modules\Admin\Models\Press::find($value);
+        });
+ 
+        Route::resource('admin/press', 'Modules\Admin\Http\Controllers\PressController', [
+            'names' => [
+                'edit' => 'press.edit',
+                'show' => 'press.show',
+                'destroy' => 'press.destroy',
+                'update' => 'press.update',
+                'store' => 'press.store',
+                'index' => 'press',
+                'create' => 'press.create',
+            ]
+                ]
+        );
         
 		
 	 
