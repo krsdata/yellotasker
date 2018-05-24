@@ -387,17 +387,17 @@ Route::group(['prefix' => 'api/v1'], function()
             ]);
 
              Route::match(['get','post'],'getArticle/{id}',[
-                'as' => 'verifyOtp',
+                'as' => 'getArticle',
                 'uses' => 'ComplainController@getArticle'
             ]);
 
           	Route::match(['get','post'],'getRelatedArticle/{id}',[
-                'as' => 'verifyOtp',
+                'as' => 'getRelatedArticle',
                 'uses' => 'ComplainController@getRelatedArticle'
             ]);
 
             Route::match(['get','post'],'supportListing',[
-                'as' => 'verifyOtp',
+                'as' => 'supportListing',
                 'uses' => 'ComplainController@supportListing'
             ]);
 
@@ -444,7 +444,31 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'TaskController@userDashboard'
                 ]
             ); 
+
+            Route::match(['post','get','PUT','PATCH'],'getPress',[
+                'as' => 'press',
+                'uses' => 'ApiController@press'
+                ]
+            );
+
+            Route::match(['post','get','PUT','PATCH'],'updatePress',[
+                'as' => 'press',
+                'uses' => 'ApiController@press'
+                ]
+            );
             
+            
+             Route::match(['post','get','PUT','PATCH'],'createPress',[
+                'as' => 'createPress',
+                'uses' => 'ApiController@press'
+                ]
+            );
+            
+            Route::match(['post','get','PUT','PATCH','DELETE'],'deletePress',[
+                'as' => 'deletePress',
+                'uses' => 'ApiController@press'
+                ]
+            );
             
 
             

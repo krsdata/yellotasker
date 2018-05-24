@@ -81,11 +81,20 @@
                                         </thead>
                                         <tbody>
                                         @foreach($results as $key => $result)
+                                            <?php 
+                                                $dept = isset($result->supportType->resolution_department)?$result->supportType->resolution_department:null;
+
+                                                if($dept==null){
+                                                    continue;
+                                                } 
+                                            ?>
+
                                             <tr>
                                                 <td> {{++$key}} </td>
                                                 <td> 
 
-                                                    <a href="{{url('admin/articleType?search='.$result->supportType->resolution_department)}}" style="text-transform: capitalize;"> 
+
+                                                    <a href="{{url('admin/articleType?search='.$dept)}}" style="text-transform: capitalize;"> 
                                                     {{$result->supportType->resolution_department or 'NA'}} 
                                                     </a>
                                                  </td>
@@ -104,38 +113,38 @@
                                                      
                                                     <div class="btn-group dropup">
                                                                    
-                                                                    <button type="button" class="btn green dropdown-toggle btn green-haze btn-outline btn-circle btn-sm" data-toggle="dropdown" aria-expanded="false">
-                                                                        Action <i class="fa fa-angle-up"></i>
-                                                                    </button>
-                                                                    <ul class="dropdown-menu pull-right" role="menu">
-                                                                         <li>
-                                                                            <a href="javascript:;">
-                                                                            	Action
-                                                                              </a>
-                                                                        </li>
-                                                                             <li class="divider"> </li>
-                                                                   
-                                                                        <li>
-                                                                            <a href="{{url('admin/supportTicket?view=true&status=inprogress=&ticketId='.$result->ticket_id)}}"> Inprogress </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="{{url('admin/supportTicket?view=true&status=reopen=&ticketId='.$result->ticket_id)}}"> Reopen </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="{{url('admin/supportTicket?view=true&status=resolved=&ticketId='.$result->ticket_id)}}"> resolved </a>
-                                                                        </li>
-                                                                        <li class="divider"> </li>
-                                                                        <li> 
-                                                                        	 <a href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}">
-                                                                        	View Details
-                                                                        </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                    	</td>
+                                                        <button type="button" class="btn green dropdown-toggle btn green-haze btn-outline btn-circle btn-sm" data-toggle="dropdown" aria-expanded="false">
+                                                            Action <i class="fa fa-angle-up"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right" role="menu">
+                                                             <li>
+                                                                <a href="javascript:;">
+                                                                	Action
+                                                                  </a>
+                                                            </li>
+                                                                 <li class="divider"> </li>
+                                                       
+                                                            <li>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=inprogress=&ticketId='.$result->ticket_id)}}"> Inprogress </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=reopen=&ticketId='.$result->ticket_id)}}"> Reopen </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved=&ticketId='.$result->ticket_id)}}"> resolved </a>
+                                                            </li>
+                                                            <li class="divider"> </li>
+                                                            <li> 
+                                                            	 <a href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}">
+                                                            	View Details
+                                                            </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                            	</td>
                                                
-                                            		</tr>
-                                           @endforeach
+                                    		</tr>
+                                        @endforeach
                                             
                                         </tbody>
                                     </table>

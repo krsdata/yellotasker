@@ -1297,5 +1297,145 @@ public function userDetail($id=null)
               return true;
             }
     }
+
+    public function press(Request $request)
+    {
+
+        $press = $request->method();
+        
+        switch ($press) {
+            case 'POST':
+
+
+                $validator = Validator::make($request->all(), [
+                        'link' => 'required',
+                        'pressName' => 'required' 
+                    ]); 
+
+                // Return Error Message
+                if ($validator->fails()) {
+                            $error_msg  =   [];
+                    foreach ( $validator->messages()->all() as $key => $value) {
+                                array_push($error_msg, $value);     
+                            }
+                                    
+                    return Response::json(array(
+                        'status' => 0,
+                        'message' => $error_msg[0],
+                        'data'  =>  ''
+                        )
+                    );
+                }
+                $data['pressName']  = $request->get('pressName');
+                $data['link']       = $request->get('link');
+
+                $press = \DB::table('press_master')->insert($data); 
+
+                return response()->json(
+                                    [
+                                        "status"    =>  count($press)?1:0,
+                                'code'      =>  count($press)?200:500,
+                                "message"   =>  count($press)?"Press detail added":"Something went wrong",
+                                'data'      =>  $request->all()
+                            ]
+                );    
+                break;
+            case 'GET':
+                $id = $request->get('id');
+                if($id){
+                    $press = \DB::table('press_master')->where('id',$id)->get();
+                }else{
+                     $press = \DB::table('press_master')->get(); 
+                }
+                   
+                return response()->json(
+                            [
+                                "status"    =>  count($press)?1:0,
+                                'code'      =>  count($press)?200:404,
+                                "message"   =>  count($press)?"Press detail found":"Record not found",
+                                'data'      =>  $press
+                            ]
+                ); 
+                break;
+            case 'PATCH':
+                    $id = $request->get('id');
+                    $checkId =  \DB::table('press_master')->where('id',$id)->get();
+
+                    if($checkId){
+                        if($request->get('pressName')){
+                            $data['pressName']  = $request->get('pressName'); 
+                            $press = \DB::table('press_master')->where('id',$id)->update($data);    
+                        }
+                        
+                        if($request->get('link')){
+                            $data['link']       = $request->get('link'); 
+                            $press = \DB::table('press_master')->where('id',$id)->update($data);    
+                        }
+                        return response()->json(
+                                        [
+                                    "status"    =>  1,
+                                    'code'      =>  200,
+                                    "message"   =>  "Press detail updated",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+                    }else{
+
+                        return response()->json(
+                                        [
+                                    "status"    =>  0,
+                                    'code'      =>  500,
+                                    "message"   =>  "Invalid press Id",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+
+                    }
+                   
+
+                       
+                break;
+             case 'DELETE':
+                    $id = $request->get('id');
+                    $checkId =  \DB::table('press_master')->where('id',$id)->get();
+
+                    if($checkId){
+                       
+                        $press = \DB::table('press_master')->where('id',$id)->delete();    
+                        return response()->json(
+                                        [
+                                    "status"    =>  1,
+                                    'code'      =>  200,
+                                    "message"   =>  "Press item deleted",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+                    }else{
+
+                        return response()->json(
+                                        [
+                                    "status"    =>  0,
+                                    'code'      =>  500,
+                                    "message"   =>  "Invalid press Id",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+
+                    }
+                    break;   
+            
+            default:
+                 return response()->json(
+                                        [
+                                    "status"    =>  0,
+                                    'code'      =>  500,
+                                    "message"   =>  "Method not allow. Try GET,POST,PATCH or DELETE method only",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+                break;
+        }
+
+    }
     
 } 
