@@ -1297,5 +1297,96 @@ public function userDetail($id=null)
               return true;
             }
     }
+
+    public function press(Request $request)
+    {
+
+        $press = $request->method();
+        
+        switch ($press) {
+            case 'POST':
+                $data['pressName']  = $request->get('pressName');
+                $data['link']       = $request->get('link');
+
+                $press = \DB::table('press_master')->insert($data); 
+
+                return response()->json(
+                                    [
+                                        "status"    =>  count($press)?1:0,
+                                'code'      =>  count($press)?200:500,
+                                "message"   =>  count($press)?"Press detail added":"Something went wrong",
+                                'data'      =>  $request->all()
+                            ]
+                );    
+                break;
+            case 'GET':
+                 $press = \DB::table('press_master')->get(); 
+
+                return response()->json(
+                            [
+                                "status"    =>  count($press)?1:0,
+                                'code'      =>  count($press)?200:500,
+                                "message"   =>  count($press)?"Press detail added":"Something went wrong",
+                                'data'      =>  $request->all()
+                            ]
+                ); 
+                break;
+            case 'PATCH':
+                    $id = $request->get('id');
+                    $checkId =  \DB::table('press_master')->where('id'=>$id)->get();
+                    
+                    if($checkId){
+                        if($request->get('pressName')){
+                            $data['pressName']  = $request->get('pressName'); 
+                            $press = \DB::table('press_master')->where('id'=>$id)->update($data);    
+                        }
+                        
+                        if($request->get('link')){
+                            $data['link']       = $request->get('link'); 
+                            $press = \DB::table('press_master')->where('id'=>$id)->update($data);    
+                        }
+                        return response()->json(
+                                        [
+                                    "status"    =>  1,
+                                    'code'      =>  200,
+                                    "message"   =>  "Press detail updated",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+                    }else{
+
+                        return response()->json(
+                                        [
+                                    "status"    =>  0,
+                                    'code'      =>  500,
+                                    "message"   =>  "Invalid press Id",
+                                    'data'      =>  $request->all()
+                                ]
+                        ); 
+
+                    }
+                   
+
+                       
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+
+        if($request->method()=='POST')){ 
+           
+        }
+
+        if($request->method()=='GET')){ 
+           
+
+               
+        }
+         
+
+    }
     
 } 
