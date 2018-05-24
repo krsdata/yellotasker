@@ -1333,17 +1333,17 @@ public function userDetail($id=null)
                 break;
             case 'PATCH':
                     $id = $request->get('id');
-                    $checkId =  \DB::table('press_master')->where('id'=>$id)->get();
-                    
+                    $checkId =  \DB::table('press_master')->where('id',$id)->get();
+
                     if($checkId){
                         if($request->get('pressName')){
                             $data['pressName']  = $request->get('pressName'); 
-                            $press = \DB::table('press_master')->where('id'=>$id)->update($data);    
+                            $press = \DB::table('press_master')->where('id',$id)->update($data);    
                         }
                         
                         if($request->get('link')){
                             $data['link']       = $request->get('link'); 
-                            $press = \DB::table('press_master')->where('id'=>$id)->update($data);    
+                            $press = \DB::table('press_master')->where('id',$id)->update($data);    
                         }
                         return response()->json(
                                         [
@@ -1376,15 +1376,6 @@ public function userDetail($id=null)
         }
 
 
-        if($request->method()=='POST')){ 
-           
-        }
-
-        if($request->method()=='GET')){ 
-           
-
-               
-        }
          
 
     }
