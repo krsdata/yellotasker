@@ -458,6 +458,12 @@ Route::group(['prefix' => 'api/v1'], function()
             );
             
             
+             Route::match(['post','get','PUT','PATCH'],'createPress',[
+                'as' => 'createPress',
+                'uses' => 'ApiController@press'
+                ]
+            );
+            
             
 
             

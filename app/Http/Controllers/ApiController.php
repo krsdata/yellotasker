@@ -1305,6 +1305,27 @@ public function userDetail($id=null)
         
         switch ($press) {
             case 'POST':
+
+
+                $validator = Validator::make($request->all(), [
+                        'link' => 'required',
+                        'pressName' => 'required' 
+                    ]); 
+
+                // Return Error Message
+                if ($validator->fails()) {
+                            $error_msg  =   [];
+                    foreach ( $validator->messages()->all() as $key => $value) {
+                                array_push($error_msg, $value);     
+                            }
+                                    
+                    return Response::json(array(
+                        'status' => 0,
+                        'message' => $error_msg[0],
+                        'data'  =>  ''
+                        )
+                    );
+                }
                 $data['pressName']  = $request->get('pressName');
                 $data['link']       = $request->get('link');
 
@@ -1320,14 +1341,19 @@ public function userDetail($id=null)
                 );    
                 break;
             case 'GET':
-                 $press = \DB::table('press_master')->get(); 
-
+                $id = $request->get('id');
+                if($id){
+                    $press = \DB::table('press_master')->where('id',$id)->get();
+                }else{
+                     $press = \DB::table('press_master')->get(); 
+                }
+                   
                 return response()->json(
                             [
                                 "status"    =>  count($press)?1:0,
-                                'code'      =>  count($press)?200:500,
-                                "message"   =>  count($press)?"Press detail added":"Something went wrong",
-                                'data'      =>  $request->all()
+                                'code'      =>  count($press)?200:404,
+                                "message"   =>  count($press)?"Press detail found":"Record not found",
+                                'data'      =>  $press
                             ]
                 ); 
                 break;
