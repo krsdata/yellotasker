@@ -446,13 +446,13 @@ Route::group(['prefix' => 'api/v1'], function()
             ); 
 
             Route::match(['post','get','PUT','PATCH'],'getPress',[
-                'as' => 'press',
+                'as' => 'getPress',
                 'uses' => 'ApiController@press'
                 ]
             );
 
             Route::match(['post','get','PUT','PATCH'],'updatePress',[
-                'as' => 'press',
+                'as' => 'updatePress',
                 'uses' => 'ApiController@press'
                 ]
             );
@@ -469,9 +469,7 @@ Route::group(['prefix' => 'api/v1'], function()
                 'uses' => 'ApiController@press'
                 ]
             );
-            
-
-            
+             
 
 
             Route::match(['post','get'],'getPersonalMessage', 'ApiController@getPersonalMessage'); 
