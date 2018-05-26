@@ -75,10 +75,10 @@
                                             <tr>
                                                 <td> {{++$key}} </td>
                                                 <td> {{$result->pressName}} </td>
-                                                <td style="max-width: 400px; word-wrap:break-word">  
+                                                <td style="max-width: 500px; word-wrap:break-word">  
                                                      <a href="{{$result->link}}" target="_blank"> {{ $result->link }}  </a>
                                                 </td>
-                                                <td style="max-width: 400px"> 
+                                                <td style="max-width: 4500px"> 
                                                     <?php if(empty($result->articleDescription))
                                                     $result->articleDescription = "NA";
                                                     ?>
