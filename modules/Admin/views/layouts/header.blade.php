@@ -5,12 +5,11 @@
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <title>ProgrammerLAB </title>
+        <title>Yellotasker | {{ $page_title or 'Yellotasker'}} </title>
         <link rel="shortcut icon" type="image/png" href="{{asset('assets/img/fav.png')}}" /> 
         
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="Preview page of Metronic Admin Theme #4 for statistics, charts, recent events and reports" name="description" />
         <meta content="" name="author" />
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
