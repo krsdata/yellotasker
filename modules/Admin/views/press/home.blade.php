@@ -75,10 +75,10 @@
                                             <tr>
                                                 <td> {{++$key}} </td>
                                                 <td> {{$result->pressName}} </td>
-                                                <td>  
-                                                      {{ $result->link }} 
+                                                <td style="max-width: 300px">  
+                                                     <a href="{{$result->link}}" target="_blank"> {{ $result->link }}  </a>
                                                 </td>
-                                                <td style="width: 300px"> 
+                                                <td style="max-width: 300px"> 
                                                     <?php if(empty($result->articleDescription))
                                                     $result->articleDescription = "NA";
                                                     ?>
