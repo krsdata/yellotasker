@@ -63,6 +63,7 @@
                                                 <th> Sno. </th>
                                                 <th> Press Name </th>
                                                 <th> Link </th> 
+                                                <th> Description </th> 
                                                 <th>Created date</th> 
                                                 <th>Action</th> 
                                             </tr>
@@ -74,10 +75,21 @@
                                             <tr>
                                                 <td> {{++$key}} </td>
                                                 <td> {{$result->pressName}} </td>
-                                                <td>  
-                                                      {{ $result->link }} 
+                                                <td style="max-width: 500px; word-wrap:break-word">  
+                                                     <a href="{{$result->link}}" target="_blank"> {{ $result->link }}  </a>
                                                 </td>
-  
+                                                <td style="max-width: 4500px"> 
+                                                    <?php if(empty($result->articleDescription))
+                                                    $result->articleDescription = "NA";
+                                                    ?>
+                                                    {!! substr(strip_tags($result->articleDescription),0,100)!!}  
+                                                    @if(strlen(strip_tags($result->articleDescription))>='100')
+                                                    ... 
+                                                    @endif
+                                                     <a href="{{ route('press.edit',$result->id)}}">
+                                                        <i class="fa fa-eye" title="Show"></i> 
+                                                    </a>
+                                                </td> 
                                                  <td>
                                                     {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
                                                 </td>

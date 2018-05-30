@@ -30,6 +30,6 @@ class Press extends Eloquent {
      *
      * @var array
      */
-   protected $fillable = ['pressName','link'];  // All field of user table here    
+   protected $fillable = ['pressName','link','articleDescription'];  // All field of user table here    
   
 }

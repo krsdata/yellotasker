@@ -1328,12 +1328,13 @@ public function userDetail($id=null)
                 }
                 $data['pressName']  = $request->get('pressName');
                 $data['link']       = $request->get('link');
+                $data['articleDescription'] = $request->get('articleDescription');
 
                 $press = \DB::table('press_master')->insert($data); 
 
                 return response()->json(
                                     [
-                                        "status"    =>  count($press)?1:0,
+                                "status"    =>  count($press)?1:0,
                                 'code'      =>  count($press)?200:500,
                                 "message"   =>  count($press)?"Press detail added":"Something went wrong",
                                 'data'      =>  $request->all()
@@ -1371,6 +1372,13 @@ public function userDetail($id=null)
                             $data['link']       = $request->get('link'); 
                             $press = \DB::table('press_master')->where('id',$id)->update($data);    
                         }
+
+                        if($request->get('articleDescription')){
+                            $data['articleDescription']       = $request->get('articleDescription'); 
+                            $press = \DB::table('press_master')->where('id',$id)->update($data);    
+                        }
+
+                        
                         return response()->json(
                                         [
                                     "status"    =>  1,
@@ -1390,9 +1398,7 @@ public function userDetail($id=null)
                                 ]
                         ); 
 
-                    }
-                   
-
+                    } 
                        
                 break;
              case 'DELETE':

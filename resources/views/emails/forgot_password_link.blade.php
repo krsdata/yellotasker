@@ -44,12 +44,10 @@
          <strong style="font-family:MuseoSans-500,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-weight:500">Hi {{$content['name']}},</strong></p>
 <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:24px 0;padding:0;text-align:Left" align="Left">
            <p>Looks like you need to reset your password. Please click the link below on.</p>
-              <p> 
-
-                
+              <p>  
               </p>
         <div class="m_6462014940457833709mobile-hide">
-         <a href="<?php echo 'http://yellotasker.co/#/update-password;token='.$content['temp_password'].';key='.$content['encrypt_key']; ?>" style="background:#efeb10; color:#000; padding:10px 25px; float:right; text-decoration:none; border-radius:40px;">Reset Password</a>
+         <a href="<?php echo 'http://yellotasker.com/#/update-password;token='.$content['temp_password'].';key='.$content['encrypt_key']; ?>" style="background:#efeb10; color:#000; padding:10px 25px; float:right; text-decoration:none; border-radius:40px;">Reset Password</a>
 
 
      div>
