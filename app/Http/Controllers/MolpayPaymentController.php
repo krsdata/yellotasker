@@ -419,6 +419,7 @@ private $trns_status = '(
                     'userId' => 'required',
                     'taskId' => 'required',
         ]);
+
         /** Return Error Message * */
         if ($validator->fails()) {
             $error_msg = [];
@@ -580,6 +581,7 @@ private $trns_status = '(
                     'userId' => 'required',
         ]);
         /** Return Error Message * */
+        $userId = $request->get('userId');
         if ($validator->fails()) {
             $error_msg = [];
             foreach ($validator->messages()->all() as $key => $value) {
@@ -594,6 +596,19 @@ private $trns_status = '(
                             )
             );
         }
+
+        $net_outgoing = \DB::table('post_tasks')->where(function($q) use($userId){
+            $q->where('taskOwnerId',$userId);
+            $q->where('fund_released',1);
+        })->sum('totalAmount');
+
+        
+        $net_incoming = \DB::table('payment_history')->where(function($q) use($userId){
+            $q->where('userId',$userId);
+        })->sum('payable_amount');
+
+
+
 
         $userId = $request->get('userId');
         $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
@@ -615,6 +630,8 @@ private $trns_status = '(
         return Response::json(array(
                     'status' => 1,
                     'code' => 200,
+                    'net_outgoing' => isset($net_outgoing)?$net_outgoing:'0.00',
+                    'net_incoming' => isset($net_incoming)?$net_incoming:'0.00',
                     'total_record' => $total_record,
                     'message' => $orders ? 'Payment histroy found.' : 'No Result found.',
                     'data' => $data
@@ -1198,5 +1215,43 @@ private $trns_status = '(
 
     public function failed(){
      return "failed";
+    }
+
+    public function totalIncome(Request $request)
+    {
+        $startDate = $request->get('startDate');
+        $endDate   = $request->get('endDate');
+
+        $service_charge = \DB::table('payment_history')->where(function($q) use($startDate,$endDate){
+            if($startDate && $endDate){
+                $q->whereBetween('created_at', [$startDate, $endDate]);    
+            }
+            
+        })->select(\DB::raw('SUM(amount) as earn'),\DB::raw('SUM(payable_amount) as spend'),\DB::raw('SUM(service_charge) as profit'))
+          ->first();
+
+        
+        return response()->json(
+                            [ 
+                                "status"=>($service_charge)?1:0,
+                                "code"=>($service_charge)?200:500,
+                                "message"=>"Yellotasker income details",
+                                'data'=>$service_charge
+                            ]
+                        );     
+    }
+
+    public function widthDrawFundRequest(Request $request){
+
+       $data = \DB::table('withdrawal')->get();
+       return response()->json(
+                            [ 
+                                "status"=>($data)?1:0,
+                                "code"=>($data)?200:500,
+                                "message"=>"Widthdraw Fund Request",
+                                'data'=>$data
+                            ]
+                        );
+ 
     }
 }

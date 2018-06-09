@@ -500,6 +500,10 @@ class TaskController extends Controller {
         $search_locationType = $request->get('locationType');
         $search_city         = $request->get('city');
         $search_totalAmount  = $request->get('totalAmount');
+
+        $releasedFund  = $request->get('releasedFund');
+
+        
         
          $validatorFields    = [];
         
@@ -551,6 +555,10 @@ class TaskController extends Controller {
                     }
                     if($status){
                         $q->where('status', $status); 
+                    }
+                    
+                    if($fund_released){
+                        $q->where('fund_released', $releasedFund); 
                     }
                    
                     if($userId){
