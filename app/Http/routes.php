@@ -81,20 +81,35 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['get'],'notifications','NotificationController@getAllNotification');
         Route::match(['get','post'],'molpay','MolpayPaymentController@index'); 
 
-        Route::match(['get','post'],'user/task/release-fund','MolpayPaymentController@releaseTaskFund'); 
-        Route::match(['get','post'],'user/current-balance','MolpayPaymentController@getCurrentBalance'); 
+        Route::match(['get','post'],'user/task/release-fund','MolpayPaymentController@releaseTaskFund');  //1 
+
+        Route::match(['get','post'],'user/current-balance','MolpayPaymentController@getCurrentBalance'); //2
+
         Route::match(['get','post'],'user/payments-histroy/outgoing','MolpayPaymentController@getOrderHistry'); 
+
         Route::match(['get','post'],'user/payments-histroy/earned','MolpayPaymentController@getPaymentHistory'); 
-        Route::match(['get','post'],'user/withdrawals-histroy','MolpayPaymentController@getWithdrawals'); 
+
+        Route::match(['get','post'],'user/withdrawals-histroy','MolpayPaymentController@getWithdrawals'); //4 //admin
         
-        Route::match(['get','post'],'user/withdrawals','MolpayPaymentController@getWithdrawals'); 
-        Route::match(['get','post'],'user/withdrawal/newrequest','MolpayPaymentController@addWithdrawalRequest'); 
-        Route::match(['get','post'],'user/withdrawal/approve','MolpayPaymentController@approveWithdrawal'); 
+        Route::match(['get','post'],'user/withdrawals','MolpayPaymentController@getWithdrawals'); //4.1 
+
+        Route::match(['get','post'],'user/withdrawal/newrequest','MolpayPaymentController@addWithdrawalRequest'); //3
+
+        Route::match(['get','post'],'user/withdrawal/approve','MolpayPaymentController@approveWithdrawal'); //5
+
         Route::match(['get','post'],'molpay/masspay/notify','MolpayPaymentController@massPayPaymentNotify'); 
         
         Route::match(['get','post'],'user/bank_detail/list','MolpayPaymentController@getBankDetailList'); 
-        Route::match(['get','post'],'user/bank_detail/add','MolpayPaymentController@addBankDetail'); 
+
+        Route::match(['get','post'],'user/bank_detail/add','MolpayPaymentController@addBankDetail');
+
         Route::match(['get','post'],'user/bank_detail/delete','MolpayPaymentController@removeBankDetail'); 
+
+
+        Route::match(['get','post'],'incomeDetail','MolpayPaymentController@totalIncome'); 
+
+        Route::match(['get','post'],'widthDrawFundRequest','MolpayPaymentController@widthDrawFundRequest');  //
+
        
        
         Route::group(['middleware' => 'jwt-auth'], function () 
