@@ -547,7 +547,8 @@ class TaskController extends Controller {
                         $search_by_date,
                         $search_locationType,
                         $search_city,
-                        $search_totalAmount
+                        $search_totalAmount,
+                        $releasedFund
                     )
                 {
                     if($title){
@@ -557,7 +558,7 @@ class TaskController extends Controller {
                         $q->where('status', $status); 
                     }
                     
-                    if($fund_released){
+                    if($releasedFund){
                         $q->where('fund_released', $releasedFund); 
                     }
                    
