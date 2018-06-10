@@ -359,11 +359,11 @@ public function userDetail($id=null)
     public function login(Request $request)
     {    
         $input = $request->all();
-        if (!$token = JWTAuth::attempt(['email'=>$request->get('email'),'password'=>$request->get('password'),'status'=>1])) {
+        $token = JWTAuth::attempt(['email'=>$request->get('email'),'password'=>$request->get('password'),'status'=>1]);
+        if (!$token) {
             return response()->json([ "status"=>0,"message"=>"Invalid email or password. Try again!" ,'data' => '' ]);
         }
-         
-        $user = JWTAuth::toUser($token); 
+        $user = JWTAuth::toUser($token);
         
         return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
 
@@ -540,7 +540,6 @@ public function userDetail($id=null)
                         'data'  =>  ''
                         )
                     );
-    
             }
             
         }else
@@ -550,8 +549,8 @@ public function userDetail($id=null)
                 
                 if (Hash::check($email, $token)) {
                         $password =  Hash::make($request->get('password'));
-                        $user = User::where('email',$request->get('email'))->update(['password'=>$password]);
-                      
+                        $user = User::where('email',$email)->update(['password'=>$password]);
+                        
                         return Response::json(array(
                                 'status' => 1,
                                 'message' => "Password reset successfully.",
