@@ -18,10 +18,12 @@ header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Origin: *");
 
 Route::get('/', function () {
-
    // dd(Hash::make('admin'));
-     return redirect('admin');
+    return redirect('admin');
 });
+
+
+
  
 use Twilio\Rest\Client;
 Route::get('sendsms',function(){

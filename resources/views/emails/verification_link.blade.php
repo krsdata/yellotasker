@@ -26,13 +26,13 @@ your account, please click the link below to confirm your email address and
 get started.
                         </p>
                         <p>
-                          <a href="{{ url('api/v1/email_verification?verification_code='.$content['verification_token'].'&email='.$content['email']) }}">
+                          <a href="{{ url('api/v1/email_verification?verification_code='.urlencode($content['verification_token']).'&email='.urlencode($content['email'])) }}">
                           Verify Your E-mail Address  
                         </a> 
                       </p>
                       <p> Or copy & paste this link into your browser.<br>
                         <a href="{{ url('api/v1/email_verification?verification_code='.$content['verification_token'].'&email='.$content['email']) }}">
-                          {{ url('api/v1/email_verification?verification_code='.$content['verification_token'].'&email='.$content['email']) }}</a> 
+                          {{ url('api/v1/email_verification?verification_code='.urlencode($content['verification_token']).'&email='.urlencode($content['email'])) }}</a> 
                       </p> 
                           <p>Best Regards,</p>
                           <p>Team Yellotasker</p>

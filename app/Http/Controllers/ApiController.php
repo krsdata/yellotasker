@@ -394,8 +394,8 @@ public function userDetail($id=null)
    
     public function emailVerification(Request $request)
     {
-        $verification_code = $request->input('verification_code');
-        $email    = $request->input('email');
+        $verification_code = urlencode($request->input('verification_code'));
+        $email    = urlencode($request->input('email'));
 
         if (Hash::check($email, $verification_code)) {
            $user = User::where('email',$email)->get()->count();
@@ -508,9 +508,9 @@ public function userDetail($id=null)
     public function resetPassword(UserRequest $request)
     { 
 
-        $encryptedValue = ($request->get('key'))?$request->get('key'):''; 
+        $encryptedValue = ($request->get('key'))?urldecode($request->get('key')):''; 
         $method_name = $request->method();
-        $token = $request->get('token');
+        $token = urldecode($request->get('token'));
        // $email = ($request->get('email'))?$request->get('email'):'';
 
         if($method_name=='GET')
@@ -551,7 +551,7 @@ public function userDetail($id=null)
                 
                 if (Hash::check($email, $token)) {
                         $password =  Hash::make($request->get('password'));
-                        $user = User::where('email',$request->get('email'))->update(['password'=>$password]);
+                        $user = User::where('email',urldecode($request->get('email')))->update(['password'=>$password]);
                       
                         return Response::json(array(
                                 'status' => 0,
