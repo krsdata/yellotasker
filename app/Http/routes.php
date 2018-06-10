@@ -64,7 +64,9 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'user/login', 'ApiController@login'); 
         Route::match(['post','get'],'email_verification','ApiController@emailVerification');   
         Route::match(['post','get'],'user/forgotPassword','ApiController@forgetPassword'); 
-        Route::post('password/reset','ApiController@resetPassword');  
+
+        Route::match(['post','get'],'password/reset','ApiController@resetPassword'); 
+        
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
         Route::match(['post','get'],'categoryDashboard','ApiController@categoryDashboard');
         
@@ -502,7 +504,7 @@ Route::group(['prefix' => 'api/v1'], function()
 
 Route::get('/login','Adminauth\AuthController@showLoginForm'); 
 //Route::post('password/reset','Adminauth\AuthController@resetPassword'); 
-Route::post('password/reset','ApiController@resetPassword');  
+//Route::post('password/reset','ApiController@resetPassword');  
 
  Route::post('password/email','ApiController@resetPassword'); 
  Route::get('molpay','MolpayPaymentController@index'); 
