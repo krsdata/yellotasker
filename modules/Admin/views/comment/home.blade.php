@@ -69,10 +69,11 @@
                                         </thead>
                                         <tbody>
                                         @foreach($comments as $key => $result)
+                                        @if(isset($result->taskDetail) && isset($result->userDetail))
                                             <tr>
                                             <td>{{ ++$key }}</td>
                                               
-                                                <td> <a href="{{route('postTask.show',$result->id)}}"> {{ ucfirst($result->taskDetail->title)}}</a></td>
+                                                <td> <a href="{{route('postTask.show',$result->taskDetail->id)}}"> {{ ucfirst($result->taskDetail->title)}}</a></td>
                                                 <td>  
 
                                                 @if(isset($result->userDetail->first_name))
@@ -89,6 +90,7 @@
                                                     {!! Form::close() !!} 
                                                 </td> 
                                             </tr>
+                                            @endif
                                            @endforeach 
                                         </tbody>
                                     </table>

@@ -19,7 +19,7 @@
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">{{ $heading }}</span>
+                                        <span class="caption-subject font-red sbold uppercase">{{ $heading }}S</span>
                                     </div>
                                      
                                      
@@ -42,16 +42,17 @@
                                         </div>
                                 </div>
 
-                                    @if(isset($result->commentReply) && count($result->commentReply)==0)
-                                        Record Not found!
-                                    @endif
+                                   
                                 <div class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
+                                         <tr>
+                                                <td colspan="5"> <h4>Task Title : <b>{{ $comments[0]->taskDetail->title or 'NA'}} </b> </h4></td>
+                                           </tr>
                                             <tr>
                                              <th> Id </th>
-                                                <th> Task Title </th>
-                                                <th> Posted By </th>  
+                                                 
+                                                <th> Comment By </th>  
                                                 <th> Comment </th> 
                                                 <th>Created Date</th> 
                                                 
@@ -59,12 +60,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($comments as $key => $result)
-                                        @foreach($result->commentReply as $key => $result)
+                                          @if(isset($comments) && count($comments)==0 )
+                                           <p style="color: red"> No comments found! </p>
+                                           
+                                         @endif
+                                        @foreach($comments as $key => $result)  
+                                      
                                             <tr>
                                              <td>{{ ++$key }}</td>
                                                
-                                                <td>{{ $result->taskDetail->title}}</td>
+                                               
                                                 <td> 
 
                                                 @if(isset($result->userDetail->first_name))
@@ -81,7 +86,7 @@
                                                     {!! Form::close() !!} 
                                                 </td> 
                                             </tr>
-                                             @endforeach 
+                                             
                                            @endforeach 
                                         </tbody>
                                     </table>
