@@ -49,14 +49,15 @@
 
               <!--AngularJS-->
 
-       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+       <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script> -->
+       <!-- <script src="{{ URL::asset('assets/js/angular.js')}}"></script> -->
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.css">
       <!-- <script src="path/to/angular.js"></script> -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.js"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.js"></script>
       <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 
-        <script src="{{ URL::asset('assets/js/app.js')}}"></script>
+        <!-- <script src="{{ URL::asset('assets/js/app.js')}}"></script> -->
 
 
 

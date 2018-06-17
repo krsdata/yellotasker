@@ -2,16 +2,16 @@
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
             <div class="page-footer-inner"> 2017 &copy; Yellotasker
-               
+
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>
             </div>
         </div>
-       
+
 
         <!-- END QUICK NAV -->
-       
+
         <!-- BEGIN CORE PLUGINS -->
          <script src="{{ URL::asset('assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
         <script src="{{ URL::asset('assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
@@ -48,13 +48,13 @@
         <script src="{{ URL::asset('assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js') }}" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-       
+
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{ URL::asset('assets/pages/scripts/form-validation.js') }}" type="text/javascript"></script>
 
          <script src="{{ URL::asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
-          
-        
+
+
 
         <script src="{{ URL::asset('assets/global/plugins/ladda/spin.min.js') }}" type="text/javascript"></script>
 
@@ -75,11 +75,13 @@
         @else
          <script src="{{ URL::asset('assets/js/common.js') }}" type="text/javascript"></script>
          <script src="{{ URL::asset('assets/js/bootbox.js') }}" type="text/javascript"></script>
-          <script src="{{ URL::asset('assets/js/formValidate.js') }}" type="text/javascript"></script>
+         <script src="{{ URL::asset('assets/js/formValidate.js') }}" type="text/javascript"></script>
+         <script src="{{ URL::asset('assets/js/angular.js')}}"></script>
+         <script src="{{ URL::asset('assets/js/app.js')}}"></script>
       @endif
 
       <script type="text/javascript">
-          
+
           var   email_req = "Please enter email";
           var  password_req = "Please enter password";
           var url = "{{ url::to('/')}}";
