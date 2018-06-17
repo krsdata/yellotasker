@@ -1,46 +1,46 @@
 <?php
-   
-    Route::get('admin/login','Modules\Admin\Http\Controllers\AuthController@index');
+
+
     Route::get('admin/forgot-password','Modules\Admin\Http\Controllers\AuthController@forgetPassword');
     Route::post('password/email','Modules\Admin\Http\Controllers\AuthController@sendResetPasswordLink');
-    Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');  
-    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout'); 
-
+    Route::get('admin/password/reset','Modules\Admin\Http\Controllers\AuthController@resetPassword');
+    Route::get('admin/logout','Modules\Admin\Http\Controllers\AuthController@logout');
+    Route::get('admin/login','Modules\Admin\Http\Controllers\AuthController@index');
 
     Route::post('admin/blog/ajax', 'Modules\Admin\Http\Controllers\BlogController@ajax');
 
     Route::post('admin/login',function(App\Admin $user){
-   
-    $credentials = ['email' => Input::get('email'), 'password' => Input::get('password')]; 
-    
-   // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456]; 
-    
+
+    $credentials = ['email' => Input::get('email'), 'password' => Input::get('password')];
+
+   // $credentials = ['email' => 'kundan@gmail.com', 'password' => 123456];
+
    // $auth = auth()->guard('web');
    // Session::set('role','admin');
-   
-    $admin_auth = auth()->guard('admin'); 
-    $user_auth =  auth()->guard('web'); //Auth::attempt($credentials); 
+
+    $admin_auth = auth()->guard('admin');
+    $user_auth =  auth()->guard('web'); //Auth::attempt($credentials);
 
     if ($admin_auth->attempt($credentials) OR $user_auth->attempt($credentials)) {
             return Redirect::to('admin');
-        }else{ 
+        }else{
             return redirect()
                         ->back()
-                        ->withInput()  
+                        ->withInput()
                         ->withErrors(['message'=>'Invalid email or password. Try again!']);
-            } 
-    }); 
+            }
+    });
 
 
-    Route::get('admin/supportTicket', 'Modules\Admin\Http\Controllers\ArticleTypeController@supportTicket')->name('supportTicket'); 
+    Route::get('admin/supportTicket', 'Modules\Admin\Http\Controllers\ArticleTypeController@supportTicket')->name('supportTicket');
 
-    Route::post('admin/supportTicket', 'Modules\Admin\Http\Controllers\ArticleTypeController@supportTicketAddreply')->name('supportTicket'); 
- 
-    
+    Route::post('admin/supportTicket', 'Modules\Admin\Http\Controllers\ArticleTypeController@supportTicketAddreply')->name('supportTicket');
+
+
     Route::group(['middleware' => ['admin','userpermission']], function () {
 
         Route::get('admin', 'Modules\Admin\Http\Controllers\AdminController@index');
-        
+
         /*------------User Model and controller---------*/
 
         Route::bind('user', function($value, $route) {
@@ -73,13 +73,13 @@
         );
 
 
-       
+
         /*------------User Category and controller---------*/
 
             Route::bind('category', function($value, $route) {
                 return Modules\Admin\Models\Category::find($value);
             });
-     
+
             Route::resource('admin/category', 'Modules\Admin\Http\Controllers\CategoryController', [
                 'names' => [
                     'edit'      => 'category.edit',
@@ -92,7 +92,7 @@
                 ]
                     ]
             );
-        /*---------End---------*/   
+        /*---------End---------*/
 
 
         /*------------User Category and controller---------*/
@@ -100,7 +100,7 @@
             Route::bind('sub-category', function($value, $route) {
                 return Modules\Admin\Models\Category::find($value);
             });
-     
+
             Route::resource('admin/sub-category', 'Modules\Admin\Http\Controllers\SubCategoryController', [
                 'names' => [
                     'edit' => 'sub-category.edit',
@@ -118,7 +118,7 @@
             Route::bind('category-dashboard', function($value, $route) {
                 return Modules\Admin\Models\CategoryDashboard::find($value);
             });
-     
+
             Route::resource('admin/category-dashboard', 'Modules\Admin\Http\Controllers\CategoryDashboardController', [
                 'names' => [
                     'edit' => 'category-dashboard.edit',
@@ -131,12 +131,12 @@
                 ]
                     ]
             );
-        /*---------Contact Route ---------*/    
+        /*---------Contact Route ---------*/
 
         Route::bind('contact', function($value, $route) {
             return Modules\Admin\Models\Contact::find($value);
         });
- 
+
         Route::resource('admin/contact', 'Modules\Admin\Http\Controllers\ContactController', [
             'names' => [
                 'edit' => 'contact.edit',
@@ -148,12 +148,12 @@
                 'create' => 'contact.create',
             ]
                 ]
-        );  
+        );
 
          Route::bind('comment', function($value, $route) {
             return App\Models\Comments::find($value);
         });
- 
+
         Route::resource('admin/comment', 'Modules\Admin\Http\Controllers\CommentController', [
             'names' => [
                 'edit' => 'comment.edit',
@@ -165,7 +165,7 @@
                 'create' => 'comment.create',
             ]
                 ]
-        );  
+        );
 
         Route::get('admin/comment/showComment/{id}', 'Modules\Admin\Http\Controllers\CommentController@showComment');
 
@@ -180,7 +180,7 @@
          Route::bind('postTask', function($value, $route) {
             return Modules\Admin\Models\PostTask::find($value);
         });
- 
+
         Route::resource('admin/postTask', 'Modules\Admin\Http\Controllers\PostTaskController', [
             'names' => [
                 'edit' => 'postTask.edit',
@@ -192,7 +192,7 @@
                 'create' => 'postTask.create',
             ]
                 ]
-        );  
+        );
 
         Route::get('admin/mytask/{id}','Modules\Admin\Http\Controllers\PostTaskController@mytask');
 
@@ -202,7 +202,7 @@
          Route::bind('program', function($value, $route) {
             return Modules\Admin\Models\Program::find($value);
         });
- 
+
         Route::resource('admin/program', 'Modules\Admin\Http\Controllers\ProgramController', [
             'names' => [
                 'edit' => 'program.edit',
@@ -214,14 +214,14 @@
                 'create' => 'program.create',
             ]
                 ]
-        );  
+        );
 
 
         // programs
          Route::bind('reason', function($value, $route) {
             return Modules\Admin\Models\Reason::find($value);
         });
- 
+
         Route::resource('admin/reason', 'Modules\Admin\Http\Controllers\ReasonController', [
             'names' => [
                 'edit' => 'reason.edit',
@@ -233,11 +233,11 @@
                 'create' => 'reason.create',
             ]
                 ]
-        );  
+        );
 
 
-         Route::get('admin/createGroup', 'Modules\Admin\Http\Controllers\ContactController@createGroup');  
-         Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');  
+         Route::get('admin/createGroup', 'Modules\Admin\Http\Controllers\ContactController@createGroup');
+         Route::post('admin/contact/import', 'Modules\Admin\Http\Controllers\ContactController@contactImport');
 
 
         //  Route::bind('contacts', function($value, $route) {
@@ -255,17 +255,17 @@
         //         'create' => 'contacts.create',
         //     ]
         //         ]
-        // );  
+        // );
 
 
 
-        Route::get('admin/updateGroup', 'Modules\Admin\Http\Controllers\ContactGroupController@updateGroup'); 
-         /*---------Contact Route ---------*/    
+        Route::get('admin/updateGroup', 'Modules\Admin\Http\Controllers\ContactGroupController@updateGroup');
+         /*---------Contact Route ---------*/
 
         Route::bind('contactGroup', function($value, $route) {
             return Modules\Admin\Models\ContactGroup::find($value);
         });
- 
+
         Route::resource('admin/contactGroup', 'Modules\Admin\Http\Controllers\ContactGroupController', [
             'names' => [
                 'edit' => 'contactGroup.edit',
@@ -283,7 +283,7 @@
         Route::bind('transaction', function($value, $route) {
             return Modules\Admin\Models\Transaction::find($value);
         });
- 
+
         Route::resource('admin/transaction', 'Modules\Admin\Http\Controllers\TransactionController', [
             'names' => [
                 'edit'      => 'transaction.edit',
@@ -295,12 +295,12 @@
                 'create'    => 'transaction.create',
             ]
                 ]
-        ); 
+        );
 
         Route::bind('setting', function($value, $route) {
             return Modules\Admin\Models\Settings::find($value);
         });
- 
+
         Route::resource('admin/setting', 'Modules\Admin\Http\Controllers\SettingsController', [
             'names' => [
                 'edit'      => 'setting.edit',
@@ -312,13 +312,13 @@
                 'create'    => 'setting.create',
             ]
                 ]
-        ); 
+        );
 
 
          Route::bind('blog', function($value, $route) {
             return Modules\Admin\Models\Blogs::find($value);
         });
- 
+
         Route::resource('admin/blog', 'Modules\Admin\Http\Controllers\BlogController', [
             'names' => [
                 'edit' => 'blog.edit',
@@ -336,7 +336,7 @@
         Route::bind('role', function($value, $route) {
             return App\Role::find($value);
         });
- 
+
         Route::resource('admin/role', 'Modules\Admin\Http\Controllers\RoleController', [
             'names' => [
                 'edit' => 'role.edit',
@@ -350,7 +350,7 @@
                 ]
         );
 
-      
+
 
         Route::resource('admin/articleType', 'Modules\Admin\Http\Controllers\ArticleTypeController', [
             'names' => [
@@ -369,7 +369,7 @@
         Route::bind('article', function($value, $route) {
             return Modules\Admin\Models\Article::find($value);
         });
- 
+
         Route::resource('admin/article', 'Modules\Admin\Http\Controllers\ArticleController', [
             'names' => [
                 'edit' => 'article.edit',
@@ -388,7 +388,7 @@
         Route::bind('press', function($value, $route) {
             return Modules\Admin\Models\Press::find($value);
         });
- 
+
         Route::resource('admin/press', 'Modules\Admin\Http\Controllers\PressController', [
             'names' => [
                 'edit' => 'press.edit',
@@ -401,24 +401,18 @@
             ]
                 ]
         );
-        
-		
-	 
+
+        Route::get('admin/payment/release-fund', 'Modules\Admin\Http\Controllers\PaymentController@index');
+        Route::get('admin/payment/user-report', 'Modules\Admin\Http\Controllers\PaymentController@userReport');
+        Route::get('admin/payment/yellotasker-report', 'Modules\Admin\Http\Controllers\PaymentController@yellotaskerReport');
+
         Route::match(['get','post'],'admin/permission', 'Modules\Admin\Http\Controllers\RoleController@permission');
 
-        /*----------End---------*/    
-        
-        Route::match(['get','post'],'admin/profile', 'Modules\Admin\Http\Controllers\AdminController@profile'); 
-        
-        Route::match(['get','post'],'admin/monthly-report/{name}', 'Modules\Admin\Http\Controllers\MonthlyReportController@corporateUser'); 
-        Route::match(['get','post'],'admin/corporate-monthly-report', 'Modules\Admin\Http\Controllers\MonthlyReportController@index'); 
-             
+        /*----------End---------*/
+
+        Route::match(['get','post'],'admin/profile', 'Modules\Admin\Http\Controllers\AdminController@profile');
+
+        Route::match(['get','post'],'admin/monthly-report/{name}', 'Modules\Admin\Http\Controllers\MonthlyReportController@corporateUser');
+        Route::match(['get','post'],'admin/corporate-monthly-report', 'Modules\Admin\Http\Controllers\MonthlyReportController@index');
+
   });
-
-
-
- 
- 
-     
- 
-  
