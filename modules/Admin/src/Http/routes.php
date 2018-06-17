@@ -167,6 +167,8 @@
                 ]
         );  
 
+        Route::get('admin/comment/showComment/{id}', 'Modules\Admin\Http\Controllers\CommentController@showComment');
+
         Route::resource('admin/compaint', 'Modules\Admin\Http\Controllers\CompaintController', [
             'names' => [
                 'index' => 'compaint',

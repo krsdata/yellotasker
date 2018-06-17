@@ -288,4 +288,17 @@ class CommentController extends Controller {
        
     }
 
+    public function showComment(Request $request, $id) {
+        
+        $page_title = 'comment Reply';
+        $sub_page_title = 'View Comment';
+        $page_action = 'View Comment'; 
+        $comments = Comments::with('userDetail','commentReply','taskDetail')
+                        ->where('taskId',$id)
+                        ->get();
+      
+        return view('packages::commentReply.index', compact('comments', 'page_title', 'page_action','sub_page_title'));
+       
+    }
+
 }

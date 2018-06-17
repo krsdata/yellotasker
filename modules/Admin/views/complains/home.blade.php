@@ -71,15 +71,15 @@
                                         </thead>
                                         <tbody>
                                         @foreach($comments as $key => $result)
-                                        @if( $result->userDetail!=null)
+                                        @if( isset($result->reportedUserDetail) && isset($result->taskDetail->id ))
                                             <tr>
                                             <td>{{ ++$key }}</td>
                                               
-                                                <td> <a href="{{route('postTask.show',$result->id)}}"> {{ ucfirst($result->taskDetail->title)}}</a></td>
+                                                <td> <a href="{{route('postTask.show',$result->taskDetail->id)}}"> {{ $result->taskDetail->title or 'na' }}</a></td>
                                                 <td>  
 
-                                                @if(isset($result->userDetail->first_name))
-                                                    {{ $result->userDetail->first_name.' '. $result->userDetail->last_name }}
+                                                @if(isset($result->reportedUserDetail->first_name))
+                                                    {{ $result->reportedUserDetail->first_name.' '. $result->reportedUserDetail->last_name }}
                                                 @endif
 
                                                </td>
@@ -87,7 +87,7 @@
                                                 <td>{{ $result->reason->reasonDescription or 'NA'}}</td>
                                                 <td>{{ $result->reason->reasonType or 'NA'}}</td>
                                                 <td>{{ $result->created_at}}</td>
-                                                <td><a href="{{route('comment.show',$result->id)}}"> View Reply </a></td>
+                                                <td><a href="{{url('admin/comment/showComment/'.$result->taskDetail->id)}}"> View Reply </a></td>
                                                 <td> 
                                                     {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('comment.destroy', $result->id))) !!}
                                                         <button class='delbtn btn btn-danger btn-xs' type="submit" name="remove_levels" value="delete" id="{{$result->id}}"><i class="fa fa-fw fa-trash" title="Delete"></i></button>

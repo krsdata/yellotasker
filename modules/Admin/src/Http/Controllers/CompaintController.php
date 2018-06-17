@@ -45,9 +45,9 @@ class CompaintController extends Controller
             })->with('userDetail','taskDetail','reportedUserDetail','reason')->whereNotNull('postedUserId')->Paginate($this->record_per_page);
             
         } else {
-            $comments = Complains::with('userDetail','taskDetail','reportedUserDetail','reason')->orderBy('id','desc')->whereNotNull('postedUserId')->Paginate($this->record_per_page);
+            $comments = Complains::with('taskDetail','reportedUserDetail','reason')->orderBy('id','desc')->Paginate($this->record_per_page);
         } 
-      
+         //  dd( $comments);
         return view('packages::complains.index', compact('comments', 'page_title', 'page_action','sub_page_title')); 
     }
 }

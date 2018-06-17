@@ -29,14 +29,12 @@ class UpdateStatus extends Command
      */
     public function handle()
     {
-        echo config('app.timezone');
-
-         DB::table('post_tasks')
-            ->where('dueDate', '<',date('Y-m-d'))
+        DB::table('post_tasks')
+            ->where('date_required', '<',date('m-d-Y'))
             ->where('status','open')
             ->update(['status' => 'expired']);
 
-        $this->info('status updated successfully '.date('Y-m-d'));
+        $this->info('status updated successfully '.date('m-d-Y'));
 
     }
 }
