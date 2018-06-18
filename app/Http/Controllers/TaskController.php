@@ -558,7 +558,7 @@ class TaskController extends Controller {
                         $q->where('status', $status); 
                     }
                     
-                    if($releasedFund){
+                    if($releasedFund || $releasedFund===0){
                         $q->where('fund_released', $releasedFund); 
                     }
                    
