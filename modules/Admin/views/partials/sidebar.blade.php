@@ -21,8 +21,7 @@
                                         <span class="title">Dashboard</span>
                                         <span class="selected"></span>
                                     </a>
-                                </li>
-                                
+                                </li> 
                                 </ul>
                         </li> 
                         
@@ -259,43 +258,15 @@
                                
                             </ul>
                              
-                        </li>
-                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Program')?'open':'' }}">
-                                    <a href="javascript:;" class="nav-link nav-toggle">
-                                        <i class="glyphicon glyphicon-th"></i>
-                                        <span class="title">Program</span>
-                                        <span class="arrow {{ (isset($page_title) && $page_title=='Program')?'open':'' }}"></span>
-                                    </a>
-                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Program')?'block':'none' }}">
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Program')?'active':'' }}">
-                                            <a href="{{ route('program') }}" class="nav-link ">
-                                               <i class="glyphicon glyphicon-eye-open"></i> 
-                                                <span class="title">
-                                                    View Program 
-                                                </span>
-                                            </a>
-                                        </li> 
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Program')?'active':'' }}">
-                                            <a href="{{ route('program.create') }}" class="nav-link ">
-                                               <i class="glyphicon glyphicon-plus-sign"></i> 
-                                                <span class="title">
-                                                    Create Program 
-                                                </span>
-                                            </a>
-                                        </li> 
-                                     
-                                    </ul>
-                                     
-                            </li> 
-                            <!-- Post task ------>
-                        <li class="nav-item  start active  {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}">
+                        </li> 
+                         <li class="nav-item  start active  {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                      <i class="glyphicon glyphicon-user"></i>
                                     <span class="title">Task Management</span>
                                     <span class="arrow {{ (isset($viewPage) && $viewPage=='Post Task')?'open':'' }}"></span>
                                 </a>
 
-                            <ul class="sub-menu" style="display: {{ (isset($viewPage) && $viewPage=='Post Task')?'block':'none' }}">
+                            <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Post Task')?'block':'none' }}">
 
                                 <li class="nav-item  {{ (isset($page_title) && $page_title=='Post Task')?'open':'' }}">
                                 <a href="javascript:;" class="nav-link nav-toggle">
@@ -334,54 +305,149 @@
                                 </li>
                             </ul>  
                         </li>
+ 
+
                         
-                        <li class="nav-item start active {{ (isset($page_title) && $page_title=='Compaint Managment')?'open':'' }}">
+                            <!-- Post task -->
+                         
+
+                          <!---Resolution Center-->
+                        <li class="nav-item  start active  {{ (isset($page_title) &&  ($page_title=='Reason' || $page_title=='Support Ticket' || $page_title=='Complaint'))?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                     <i class="glyphicon glyphicon-globe"></i>
+                                    <span class="title">Resolution Center</span>
+                                     <span class="arrow {{ (isset($page_title) &&  $page_title=='Reason' || $page_title=='Support Ticket' || $page_title=='Complaint')?'open':'' }}"></span>
+                                </a>
+
+                            <ul class="sub-menu" style="display: {{ (isset($page_title) &&  $page_title=='Reason' || $page_title=='Support Ticket' || $page_title=='Complaint')?'block':'none' }}">
+                                  <!---Reason-->
+                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Reason')?'open':'' }}">
                                     <a href="javascript:;" class="nav-link nav-toggle">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <span class="title">Compaint Managment</span>
-                                        <span class="arrow {{ (isset($page_title) && $page_title=='Compaint Managment')?'open':'' }}"></span>
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Reason</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Reason')?'open':'' }}"></span>
                                     </a>
-                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='View Managment')?'block':'none' }}">
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Compaint')?'active':'' }}">
-                                            <a href="{{ route('compaint') }}" class="nav-link ">
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Reason')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Reason')?'active':'' }}">
+                                            <a href="{{ route('reason') }}" class="nav-link ">
                                                <i class="glyphicon glyphicon-eye-open"></i> 
                                                 <span class="title">
-                                                    View Complaint 
+                                                    Reason List 
                                                 </span>
                                             </a>
                                         </li> 
-                                       
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Reason')?'active':'' }}">
+                                            <a href="{{ route('reason.create') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    Create Reason
+                                                </span>
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                </li>  
+                                
+                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Complaint')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                         <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Manage Complaint </span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Complaint' || $page_title=='Support Ticket')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Complaint' || $page_title=='Support Ticket')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Complaint')?'active':'' }}">
+                                            <a href="{{ url('admin/compaint?reasonType=user') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    Reported user 
+                                                </span>
+                                            </a>
+                                        </li> 
+
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Complaint')?'active':'' }}">
+                                            <a href="{{ url('admin/compaint?reasonType=task')}}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    Reported task 
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Ticket')?'active':'' }}">
+                                            <a href="{{ route('supportTicket') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    Support centre 
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        
+                                    </ul>
+                                </li> 
+                                <!---Take action-->
+
+                                
+
+                            </ul>  
+                        </li>
+
+
+                         <li class="nav-item start active {{ (isset($page_title) && $page_title=='Program')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Program</span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='Program')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Program')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Program')?'active':'' }}">
+                                            <a href="{{ route('program') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-eye-open"></i> 
+                                                <span class="title">
+                                                    View Program 
+                                                </span>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Program')?'active':'' }}">
+                                            <a href="{{ route('program.create') }}" class="nav-link ">
+                                               <i class="glyphicon glyphicon-plus-sign"></i> 
+                                                <span class="title">
+                                                    Create Program 
+                                                </span>
+                                            </a>
+                                        </li> 
                                      
                                     </ul>
                                      
                             </li> 
+ 
+                        
 
-                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}">
-                                    <a href="javascript:;" class="nav-link nav-toggle">
-                                        <i class="glyphicon glyphicon-th"></i>
-                                        <span class="title">Blogs</span>
-                                        <span class="arrow {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}"></span>
-                                    </a>
-                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Blog')?'block':'none' }}">
-                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View Blog')?'active':'' }}">
-                                            <a href="{{ route('blog') }}" class="nav-link ">
-                                               <i class="glyphicon glyphicon-eye-open"></i> 
-                                                <span class="title">
-                                                    View Blogs 
-                                                </span>
-                                            </a>
-                                        </li> 
+                            <li class="nav-item start active {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                    <span class="title">Blogs</span>
+                                    <span class="arrow {{ (isset($page_title) && $page_title=='Blog')?'open':'' }}"></span>
+                                </a>
+                                <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='Blog')?'block':'none' }}">
+                                    <li class="nav-item  {{ (isset($page_title) && $page_action=='View Blog')?'active':'' }}">
+                                        <a href="{{ route('blog') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-eye-open"></i> 
+                                            <span class="title">
+                                                View Blogs 
+                                            </span>
+                                        </a>
+                                    </li> 
 
-                                         <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Blog')?'active':'' }}">
-                                            <a href="{{ route('blog.create') }}" class="nav-link ">
-                                               <i class="glyphicon glyphicon-plus-sign"></i> 
-                                                <span class="title">
-                                                    Create Blog 
-                                                </span>
-                                            </a>
-                                        </li> 
-                                    </ul>
-                                </li> 
+                                     <li class="nav-item  {{ (isset($page_title) && $page_action=='Create Blog')?'active':'' }}">
+                                        <a href="{{ route('blog.create') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-plus-sign"></i> 
+                                            <span class="title">
+                                                Create Blog 
+                                            </span>
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </li> 
 
 
                                 <li class="nav-item start active {{ (isset($page_title) && $page_title=='Article Type')?'open':'' }}">
@@ -440,7 +506,7 @@
                                     </ul>
                                 </li> 
 
-                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Support Ticket')?'open':'' }}">
+                                <!-- <li class="nav-item start active {{ (isset($page_title) && $page_title=='Support Ticket')?'open':'' }}">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="glyphicon glyphicon-th"></i>
                                         <span class="title">Support Ticket</span>
@@ -456,9 +522,9 @@
                                             </a>
                                         </li> 
                                     </ul>
-                                </li> 
+                                </li>  -->
 
-                                <li class="nav-item start active {{ (isset($page_title) && $page_title=='Reason')?'open':'' }}">
+                               <!--  <li class="nav-item start active {{ (isset($page_title) && $page_title=='Reason')?'open':'' }}">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="glyphicon glyphicon-th"></i>
                                         <span class="title">Reason</span>
@@ -482,7 +548,7 @@
                                             </a>
                                         </li> 
                                     </ul>
-                                </li> 
+                                </li>  -->
 
                                 <li class="nav-item start active {{ (isset($page_title) && $page_title=='Press')?'open':'' }}">
                                     <a href="javascript:;" class="nav-link nav-toggle">

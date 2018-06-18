@@ -86,7 +86,7 @@
                                                  </td>
                                                 <td> {{$result->resolution_department}} </td>
 
-                                                <td> <a class="btn btn-primary" href="{{ url('admin/supportTicket')}}"> View Tickts </a> </td> 
+                                                <td> <a class="btn btn-primary" href="{{ url('admin/supportTicket?search='.$result->resolution_department)}}"> View Tickts </a> </td> 
                                             
                                                  <td>
                                                     {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}

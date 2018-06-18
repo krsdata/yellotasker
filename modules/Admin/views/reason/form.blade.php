@@ -39,7 +39,7 @@
               {!! Form::submit(' Save ', ['class'=>'btn  btn-primary text-white','id'=>'saveBtn']) !!}
 
 
-               <a href="{{route('program')}}">
+               <a href="{{route('reason')}}">
     {!! Form::button('Back', ['class'=>'btn btn-warning text-white']) !!} </a>
             </div>
         </div>

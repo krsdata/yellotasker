@@ -126,8 +126,9 @@ class PostTaskController extends Controller {
         $completedTasks =  PostTask::where('taskDoerId',$uid)->where('status','completed')->get();
         $inprogressTasks =  PostTask::where('taskDoerId',$uid)->where('status','inprogresss')->get();
           
-       // dd($postTasks);
-        return view('packages::users.mytask', compact('user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title'));
+        $userDetail = User::find($uid)->toArray();
+        
+        return view('packages::users.mytask', compact('userDetail','user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title'));
     }
 
     /*
@@ -142,7 +143,7 @@ class PostTaskController extends Controller {
         foreach ($categoryName as $key => $value) {
             $cn = ltrim($cn.','.$value,',');
         }
-        
+;        
         $table_cname = \Schema::getColumnListing('contacts');
         $except = ['id','create_at','updated_at','categoryName'];
         $input = $request->all();

@@ -59,6 +59,7 @@
                                         <thead>
                                             <tr>
                                                  <th> Sno</th>
+                                                 <th> Ticket ID</th>
                                                 <th> Task Title </th>
                                                 <th> Posted By </th>  
                                                 <th> Comment </th> 
@@ -74,18 +75,21 @@
                                         @if( isset($result->reportedUserDetail) && isset($result->taskDetail->id ))
                                             <tr>
                                             <td>{{ ++$key }}</td>
-                                              
+                                                 <td> #{{ $result->compainId }}</td>
                                                 <td> <a href="{{route('postTask.show',$result->taskDetail->id)}}"> {{ $result->taskDetail->title or 'na' }}</a></td>
                                                 <td>  
 
                                                 @if(isset($result->reportedUserDetail->first_name))
+                                                <a href="{{url('admin/mytask/'.$result->reportedUserDetail->id)}}">
                                                     {{ $result->reportedUserDetail->first_name.' '. $result->reportedUserDetail->last_name }}
+                                                    </a>
                                                 @endif
 
                                                </td>
                                                 <td>{{ $result->comment }}</td>
                                                 <td>{{ $result->reason->reasonDescription or 'NA'}}</td>
                                                 <td>{{ $result->reason->reasonType or 'NA'}}</td>
+                                               
                                                 <td>{{ $result->created_at}}</td>
                                                 <td><a href="{{url('admin/comment/showComment/'.$result->taskDetail->id)}}"> View Reply </a></td>
                                                 <td> 
@@ -98,7 +102,7 @@
                                            @endforeach 
                                         </tbody>
                                     </table>
-                                    <div class="center" align="center">  {!! $comments->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
+                                    <div class="center" align="center">  {!! $comments->appends(['search' => isset($_GET['search'])?$_GET['search']:'','reasonType'=>isset($_GET['reasonType'])?$_GET['reasonType']:''])->render() !!}</div>
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->

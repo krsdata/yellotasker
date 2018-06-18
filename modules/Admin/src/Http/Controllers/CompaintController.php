@@ -8,6 +8,7 @@ use View;
 use URL;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Config;
+use Modules\Admin\Models\Reason;
 
 
 class CompaintController extends Controller
@@ -24,30 +25,44 @@ class CompaintController extends Controller
     }
     
     public function index(Complains $complains, Request $request) 
-    { 
-        $page_title = 'Compaint Managment';
-        $sub_page_title = 'View Compaint';
-        $page_action = 'View Compaint'; 
-        
+    {
+        $page_title = 'Complaint';
+        $sub_page_title = 'View Complaint';
+        $page_action = 'View Complaint'; 
+
+        $reason = $request->get('reasonType');
+        if($request->get('reasonType')){
+            $reason = Reason::where('reasonType','LIKE','%'.$request->get('reasonType').'%')->first();
+        }
+    
         $search = $request->get('search');
         $taskdate = $request->get('taskdate');  
         if ((isset($search) && !empty($search)) || (isset($taskdate) && !empty($taskdate)) ) { 
             $search = isset($search) ? Input::get('search') : null; 
-            $comments = Complains::where(function($query) use($search,$taskdate) {
+            $comments = Complains::where(function($query) use($search,$taskdate,$reason) {
                 if (!empty($search)) {
                     $query->whereHas('taskDetail', function($query) use($search) {
                             $query->where('title', $search);
                         }); 
                 } 
+                if($reason){
+                    $query->where('reasonId',$reason->id);
+                }
                 if (!empty($taskdate)) {
                      $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
                 } 
             })->with('userDetail','taskDetail','reportedUserDetail','reason')->whereNotNull('postedUserId')->Paginate($this->record_per_page);
             
         } else {
-            $comments = Complains::with('taskDetail','reportedUserDetail','reason')->orderBy('id','desc')->Paginate($this->record_per_page);
+            $comments = Complains::with('taskDetail','reportedUserDetail','reason')
+            ->where(function($query) use($search,$taskdate,$reason) {
+                if($reason){
+                    $query->where('reasonId',$reason->id);
+                }
+            })
+            ->orderBy('id','desc')->Paginate($this->record_per_page);
         } 
          //  dd( $comments);
-        return view('packages::complains.index', compact('comments', 'page_title', 'page_action','sub_page_title')); 
+        return view('packages::complains.index', compact('comments', 'page_title', 'page_action','reason')); 
     }
 }

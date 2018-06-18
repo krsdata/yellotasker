@@ -59,9 +59,7 @@
                                             </div>
                                            
                                         </form>
-                                         <div class="col-md-2">
-                                             <a href="{{ route('articleType') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
-                                        </div>
+                                         
                                        
                                         </div>
                                     </div>
@@ -75,6 +73,7 @@
                                                 <th> Email </th> 
                                                 <th>Ticket ID</th>
                                                 <th> Status </th> 
+                                                 <th> Attachment </th> 
                                                 <th>Created date</th> 
                                                 <th>Action</th> 
                                             </tr>
@@ -105,10 +104,11 @@
 
                                                 <td> <a class="btn-circle btn btn-success" href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}"> #{{$result->ticket_id}} </a> </td> 
                                             	<td>  {{$result->status}} </td>
+                                                 <td> <a href="@if($result->attachment)?{{url('storage/docs/'.$result->attachment)}}:# @endif"> {{ !empty($result->attachment)?$result->attachment:'NA'  }} </a> </td>
                                                  <td>
                                                     {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
                                                 </td>
-                                                
+                                                    
                                                 <td> 
                                                      
                                                     <div class="btn-group dropup">
