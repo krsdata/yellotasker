@@ -125,13 +125,13 @@
                                                                  <li class="divider"> </li>
                                                        
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=inprogress=&ticketId='.$result->ticket_id)}}"> Inprogress </a>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=inprogress&ticketId='.$result->ticket_id)}}"> Inprogress </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=reopen=&ticketId='.$result->ticket_id)}}"> Reopen </a>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=reopen&ticketId='.$result->ticket_id)}}"> Reopen </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved=&ticketId='.$result->ticket_id)}}"> resolved </a>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved&ticketId='.$result->ticket_id)}}"> resolved </a>
                                                             </li>
                                                             <li class="divider"> </li>
                                                             <li> 
