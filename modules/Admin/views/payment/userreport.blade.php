@@ -52,7 +52,7 @@
                                        <h3 class="font-purple-soft">
                                            <span data-counter="counterup" data-value="276"><% userProfit %></span>
                                        </h3>
-                                       <small>Profit</small>
+                                       <small>Total <% label %></small>
                                    </div>
                                    <div class="icon">
                                        <i class="icon-user"></i>
@@ -142,14 +142,22 @@
                </tr>
            </thead>
            <tbody>
-             <tr ng-repeat='task in taskList'>
+             <tr ng-if = "outgoingIndicator" ng-repeat='task in taskList'>
                  <td><% task.id %> </td>
                  <td><% task.task_title %> </td>
                  <td><% task.order_id %> </td>
                  <td><% task.status %> </td>
-                 <td><% task.total_price %> </td>
+                 <td>$<% task.total_price %> </td>
                  <td>Mehul Ahir</td>
                </tr>
+               <tr ng-if = "incomingIndicator" ng-repeat='task in taskList'>
+                   <td><% task.task_details.id %> </td>
+                   <td><% task.task_details.title %> </td>
+                   <td><% task.order_id %> </td>
+                   <td><% task.status %> </td>
+                   <td>$<% task.task_details.totalAmount %> </td>
+                   <td>Mehul Ahir</td>
+                 </tr>
            </tbody>
        </table>
        <span>

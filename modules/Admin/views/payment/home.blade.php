@@ -47,12 +47,12 @@
                                           <tr ng-repeat='todo in todos'>
                                               <td><% todo.id %> </td>
                                               <td><% todo.title %> </td>
-                                              <td><% todo.totalAmount %> </td>
-                                              <td><% todo.totalAmount*0.10 %> </td>
-                                              <td><% todo.totalAmount-todo.totalAmount*0.10 %> </td>
+                                              <td>$<% todo.totalAmount %> </td>
+                                              <td>$<% todo.totalAmount*0.10 %> </td>
+                                              <td>$<% todo.totalAmount-todo.totalAmount*0.10 %> </td>
                                               <td><% todo.taskDoerId %> </td>
                                               <td>Mehul Ahir</td>
-                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(todo.id,todo.userId)">Release Fund</button></td>
+                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(todo.id,todo.userId,todo.taskDoerId)">Release Fund</button></td>
                                             </tr>
                                         </tbody>
                                     </table>

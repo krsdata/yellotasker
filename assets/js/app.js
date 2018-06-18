@@ -19,6 +19,9 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.taskList=[];
 	$scope.userData='';
 	$scope.showList=false;
+	$scope.label='';
+	$scope.outgoingIndicator=true;
+	$scope.incomingIndicator=false;
 
 	$scope.init = function() {
 		$scope.loading = true;
@@ -33,15 +36,21 @@ app.controller('paymentController', function($scope, $http) {
 
 
 
-	$scope.releaseFund = function(taskId,userId) {
+	$scope.releaseFund = function(taskId,userId,doerId) {
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
 		success(function(data, status, headers, config) {
 			if(data.message=='Task Payment done succesfully.') {
+					$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
+						taskId : taskId,
+						taskDoerId : doerId,
+						status : 'completed '
+					}).success(function(data, status, headers, config) {
 						var index = $scope.todos.findIndex(x => x.id==taskId);
 						if (index > -1) {
 							$scope.todos.splice(index, 1);
 					}
+					});
 					alert('Fund released Successfully')
 				} else {
 					alert('Fund already released')
@@ -55,9 +64,10 @@ app.controller('paymentController', function($scope, $http) {
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/user/payments-histroy/outgoing?userId='+userId+'page_size=20&page_num=1').
 		success(function(data, status, headers, config) {
-			if(data.message=='Payment histroy found.') {
+			if(data.net_incoming!='0.00'||data.net_outgoing!='0.00') {
 				  $scope.userData=data;
-					$scope.userProfit=data.net_outgoing-data.net_incoming;
+					$scope.userProfit=data.net_incoming-data.net_outgoing;
+					$scope.label=$scope.userProfit>0?'Earned':'Spent';
 					$scope.userNetOutgoing=data.net_outgoing;
 					$scope.userNetIncoming=data.net_incoming;
 					$scope.taskList=$scope.userData.data.outgoing;
@@ -69,18 +79,34 @@ app.controller('paymentController', function($scope, $http) {
 					$scope.userNetOutgoing=0;
 					$scope.userNetIncoming=0;
 					$scope.taskList=[];
-					alert('No user found with this id');
+					alert('No transaction found found for this input.Please enter correct user id or check into the user management module.');
 				}
 				$scope.loading = false;
 		});
 	}
 	$scope.showTaskList = function(listType){
 		if(listType=='outgoing') {
-      $scope.taskList=$scope.userData.data.outgoing;
+      $scope.taskList=$scope.userData.data.outgoing!=undefined?$scope.userData.data.outgoing:[];
 			$scope.showList=$scope.taskList.length>0?true:false;
+			$scope.outgoingIndicator=true;
+			$scope.incomingIndicator=false;
 		} else if(listType=='incoming') {
-      $scope.taskList=[];
-			$scope.showList=false;
+			$scope.outgoingIndicator=false;
+			$scope.incomingIndicator=true;
+			var userId=$scope.userId;
+			$http.get('http://api.yellotasker.com/api/v1/user/payments-histroy/earned?userId='+userId+'page_size=20&page_num=1').
+			success(function(data, status, headers, config) {
+				if(data.message=='Payment histroy found.') {
+						$scope.userData=data;
+						$scope.taskList=$scope.userData.data;
+						$scope.showList=$scope.taskList.length>0?true:false;
+					} else {
+						$scope.taskList=[];
+						$scope.showList=false;
+					}
+					$scope.loading = false;
+			});
+
 		}
 	}
 
