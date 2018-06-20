@@ -552,14 +552,14 @@ class TaskController extends Controller {
                     )
                 {
                     if($title){
-                        $q->where('title','LIKE',"%".$title."%"); 
+                        $q->where('title','LIKE',"%".$title."%");
                     }
                     if($status){
                         $q->where('status', $status); 
                     }
                     
-                    if($releasedFund || $releasedFund==0){
-                        $q->where('fund_released', $releasedFund); 
+                    if($releasedFund || $releasedFund===0){
+                        $q->where('fund_released', $releasedFund);
                     }
                    
                     if($userId){
@@ -645,7 +645,8 @@ class TaskController extends Controller {
         $my_data = $this->array_msort($task, array('dueDate'=>SORT_ASC));
         $data = array_values($my_data);
          
-        
+       
+
         if(count($task)){
             $status  =  1;
             $code    =  200;
