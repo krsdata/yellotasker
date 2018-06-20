@@ -46,6 +46,7 @@
 
         <link href="{{ URL::asset('assets/apps/css/todo-2.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{ URL::asset('assets/pages/css/profile.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{ URL::asset('assets/css/angular.css')}}" rel="stylesheet" type="text/css" />
 
               <!--AngularJS-->
 

@@ -235,9 +235,4 @@ class ArticleTypeController extends Controller {
         }
             
     }
-
-    public function abc(ArticleType $articleType) {
-      
-      dd('ds');      
-    }
 }

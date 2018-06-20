@@ -6,7 +6,8 @@ var app = angular.module('paymentApp', [], function($interpolateProvider) {
 
 app.controller('paymentController', function($scope, $http) {
 
-	$scope.todos = [];
+	$scope.list = [];
+	$scope.showReleaseFundList=false;
 	$scope.loading = false;
 	$scope.userProfit=0;
 	$scope.userNetOutgoing=0;
@@ -22,14 +23,15 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.label='';
 	$scope.outgoingIndicator=true;
 	$scope.incomingIndicator=false;
+	$scope.showError = false;
 
 	$scope.init = function() {
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
 		success(function(data, status, headers, config) {
-			$scope.todos = data.data;
-      console.log('data 2',$scope.todos);
-				$scope.loading = false;
+			$scope.list = data.data;
+			$scope.showReleaseFundList=$scope.list.length>0?true:false;
+			$scope.loading = false;
 
 		});
 	}
@@ -114,61 +116,24 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.loading = true;
   var startDate=$("#startDate").val();
 	var endDate=$("#endDate").val()
-	$http.get('http://api.yellotasker.com/api/v1/incomeDetail?startDate='+startDate+'&endDate='+endDate).
-	success(function(data, status, headers, config) {
-		if(data.message=='Yellotasker income details') {
-				$scope.yelloEarn=data.data.earn;
-				$scope.yelloSpend=data.data.spend;
-				$scope.yelloProfit=data.data.profit;
-			} else {
-				alert('No details found');
-			}
-			$scope.loading = false;
-	});
-};
-
-	$scope.addTodo = function() {
-		console.log('here');
-				$scope.loading = true;
-
-		$http.post('/api/todos', {
-			title: $scope.todo.title,
-			done: $scope.todo.done
-		}).success(function(data, status, headers, config) {
-			$scope.todos.push(data);
-			$scope.todo = '';
+	if(startDate&&endDate) {
+		$scope.showError = false;
+		$http.get('http://api.yellotasker.com/api/v1/incomeDetail?startDate='+startDate+'&endDate='+endDate).
+		success(function(data, status, headers, config) {
+			if(data.message=='Yellotasker income details') {
+					$scope.yelloEarn=data.data.earn;
+					$scope.yelloSpend=data.data.spend;
+					$scope.yelloProfit=data.data.profit;
+				} else {
+					alert('No details found');
+				}
 				$scope.loading = false;
-
 		});
-	};
+	} else {
+		$scope.showError = true;
+	}
 
-	$scope.updateTodo = function(todo) {
-		$scope.loading = true;
-
-		$http.put('/api/todos/' + todo.id, {
-			title: todo.title,
-			done: todo.done
-		}).success(function(data, status, headers, config) {
-			todo = data;
-				$scope.loading = false;
-
-		});;
-	};
-
-	$scope.deleteTodo = function(index) {
-		$scope.loading = true;
-
-		var todo = $scope.todos[index];
-
-		$http.delete('/api/todos/' + todo.id)
-			.success(function() {
-				$scope.todos.splice(index, 1);
-					$scope.loading = false;
-
-			});;
-	};
-
-
+};
 
 	$scope.init();
 

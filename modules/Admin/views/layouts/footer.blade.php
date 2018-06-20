@@ -85,6 +85,9 @@
           var   email_req = "Please enter email";
           var  password_req = "Please enter password";
           var url = "{{ url::to('/')}}";
+          $('.datepicker').datepicker({
+              format: 'yyyy-mm-dd'
+          });
       </script>
 
 

@@ -108,7 +108,10 @@
                             </div>
                         </div>
                         <ul class="nav nav-tabs">
-                            <li class="active">
+                        	 <li class="active">
+                                <a href="#tab_1_0" data-toggle="tab" aria-expanded="true">Profile</a>
+                            </li>
+                            <li class="">
                                 <a href="#tab_1_1" data-toggle="tab" aria-expanded="true">Posted Task</a>
                             </li>
                             <li class="">
@@ -127,7 +130,53 @@
     <div class="tab-content">
         <!-- PERSONAL INFO TAB -->  
 
-	<div class="tab-pane active" id="tab_1_1"> 
+
+	<div class="tab-pane active" id="tab_1_0"> 
+		<div class="portlet light bordered">
+	 		<div class="portlet-title">
+	            <div class="caption">
+	                <i class="icon-social-dribbble font-green"></i>
+	                <span class="caption-subject font-green bold uppercase">User Info
+	                </span>
+	            </div> 
+	        </div> 
+
+		    <div class="form-group ">
+		    	      @if(isset($userDetail))
+			     <table class="table table-striped table-hover table-bordered" id="">
+	                <thead>
+	                @foreach($userDetail as $key => $result)
+	                	<?php if( $key == "id" || $key=="created_at" || $key == "updated_at")
+	                	{
+	                		//continue;	
+	                	}else{
+	                	?>
+	                    <tr>
+	                    	<th> {{ ucfirst($key) }} </th>
+	                        <th> {{ !empty($result)?$result:'NA' }} </th>
+	                         
+	                    </tr>
+	                    <?php } ?>
+                    @endforeach
+	                </thead>
+	                <tbody>
+	          
+	                 
+	                </tbody>
+	               
+	            </table>
+	            @else
+	            No Record Found!
+	             @endif
+	     	</div>
+
+	    
+		</div>
+	</div>
+
+
+
+	<div class="tab-pane" id="tab_1_1"> 
 		<div class="portlet light bordered">
 	 		<div class="portlet-title">
 	            <div class="caption">

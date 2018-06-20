@@ -29,7 +29,7 @@
                                          {{ Session::get('flash_alert_notice') }}
                                          </div>
                                     @endif
-                                <div class="portlet-body">
+                                <div ng-if="showReleaseFundList" class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="contact">
                                         <thead>
                                             <tr>
@@ -44,20 +44,23 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          <tr ng-repeat='todo in todos'>
-                                              <td><% todo.id %> </td>
-                                              <td><% todo.title %> </td>
-                                              <td>$<% todo.totalAmount %> </td>
-                                              <td>$<% todo.totalAmount*0.10 %> </td>
-                                              <td>$<% todo.totalAmount-todo.totalAmount*0.10 %> </td>
-                                              <td><% todo.taskDoerId %> </td>
+                                          <tr ng-repeat='task in list'>
+                                              <td><% task.id %> </td>
+                                              <td><% task.title %> </td>
+                                              <td>$<% task.totalAmount %> </td>
+                                              <td>$<% task.totalAmount*0.10 %> </td>
+                                              <td>$<% task.totalAmount-todo.totalAmount*0.10 %> </td>
+                                              <td><% task.taskDoerId %> </td>
                                               <td>Mehul Ahir</td>
-                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(todo.id,todo.userId,todo.taskDoerId)">Release Fund</button></td>
+                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.userId,task.taskDoerId)">Release Fund</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <span>
 
+                                </div>
+                                <div ng-if="!showReleaseFundList" >
+                                  No list found
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->

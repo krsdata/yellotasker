@@ -59,9 +59,7 @@
                                             </div>
                                            
                                         </form>
-                                         <div class="col-md-2">
-                                             <a href="{{ route('articleType') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
-                                        </div>
+                                         
                                        
                                         </div>
                                     </div>
@@ -75,6 +73,7 @@
                                                 <th> Email </th> 
                                                 <th>Ticket ID</th>
                                                 <th> Status </th> 
+                                                 <th> Attachment </th> 
                                                 <th>Created date</th> 
                                                 <th>Action</th> 
                                             </tr>
@@ -105,10 +104,11 @@
 
                                                 <td> <a class="btn-circle btn btn-success" href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}"> #{{$result->ticket_id}} </a> </td> 
                                             	<td>  {{$result->status}} </td>
+                                                 <td> <a href="@if($result->attachment)?{{url('storage/docs/'.$result->attachment)}}:# @endif"> {{ !empty($result->attachment)?$result->attachment:'NA'  }} </a> </td>
                                                  <td>
                                                     {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
                                                 </td>
-                                                
+                                                    
                                                 <td> 
                                                      
                                                     <div class="btn-group dropup">
@@ -125,13 +125,13 @@
                                                                  <li class="divider"> </li>
                                                        
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=inprogress=&ticketId='.$result->ticket_id)}}"> Inprogress </a>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=inprogress&ticketId='.$result->ticket_id)}}"> Inprogress </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=reopen=&ticketId='.$result->ticket_id)}}"> Reopen </a>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=reopen&ticketId='.$result->ticket_id)}}"> Reopen </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved=&ticketId='.$result->ticket_id)}}"> resolved </a>
+                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved&ticketId='.$result->ticket_id)}}"> resolved </a>
                                                             </li>
                                                             <li class="divider"> </li>
                                                             <li> 
