@@ -27,6 +27,7 @@ use Modules\Admin\Models\Contact;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\ContactGroup;
 use Modules\Admin\Models\Reason;
+use Modules\Admin\Models\Complains;
 use Response; 
 use Modules\Admin\Http\Requests\ReasonRequest;
 /**
@@ -157,9 +158,17 @@ class ReasonController extends Controller {
      */
     public function destroy(Reason $reason) { 
         
-         Reason::where('id',$reason->id)->delete();
+
+        $Complains = Complains::where('reasonId',$reason->id)->get();
+       
+        if($Complains->count()){
+            return Redirect::to(route('reason'))
+                        ->with('flash_alert_notice', "This reason is associated with existing complaint so You can't delete.");
+        }
+ 
+        Reason::where('id',$reason->id)->delete();
         return Redirect::to(route('reason'))
-                        ->with('flash_alert_notice', 'reason  successfully deleted.');
+                        ->with('flash_alert_notice', 'Reason  successfully deleted.');
     }
 
     public function show($id) {

@@ -3,10 +3,11 @@ namespace Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reason extends Model {
 
-   
+     use SoftDeletes;
     /**
      * The database table used by the model.
      *
@@ -34,13 +35,13 @@ class Reason extends Model {
      *
      * @var array
      */
-
+     protected $softDelete = true;
      /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['reasonDescription','reasonType','userId'];  // All field of user table here    
+     protected $fillable = ['reasonDescription','reasonType','userId'];  // All field of user table here
 
     
     
