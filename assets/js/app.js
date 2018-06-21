@@ -114,8 +114,8 @@ app.controller('paymentController', function($scope, $http) {
 
 	$scope.getYellotaskerData= function() {
 	$scope.loading = true;
-  var startDate=$("#startDate").val();
-	var endDate=$("#endDate").val()
+  var startDate=$("#startdate").val();
+	var endDate=$("#enddate").val()
 	if(startDate&&endDate) {
 		$scope.showError = false;
 		$http.get('http://api.yellotasker.com/api/v1/incomeDetail?startDate='+startDate+'&endDate='+endDate).

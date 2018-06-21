@@ -39,7 +39,6 @@
                                                 <th>Service Charge</th>
                                                  <th>Net Amount</th>
                                                 <th>Doer Id</th>
-                                                <th>Doer Name</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -51,7 +50,6 @@
                                               <td>$<% task.totalAmount*0.10 %> </td>
                                               <td>$<% task.totalAmount-todo.totalAmount*0.10 %> </td>
                                               <td><% task.taskDoerId %> </td>
-                                              <td>Mehul Ahir</td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.userId,task.taskDoerId)">Release Fund</button></td>
                                             </tr>
                                         </tbody>

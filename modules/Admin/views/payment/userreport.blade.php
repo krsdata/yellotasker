@@ -148,7 +148,7 @@
                  <td><% task.order_id %> </td>
                  <td><% task.status %> </td>
                  <td>$<% task.total_price %> </td>
-                 <td>Mehul Ahir</td>
+                 <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
                </tr>
                <tr ng-if = "incomingIndicator" ng-repeat='task in taskList'>
                    <td><% task.task_details.id %> </td>
@@ -156,7 +156,7 @@
                    <td><% task.order_id %> </td>
                    <td><% task.status %> </td>
                    <td>$<% task.task_details.totalAmount %> </td>
-                   <td>Mehul Ahir</td>
+                   <td><%task.task_details.seeker_user_detail.first_name %> <%task.task_details.seeker_user_detail.last_name%></td>
                  </tr>
            </tbody>
        </table>

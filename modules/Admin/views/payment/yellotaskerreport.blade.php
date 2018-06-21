@@ -41,15 +41,14 @@
                    <!-- END PAGE BREADCRUMB -->
                    <!-- BEGIN PAGE BASE CONTENT -->
                    <div class="row">
-                     <div class="col-md-3">
-                                                <input id="taskdate" class="form-control taskdate" data-required="1" size="16" data-date-format="yyyy-mm-dd" placeholder="Comment Date" name="taskdate" type="text">
-                                            </div>
                          <div class="col-md-3">
-                        <input type="text" id="startDate" ng-model="date" class="datepicker">Start Date</input>
+                        <input type="text" id="startdate" ng-model="date" class="form-control taskdate" data-required="1" size="16" data-date-format="yyyy-mm-dd" name="startDate" placeholder="Start Date" ></input>
                           </div>
-                        <input type="text" id="endDate" ng-model="endDate" class="datepicker">End Date</input>
-                       <div ng-if="showError">Please enter dates</div>
+                        <div class="col-md-3">
+                        <input type="text" id="enddate" ng-model="endDate" class="form-control taskdate" data-required="1" size="16" data-date-format="yyyy-mm-dd" name="endDate"  placeholder="End Date" ></input>
+                        </div>
                        <button class="btn btn-primary btn-md"  ng-click="getYellotaskerData()">Search</button>
+                       <div ng-if="showError">Please enter dates</div>
                    </div>
                    <div class="row">
                      <div layout-gt-xs="row">
