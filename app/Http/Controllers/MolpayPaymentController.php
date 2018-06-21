@@ -1229,14 +1229,30 @@ private $trns_status = '(
             
         })->select(\DB::raw('SUM(amount) as earn'),\DB::raw('SUM(payable_amount) as spend'),\DB::raw('SUM(service_charge) as profit'))
           ->first();
+          $data = [];
+          foreach ($service_charge as $key => $value) {
+                if($value==null){
+                    $data[$key] = "0.00";
+                }else{
+                    $data[$key] = $value;
+                }
+          }
 
-        
+
+        $task = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
+            if($startDate && $endDate){
+                $q->whereBetween('dueDate', [$startDate, $endDate]);    
+            }
+            
+        })->get(); 
         return response()->json(
                             [ 
                                 "status"=>($service_charge)?1:0,
                                 "code"=>($service_charge)?200:500,
                                 "message"=>"Yellotasker income details",
-                                'data'=>$service_charge
+                                "income_details" => $data,
+                                'data'=>$task,
+
                             ]
                         );     
     }
