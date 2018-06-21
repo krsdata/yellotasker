@@ -68,10 +68,11 @@
                                         <thead>
                                             <tr>
                                                 <th> Sno. </th>
-                                                <th> Support Type </th>
+                                                <th>Ticket ID</th>
+                                                <th> Article Type </th>
                                                 <th> Subject </th>
                                                 <th> Email </th> 
-                                                <th>Ticket ID</th>
+                                                
                                                 <th> Status </th> 
                                                  <th> Attachment </th> 
                                                 <th>Created date</th> 
@@ -90,9 +91,8 @@
 
                                             <tr>
                                                 <td> {{++$key}} </td>
-                                                <td> 
-
-
+                                                 <td> <a class="btn-circle btn btn-success" href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}"> #{{$result->ticket_id}} </a> </td> 
+                                                <td>  
                                                     <a href="{{url('admin/articleType?search='.$dept)}}" style="text-transform: capitalize;"> 
                                                     {{$result->supportType->resolution_department or 'NA'}} 
                                                     </a>
@@ -102,7 +102,7 @@
                                                  </td>
                                                 <td>  {{$result->email}} </td>
 
-                                                <td> <a class="btn-circle btn btn-success" href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}"> #{{$result->ticket_id}} </a> </td> 
+                                               
                                             	<td>  {{$result->status}} </td>
                                                  <td> <a href="@if($result->attachment)?{{url('storage/docs/'.$result->attachment)}}:# @endif"> {{ !empty($result->attachment)?$result->attachment:'NA'  }} </a> </td>
                                                  <td>

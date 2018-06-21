@@ -46,7 +46,7 @@
 
                                       
                                          <div class="form-group {{ $errors->first('article_type', ' has-error') }}">
-                                         <label class="control-label col-md-3">Support Type
+                                         <label class="control-label col-md-3">Article Type
                                                 <span class="required">  </span>
                                             </label>
                                         <div class="col-md-8"> 

@@ -22,7 +22,7 @@ Route::get('/', function () {
     return redirect('admin');
 });
 
-
+Route::get('/send', 'EmailController@sendMail');
 
  
 use Twilio\Rest\Client;

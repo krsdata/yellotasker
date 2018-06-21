@@ -82,7 +82,9 @@
 
                                                </td>
                                                 <td>{{ $result->commentDescription}}</td>
-                                                <td>{{ $result->created_at}}</td>
+                                                <td> 
+                                                    {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
+                                                </td>
                                                 <td><a href="{{route('comment.show',$result->id)}}"> View Reply </a></td>
                                                 <td> 
                                                     {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('comment.destroy', $result->id))) !!}

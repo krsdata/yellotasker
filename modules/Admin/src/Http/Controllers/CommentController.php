@@ -88,12 +88,13 @@ class CommentController extends Controller {
                 if (!empty($taskdate)) {
                      $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
                 } 
+
             })->with('userDetail','taskDetail')->where('commentId',0)->Paginate($this->record_per_page);
             
         } else {
             $comments = Comments::with('userDetail','taskDetail')->where('commentId',0)->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-         
+        dd($comments); 
         return view('packages::comment.index', compact('comments','data', 'page_title', 'page_action','sub_page_title')); 
     }
 
