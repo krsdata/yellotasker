@@ -32,9 +32,9 @@ class CompaintController extends Controller
 
         $reason = $request->get('reasonType');
         if($request->get('reasonType')){
-            $reason = Reason::where('reasonType','LIKE','%'.$request->get('reasonType').'%')->first();
+            $reason = Reason::where('reasonType','LIKE','%'.$request->get('reasonType').'%')->lists('id');
         }
-    
+        
         $search = $request->get('search');
         $taskdate = $request->get('taskdate');  
         if ((isset($search) && !empty($search)) || (isset($taskdate) && !empty($taskdate)) ) { 
@@ -46,7 +46,7 @@ class CompaintController extends Controller
                         }); 
                 } 
                 if($reason){
-                    $query->where('reasonId',$reason->id);
+                    $query->whereIn('reasonId',$reason);
                 }
                 if (!empty($taskdate)) {
                      $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
@@ -57,7 +57,7 @@ class CompaintController extends Controller
             $comments = Complains::with('taskDetail','reportedUserDetail','reason')
             ->where(function($query) use($search,$taskdate,$reason) {
                 if($reason){
-                    $query->where('reasonId',$reason->id);
+                    $query->whereIn('reasonId',$reason);
                 }
             })
             ->orderBy('id','desc')->Paginate($this->record_per_page);
