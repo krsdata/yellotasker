@@ -102,7 +102,7 @@
                                     
                                         @foreach($users as $key => $result)
                                             <tr>
-                                                <td> {{++$key}} </td>
+                                                 <td> {{ (($users->currentpage()-1)*15)+(++$key) }}</td>
                                                 <td> {{$result->first_name.'  '.$result->last_name}} </td>
                                                 <td> {{$result->email}} </td>
                                                 <td> {{$result->phone}} </td>
@@ -143,6 +143,8 @@
                                          @endif   
                                         </tbody>
                                     </table>
+                                    Showing {{($users->currentpage()-1)*$users->perpage()+1}} to {{$users->currentpage()*$users->perpage()}}
+                                    of  {{$users->total()}} entries
                                      <div class="center" align="center">  {!! $users->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>

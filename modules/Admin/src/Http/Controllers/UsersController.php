@@ -94,7 +94,7 @@ class UsersController extends Controller {
                         }
                     })->where('role_type','!=',3)->Paginate($this->record_per_page);
         } else {
-            $users = User::orderBy('id','desc')->where('role_type','!=',3)->Paginate(10);
+            $users = User::orderBy('id','desc')->where('role_type','!=',3)->Paginate($this->record_per_page);
             
         } 
         $roles = Roles::all();
