@@ -70,6 +70,7 @@ app.controller('paymentController', function($scope, $http) {
 				  $scope.userData=data;
 					$scope.userProfit=data.net_incoming-data.net_outgoing;
 					$scope.label=$scope.userProfit>0?'Earned':'Spent';
+					$scope.userProfit=$scope.userProfit>0?$scope.userProfit:Math.abs($scope.userProfit);
 					$scope.userNetOutgoing=data.net_outgoing;
 					$scope.userNetIncoming=data.net_incoming;
 					$scope.taskList=$scope.userData.data.outgoing;

@@ -30,3 +30,34 @@ button.btn.btn-primary.btn-md {
     width: 202px;
     text-align: center;
 }
+input.ng-pristine.ng-valid {
+    float: left;
+    width: 300px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px !important;
+}
+button.btn.btn-primary.btn-md.user-report {
+    float: left;
+    margin: 0;
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+.card-profile ul li a {
+    background: #efeb10;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+}
+.card-profile ul
+{
+  margin-left: 15px;
+}
+.card-profile ul li a.active-tabs
+{
+  background:#000;
+  color: #fff;
+}
+.no-list{
+  margin-left: 15px;
+}

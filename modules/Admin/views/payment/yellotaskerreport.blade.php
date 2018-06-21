@@ -47,7 +47,7 @@
                         <div class="col-md-3">
                         <input type="text" id="enddate" ng-model="endDate" class="form-control taskdate" data-required="1" size="16" data-date-format="yyyy-mm-dd" name="endDate"  placeholder="End Date" ></input>
                         </div>
-                       <button class="btn btn-primary btn-md"  ng-click="getYellotaskerData()">Search</button>
+                       <button class="btn btn-primary btn-md user-report"  ng-click="getYellotaskerData()">Search</button>
                        <div ng-if="showError">Please enter dates</div>
                    </div>
                    <div class="row">
@@ -58,9 +58,9 @@
                                <div class="display">
                                    <div class="number">
                                        <h3 class="font-purple-soft">
-                                           <span data-counter="counterup" data-value="276"><% yelloEarn %></span>
+                                           <span data-counter="counterup" data-value="276"><% yelloProfit %></span>
                                        </h3>
-                                       <small>Profit</small>
+                                       <small>Profit (service charge earned considered as profit)</small>
                                    </div>
                                    <div class="icon">
                                        <i class="icon-user"></i>
@@ -106,7 +106,7 @@
                                <div class="display">
                                    <div class="number">
                                        <h3 class="font-blue-sharp">
-                                           <span data-counter="counterup" data-value="567"><% yelloProfit %></span>
+                                           <span data-counter="counterup" data-value="567"><% yelloEarn %></span>
                                        </h3>
                                        <small>Net Incoming</small>
                                    </div>
@@ -131,7 +131,7 @@
                                    <div class="card-profile">
                      <ul class="nav nav-tabs" role="tablist">
                        <li role="presentation" >
-                         <a ng-click="showTaskList('outgoing')">Outging</a>
+                         <a ng-click="showTaskList('outgoing')">Outgoing</a>
                         </li>
                         <li role="presentation" >
                           <a ng-click="showTaskList('incoming')">Incoming</a>
@@ -172,7 +172,7 @@
                      <span>
                   </div>
                   </div>
-                  <div ng-if = "!showList">
+                  <div class="no-list" ng-if = "!showList">
                    No list found
                   </div>
                   </div>

@@ -39,8 +39,10 @@
                    </ul>
                    <!-- END PAGE BREADCRUMB -->
                    <div class="row">
+                       <div class="col-sm-12">
                        <input type='text' ng-model='userId'>
-                       <button class="btn btn-primary btn-md"  ng-click="getUserData()">Search</button>
+                       <button class="btn btn-primary btn-md user-report"  ng-click="getUserData()">Search</button>
+                    </div>
                    </div>
                    <!-- BEGIN PAGE BASE CONTENT -->
                    <div class="row">
@@ -122,7 +124,7 @@
                      <div class="card-profile">
        <ul class="nav nav-tabs" role="tablist">
          <li role="presentation" >
-           <a ng-click="showTaskList('outgoing')">Outging</a>
+           <a ng-click="showTaskList('outgoing')">Outgoing</a>
           </li>
           <li role="presentation" >
             <a ng-click="showTaskList('incoming')">Incoming</a>
@@ -130,19 +132,19 @@
        </ul>
  <div  ng-if = "showList">
    <div class="portlet-body">
-       <table class="table table-striped table-hover table-bordered" id="contact">
+       <table ng-if = "outgoingIndicator" class="table table-striped table-hover table-bordered" id="contact">
            <thead>
                <tr>
                     <th>Task Id</th>
                    <th>Task Title</th>
                    <th>Order Id</th>
                    <th>Status</th>
-                   <th>Total Amount</th>
+                   <th>Amount Spend</th>
                    <th>Doer Name</th>
                </tr>
            </thead>
            <tbody>
-             <tr ng-if = "outgoingIndicator" ng-repeat='task in taskList'>
+             <tr  ng-repeat='task in taskList'>
                  <td><% task.id %> </td>
                  <td><% task.task_title %> </td>
                  <td><% task.order_id %> </td>
@@ -150,20 +152,35 @@
                  <td>$<% task.total_price %> </td>
                  <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
                </tr>
-               <tr ng-if = "incomingIndicator" ng-repeat='task in taskList'>
-                   <td><% task.task_details.id %> </td>
-                   <td><% task.task_details.title %> </td>
-                   <td><% task.order_id %> </td>
-                   <td><% task.status %> </td>
-                   <td>$<% task.task_details.totalAmount %> </td>
-                   <td><%task.task_details.seeker_user_detail.first_name %> <%task.task_details.seeker_user_detail.last_name%></td>
-                 </tr>
+           </tbody>
+       </table>
+
+       <table  ng-if = "incomingIndicator" class="table table-striped table-hover table-bordered" id="contact">
+           <thead>
+               <tr>
+                    <th>Task Id</th>
+                   <th>Task Title</th>
+                   <th>Status</th>
+                   <th>Earned Amount</th>
+                   <th>Total Amount</th>
+                   <th>Doer Name</th>
+               </tr>
+           </thead>
+           <tbody>
+             <tr  ng-repeat='task in taskList'>
+                 <td><% task.task_details.id %> </td>
+                 <td><% task.task_details.title %> </td>
+                 <td><% task.status %> </td>
+                 <td>$<% task.payable_amount %> </td>
+                 <td>$<% task.task_details.totalAmount %> </td>
+                 <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
+               </tr>
            </tbody>
        </table>
        <span>
    </div>
    </div>
-   <div ng-if = "!showList">
+   <div class="no-list"ng-if = "!showList">
      No list found
    </div>
 </div>
