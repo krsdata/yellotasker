@@ -1237,21 +1237,22 @@ private $trns_status = '(
                     $data[$key] = $value;
                 }
           }
-
-
-        $task = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
-            if($startDate && $endDate){
-                $q->whereBetween('dueDate', [$startDate, $endDate]);    
-            }
-            
-        })->get(); 
+          $task = [];
+          if($startDate && $endDate){
+                $task = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
+                    if($startDate && $endDate){
+                        $q->whereBetween('dueDate', [$startDate, $endDate]);    
+                    }
+                    
+                })->get(); 
+        }
         return response()->json(
                             [ 
                                 "status"=>($service_charge)?1:0,
                                 "code"=>($service_charge)?200:500,
                                 "message"=>"Yellotasker income details",
                                 "income_details" => $data,
-                                'data'=>$task,
+                                'data'=>['task_list'=>$task],
 
                             ]
                         );     
