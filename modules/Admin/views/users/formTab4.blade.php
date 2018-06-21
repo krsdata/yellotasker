@@ -103,9 +103,7 @@
                                 <thead>
                                     <tr>
                                         <th>Sno.</th>
-                                        <th>Total Due</th>
-                                        <th>Due Date</th>
-                                        <th>Action</th>
+                                        <th>Total Earning</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -115,13 +113,7 @@
                                         </td>
                                          <td>
                                             100 USD
-                                        </td>
-                                         <td>
-                                            2017-Dec-31
-                                        </td>
-                                         <td>
-                                           <button class="btn btn-success">Pay</button>
-                                        </td>
+                                        </td> 
                                     </tr>
                                 </tbody>
                             </table>

@@ -51,8 +51,7 @@
                                     </div>
                                     <div class="pic-name-right"> 
 
-                                        <h4>{{$postTasks->user->first_name or 'NA'}}<span class="follow-ico"><a href="#">
-                                        <img src="{{url('storage/image/follow.png')}}"></a></span>
+                                        <h4>{{$postTasks->user->first_name or 'NA'}} 
 
                                         </h4>
                                         <p>{{$postTasks->user->email or 'NA'}} {{$postTasks->user->phone or ''}}</p>

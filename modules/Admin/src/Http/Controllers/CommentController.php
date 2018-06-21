@@ -94,7 +94,7 @@ class CommentController extends Controller {
         } else {
             $comments = Comments::with('userDetail','taskDetail')->where('commentId',0)->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-        dd($comments); 
+         
         return view('packages::comment.index', compact('comments','data', 'page_title', 'page_action','sub_page_title')); 
     }
 

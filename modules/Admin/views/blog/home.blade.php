@@ -90,7 +90,7 @@
 
                                                     </td>
                                                    
-                                                    <td>{!! substr(strip_tags($result->blog_description),0,50) !!}...<a href="{{ route('blog.edit',$result->id)}}">
+                                                    <td>{!! substr(strip_tags($result->blog_description),0,50) !!}...<a href="{{ route('blog.show',$result->id)}}">
                                                             <i class="glyphicon glyphicon-eye-open" title="view"></i> 
                                                         </a>
                                                     </td>

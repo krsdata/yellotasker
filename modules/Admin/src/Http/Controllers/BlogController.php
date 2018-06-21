@@ -45,10 +45,10 @@ class BlogController extends Controller {
     public function __construct() {
 
         $this->middleware('admin');
-        View::share('viewPage', 'page');
+        View::share('viewPage', 'blog');
         View::share('helper',new Helper);
         View::share('route_url',route('blog'));
-        View::share('heading','Blog');
+        View::share('heading','Blogs');
 
         $this->record_per_page = Config::get('app.record_per_page');
     }
@@ -165,7 +165,7 @@ class BlogController extends Controller {
         $page_title     = 'Blog';
         $page_action    = 'Edit Blog'; 
         $categories     = Category::all();
-       $type = ['Stories'=>'Stories','News'=>'News','Tips'=>'Tips'];  
+        $type = ['Stories'=>'Stories','News'=>'News','Tips'=>'Tips'];  
         $category_id  = explode(',',$blog->blog_category);
          
          return view('packages::blog.edit', compact( 'blog','banner' ,'page_title', 'page_action','categories','type','category_id'));
@@ -203,7 +203,7 @@ class BlogController extends Controller {
 
         $blog->save();
         return Redirect::to('admin/blog')
-                        ->with('flash_alert_notice', 'Page was successfully updated!');
+                        ->with('flash_alert_notice', 'Blog was successfully updated!');
     }
     /*
      *Delete User
@@ -217,8 +217,15 @@ class BlogController extends Controller {
                         ->with('flash_alert_notice', 'Blog was successfully deleted!');
     }
 
-    public function show(Page $blog) {
+    public function show(Blogs $blog) {
         
+        $page_title     = 'Blog';
+        $page_action    = 'Show Blog'; 
+        $categories     = Category::all();
+        $type = ['Stories'=>'Stories','News'=>'News','Tips'=>'Tips'];  
+        $category_id  = explode(',',$blog->blog_category);
+
+        return view('packages::blog.show', compact( 'blog','banner' ,'page_title', 'page_action','categories','type','category_id'));
     }
 
 }

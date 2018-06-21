@@ -71,7 +71,7 @@
                                         @foreach($comments as $key => $result)
                                         @if(isset($result->taskDetail) && isset($result->userDetail))
                                             <tr>
-                                            <td>{{ ++$key }}</td>
+                                            <td> {{ (($comments->currentpage()-1)*15)+(++$key) }}</td>
                                               
                                                 <td> <a href="{{route('postTask.show',$result->taskDetail->id)}}"> {{ ucfirst($result->taskDetail->title)}}</a></td>
                                                 <td>  
@@ -96,6 +96,9 @@
                                            @endforeach 
                                         </tbody>
                                     </table>
+                                    Showing {{($comments->currentpage()-1)*$comments->perpage()+1}} to {{$comments->currentpage()*$comments->perpage()}}
+                                    of  {{$comments->total()}} entries
+                                    
                                      <div class="center" align="center">  {!! $comments->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>

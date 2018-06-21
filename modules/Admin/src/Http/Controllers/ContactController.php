@@ -172,7 +172,7 @@ class ContactController extends Controller {
     {   
         
         $categoryName = $request->get('categoryName');
-        $cn= '';
+        $cn= ''; 
         foreach ($categoryName as $key => $value) {
             $cn = ltrim($cn.','.$value,',');
         }
@@ -298,13 +298,17 @@ class ContactController extends Controller {
         
         $contact = Contact::find($contact->id); 
         $categoryName = $request->get('categoryName');
+        
         $cn= '';
-        foreach ($categoryName as $key => $value) {
-            $cn = ltrim($cn.','.$value,',');
+        if($categoryName){
+            foreach ($categoryName as $key => $value) {
+                $cn = ltrim($cn.','.$value,',');
+            }
         }
-    
         if($cn!=''){
             $contact->categoryName =  $cn;
+        }else{
+             $contact->categoryName =  null; 
         }
         $request = $request->except('_method','_token','categoryName');
         

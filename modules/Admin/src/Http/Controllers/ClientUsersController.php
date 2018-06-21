@@ -74,11 +74,13 @@ class ClientUsersController extends Controller {
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
-        if ((isset($search) && !empty($search)) OR  (isset($status) && !empty($status)) ) {
+        $role_type = Input::get('role_type');
+
+        if ((isset($search) && !empty($search)) OR  (isset($status) && !empty($status)) or !empty($role_type)) {
 
             $search = isset($search) ? Input::get('search') : '';
                
-            $users = User::where(function($query) use($search,$status) {
+            $users = User::where(function($query) use($search,$status,$role_type) {
                         if (!empty($search)) {
                             $query->Where('first_name', 'LIKE', "%$search%")
                                     ->OrWhere('last_name', 'LIKE', "%$search%")
@@ -87,6 +89,9 @@ class ClientUsersController extends Controller {
                         if (!empty($status)) {
                             $status =  ($status=='active')?1:0;
                             $query->Where('status',$status);
+                        }
+                        if (!empty($role_type)) { 
+                            $query->Where('role_type',$role_type);
                         }
                     })
                            	->where('role_type',3)
@@ -100,7 +105,7 @@ class ClientUsersController extends Controller {
         $roles = Roles::all();
 
         $js_file = ['common.js','bootbox.js','formValidate.js'];
-        return view('packages::users.index', compact('js_file','roles','status','users', 'page_title', 'page_action'));
+        return view('packages::users.index', compact('js_file','roles','status','users', 'page_title', 'page_action','role_type'));
     }
 
     /*

@@ -58,6 +58,7 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
+                                                <th> Sno</th>
                                                 <th> Title  dfdf</th>
                                                 <th> Description </th>  
                                                 <th>Total Amount</th> 
@@ -71,6 +72,7 @@
                                         <tbody>
                                         @foreach($postTasks as $key => $result)
                                             <tr>
+                                            <td> {{ (($postTasks->currentpage()-1)*15)+(++$key) }}</td>
                                                 <td>{{ $result->title}}</td>
                                                 <td>{{ substr($result->description,0,20)   }}</td>
                                                 <td>{{ $result->totalAmount}}</td>
@@ -87,7 +89,12 @@
                                            @endforeach 
                                         </tbody>
                                     </table>
-                                     <div class="center" align="center">  {!! $postTasks->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
+                                    
+Showing {{($postTasks->currentpage()-1)*$postTasks->perpage()+1}} to {{$postTasks->currentpage()*$postTasks->perpage()}}
+    of  {{$postTasks->total()}} entries
+                                     <div  class="center" align="center"> 
+                                        
+                                       {!! $postTasks->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->

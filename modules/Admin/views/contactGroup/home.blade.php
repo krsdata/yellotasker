@@ -12,6 +12,33 @@
 <!-- END PAGE BREADCRUMB -->
 <!-- BEGIN PAGE BASE CONTENT -->
 <div class="row">
+<div class="col-md-12" 
+@foreach($contactGroup as $key => $result)
+
+<form id="updateGroup_{{$result->id}}" action="" method="post" encytype="multipart/form-data">
+<input type="hidden" name="parent_id" value="{{$result->id}}" id="parent_id">
+ <div id="responsive_{{$result->id}}" class="modal fade" tabindex="-1" data-width="300"  style="auto;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #efeb10 !important">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Update Contact Group</h4>
+            </div>
+            <div class="modal-body" style="overflow-y:scroll">
+                <?php $data = $helper->contactName($result->id);  ?>
+                {!! $data  !!} 
+            </div>
+            <div class="modal-footer">
+                 <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
+                <button type="button" class="btn red" id="save"  onclick="updateGroup('{{url("admin/updateGroup")}}',{{$result->id}})" >Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+@endforeach
+</div>
+
     <div class="col-md-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET--> 
         <div class="portlet light portlet-fit bordered">
@@ -159,28 +186,3 @@
 </div>
 
 
-
-@foreach($contactGroup as $key => $result)
-
-<form id="updateGroup_{{$result->id}}" action="" method="post" encytype="multipart/form-data">
-<input type="hidden" name="parent_id" value="{{$result->id}}" id="parent_id">
- <div id="responsive_{{$result->id}}" class="modal fade" tabindex="-1" data-width="300"  style="height: 500px;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #efeb10 !important">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Update Contact Group</h4>
-            </div>
-            <div class="modal-body" style="overflow-y:scroll">
-                <?php $data = $helper->contactName($result->id);  ?>
-                {!! $data  !!} 
-            </div>
-            <div class="modal-footer">
-                 <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
-                <button type="button" class="btn red" id="save"  onclick="updateGroup('{{url("admin/updateGroup")}}',{{$result->id}})" >Update</button>
-            </div>
-        </div>
-    </div>
-</div>
-</form>
-@endforeach

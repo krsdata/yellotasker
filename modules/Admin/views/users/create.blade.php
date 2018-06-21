@@ -48,10 +48,7 @@
                                                 <a href="#">
                                                     <i class="icon-settings"></i> Account Settings </a>
                                             </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="icon-info"></i> Help </a>
-                                            </li>
+                                             
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -60,27 +57,28 @@
                                 <!-- PORTLET MAIN -->
                                 <div class="portlet light bordered">
                                     <!-- STAT -->
-                                    <div class="row list-separated profile-stat">
-                                        <div class="col-md-4 col-sm-4 col-xs-6">
-                                            <div class="uppercase profile-stat-title"> 37 </div>
-                                            <div class="uppercase profile-stat-text"> Projects </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-6">
-                                            <div class="uppercase profile-stat-title"> 51 </div>
-                                            <div class="uppercase profile-stat-text"> Tasks </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-6">
-                                            <div class="uppercase profile-stat-title"> 61 </div>
-                                            <div class="uppercase profile-stat-text"> Uploads </div>
-                                        </div>
-                                    </div>
+                                   
                                     <!-- END STAT -->
                                     <div>
                                         <h4 class="profile-desc-title">About {{$user->first_name}}</h4>
+                                          <div class="row list-separated profile-stat">
+                                      <!--   <div class="col-md-4 col-sm-4 col-xs-6">
+                                            <div class="uppercase profile-stat-title"> 37 </div>
+                                            <div class="uppercase profile-stat-text"> Projects </div>
+                                        </div> -->
+                                        <!-- <div class="col-md-4 col-sm-4 col-xs-6">
+                                            <div class="uppercase profile-stat-title"> 0 </div>
+                                            <div class="uppercase profile-stat-text"> Tasks </div>
+                                        </div> -->
+                                      <!--   <div class="col-md-4 col-sm-4 col-xs-6">
+                                            <div class="uppercase profile-stat-title"> 61 </div>
+                                            <div class="uppercase profile-stat-text"> Uploads </div>
+                                        </div> -->
+                                    </div>
                                         <span class="profile-desc-text">{{$user->about_me}}</span>
                                         <div class="margin-top-20 profile-desc-link">
-                                            <i class="fa fa-globe"></i>
-                                            {{$user->companyName}}
+                                            <i class="fa fa-phone"></i>
+                                            {{$user->phone}}
                                         </div>
                                        <!--  <div class="margin-top-20 profile-desc-link">
                                             <i class="fa fa-twitter"></i>
@@ -112,9 +110,9 @@
                                                     <li>
                                                         <a href="#tab_1_2" data-toggle="tab">Change Avatar</a>
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <a href="#tab_1_3" data-toggle="tab"> Business Info</a>
-                                                    </li>
+                                                    </li> -->
                                                     <li>
                                                         <a href="#tab_1_4" data-toggle="tab">  Payment Info</a>
                                                     </li>
@@ -125,7 +123,7 @@
                                         <div class="tab-content">
                                             <!-- PERSONAL INFO TAB --> 
                                                 <div class="margin-top-10">
-                                                    @if (count($errors) > 0)
+                                                    @if (count($errors) > 1000)
                                                       <div class="alert alert-danger">
                                                           <ul>
                                                               @foreach ($errors->all() as $error)

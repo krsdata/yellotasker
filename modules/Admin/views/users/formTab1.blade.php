@@ -76,7 +76,7 @@
     </div>
      <div class="form-group {{ $errors->first('phone', ' has-error') }}">
         <label class="control-label">Mobile Number</label>
-        <input type="text" placeholder="Mobile or Phone" class="form-control" name="phone"  value="{{ ($user->phone)?$user->phone:old('phone')}}"> </div>
+        <input type="text" placeholder="Mobile or Phone" class="form-control phone" name="phone"  value="{{ ($user->phone)?$user->phone:old('phone')}}"> </div>
     <div class="form-group">
         <label class="control-label">Qualification</label>
         <input type="text" placeholder="qualification" class="form-control" name="qualification" value="{{$user->qualification}} "> 
@@ -115,7 +115,8 @@
      <div class="margin-top-10">
 
                 <button type="submit" class="btn green" value="personelInfo" name="submit"> Save </button>
-                <button type="submit" class="btn default"> Cancel </button>
+                 <a href="{{url(URL::previous())}}">
+{!! Form::button('Cancel', ['class'=>'btn btn-warning text-white']) !!} </a>
             </div>  
 </div>
 </div>

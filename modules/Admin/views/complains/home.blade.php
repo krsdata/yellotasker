@@ -75,7 +75,7 @@
                                         @foreach($comments as $key => $result)
                                         @if( isset($result->reportedUserDetail) && isset($result->taskDetail->id ))
                                             <tr>
-                                            <td>{{ ++$key }}</td>
+                                             <td> {{ (($comments->currentpage()-1)*15)+(++$key) }}</td>
                                                  <td> 
                                                     
 
@@ -141,6 +141,9 @@
                                            @endforeach 
                                         </tbody>
                                     </table>
+                                    Showing {{($comments->currentpage()-1)*$comments->perpage()+1}} to {{$comments->currentpage()*$comments->perpage()}}
+                                    of  {{$comments->total()}} entries
+
                                     <div class="center" align="center">  {!! $comments->appends(['search' => isset($_GET['search'])?$_GET['search']:'','reasonType'=>isset($_GET['reasonType'])?$_GET['reasonType']:''])->render() !!}</div>
                                 </div>
                             </div>

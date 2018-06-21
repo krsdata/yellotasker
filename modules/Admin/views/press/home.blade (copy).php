@@ -86,7 +86,7 @@
                                                     @if(strlen(strip_tags($result->articleDescription))>='100')
                                                     ... 
                                                     @endif
-                                                     <a href="{{ route('press.show',$result->id)}}">
+                                                     <a href="{{ route('press.edit',$result->id)}}">
                                                         <i class="fa fa-eye" title="Show"></i> 
                                                     </a>
                                                 </td> 
