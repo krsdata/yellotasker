@@ -1241,10 +1241,10 @@ private $trns_status = '(
           if($startDate && $endDate){
                 $task = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
                     if($startDate && $endDate){
-                        $q->whereBetween('dueDate', [$startDate, $endDate]);    
+                        $q->whereBetween('update_at', [$startDate, $endDate]);    
                     }
                     
-                })->get(); 
+                })->where('status','closed')->get(); 
         }
         return response()->json(
                             [ 
@@ -1252,7 +1252,8 @@ private $trns_status = '(
                                 "code"=>($service_charge)?200:500,
                                 "message"=>"Yellotasker income details",
                                 "income_details" => $data,
-                                'data'=>['task_list'=>$task],
+                                'data'=>['spend_task_list'=>$task],
+                                        ['erned_task_list'=>$task]
 
                             ]
                         );     
