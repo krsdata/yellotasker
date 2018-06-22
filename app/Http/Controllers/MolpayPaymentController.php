@@ -1253,7 +1253,7 @@ private $trns_status = '(
                                 "message"=>"Yellotasker income details",
                                 "income_details" => $data,
                                 'data'=>['spend_task_list'=>$task,
-                                        'erned_task_list'=>$task]
+                                        'erned_task_list'=>null]
 
                             ]
                         );     
