@@ -1252,8 +1252,8 @@ private $trns_status = '(
                                 "code"=>($service_charge)?200:500,
                                 "message"=>"Yellotasker income details",
                                 "income_details" => $data,
-                                'data'=>['spend_task_list'=>$task],
-                                        ['erned_task_list'=>$task]
+                                'data'=>['spend_task_list'=>$task,
+                                        'erned_task_list'=>$task]
 
                             ]
                         );     
