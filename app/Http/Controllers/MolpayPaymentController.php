@@ -1241,7 +1241,7 @@ private $trns_status = '(
           if($startDate && $endDate){
                 $task = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
                     if($startDate && $endDate){
-                        $q->whereBetween('update_at', [$startDate, $endDate]);    
+                        $q->whereBetween('updated_at', [$startDate, $endDate]);    
                     }
                     
                 })->where('status','closed')->get(); 
