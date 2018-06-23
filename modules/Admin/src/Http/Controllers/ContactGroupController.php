@@ -73,8 +73,7 @@ class ContactGroupController extends Controller {
             $category->save();
             echo $s;
             exit();
-        } 
- 
+        }
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
@@ -87,9 +86,8 @@ class ContactGroupController extends Controller {
                             }])->where(function($query) use($search,$status) {
 
                                 if (!empty($search)) {
-                                    $query->Where('groupName', 'LIKE', "%$search%")
-                                            ->OrWhere('name', 'LIKE', "%$search%")
-                                            ->OrWhere('email', 'LIKE', "%$search%");
+                                    $query->Where('groupName', 'LIKE', "%$search%");
+                                    $query->Where('parent_id', 0);
                                 }
                             
                     })->Paginate($this->record_per_page);
@@ -109,8 +107,8 @@ class ContactGroupController extends Controller {
                 $query->with('contact')->get();
 
             }])->where('parent_id',0)->get();
-
-           $pdf = PDF::loadView('packages::contactGroup.pdf', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title'));
+            //dd($contactGroup );
+           $pdf = PDF::loadView('packages::contactGroup.pdf', compact('contactGroupPag','contactGroup','data', 'page_title', 'page_action','sub_page_title','contacts','html'));
            return ($pdf->download('contact-group.pdf'));
         }
        

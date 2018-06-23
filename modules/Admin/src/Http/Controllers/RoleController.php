@@ -77,10 +77,9 @@ class RoleController extends Controller {
                             $query->orWhere('display_name', 'LIKE', "%$search%");
                         }
                         
-                    })->Paginate($this->record_per_page);
+                    })->orderBy('name','asc')->Paginate($this->record_per_page);
         } else {
-            $role  = Role::orderBy('id','desc')->Paginate(10);
-            
+            $role  = Role::orderBy('name','asc')->Paginate(10);  
         } 
 
          return view('packages::role.index', compact('role', 'page_title', 'page_action'));

@@ -145,12 +145,12 @@ class PressController extends Controller {
                         ->with('flash_alert_notice', 'Press item successfully deleted.');
     }
 
-    public function show(Press $press) {
+    public function show(Press $result) {
         
         //Press::with('pressCategory')->Paginate($this->record_per_page);
-        $result = $press->first();
+       // $result = $press->first();
         $page_title  = 'Press';
-        $page_action  = 'Show Press';
+        $page_action  = 'Show Press';  
         return view('packages::press.show', compact('result','data', 'page_title', 'page_action','html'));
 
     }

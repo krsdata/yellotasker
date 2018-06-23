@@ -37,6 +37,13 @@ input.ng-pristine.ng-valid {
     border: 1px solid #ccc;
     border-radius: 5px !important;
 }
+.search-input{
+  float: left;
+  width: 300px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px !important;
+}
 button.btn.btn-primary.btn-md.user-report {
     float: left;
     margin: 0;

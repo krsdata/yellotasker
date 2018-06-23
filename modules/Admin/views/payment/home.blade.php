@@ -48,7 +48,7 @@
                                               <td><% task.title %> </td>
                                               <td>$<% task.totalAmount %> </td>
                                               <td>$<% task.totalAmount*0.10 %> </td>
-                                              <td>$<% task.totalAmount-todo.totalAmount*0.10 %> </td>
+                                              <td>$<% task.totalAmount-task.totalAmount*0.10 %> </td>
                                               <td><% task.taskDoerId %> </td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.userId,task.taskDoerId)">Release Fund</button></td>
                                             </tr>

@@ -74,29 +74,33 @@ class UsersController extends Controller {
         // Search by name ,email and group
         $search = Input::get('search');
         $status = Input::get('status');
-        if ((isset($search) && !empty($search)) OR  (isset($status) && !empty($status)) ) {
+        $role_type = Input::get('role_type');  
+        if ((isset($search) && !empty($search)) OR  (isset($status) && !empty($status)) OR !empty($role_type)) {
 
             $search = isset($search) ? Input::get('search') : '';
                
-            $users = User::where(function($query) use($search,$status) {
+            $users = User::where(function($query) use($search,$status,$role_type) {
                         if (!empty($search)) {
                             $query->Where('first_name', 'LIKE', "%$search%")
                                     ->OrWhere('last_name', 'LIKE', "%$search%")
                                     ->OrWhere('email', 'LIKE', "%$search%");
                         }
-                        if (!empty($status)) {
+                        if (!empty($status)) {dd($role_type);
                             $status =  ($status=='active')?1:0;
                             $query->Where('status',$status);
                         }
+                        if ($role_type) {
+                            $query->Where('role_type',$role_type);
+                        }
                     })->where('role_type','!=',3)->Paginate($this->record_per_page);
         } else {
-            $users = User::orderBy('id','desc')->where('role_type','!=',3)->Paginate(10);
+            $users = User::orderBy('id','desc')->where('role_type','!=',3)->Paginate($this->record_per_page);
             
         } 
         $roles = Roles::all();
 
         $js_file = ['common.js','bootbox.js','formValidate.js'];
-        return view('packages::users.index', compact('js_file','roles','status','users', 'page_title', 'page_action'));
+        return view('packages::users.user.index', compact('js_file','roles','status','users', 'page_title', 'page_action','roles','role_type'));
     }
 
     /*

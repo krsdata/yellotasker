@@ -65,7 +65,7 @@
                                                 <th> Program Name </th>
                                                 <th> Start Date </th> 
                                                 <th> End Date </th> 
-                                                 <th>   </th> 
+                                                 <th> View Details  </th> 
                                                 <th>Created date</th> 
                                                 <th>Action</th> 
                                             </tr>
@@ -79,9 +79,9 @@
                                                  <td> {{$result->end_date}} </td>
                                                     <td>  <a href="{{ route('program.show',$result->id)}}">
                                                             <i class="fa fa-eye" title="details"></i> 
-                                                        </a>View Details </td> 
+                                                        </a> </td> 
                                                      <td>
-                                                        {!! Carbon\Carbon::parse($result->created_at)->format('Y-m-d'); !!}
+                                                        {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
                                                     </td>
                                                     
                                                     <td> 

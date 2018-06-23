@@ -158,14 +158,19 @@ class ProgramController extends Controller {
      */
     public function destroy(Program $program) { 
         
-         Program::where('id',$program->id)->delete();
+        Program::where('id',$program->id)->delete();
         return Redirect::to(route('program'))
                         ->with('flash_alert_notice', 'program  successfully deleted.');
     }
 
-    public function show($id) {
+    public function show(Program $program) {
+
+        $page_title     = 'Program';
+        $page_action    = 'Show Program'; 
+        $result = $program;
+        $program = Program::where('id',$program->id)->select(['program_name','description','start_date','end_date','target_users','complete_task','reward_point','created_at'])->first()->toArray();
         
-        return Redirect::to('admin/program');
+        return view('packages::program.show', compact( 'result','program','status','page_title', 'page_action'));
 
     }
 

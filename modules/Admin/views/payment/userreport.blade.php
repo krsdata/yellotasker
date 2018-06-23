@@ -40,7 +40,7 @@
                    <!-- END PAGE BREADCRUMB -->
                    <div class="row">
                        <div class="col-sm-12">
-                       <input type='text' ng-model='userId'>
+                       <input class="search-input" type='text' ng-model='userId'>
                        <button class="btn btn-primary btn-md user-report"  ng-click="getUserData()">Search</button>
                     </div>
                    </div>

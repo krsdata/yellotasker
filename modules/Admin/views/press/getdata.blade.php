@@ -23,7 +23,7 @@
                                      <div class="col-md-2 pull-right">
                                             <div style="width: 150px;" class="input-group"> 
                                                 <a href="{{ URL::previous()}}">
-                                                    <button class="btn btn-success"><i class="fa fa-long-arrow-left"></i> Go Back</button> 
+                                                    <button class="btn btn-success"><i class="fa fa-long-arrow-left"></i>  Go Back</button> 
                                                 </a>
 
                                             </div>
@@ -38,13 +38,13 @@
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
-                                                <th> Article title </th>  <td> {{ ucfirst($result->article_title)}} </td></tr>
+                                                <th> Press title </th>  <td> {{ ucfirst($result->pressName)}} </td></tr>
                                              <tr>
-                                                <th> Article type</th>  <td> {!!$result->articleCategory->article_type or 'NA'!!}  </td>
+                                                <th> Url</th>  <td> {!!$result->link or 'NA'!!}  </td>
                                             </tr> 
                                             
                                             <tr>
-                                                <th> Description</th> <td>  {!!$result->description!!}  </td>
+                                                <th> Description</th> <td>  {!!$result->articleDescription!!}  </td>
                                             </tr>
 
                                             <tr>

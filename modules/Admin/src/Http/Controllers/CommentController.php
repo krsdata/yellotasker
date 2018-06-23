@@ -88,6 +88,7 @@ class CommentController extends Controller {
                 if (!empty($taskdate)) {
                      $query->where('created_at', 'LIKE', "%".$taskdate."%"); 
                 } 
+
             })->with('userDetail','taskDetail')->where('commentId',0)->Paginate($this->record_per_page);
             
         } else {

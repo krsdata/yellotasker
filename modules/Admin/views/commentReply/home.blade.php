@@ -50,11 +50,11 @@
                                                 <td colspan="5"> <h4>Task Title : <b>{{ $comments[0]->taskDetail->title or 'NA'}} </b> </h4></td>
                                            </tr>
                                             <tr>
-                                             <th> Id </th>
+                                             <th> Sno. </th>
                                                  
                                                 <th> Comment By </th>  
                                                 <th> Comment </th> 
-                                                <th>Created Date</th> 
+                                                <th>Comment Date</th> 
                                                 
                                                  <th>Action</th>
                                             </tr>
@@ -67,8 +67,7 @@
                                         @foreach($comments as $key => $result)  
                                       
                                             <tr>
-                                             <td>{{ ++$key }}</td>
-                                               
+                                             <td>{{ ++$key }}</td> 
                                                
                                                 <td> 
 
@@ -78,7 +77,11 @@
 
                                                </td>
                                                 <td>{{ $result->commentDescription}}</td>
-                                                <td>{{ $result->created_at}}</td>
+                                                <td> 
+
+                                                    {!! Carbon\Carbon::parse($result->created_at)->format('d-m-Y'); !!}
+
+                                                </td>
                                                 
                                                 <td> 
                                                     {!! Form::open(array('class' => 'form-inline pull-left deletion-form', 'method' => 'DELETE',  'id'=>'deleteForm_'.$result->id, 'route' => array('comment.destroy', $result->id))) !!}

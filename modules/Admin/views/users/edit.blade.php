@@ -54,17 +54,17 @@
                                     <div class="profile-usermenu">
                                         <ul class="nav">
                                             <li>
-                                                <a href="#">
+                                               <a href="{{url('admin/mytask/'.$user->id)}}">
                                                     <i class="icon-home"></i> Overview </a>
                                             </li>
                                             <li class="active">
                                                 <a href="#">
                                                     <i class="icon-settings"></i> Account Settings </a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="#">
                                                     <i class="icon-info"></i> Help </a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -73,27 +73,28 @@
                                 <!-- PORTLET MAIN -->
                                 <div class="portlet light bordered">
                                     <!-- STAT -->
-                                    <div class="row list-separated profile-stat">
+                                   
+                                    <!-- END STAT -->
+                                    <div>
+                                        <h4 class="profile-desc-title">About {{$user->first_name}}</h4>
+                                          <div class="row list-separated profile-stat">
                                       <!--   <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="uppercase profile-stat-title"> 37 </div>
                                             <div class="uppercase profile-stat-text"> Projects </div>
                                         </div> -->
-                                        <div class="col-md-4 col-sm-4 col-xs-6">
+                                        <!-- <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="uppercase profile-stat-title"> 0 </div>
                                             <div class="uppercase profile-stat-text"> Tasks </div>
-                                        </div>
+                                        </div> -->
                                       <!--   <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="uppercase profile-stat-title"> 61 </div>
                                             <div class="uppercase profile-stat-text"> Uploads </div>
                                         </div> -->
                                     </div>
-                                    <!-- END STAT -->
-                                    <div>
-                                        <h4 class="profile-desc-title">About {{$user->first_name}}</h4>
                                         <span class="profile-desc-text">{{$user->about_me}}</span>
                                         <div class="margin-top-20 profile-desc-link">
-                                            <i class="fa fa-globe"></i>
-                                            {{$user->companyName}}
+                                            <i class="fa fa-phone"></i>
+                                            {{$user->phone}}
                                         </div>
                                        <!--  <div class="margin-top-20 profile-desc-link">
                                             <i class="fa fa-twitter"></i>
@@ -126,9 +127,9 @@
                                                         <a href="#tab_1_2" data-toggle="tab">Change Avatar</a>
                                                     </li>
                                                    
-                                                    <li>
+                                                    <!-- <li>
                                                         <a href="#tab_1_4" data-toggle="tab">  Payment Info</a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                    {!! Form::model($user, ['method' => 'PATCH', 'route' => ['user.update', $user->id],'enctype'=>'multipart/form-data']) !!}

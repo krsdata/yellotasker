@@ -8,17 +8,16 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "tymon/jwt-auth": "^0.5.9",
-        "laravelcollective/html": "^5.2",
-        "illuminate/html": "^5.0",
-        "laracasts/utilities": "~2.0",
-        "barryvdh/laravel-dompdf": "0.6.*",
+        "laravelcollective/html": "^5.2", 
+        "laracasts/utilities": "~2.0", 
         "phpmailer/phpmailer": "^5.2",
-         "maatwebsite/excel": "^2.1",
+         "maatwebsite/excel": "^2.0",
         "atayahmet/laravel-nestable": "^0.8.1",
         "lavary/laravel-menu": "^1.7",
         "zizaco/entrust": "^1.9",
         "facebook/graph-sdk": "^5.6",
-        "twilio/sdk": "^5.17"
+        "twilio/sdk": "^5.17",
+        "barryvdh/laravel-dompdf": "^0.8.2"
 
     },
     "require-dev": {

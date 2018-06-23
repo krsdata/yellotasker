@@ -25,15 +25,25 @@
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
                                         <div class="row">
-                                            <form action="{{route('user')}}" method="get" id="filter_data">
-                                            <div class="col-md-3">
+                                            <form action="{{route('clientuser')}}" method="get" id="filter_data">
+                                            <div class="col-md-2">
                                                 <select name="status" class="form-control" onChange="SortByStatus('filter_data')">
-                                                    <option value="">Sort by Status</option>
+                                                    <option value="">Search by Status</option>
                                                     <option value="active" @if($status==='active') selected  @endif>Active</option>
                                                     <option value="inActive" @if($status==='inActive') selected  @endif>Inactive</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
+                                            <!-- <div class="col-md-2">
+                                                <select name="role_type" class="form-control" onChange="SortByStatus('filter_data')">
+                                                    <option value="">Search by Role</option>
+                                                    @if($roles)
+                                                        @foreach($roles as $role)
+                                                            <option value="{{$role->id}}" @if($role_type==$role->id) selected @endif >{{$role->name}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div> -->
+                                            <div class="col-md-2">
                                                 <input value="{{ (isset($_REQUEST['search']))?$_REQUEST['search']:''}}" placeholder="search by Name/Email" type="text" name="search" id="search" class="form-control" >
                                             </div>
                                             <div class="col-md-2">
@@ -42,7 +52,7 @@
                                            
                                         </form>
                                          <div class="col-md-2">
-                                             <a href="{{ route('user') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
+                                             <a href="{{ route('clientuser') }}">   <input type="submit" value="Reset" class="btn btn-default form-control"> </a>
                                         </div>
                                        <div class="col-md-2 pull-right">
                                             <div style="width: 150px;" class="input-group"> 
@@ -61,7 +71,10 @@
                                          {{ Session::get('flash_alert_notice') }} 
                                          </div>
                                     @endif
-                                     
+                                    @if($users->count()==0)
+                                   
+                                     <span class="caption-subject font-red sbold uppercase"> Record not found!</span>
+                                    @else 
                                     <table class="table table-striped table-hover table-bordered" id="">
                                         <thead>
                                             <tr>
@@ -69,24 +82,27 @@
                                                 <th> Full Name </th>
                                                 <th> Email </th>
                                                 <th> Phone </th>
-                                                <th> {{($heading=='Admin Users')?'User Type':''}} </th>
+                                                 <th> View Details </th>
                                                 <th>Signup Date</th>
                                                 <th>Status</th>
                                                 <th>Action</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
+
+                                    
                                         @foreach($users as $key => $result)
                                             <tr>
-                                                <td> {{++$key}} </td>
+                                                <td>   {{ (($users->currentpage()-1)*15)+(++$key) }} 
+                                                </td>
                                                 <td> {{$result->first_name.'  '.$result->last_name}} </td>
                                                 <td> {{$result->email}} </td>
-                                                <td> {{$result->phone}} </td>
+                                                <td> {{$result->phone}} </td> 
                                                 <td class="center"> 
                                                
                                                     @if($result->role_type==3)
                                                     <a href="{{url('admin/mytask/'.$result->id)}}">
-                                                        View Task
+                                                        View Detail
                                                         <i class="glyphicon glyphicon-eye-open" title="edit"></i> 
 
                                                     </a>
@@ -116,9 +132,11 @@
                                                
                                             </tr>
                                            @endforeach
-                                            
+                                         @endif   
                                         </tbody>
                                     </table>
+                                    Showing {{($users->currentpage()-1)*$users->perpage()+1}} to {{$users->currentpage()*$users->perpage()}}
+                                    of  {{$users->total()}} entries
                                      <div class="center" align="center">  {!! $users->appends(['search' => isset($_GET['search'])?$_GET['search']:''])->render() !!}</div>
                                 </div>
                             </div>

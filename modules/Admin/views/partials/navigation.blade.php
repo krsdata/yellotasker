@@ -26,9 +26,45 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="{{ route('user')}}">
-                                    <i class="icon-user"></i> View Users </a>
+                                <a href="{{ route('role')}}">
+                                    <i class="icon-user"></i> View Roles </a>
                             </li>
+
+                             <li>
+                                <a href="{{ route('user')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View Users </a>
+                            </li>
+
+                           <li>
+                                <a href="{{ route('postTask')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View Tasks </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('category')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View category </a>
+                            </li>
+
+                             <li>
+                                <a href="{{ route('contact')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View contact </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('program')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View Program </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('blog')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View Blogs </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('press')}}">
+                                    <i class="glyphicon glyphicon-th"></i> View Press </a>
+                            </li>
+
+                         
                             
                             
                         </ul>
@@ -39,7 +75,7 @@
                 <div class="page-top">
                     <!-- BEGIN HEADER SEARCH BOX -->
                     <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-                    <form class="search-form" action="page_general_search_2.html" method="GET">
+                    <!-- <form class="search-form" action="page_general_search_2.html" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control input-sm" placeholder="Search..." name="query">
                             <span class="input-group-btn">
@@ -48,7 +84,7 @@
                                 </a>
                             </span>
                         </div>
-                    </form>
+                    </form> -->
                     <!-- END HEADER SEARCH BOX -->
                     <!-- BEGIN TOP NAVIGATION MENU -->
                     <div class="top-menu">
