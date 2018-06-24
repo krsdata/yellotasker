@@ -46,11 +46,11 @@ app.controller('paymentController', function($scope, $http) {
 					$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
 						taskId : taskId,
 						taskDoerId : doerId,
-						status : 'completed '
+						status : 'closed '
 					}).success(function(data, status, headers, config) {
-						var index = $scope.todos.findIndex(x => x.id==taskId);
+						var index = $scope.list.findIndex(x => x.id==taskId);
 						if (index > -1) {
-							$scope.todos.splice(index, 1);
+							$scope.list.splice(index, 1);
 					}
 					});
 					alert('Fund released Successfully')
@@ -122,9 +122,9 @@ app.controller('paymentController', function($scope, $http) {
 		$http.get('http://api.yellotasker.com/api/v1/incomeDetail?startDate='+startDate+'&endDate='+endDate).
 		success(function(data, status, headers, config) {
 			if(data.message=='Yellotasker income details') {
-					$scope.yelloEarn=data.data.earn;
-					$scope.yelloSpend=data.data.spend;
-					$scope.yelloProfit=data.data.profit;
+					$scope.yelloEarn=data.income_details.earn;
+					$scope.yelloSpend=data.income_details.spend;
+					$scope.yelloProfit=data.income_details.profit;
 				} else {
 					alert('No details found');
 				}
