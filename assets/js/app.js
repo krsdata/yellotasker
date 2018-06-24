@@ -52,6 +52,7 @@ app.controller('paymentController', function($scope, $http) {
 						if (index > -1) {
 							$scope.list.splice(index, 1);
 					}
+					$scope.showReleaseFundList=$scope.list.length>0?true:false;
 					});
 					alert('Fund released Successfully')
 				} else {
