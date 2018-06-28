@@ -24,6 +24,11 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.outgoingIndicator=true;
 	$scope.incomingIndicator=false;
 	$scope.showError = false;
+	$scope.yelloIncome=[];
+	$scope.yelloOutgoing=[];
+	$scope.yelloOutgoingIndicator=false;
+	$scope.yelloIncomingIndicator=false;
+	$scope.showYelloList=false;
 
 	$scope.init = function() {
 		$scope.loading = true;
@@ -113,6 +118,18 @@ app.controller('paymentController', function($scope, $http) {
 
 		}
 	}
+	$scope.showYelloTaskList= function(listType){
+		if(listType=='outgoing') {
+			$scope.showYelloList=$scope.yelloOutgoing!=null&&$scope.yelloOutgoing.length>0?true:false;
+			$scope.yelloOutgoingIndicator=true;
+			$scope.yelloIncomingIndicator=false;
+		} else if(listType=='incoming') {
+			$scope.showYelloList=$scope.yelloIncomess!=null&&$scope.yelloIncome.length>0?true:false;
+			$scope.yelloOutgoingIndicator=false;
+			$scope.yelloIncomingIndicator=true;
+
+		}
+	}
 
 	$scope.getYellotaskerData= function() {
 	$scope.loading = true;
@@ -126,6 +143,10 @@ app.controller('paymentController', function($scope, $http) {
 					$scope.yelloEarn=data.income_details.earn;
 					$scope.yelloSpend=data.income_details.spend;
 					$scope.yelloProfit=data.income_details.profit;
+					$scope.yelloIncome=data.data.erned_task_list;
+					$scope.yelloOutgoing=data.data.spend_task_list;
+					$scope.yelloOutgoingIndicator=true;
+					$scope.showYelloList=$scope.yelloOutgoing!=null&&$scope.yelloOutgoing.length>0?true:false;
 				} else {
 					alert('No details found');
 				}

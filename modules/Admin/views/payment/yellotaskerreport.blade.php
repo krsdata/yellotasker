@@ -131,35 +131,35 @@
                                    <div class="card-profile">
                      <ul class="nav nav-tabs" role="tablist">
                        <li role="presentation" >
-                         <a ng-click="showTaskList('outgoing')">Outgoing</a>
+                         <a ng-click="showYelloTaskList('outgoing')">Outgoing</a>
                         </li>
                         <li role="presentation" >
-                          <a ng-click="showTaskList('incoming')">Incoming</a>
+                          <a ng-click="showYelloTaskList('incoming')">Incoming</a>
                          </li>
                      </ul>
-                  <div  ng-if = "showList">
+                  <div  ng-if = "showYelloList">
                   <div class="portlet-body">
                      <table class="table table-striped table-hover table-bordered" id="contact">
                          <thead>
                              <tr>
                                   <th>Task Id</th>
                                  <th>Task Title</th>
-                                 <th>Order Id</th>
+                                 <!-- <th>Order Id</th> -->
                                  <th>Status</th>
                                  <th>Total Amount</th>
-                                 <th>Doer Name</th>
+                                 <!-- <th>Doer Name</th> -->
                              </tr>
                          </thead>
                          <tbody>
-                           <tr ng-if = "outgoingIndicator" ng-repeat='task in taskList'>
+                           <tr ng-if = "yelloOutgoingIndicator" ng-repeat='task in yelloOutgoing'>
                                <td><% task.id %> </td>
-                               <td><% task.task_title %> </td>
-                               <td><% task.order_id %> </td>
+                               <td><% task.title %> </td>
+                               <!-- <td><% task.order_id %> </td> -->
                                <td><% task.status %> </td>
-                               <td>$<% task.total_price %> </td>
-                               <td>Mehul Ahir</td>
+                               <td>$<% task.totalAmount %> </td>
+                               <!-- <td>Mehul Ahir</td> -->
                              </tr>
-                             <tr ng-if = "incomingIndicator" ng-repeat='task in taskList'>
+                             <tr ng-if = "yelloIncomingIndicator" ng-repeat='task in yelloIncome'>
                                  <td><% task.task_details.id %> </td>
                                  <td><% task.task_details.title %> </td>
                                  <td><% task.order_id %> </td>
@@ -172,7 +172,7 @@
                      <span>
                   </div>
                   </div>
-                  <div class="no-list" ng-if = "!showList">
+                  <div class="no-list" ng-if = "!showYelloList">
                    No list found
                   </div>
                   </div>
