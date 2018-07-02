@@ -68,3 +68,6 @@ button.btn.btn-primary.btn-md.user-report {
 .no-list{
   margin-left: 15px;
 }
+.not-active{
+  background:#e4e4e4 !important;
+}

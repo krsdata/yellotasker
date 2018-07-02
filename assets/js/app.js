@@ -130,7 +130,13 @@ app.controller('paymentController', function($scope, $http) {
 
 		}
 	}
-
+	$scope.appliedClass = function() {
+	    if ($scope.yelloOutgoingIndicator === true) {
+	        return "active-tabs";
+	    } else {
+	        return ""; // Or even "", which won't add any additional classes to the element
+	    }
+	}
 	$scope.getYellotaskerData= function() {
 	$scope.loading = true;
   var startDate=$("#startdate").val();

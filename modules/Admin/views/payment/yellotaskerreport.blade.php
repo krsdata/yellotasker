@@ -133,7 +133,7 @@
                        <li role="presentation" >
                          <a ng-click="showYelloTaskList('outgoing')">Outgoing</a>
                         </li>
-                        <li role="presentation" >
+                        <li ng-class="appliedClass()" role="presentation" >
                           <a ng-click="showYelloTaskList('incoming')">Incoming</a>
                          </li>
                      </ul>
@@ -145,7 +145,7 @@
                                   <th>Task Id</th>
                                  <th>Task Title</th>
                                  <!-- <th>Order Id</th> -->
-                                 <th>Status</th>
+                                 <th>Transaction Date</th>
                                  <th>Total Amount</th>
                                  <!-- <th>Doer Name</th> -->
                              </tr>
@@ -155,17 +155,17 @@
                                <td><% task.id %> </td>
                                <td><% task.title %> </td>
                                <!-- <td><% task.order_id %> </td> -->
-                               <td><% task.status %> </td>
-                               <td>$<% task.totalAmount %> </td>
+                               <td><% task.updated_at %> </td>
+                               <td>MYR<% task.totalAmount %> </td>
                                <!-- <td>Mehul Ahir</td> -->
                              </tr>
                              <tr ng-if = "yelloIncomingIndicator" ng-repeat='task in yelloIncome'>
                                  <td><% task.task_details.id %> </td>
                                  <td><% task.task_details.title %> </td>
-                                 <td><% task.order_id %> </td>
-                                 <td><% task.status %> </td>
-                                 <td>$<% task.task_details.totalAmount %> </td>
-                                 <td>Mehul Ahir</td>
+                                 <!-- <td><% task.order_id %> </td> -->
+                                 <td><% task.updated_at %> </td>
+                                 <td>MYR<% task.task_details.totalAmount %> </td>
+                                 <!-- <td>Mehul Ahir</td> -->
                                </tr>
                          </tbody>
                      </table>
