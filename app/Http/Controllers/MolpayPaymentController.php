@@ -1224,36 +1224,48 @@ private $trns_status = '(
 
         $service_charge = \DB::table('payment_history')->where(function($q) use($startDate,$endDate){
             if($startDate && $endDate){
-                $q->whereBetween('created_at', [$startDate, $endDate]);    
+                $q->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate]);
             }
-            
-        })->select(\DB::raw('SUM(amount) as earn'),\DB::raw('SUM(payable_amount) as spend'),\DB::raw('SUM(service_charge) as profit'))
+        })->select(\DB::raw('GROUP_CONCAT(taskId) as taskId'),\DB::raw('SUM(amount) as earn'),\DB::raw('SUM(payable_amount) as spend'),\DB::raw('SUM(service_charge) as profit'))
           ->first();
-          $data = [];
-          foreach ($service_charge as $key => $value) {
+
+            $data = [];
+            foreach ($service_charge as $key => $value) {
                 if($value==null){
                     $data[$key] = "0.00";
                 }else{
                     $data[$key] = $value;
                 }
-          }
-          $task = [];
-          if($startDate && $endDate){
-                $task = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
+            }
+  
+            $erned_task_list = [];
+            if($startDate && $endDate){
+                $erned_task_list = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
                     if($startDate && $endDate){
                         $q->whereBetween('updated_at', [$startDate, $endDate]);    
                     }
                     
-                })->where('status','closed')->get(); 
-        }
+                })->where('status','closed')->get();  
+            }
+
+ 
+        $taskId =  explode(',', $service_charge->taskId);
+        if($taskId){
+            $spend_task_list = \DB::table('post_tasks')->whereIn('id',$taskId)->get();  
+        }else{
+           $spend_task_list=[];
+        } 
+
+
+
         return response()->json(
                             [ 
                                 "status"=>($service_charge)?1:0,
                                 "code"=>($service_charge)?200:500,
                                 "message"=>"Yellotasker income details",
                                 "income_details" => $data,
-                                'data'=>['spend_task_list'=>$task,
-                                        'erned_task_list'=>null]
+                                'data'=>['spend_task_list'=>$spend_task_list,
+                                        'erned_task_list'=>$erned_task_list]
 
                             ]
                         );     

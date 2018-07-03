@@ -191,17 +191,16 @@ class ComplainController extends Controller {
                                 
                 return Response::json(array(
                     'status' => 0,
-                    'code'=>500,
-                    'message' => $error_msg[0],
-                    'data'  =>  $request->all()
+                    'code'   => 500,
+                    'message'=> $error_msg[0],
+                    'data'   =>  $request->all()
                     )
                 );
             }  
 
         $table_cname = \Schema::getColumnListing('support_tickets');
         $except = ['id','created_at','updated_at'];
-        foreach ($table_cname as $key => $value) {
-           
+        foreach ($table_cname as $key => $value) {           
            if(in_array($value, $except )){
                 continue;
            } 
