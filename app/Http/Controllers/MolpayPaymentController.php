@@ -34,7 +34,7 @@ class MolpayPaymentController extends Controller
     private $paymnet_currency='MYR';
     private $payment_service_commision=10;//10%
     private $withdrawal_service_charge=0;//flat
-    private $payment_minimum_withdrawal=20;//Any Minimum Flat amount.
+    private $payment_minimum_withdrawal=1;//Any Minimum Flat amount.
     protected $input = array();
 private $trns_status = '(
                 CASE 
@@ -48,7 +48,7 @@ private $trns_status = '(
     public function __construct()
     {
             $input = Input::all();
-
+            $this->$payment_minimum_withdrawal = 1;
             $this->input = $input;
             $this->payment_success_url = ('http://yellotasker.com/#/payment/acknowledgement');
           //  $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied');
@@ -694,7 +694,7 @@ private $trns_status = '(
             $message = 'User Not Found.';
         } else if (!$current_balance) {
             $message = 'Your wallet balance is empty.';
-        } else if ($current_balance <$this->payment_minimum_withdrawal) {
+        } else if ($current_balance < $this->payment_minimum_withdrawal) {
             $message = 'Your wallet balance is empty.';
             $min = $this->formatePrice($this->payment_minimum_withdrawal,$currency) ;
             $minCB = $this->formatePrice($current_balance , $currency) ;
