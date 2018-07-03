@@ -29,8 +29,10 @@ class UpdateStatus extends Command
      */
     public function handle()
     {
+        $d = date('Y-m-d');
         DB::table('post_tasks')
-            ->where('date_required', '<',date('m-d-Y'))
+            ->where('dueDate', '<',date('Y-m-d'))
+            ->where(DB::raw("STR_TO_DATE(dueDate,'%Y-%m-%d')"),'<',$d )
             ->where('status','open')
             ->update(['status' => 'expired']);
 
