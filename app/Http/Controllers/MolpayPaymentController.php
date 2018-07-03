@@ -1225,7 +1225,7 @@ private $trns_status = '(
         if($startDate && $endDate){
             $earnTaskId = \DB::table('orders')
             ->where('status',1)
-               ->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate])->lists('taskId');
+               ->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate])->lists('task_id');
             
         }
 
