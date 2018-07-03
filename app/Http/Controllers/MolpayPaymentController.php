@@ -1222,6 +1222,12 @@ private $trns_status = '(
         $startDate = $request->get('startDate');
         $endDate   = $request->get('endDate');
 
+        if($startDate && $endDate){
+            $earnTaskId = \DB::table('payment_history')
+             ->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate])->lists('taskId');
+            
+        }
+
         $service_charge = \DB::table('payment_history')->where(function($q) use($startDate,$endDate){
             if($startDate && $endDate){
                 $q->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate]);
@@ -1237,27 +1243,23 @@ private $trns_status = '(
                     $data[$key] = $value;
                 }
             }
-  
-            $erned_task_list = [];
-            if($startDate && $endDate){
-                $erned_task_list = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
-                    if($startDate && $endDate){
-                        $q->whereBetween('updated_at', [$startDate, $endDate]);    
-                    }
-                    
-                })->where('status','closed')->get();  
-            }
 
- 
+        if(isset($data['taskId'])){
+            unset($data['taskId']);
+        }
+      // Earn Task
+        $erned_task_list = [];
+        if(isset($earnTaskId)){
+            $erned_task_list = \DB::table('post_tasks')->where('fund_released',1)->whereIn('id',$earnTaskId)->get();
+            
+        }
+        // Spend Task 
         $taskId =  explode(',', $service_charge->taskId);
         if($taskId){
             $spend_task_list = \DB::table('post_tasks')->whereIn('id',$taskId)->get();  
         }else{
            $spend_task_list=[];
-        } 
-
-
-
+        }  
         return response()->json(
                             [ 
                                 "status"=>($service_charge)?1:0,
