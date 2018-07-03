@@ -132,8 +132,15 @@ app.controller('paymentController', function($scope, $http) {
 		}
 	}
 	$scope.appliedClass = function() {
+	    if ($scope.yelloIncomingIndicator === true) {
+	        return "active";
+	    } else {
+	        return ""; // Or even "", which won't add any additional classes to the element
+	    }
+	}
+	$scope.appliedActiveClass = function() {
 	    if ($scope.yelloOutgoingIndicator === true) {
-	        return "not-active";
+	        return "active";
 	    } else {
 	        return ""; // Or even "", which won't add any additional classes to the element
 	    }

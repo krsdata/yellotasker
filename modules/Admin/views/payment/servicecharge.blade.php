@@ -40,7 +40,7 @@
                    </ul>
 
                    <div class="row">
-                       <div class="col-sm-12">
+                       <div class="col-sm-12 change-current">
                        <label>Current service charge: $25</label>
                        <button class="btn btn-primary btn-md user-report"  ng-click="changeServiceCharge()">Change</button>
                        

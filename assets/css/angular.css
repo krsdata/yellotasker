@@ -71,3 +71,23 @@ button.btn.btn-primary.btn-md.user-report {
 .not-active{
   background:#e4e4e4 !important;
 }
+.dashboard-stat2.bordered {
+    min-height: 160px;
+}
+.card-profile ul li a {
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+.card-profile ul li a.active {
+    background: #efeb10 !important;
+    color: #000 !important;
+}
+
+.col-sm-12.change-current label {
+    float: left;
+    font-size: 16px;
+    margin-top: 8px;
+}
+ 

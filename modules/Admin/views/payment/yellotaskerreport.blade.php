@@ -130,7 +130,7 @@
                <div class="row">
                                    <div class="card-profile">
                      <ul class="nav nav-tabs" role="tablist">
-                       <li role="presentation" >
+                       <li ng-class="appliedActiveClass()" role="presentation" >
                          <a ng-click="showYelloTaskList('outgoing')">Outgoing</a>
                         </li>
                         <li ng-class="appliedClass()" role="presentation" >
