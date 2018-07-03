@@ -493,6 +493,11 @@ Route::group(['prefix' => 'api/v1'], function()
 
             Route::match(['post','get'],'getPersonalMessage', 'ApiController@getPersonalMessage'); 
             Route::match(['post','get'],'addPersonalMessage', 'ApiController@addPersonalMessage'); 
+
+
+            Route::match(['post','get'],'serviceCharge', 'MolpayPaymentController@serviceCharge');
+
+            
             
     });
 });    
