@@ -1284,4 +1284,39 @@ private $trns_status = '(
                         );
  
     }
+
+
+
+    public function serviceCharge(Request $request ){
+
+        if($request->method()=='GET'){
+            $data = \DB::table('settings')->where('field_key','service_charge')->first(); 
+            $message = "Service charge"; 
+        }
+
+         if($request->method()=='POST' && $request->get('service_charge')){
+ 
+            if($request->get('service_charge')){
+                 $data = \DB::table('settings')
+                ->where('field_key','service_charge')
+                    ->update(['field_value'=>$request->get('service_charge')]);
+
+                $data = \DB::table('settings')->where('field_key','service_charge')->first();
+
+                $message = "Service charge updated";
+            }else{
+                $data = [];
+                $message = "Service charge field is required";
+            }
+         }
+
+       return response()->json(
+                            [ 
+                                "status"=>($data)?1:0,
+                                "code"=>($data)?200:500,
+                                "message"=>$message,
+                                'data'=>$data
+                            ]
+                        );
+    }
 }
