@@ -48,7 +48,7 @@ private $trns_status = '(
     public function __construct()
     {
             $input = Input::all();
-            $this->$payment_minimum_withdrawal = 1;
+            $this->payment_minimum_withdrawal = 1;
             $this->input = $input;
             $this->payment_success_url = ('http://yellotasker.com/#/payment/acknowledgement');
           //  $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied');
