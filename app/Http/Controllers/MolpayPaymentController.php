@@ -1223,8 +1223,9 @@ private $trns_status = '(
         $endDate   = $request->get('endDate');
 
         if($startDate && $endDate){
-            $earnTaskId = \DB::table('payment_history')
-             ->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate])->lists('taskId');
+            $earnTaskId = \DB::table('orders')
+            ->where('status',1)
+               ->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate])->lists('taskId');
             
         }
 
