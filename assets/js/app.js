@@ -44,28 +44,78 @@ app.controller('paymentController', function($scope, $http) {
 
 
 
-	$scope.releaseFund = function(taskId,userId,doerId) {
+	$scope.releaseFund = function(taskId,userId,doerId,amount) {
 		$scope.loading = true;
-		$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
+		// $http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
+		// success(function(data, status, headers, config) {
+		// 	if(data.message=='Task Payment done succesfully.') {
+		// 			$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
+		// 				taskId : taskId,
+		// 				taskDoerId : doerId,
+		// 				status : 'closed '
+		// 			}).success(function(data, status, headers, config) {
+		// 				var index = $scope.list.findIndex(x => x.id==taskId);
+		// 				if (index > -1) {
+		// 					$scope.list.splice(index, 1);
+		// 			}
+		// 			$scope.showReleaseFundList=$scope.list.length>0?true:false;
+		// 			});
+		// 			alert('Fund released Successfully')
+		// 		} else {
+		// 			alert('Fund already released')
+		// 		}
+		// 		$scope.loading = false;
+		// });
+		userId=88;
+			$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
 		success(function(data, status, headers, config) {
-			if(data.message=='Task Payment done succesfully.') {
-					$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
-						taskId : taskId,
-						taskDoerId : doerId,
-						status : 'closed '
-					}).success(function(data, status, headers, config) {
-						var index = $scope.list.findIndex(x => x.id==taskId);
-						if (index > -1) {
-							$scope.list.splice(index, 1);
+			$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+userId).
+			success(function(data, status, headers, config) {
+				if(data.message=='Records found.') {
+					var bankId=data.data[0].id;
+						$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/newrequest?userId='+userId+'&amount='+amount+'&bankId='+bankId).success(function(data, status, headers, config) {
+						if(data.message=='Withdrawal request added succesfully.'){
+							$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
+								taskId : taskId,
+								taskDoerId : doerId,
+								status : 'closed '
+							}).success(function(data, status, headers, config) {
+								var index = $scope.list.findIndex(x => x.id==taskId);
+								if (index > -1) {
+									$scope.list.splice(index, 1);
+							}
+							$scope.showReleaseFundList=$scope.list.length>0?true:false;
+							});
+							alert('Fund released Successfully')
+						} else {
+							alert('Something went wrong!');
+						}	
+						
+						});
+						
+					} else {
+						alert('Fund already released')
 					}
-					$scope.showReleaseFundList=$scope.list.length>0?true:false;
-					});
-					alert('Fund released Successfully')
-				} else {
-					alert('Fund already released')
-				}
-				$scope.loading = false;
+					$scope.loading = false;
+			});
 		});
+		// 		$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+userId).
+		// success(function(data, status, headers, config) {
+		// 	if(data.message=='Records found.') {
+		// 		var bankId=data.data[0].id;
+		// 			$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/newrequest?userId='+userId+'&amount='+userId+'&bankId='+bankId).success(function(data, status, headers, config) {
+		// 				var index = $scope.list.findIndex(x => x.id==taskId);
+		// 				if (index > -1) {
+		// 					$scope.list.splice(index, 1);
+		// 			}
+		// 			$scope.showReleaseFundList=$scope.list.length>0?true:false;
+		// 			});
+		// 			alert('Fund released Successfully')
+		// 		} else {
+		// 			alert('Fund already released')
+		// 		}
+		// 		$scope.loading = false;
+		// });
 	}
 
 	$scope.getUserData = function() {

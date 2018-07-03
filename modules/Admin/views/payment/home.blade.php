@@ -50,7 +50,7 @@
                                               <td>$<% task.totalAmount*0.10 %> </td>
                                               <td>$<% task.totalAmount-task.totalAmount*0.10 %> </td>
                                               <td><% task.taskDoerId %> </td>
-                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.userId,task.taskDoerId)">Release Fund</button></td>
+                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.userId,task.taskDoerId,task.totalAmount-task.totalAmount*0.10)">Release Fund</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
