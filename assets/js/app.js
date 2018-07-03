@@ -29,6 +29,7 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.yelloOutgoingIndicator=false;
 	$scope.yelloIncomingIndicator=false;
 	$scope.showYelloList=false;
+	$scope.chngServiceChargeIndicator=false;
 
 	$scope.init = function() {
 		$scope.loading = true;
@@ -132,7 +133,7 @@ app.controller('paymentController', function($scope, $http) {
 	}
 	$scope.appliedClass = function() {
 	    if ($scope.yelloOutgoingIndicator === true) {
-	        return "active-tabs";
+	        return "not-active";
 	    } else {
 	        return ""; // Or even "", which won't add any additional classes to the element
 	    }
@@ -162,6 +163,14 @@ app.controller('paymentController', function($scope, $http) {
 		$scope.showError = true;
 	}
 
+};
+$scope.changeServiceCharge= function() {
+	$scope.chngServiceChargeIndicator = true;
+
+
+};
+$scope.close= function() {
+	$scope.chngServiceChargeIndicator = false;
 };
 
 	$scope.init();

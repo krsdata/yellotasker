@@ -70,4 +70,12 @@ class PaymentController extends Controller {
     //dd('here');
     return view('packages::payment.yellotaskerreport', compact('page_title' ,'page_action'));
   }
+  public function configServiceCharge(Request $request)
+  {
+
+      $page_title = 'Payment';
+      $page_action = 'Service Charge';
+    //dd('here');
+    return view('packages::payment.servicecharge', compact('page_title' ,'page_action'));
+  }
 }

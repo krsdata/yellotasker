@@ -405,6 +405,7 @@
         Route::get('admin/payment/release-fund', 'Modules\Admin\Http\Controllers\PaymentController@index');
         Route::get('admin/payment/user-report', 'Modules\Admin\Http\Controllers\PaymentController@userReport');
         Route::get('admin/payment/yellotasker-report', 'Modules\Admin\Http\Controllers\PaymentController@yellotaskerReport');
+        Route::get('admin/payment/config-service-charge', 'Modules\Admin\Http\Controllers\PaymentController@configServiceCharge');
 
         Route::match(['get','post'],'admin/permission', 'Modules\Admin\Http\Controllers\RoleController@permission');
 
