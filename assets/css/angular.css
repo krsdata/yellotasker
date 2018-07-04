@@ -94,4 +94,19 @@ button.btn.btn-primary.btn-md.user-report {
     float: left;
     width: 100%;
  }
- 
+ .row.change-current.new-service label {
+    float: left;
+    width: 100%;
+ }
+ .row.change-current.new-service label {
+    float: left;
+    width: 100%;
+ }
+ .row.change-current.new-service div {
+    float: left;
+    width: 100%;
+    border: 1px solid #c9c9c9;
+    padding: 15px;
+    border-radius: 5px;
+ }
+
