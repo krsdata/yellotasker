@@ -34,7 +34,7 @@ class MolpayPaymentController extends Controller
     private $paymnet_currency='MYR';
     private $payment_service_commision=10;//10%
     private $withdrawal_service_charge=0;//flat
-    private $payment_minimum_withdrawal=20;//Any Minimum Flat amount.
+    private $payment_minimum_withdrawal=1;//Any Minimum Flat amount.
     protected $input = array();
 private $trns_status = '(
                 CASE 
@@ -48,7 +48,7 @@ private $trns_status = '(
     public function __construct()
     {
             $input = Input::all();
-
+            $this->payment_minimum_withdrawal = 1;
             $this->input = $input;
             $this->payment_success_url = ('http://yellotasker.com/#/payment/acknowledgement');
           //  $this->payment_failed_url = ('http://yellotasker.co/#/paymentFailied');
@@ -694,7 +694,7 @@ private $trns_status = '(
             $message = 'User Not Found.';
         } else if (!$current_balance) {
             $message = 'Your wallet balance is empty.';
-        } else if ($current_balance <$this->payment_minimum_withdrawal) {
+        } else if ($current_balance < $this->payment_minimum_withdrawal) {
             $message = 'Your wallet balance is empty.';
             $min = $this->formatePrice($this->payment_minimum_withdrawal,$currency) ;
             $minCB = $this->formatePrice($current_balance , $currency) ;
@@ -1222,6 +1222,13 @@ private $trns_status = '(
         $startDate = $request->get('startDate');
         $endDate   = $request->get('endDate');
 
+        if($startDate && $endDate){
+            $earnTaskId = \DB::table('orders')
+            ->where('status',1)
+               ->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate])->lists('task_id');
+            
+        }
+
         $service_charge = \DB::table('payment_history')->where(function($q) use($startDate,$endDate){
             if($startDate && $endDate){
                 $q->whereBetween(\DB::raw("STR_TO_DATE(created_at,'%Y-%m-%d')"), [$startDate, $endDate]);
@@ -1237,27 +1244,23 @@ private $trns_status = '(
                     $data[$key] = $value;
                 }
             }
-  
-            $erned_task_list = [];
-            if($startDate && $endDate){
-                $erned_task_list = \DB::table('post_tasks')->where(function($q) use($startDate,$endDate){
-                    if($startDate && $endDate){
-                        $q->whereBetween('updated_at', [$startDate, $endDate]);    
-                    }
-                    
-                })->where('status','closed')->get();  
-            }
 
- 
+        if(isset($data['taskId'])){
+            unset($data['taskId']);
+        }
+      // Earn Task
+        $erned_task_list = [];
+        if(isset($earnTaskId)){
+            $erned_task_list = \DB::table('post_tasks')->where('fund_released',1)->whereIn('id',$earnTaskId)->get();
+            
+        }
+        // Spend Task 
         $taskId =  explode(',', $service_charge->taskId);
         if($taskId){
             $spend_task_list = \DB::table('post_tasks')->whereIn('id',$taskId)->get();  
         }else{
            $spend_task_list=[];
-        } 
-
-
-
+        }  
         return response()->json(
                             [ 
                                 "status"=>($service_charge)?1:0,
