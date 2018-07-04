@@ -48,7 +48,7 @@
                    </div>
                    <!-- END PAGE BREADCRUMB -->
                    <!-- BEGIN PAGE BASE CONTENT -->
-                   <div class="row" ng-if = "chngServiceChargeIndicator" >
+                   <div class="row change-current new-service" ng-if = "chngServiceChargeIndicator" >
                    <label> New service charges </label>
                <input class="search-input" type='text' ng-model='userId'>
                <button class="btn btn-primary btn-md user-report"  ng-click="saveServiceCharge()">Save</button>

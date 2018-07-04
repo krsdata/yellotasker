@@ -90,4 +90,8 @@ button.btn.btn-primary.btn-md.user-report {
     font-size: 16px;
     margin-top: 8px;
 }
+.col-sm-12.new-service label {
+    float: left;
+    width: 100%;
+ }
  
