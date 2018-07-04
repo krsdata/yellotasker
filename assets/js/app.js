@@ -30,7 +30,9 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.yelloIncomingIndicator=false;
 	$scope.showYelloList=false;
 	$scope.chngServiceChargeIndicator=false;
-
+	$scope.currentServiceCharge='';
+	$scope.serviceChargeError=false;
+	
 	$scope.init = function() {
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
@@ -40,6 +42,7 @@ app.controller('paymentController', function($scope, $http) {
 			$scope.loading = false;
 
 		});
+		$scope.getServiceCharge();
 	}
 
 
@@ -66,7 +69,6 @@ app.controller('paymentController', function($scope, $http) {
 		// 		}
 		// 		$scope.loading = false;
 		// });
-		userId=88;
 			$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
 		success(function(data, status, headers, config) {
 			$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+userId).
@@ -196,31 +198,68 @@ app.controller('paymentController', function($scope, $http) {
 	    }
 	}
 	$scope.getYellotaskerData= function() {
-	$scope.loading = true;
-  var startDate=$("#startdate").val();
-	var endDate=$("#enddate").val()
-	if(startDate&&endDate) {
-		$scope.showError = false;
-		$http.get('http://api.yellotasker.com/api/v1/incomeDetail?startDate='+startDate+'&endDate='+endDate).
-		success(function(data, status, headers, config) {
-			if(data.message=='Yellotasker income details') {
-					$scope.yelloEarn=data.income_details.earn;
-					$scope.yelloSpend=data.income_details.spend;
-					$scope.yelloProfit=data.income_details.profit;
-					$scope.yelloIncome=data.data.erned_task_list;
-					$scope.yelloOutgoing=data.data.spend_task_list;
-					$scope.yelloOutgoingIndicator=true;
-					$scope.showYelloList=$scope.yelloOutgoing!=null&&$scope.yelloOutgoing.length>0?true:false;
-				} else {
-					alert('No details found');
-				}
-				$scope.loading = false;
-		});
-	} else {
-		$scope.showError = true;
-	}
-
+			$scope.loading = true;
+		var startDate=$("#startdate").val();
+			var endDate=$("#enddate").val()
+			if(startDate&&endDate) {
+				$scope.showError = false;
+				$http.get('http://api.yellotasker.com/api/v1/incomeDetail?startDate='+startDate+'&endDate='+endDate).
+				success(function(data, status, headers, config) {
+					if(data.message=='Yellotasker income details') {
+							$scope.yelloEarn=data.income_details.earn;
+							$scope.yelloSpend=data.income_details.spend;
+							$scope.yelloProfit=data.income_details.profit;
+							$scope.yelloIncome=data.data.erned_task_list;
+							$scope.yelloOutgoing=data.data.spend_task_list;
+							$scope.yelloOutgoingIndicator=true;
+							$scope.showYelloList=$scope.yelloOutgoing!=null&&$scope.yelloOutgoing.length>0?true:false;
+						} else {
+							alert('No details found');
+						}
+						$scope.loading = false;
+				});
+			} else {
+				$scope.showError = true;
+			}
 };
+// get service charge 
+$scope.getServiceCharge = function() {
+	$scope.loading = true;
+	$http.get('http://api.yellotasker.com/api/v1/serviceCharge').
+	success(function(data, status, headers, config) {
+		if(data.message=='Service charge'){
+			$scope.currentServiceCharge=data.data.field_value;
+		} else {
+			$scope.currentServiceCharge='';
+		}
+	
+		$scope.loading = false;
+
+	});
+}
+//save service charge
+$scope.saveServiceCharge=function() {
+	var newServiceCharge=$scope.model.serviceCharge;
+	if (/^\d*[1-9]\d*$/.test(+newServiceCharge)&&newServiceCharge!=''){
+		$scope.serviceChargeError=false;
+		$http.post('http://api.yellotasker.com/api/v1/serviceCharge', {
+			service_charge :newServiceCharge
+		}).success(function(data, status, headers, config) {
+			if(data.message=='Service charge updated') {
+				$scope.chngServiceChargeIndicator = false;
+				$scope.model.serviceCharge='';
+				$scope.currentServiceCharge=newServiceCharge;
+				alert('Service charge updated successfully.')
+			} else {
+				alert('Something went wrong!')
+						}
+			});
+				} else {
+					$scope.serviceChargeError=true;
+				}
+			
+			}
+
 $scope.changeServiceCharge= function() {
 	$scope.chngServiceChargeIndicator = true;
 
@@ -228,6 +267,7 @@ $scope.changeServiceCharge= function() {
 };
 $scope.close= function() {
 	$scope.chngServiceChargeIndicator = false;
+	$scope.serviceChargeError=false;
 };
 
 	$scope.init();

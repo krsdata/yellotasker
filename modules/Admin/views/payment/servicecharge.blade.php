@@ -41,23 +41,24 @@
 
                    <div class="row">
                        <div class="col-sm-12 change-current">
-                       <label>Current service charge: $25</label>
+                       <label>Current service charge: <% currentServiceCharge %> % of total task cost. (in $).</label>
                        <button class="btn btn-primary btn-md user-report"  ng-click="changeServiceCharge()">Change</button>
                        
                     </div>
                    </div>
                    <!-- END PAGE BREADCRUMB -->
                    <!-- BEGIN PAGE BASE CONTENT -->
-                   <div class="row change-current new-service" ng-if = "chngServiceChargeIndicator" >
-                       <div>
+                   <div class="row change-current new-service" ng-init="model = {}"  >
+                       <div ng-if = "chngServiceChargeIndicator">
                    <label> New service charges </label>
-               <input class="search-input" type='text' ng-model='userId'>
+                   <input class="search-input"  type='text' ng-model='model.serviceCharge'>
+               <!-- <input class="search-input"  type='text' ng-model='serviceCharge'> -->
                <button class="btn btn-primary btn-md user-report"  ng-click="saveServiceCharge()">Save</button>
                <button class="btn btn-primary btn-md user-report"  ng-click="close()">Cancel</button>
-                  
                                  </div>
+                             
                                 </div>
-            
+                                <div ng-if="serviceChargeError">Please enter valid value.</div>
                </div>
                
                <!-- END CONTENT BODY -->
