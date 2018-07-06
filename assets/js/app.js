@@ -69,13 +69,13 @@ app.controller('paymentController', function($scope, $http) {
 		// 		}
 		// 		$scope.loading = false;
 		// });
-			$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
+			$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+doerId).
 		success(function(data, status, headers, config) {
-			$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+userId).
+			$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+doerId).
 			success(function(data, status, headers, config) {
 				if(data.message=='Records found.') {
 					var bankId=data.data[0].id;
-						$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/newrequest?userId='+userId+'&amount='+amount+'&bankId='+bankId).success(function(data, status, headers, config) {
+						$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/newrequest?userId='+doerId+'&amount='+amount+'&bankId='+bankId).success(function(data, status, headers, config) {
 						if(data.message=='Withdrawal request added succesfully.'){
 							$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
 								taskId : taskId,
