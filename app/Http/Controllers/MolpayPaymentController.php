@@ -770,7 +770,10 @@ private $trns_status = '(
             );
         }
         $withdrawalId = $request->get('withdrawalId');
-        $withdrawal = Withdrawal::find($withdrawalId);
+        $withdrawal   = Withdrawal::find($withdrawalId);
+        
+        dd($withdrawal);
+
         $message ='Error Occured. Please try again.';
         $status = 0;
         if(!$withdrawal){
@@ -797,6 +800,7 @@ private $trns_status = '(
                 $response = $this->payMolepayPayeeByPayeeID($payeeID, $amount, $currency);
              }else{
               $response = $this->payMolepayPayeeByBank($reference_id, $amount, $currency, $payee_email, $payee_mobile, $payee_bank_name, $payee_bank_code, $payee_back_acc_name, $payee_bank_acc_number);
+
               if(isset($response['StatCode']) && $response['StatCode']=='00'){
                  $status=1;
                  $message ='Withdrawal request initialize successfully.'; 
@@ -846,6 +850,19 @@ private $trns_status = '(
                         )
         );
 
+    }
+
+    public function adminWithdrawals( Request $request){
+        
+        $withdrawals = Withdrawal::orderBy('created_at', 'DESC')->get();
+        $withdrawals =$withdrawals->toArray();
+        return Response::json(array(
+                    'status' => 1,
+                    'code' => 200,
+                    'message' => $withdrawals ? 'Withdrawals List found.' : 'No Result found.',
+                    'data' => $withdrawals
+                        )
+        );
     }
     
     public function getWithdrawals(Request $request) {
