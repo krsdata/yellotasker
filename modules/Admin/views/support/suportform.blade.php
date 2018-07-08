@@ -148,7 +148,7 @@
                                             <div class="col-md-offset-3 col-md-9">
                                               {!! Form::submit('Add Reply', ['class'=>'btn  btn-primary text-white','id'=>'saveBtn']) !!} 
 
-                                               <a href="{{url('admin/supportTicket')}}">
+                                               <a href="{{url(URL::previous())}}">
                                     {!! Form::button('Back', ['class'=>'btn btn-warning text-white']) !!} </a>
                                             </div>
                                         </div>
