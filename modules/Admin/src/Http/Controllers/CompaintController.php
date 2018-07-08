@@ -111,7 +111,7 @@ class CompaintController extends Controller
         }   
         //dd($comments);
         $status = $request->get('status');
-        $allReply = \DB::table('support_conversation')->where('parent_id',$comments->id)->where('reason_type','!=','')->get(); 
+        $allReply = \DB::table('support_conversation')->where('parent_id',$comments->id)->whereNotNull('reason_type')->get();
         $result = $complains;
         return view('packages::support.suportform', compact('comments', 'page_title', 'page_action','reason','ticketId','result','allReply','status'));
       }

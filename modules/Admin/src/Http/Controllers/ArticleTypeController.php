@@ -142,8 +142,8 @@ class ArticleTypeController extends Controller {
            $result = SupportTicket::with('supportType')
                         ->where('ticket_id', $ticketId)
                         ->first();
-            $allReply = \DB::table('support_conversation')->where('parent_id',$result->id)->get(); 
-           
+            $allReply = \DB::table('support_conversation')->where('parent_id',$result->id)->whereNotNull('support_type')->get(); 
+            
             if($result){
                 return view('packages::articleType.suportform', compact('result','articleType','page_title', 'page_action','ticketId','allReply'));   
             }else{
