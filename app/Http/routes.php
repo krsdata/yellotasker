@@ -95,7 +95,7 @@ Route::group(['prefix' => 'api/v1'], function()
 
         Route::match(['get','post'],'user/withdrawals-histroy','MolpayPaymentController@getWithdrawals'); //4 //admin
 
-        Route::match(['get','post'],'withdrawalsRequest','MolpayPaymentController@adminWithdrawals'); //4 //admin
+        Route::match(['get','post'],'withdrawalsRequest','MolpayPaymentController@adminWithdrawals'); // //admin
 
         
         Route::match(['get','post'],'user/withdrawals','MolpayPaymentController@getWithdrawals'); //4.1 

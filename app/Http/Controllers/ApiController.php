@@ -1184,10 +1184,11 @@ public function userDetail($id=null)
         $data['otp'] = $otp;
         $data['userId'] = $request->get('userId');
         $data['timezone'] = config('app.timezone');
+        \DB::table('mobile_otp')->insert($data);
 
         $this->sendSMS($request->get('mobileNumber'),$otp);
 
-
+        /*
         $sid = $this->sid; //"AC540c7f8bd91032a4ba28b0bd609ffda0";
         $token = $this->token; //"ed0dc89b140e52e07c6e51f01b473785";
         $client = new Client($sid, $token);
@@ -1202,9 +1203,9 @@ public function userDetail($id=null)
             'body' => 'Your otp is '.$otp
           )
         ); 
-       $client = new Client($sid, $token); 
+        */
 
-        \DB::table('mobile_otp')->insert($data);
+        
 
         return response()->json(
                         [
