@@ -75,8 +75,63 @@ class CompaintController extends Controller
                 }
             })
             ->orderBy('id','desc')->Paginate($this->record_per_page);
-        } 
-         //  dd( $comments);
+        }
+        $reason = $request->get('reasonType'); 
         return view('packages::complains.index', compact('comments', 'page_title', 'page_action','reason')); 
+    }
+
+
+    public function complainDetail(Complains $complains, Request $request) 
+    {
+        $page_title = 'Complaint';
+        $sub_page_title = 'View Complaint';
+        $page_action = 'View Complaint'; 
+        $ticketId = $request->get('ticketId');
+        $reason = $request->get('reasonType');
+        if($request->get('reasonType')){
+            $reason = Reason::where('reasonType','LIKE','%'.$request->get('reasonType').'%')->lists('id');
+
+        }
+        
+        $search = ($ticketId)?$ticketId:null;  
+        if ($search) {
+             
+            $comments = Complains::where(function($query) use($search,$reason) {
+                
+                if($reason){
+                    $query->whereIn('reasonId',$reason);
+                } 
+                  
+            })->where(function($query) use($search){
+                if($search){
+                    $query->where('compainId',$search);   
+                } 
+            })->with('userDetail','taskDetail','reportedUserDetail','reason')->first();
+
+        }   
+        //dd($comments);
+        $status = $request->get('status');
+        $allReply = \DB::table('support_conversation')->where('parent_id',$comments->id)->where('reason_type','!=','')->get(); 
+        $result = $complains;
+        return view('packages::support.suportform', compact('comments', 'page_title', 'page_action','reason','ticketId','result','allReply','status'));
+      }
+  
+    public function supportReply(Request $request)
+    {
+        
+        $status = $request->get('status');
+        \DB::table('complains')
+                ->where('id',$request->get('parent_id'))
+                ->update(['status'=>$status]);
+
+
+        $data = $request->only('ticket_id','subject','email','status','user_comments','support_comments','reason_type','parent_id');;
+       
+        $data['details'] = json_encode($request->all());
+
+        \DB::table('support_conversation')
+                ->insert($data);
+
+        return \Redirect::to(URL::previous())->with('msg','Ticket replied successfully');
     }
 }

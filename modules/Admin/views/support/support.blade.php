@@ -133,10 +133,6 @@
                                                             <li>
                                                                 <a href="{{url('admin/supportTicket?view=true&status=resolved&ticketId='.$result->ticket_id)}}"> resolved </a>
                                                             </li>
-
-                                                            <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=closed&ticketId='.$result->ticket_id)}}"> closed </a>
-                                                            </li>
                                                             <li class="divider"> </li>
                                                             <li> 
                                                             	 <a href="{{url('admin/supportTicket?view=true&ticketId='.$result->ticket_id)}}">

@@ -38,70 +38,83 @@
                                 <div class="portlet-body">
                                     <!-- BEGIN FORM-->
                                 
-                                  {!! Form::model($result, ['route' => ['supportTicket'],'class'=>'form-horizontal user-form','id'=>'user-form','enctype'=>'multipart/form-data']) !!}
+                                   {!! Form::open(['url' => 'admin/supportReply','class' => 'form-horizontal user-form','id'=>'user-form','method'=>'post']) !!}
+                                   <input type="hidden" name="parent_id" value="{{$comments->id}}">
                                     
                                     <div class="form-body">
                                         <div class="alert alert-danger display-hide">
-                                            <button class="close" data-close="alert"></button> Please fill the required field! </div>
-
-                                        <input type="hidden" name="parent_id" value="{{$result->id}}">
-                                         <div class="form-group {{ $errors->first('article_type', ' has-error') }}">
-                                         <label class="control-label col-md-3">Article Type
-                                                <span class="required">  </span>
-                                            </label>
-                                        <div class="col-md-8"> 
-                                       <input type="text"  name="support_type" class="form-control"  readonly="" value="{{ $result->supportType->resolution_department or 'General' }}">
+                                            <button class="close" data-close="alert"></button> Please fill the required field! </div> 
+                                      
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Ticket ID <span class="required"> * </span></label>
+                                        <div class="col-md-6"> 
+                                            <input type="text"  class="form-control" readonly name="ticket_id" value="{{$ticketId}}">
                                         </div>
-                                    </div> 
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Reason Type <span class="required"> * </span></label>
+                                        <div class="col-md-6"> 
+                                            <input type="text"  class="form-control" readonly name="reason_type" value="{{$comments->reason->reasonType or ''}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Reason <span class="required"> * </span></label>
+                                        <div class="col-md-6"> 
+                                            <input type="text"  class="form-control" readonly name="subject" value="{{$comments->reason->reasonDescription or ''}}">
+                                        </div>
+                                    </div>
                                     
                                     <div class="form-group">
                                         <label class="control-label col-md-3">Email <span class="required"> * </span></label>
-                                        <div class="col-md-8">
-                                            <input type="text"  class="form-control" name="email" readonly value="{{$result->email or 'NA'}}">  
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Subject <span class="required"> * </span></label>
-                                        <div class="col-md-8"> 
-                                            <input type="text" name="subject" class="form-control" readonly value="{{$result->subject or 'NA'}}">  
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Ticket ID <span class="required"> * </span></label>
-                                        <div class="col-md-8"> 
-                                            <input type="text"   class="form-control" readonly name="ticket_id" value="{{$result->ticket_id or 'NA'}} ">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Task Url <span class="required"> * </span></label>
-                                        <div class="col-md-8"> 
-                                            <input type="text" name="taskUrl" class="form-control" readonly  value="{{$result->taskUrl or 'NA'}}">  
+                                        <div class="col-md-6">
+                                            <input type="text"  class="form-control" name="email" readonly value="{{$comments->reportedUserDetail->email or ''}}">  
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Attachment <span class="required"> * </span></label>
-                                        <div class="col-md-8"> 
-                                            <input type="text"  class="form-control" readonly value="{{$result->attachment or 'NA'}}">  
+                                        <label class="control-label col-md-3">Current Status <span class="required"> * </span></label>
+                                        <div class="col-md-6">
+                                            <div class="" style="border: 1px solid #ccc; padding: 5px;"> 
+                                                <span class="btn-success" style="padding: 5px;">{{$comments->status}}</span> 
+                                            </div>
+                                            
                                         </div>
                                     </div>
+                                     
+                                    </div> 
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Status <span class="required"> * </span></label>
-                                        <div class="col-md-8"> 
-                                            <input type="text" name="status" class="form-control" readonly  value="{{$_REQUEST['status']  or $result->status}}">  
+                                        <label class="control-label col-md-3">Change Status <span class="required"> * </span></label>
+                                        <div class="col-md-8">
+                                             
+                                                <div class="col-md-2">
+                                                    <input type="radio" value="Open" name="status" @if($comments->status=='open' || $status=='open') checked @endif>Open 
+                                                </div>
+                                                <div class="col-md-2">
+                                                <input name="status" type="radio" value="reopen" @if($comments->status=='reopen' || $status=='reopen') checked @endif>Reopen </div>
+                                                <div class="col-md-2">
+                                                <input name="status" type="radio" value="inprogress" @if($comments->status=='Inprogress' || $status=='Inprogress') checked @endif>In Progress
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input name="status" type="radio" value="resolved" @if($comments->status=='resolved' || $status=='resolved') checked @endif>Resolved
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input  name="status" type="radio" value="closed" @if($comments->status=='closed' || $status=='closed') checked @endif>Closed 
+                                            </div>
                                         </div>
                                     </div>
                                     
                                     <div class="form-group {{ $errors->first('description', ' has-error') }}">
-                                        <label class="control-label col-md-3">Description<span class="required"> </span></label>
-                                        <div class="col-md-8"> 
-                                         <div style="border: 1px solid #ccc; padding: 5px;"> {!!$result->description!!} </div>
+                                        <label class="control-label col-md-3">Comment<span class="required"> </span></label>
+                                        <div class="col-md-6"> 
+                                         <input type="text"  class="form-control" name="user_comments" readonly value="{{$comments->comment or ''}}"> 
                                         </div>
                                     </div> 
 
-                                    <div class="form-group {{ $errors->first('description', ' has-error') }}">
-                                        <label class="control-label col-md-3">Previous Reply<span class="required"> </span></label>
-                                        <div class="col-md-8"> 
+                                  <div class="form-group {{ $errors->first('description', ' has-error') }}">
+                                        <label class="control-label col-md-3">Support Reply<span class="required"> </span></label>
+                                        <div class="col-md-6"> 
                                          <div class="" style="border: 1px solid #ccc; padding: 5px;"> 
                                       
 
@@ -115,20 +128,19 @@
                                              
                                             @endforeach
                                              </div>
-                                         </div>
-                                    </div> 
+                                        </div>
+                                    </div>  
 
                                      <div class="form-group {{ $errors->first('reply', ' has-error') }}">
                                         <label class="control-label col-md-3">Add Reply<span class="required"> </span></label>
-                                        <div class="col-md-8"> 
-                                            {!! Form::textarea('reply',null, ['class' => 'form-control ckeditor form-cascade-control','data-required'=>1,'rows'=>3,'cols'=>5])  !!}  
-                                            <span class="help-block">{{ $errors->first('description', ':message') }}</span>
+                                        <div class="col-md-6"> 
+                                            {!! Form::textarea('support_comments','Dear User,', ['class' => 'form-control ckeditor form-cascade-control','data-required'=>1,'rows'=>3,'cols'=>5])  !!}  
+                                            <span class="help-block">{{ $errors->first('support_comments', ':message') }}</span>
                                         </div>
                                     </div>
                                     <?php 
                                         $status = isset($_REQUEST['status'])?$_REQUEST['status']:'inprogress'; 
-                                    ?>
-                                    <input type="hidden" name="status" value="{{$status}}">    
+                                    ?> 
                                         
                                     </div>
                                     <div class="form-actions">

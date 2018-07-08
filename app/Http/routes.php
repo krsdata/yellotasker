@@ -24,6 +24,8 @@ Route::get('/', function () {
 
 Route::get('/send', 'EmailController@sendMail');
 
+Route::get('/sendEmailReminder', 'NotificationController@sendEmailReminder');
+
  
 use Twilio\Rest\Client;
 Route::get('sendsms',function(){

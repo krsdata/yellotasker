@@ -98,33 +98,54 @@ class ArticleTypeController extends Controller {
        $req = $request->except('_token');
        $sprt = SupportTicket::where('ticket_id',$request->get('ticket_id'))->first();
 
-        foreach ($req  as $key => $value) {
-                   $sprt->$key = $value;
-               }       
+        
+        $table_cname = \Schema::getColumnListing('support_tickets');
+        $except = ['id','created_at','updated_at','support_type'];
+        
+        foreach ($table_cname as $key => $value) {
+           
+           if(in_array($value, $except )){
+                continue;
+           } 
+            if($request->get($value)){
+                $sprt->$value = $request->get($value);
+           }
+        }
+                
         if($request->get('reply')){
             $sprt->save();
         }
+
+        $data = $request->only('ticket_id','subject','email','status','support_type','parent_id');
+        
+        $data['support_comments'] =  $request->get('reply');
+
+        $data['details'] = json_encode($request->all());
+
+        \DB::table('support_conversation')
+                ->insert($data);
+              
        return Redirect::to('admin/supportTicket')
                             ->with('flash_alert_notice', 'Successfully replied on ticket');
 
 
     }
     public function supportTicket(ArticleType $articleType, Request $request) 
-    { 
+    {    
         // Search by name ,email and group
         $page_title = 'Support Ticket'; 
         $page_action = 'View Ticket'; 
         $search = Input::get('search');
-        $status = Input::get('status');
-        $ticketId = Input::get('ticketId');
+        $status = Input::get('status'); 
         $ticketId = Input::get('ticketId');
         if($request->get('view')){
            $result = SupportTicket::with('supportType')
                         ->where('ticket_id', $ticketId)
                         ->first();
-                        //dd($result);
+            $allReply = \DB::table('support_conversation')->where('parent_id',$result->id)->get(); 
+           
             if($result){
-                return view('packages::articleType.suportform', compact('result','articleType','page_title', 'page_action','ticketId'));   
+                return view('packages::articleType.suportform', compact('result','articleType','page_title', 'page_action','ticketId','allReply'));   
             }else{
                 return Redirect::back()
                             ->with('flash_alert_notice', 'Ticket details not available');
@@ -154,8 +175,9 @@ class ArticleTypeController extends Controller {
                     })->Paginate($this->record_per_page);
         } else {
             $results = SupportTicket::with('supportType')->Paginate($this->record_per_page);
-        }
-        
+
+        } 
+
         return view('packages::articleType.support', compact('results','articleType','page_title', 'page_action'));
     }
 

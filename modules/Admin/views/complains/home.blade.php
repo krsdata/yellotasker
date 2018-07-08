@@ -101,26 +101,26 @@
                                                
                                                 <td>
                                                      <div class="btn-group dropup">
-                                                                   
+                                                                  
                                                         <button type="button" class="btn green dropdown-toggle btn green-haze btn-outline btn-circle btn-sm" data-toggle="dropdown" aria-expanded="false">
                                                             change Status <i class="fa fa-angle-up"></i>
                                                         </button>
                                                         <ul class="dropdown-menu pull-right" role="menu">
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=inprogress&ticketId='.$result->ticket_id)}}"> Inprogress </a>
+                                                                <a href="{{url('admin/complainDetail?reasonType='.$reason.'&ticketId='.$result->compainId .'&status=Inprogress')}}">Inprogress </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=reopen&ticketId='.$result->ticket_id)}}"> Reopen </a>
+                                                                <a href="{{url('admin/complainDetail?reasonType='.$reason.'&ticketId='.$result->compainId.'&status=reopen')}}"> Reopen </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved&ticketId='.$result->ticket_id)}}"> resolved </a>
+                                                                <a href="{{url('admin/complainDetail?reasonType='.$reason.'&ticketId='.$result->compainId .'&status=resolved')}}"> resolved </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{url('admin/supportTicket?view=true&status=resolved&ticketId='.$result->ticket_id)}}"> close </a>
+                                                                <a href="{{url('admin/complainDetail?reasonType='.$reason.'&ticketId='.$result->compainId .'&status=closed')}}"> closed </a>
                                                             </li>
                                                             <li class="divider"> </li>
                                                             <li> 
-                                                                 <a href="{{url('dmin/comment/showComment/'.$result->taskDetail->id)}}">
+                                                                 <a href="{{url('admin/comment/showComment/'.$result->taskDetail->id)}}">
                                                                 View Details
                                                             </a>
                                                             </li>
