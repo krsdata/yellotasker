@@ -1184,6 +1184,7 @@ public function userDetail($id=null)
         $data['otp'] = $otp;
         $data['userId'] = $request->get('userId');
         $data['timezone'] = config('app.timezone');
+        $data['mobile'] = $request->get('mobileNumber');
         \DB::table('mobile_otp')->insert($data);
 
         $this->sendSMS($request->get('mobileNumber'),$otp);
@@ -1243,13 +1244,16 @@ public function userDetail($id=null)
 
         $data = \DB::table('mobile_otp')
                     ->where('otp',$request->get('otp'))
-                        ->where('userId',$request->get('userId'))
-                            ->where('is_verified','!=',1)->get();
-
+                        ->where('userId',$request->get('userId'))->first();
+                            
         if($data){
-            \DB::table('mobile_otp')
+             \DB::table('mobile_otp')
                     ->where('otp',$request->get('otp'))
                         ->where('userId',$request->get('userId'))->update(['is_verified'=>1]);
+                      
+            \DB::table('users')
+                        ->where('id',$request->get('userId'))
+                        ->update(['phone'=>$data->mobile]);
         }
          
             return response()->json(
