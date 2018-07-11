@@ -26,7 +26,8 @@ use Modules\Api\Resources\TaskResource;
 use App\User;
 use App\Models\Comments;
 use App\Models\Notification;
-
+use Mail;
+use App\Helpers\Helper;
 
 /**
  * Class AdminController
@@ -85,5 +86,20 @@ class NotificationController extends Controller {
                 );  
 
         } 
+
+
+    public function sendEmailReminder(Request $request)
+    {
+        $helper = new Helper;
+        
+        $email_content = [
+                            'email'=>'kroy@mailinator.com',
+                            'name'=>'kandy',
+                            'receipent_email'=>'kroy@mailinator.com',
+                            'subject'=>'test email'
+                        ];
+
+        $helper->sendMailFrontEnd($email_content, 'reminder');
+    }
 
 }

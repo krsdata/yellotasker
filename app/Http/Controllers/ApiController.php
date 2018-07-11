@@ -1184,10 +1184,12 @@ public function userDetail($id=null)
         $data['otp'] = $otp;
         $data['userId'] = $request->get('userId');
         $data['timezone'] = config('app.timezone');
+        $data['mobile'] = $request->get('mobileNumber');
+        \DB::table('mobile_otp')->insert($data);
 
-      //  $this->sendSMS($request->get('mobileNumber'),$otp);
+        $this->sendSMS($request->get('mobileNumber'),$otp);
 
-
+        /*
         $sid = $this->sid; //"AC540c7f8bd91032a4ba28b0bd609ffda0";
         $token = $this->token; //"ed0dc89b140e52e07c6e51f01b473785";
         $client = new Client($sid, $token);
@@ -1202,9 +1204,9 @@ public function userDetail($id=null)
             'body' => 'Your otp is '.$otp
           )
         ); 
-       $client = new Client($sid, $token); 
+        */
 
-        \DB::table('mobile_otp')->insert($data);
+        
 
         return response()->json(
                         [
@@ -1242,13 +1244,16 @@ public function userDetail($id=null)
 
         $data = \DB::table('mobile_otp')
                     ->where('otp',$request->get('otp'))
-                        ->where('userId',$request->get('userId'))
-                            ->where('is_verified','!=',1)->get();
-
+                        ->where('userId',$request->get('userId'))->first();
+                            
         if($data){
-            \DB::table('mobile_otp')
+             \DB::table('mobile_otp')
                     ->where('otp',$request->get('otp'))
                         ->where('userId',$request->get('userId'))->update(['is_verified'=>1]);
+                      
+            \DB::table('users')
+                        ->where('id',$request->get('userId'))
+                        ->update(['phone'=>$data->mobile]);
         }
          
             return response()->json(
@@ -1268,7 +1273,7 @@ public function userDetail($id=null)
 
             $modelNumber = $mobileNumber;
             $message = "Your verification OTP is : ".$otp;
-            $authkey = "199925AiC41I3G5a93c1f8";
+            $authkey = "224749Am2kvmYg75b4092ed"; 
 
             curl_setopt_array($curl, array(
               CURLOPT_URL => "http://control.msg91.com/api/sendotp.php?template=&otp_length=6&authkey=$authkey&message=$message&sender=YTASKR&mobile=$modelNumber&otp=$otp&otp_expiry=&email=kroy@mailinator.com",
@@ -1303,8 +1308,6 @@ public function userDetail($id=null)
         
         switch ($press) {
             case 'POST':
-
-
                 $validator = Validator::make($request->all(), [
                         'link' => 'required',
                         'pressName' => 'required' 

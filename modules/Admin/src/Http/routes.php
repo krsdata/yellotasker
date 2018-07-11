@@ -174,8 +174,13 @@
                 'index' => 'compaint',
             ]
                 ]
-        );
+        ); 
+        // complain details
+        Route::get('admin/complainDetail','Modules\Admin\Http\Controllers\CompaintController@complainDetail');
 
+        Route::post('admin/supportReply','Modules\Admin\Http\Controllers\CompaintController@supportReply');
+
+        
 
          Route::bind('postTask', function($value, $route) {
             return Modules\Admin\Models\PostTask::find($value);

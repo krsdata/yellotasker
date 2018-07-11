@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
-    {  // dd($e);
+    {     
        $path_info_url = $request->getpathInfo();
        $api_url='';
        $web_url ='';
@@ -74,7 +74,7 @@ class Handler extends ExceptionHandler
                 echo json_encode(
                     [ "status"=>0,
                       "code"=>500,
-                      "message"=>"Route Not defind" ,
+                      "message"=>$e->getMessage(),
                       "data" => "" 
                     ]
                 );

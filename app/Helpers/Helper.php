@@ -258,10 +258,7 @@ class Helper {
              
             } catch (Exception $e) {
              
-            }
-
-
-
+        } 
     } 
   /* @method : send Mail
     * @param : email
