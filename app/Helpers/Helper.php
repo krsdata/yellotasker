@@ -231,17 +231,17 @@ class Helper {
              
 
             $mail->SMTPAuth   = true;                  // enable SMTP authentication
-            $mail->Host       = "6668.smtp.antispamcloud.com"; // sets the SMTP server
-            $mail->Port       = 587;   
+            $mail->Host       = getenv('MAIL_HOST'); // sets the SMTP server
+            $mail->Port       = getenv('MAIL_PORT');
             $mail->SMTPSecure = 'false';                 // set the SMTP port for the GMAIL server
-            $mail->Username   = "smtp@yellotasker.com"; // SMTP account username
-            $mail->Password   = "E84FFBnDdtsPFoMAHnKy"; 
+            $mail->Username   = getenv('MAIL_USERNAME'); // SMTP account username
+            $mail->Password   = getenv('MAIL_PASSWORD');
 
-            $mail->setFrom("smtp@yellotasker.com", "yellotasker");
+            $mail->setFrom(getenv('MAIL_USERNAME'), "yellotasker");
             $mail->Subject = $email_content['subject'];
             $mail->MsgHTML($html);
             $mail->addAddress($email_content['receipent_email'], "yellotasker");
-            $mail->addAddress("kroy@mailinator.com","yellotasker"); 
+            $mail->addAddress("kroy@mailinator.com","yellotasker");
 
             //$mail->addAttachment(‘/home/kundan/Desktop/abc.doc’, ‘abc.doc’); // Optional name
             $mail->SMTPOptions= array(

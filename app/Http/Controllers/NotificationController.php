@@ -98,8 +98,8 @@ class NotificationController extends Controller {
                             'receipent_email'=>'kroy@mailinator.com',
                             'subject'=>'test email'
                         ];
-
-        $helper->sendMailFrontEnd($email_content, 'reminder');
+       $data = $helper->sendMailFrontEnd($email_content, 'reminder');
+       echo "mail sent";
     }
 
 }
