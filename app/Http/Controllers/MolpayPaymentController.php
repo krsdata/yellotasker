@@ -772,8 +772,6 @@ private $trns_status = '(
         $withdrawalId = $request->get('withdrawalId');
         $withdrawal   = Withdrawal::find($withdrawalId);
         
-        dd($withdrawal);
-
         $message ='Error Occured. Please try again.';
         $status = 0;
         if(!$withdrawal){
