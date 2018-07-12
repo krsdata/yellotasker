@@ -1,3 +1,13 @@
+@extends('packages::layouts.master')
+@section('title', 'Dashboard')
+  @section('header')
+@stop
+@section('content')
+
+@include('packages::partials.navigation')
+<!-- Left side column. contains the logo and sidebar -->
+@include('packages::partials.sidebar')
+
 <div class="container" ng-app="paymentApp" ng-controller="paymentController">
             <!-- END SIDEBAR -->
             <!-- BEGIN CONTENT -->
@@ -29,35 +39,35 @@
                                          {{ Session::get('flash_alert_notice') }}
                                          </div>
                                     @endif
-                                <div ng-if="showWithdrawalList" class="portlet-body">
+                                <div ng-if="showReleaseFundList" class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="contact">
                                         <thead>
                                             <tr>
                                                  <th>Task Id</th>
-                                                <th>Transaction Id</th>
+                                                <th>Task Title</th>
                                                 <th>Amount</th>
                                                 <th>Service Charge</th>
-                                                 <th>Payable Amount</th>
-                                                <th>User Id</th>
+                                                 <th>Net Amount</th>
+                                                <th>Doer Id</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          <tr ng-repeat='task in withdrawallist'>
+                                          <tr ng-repeat='task in list'>
                                               <td><% task.id %> </td>
-                                              <td><% task.txn_id %> </td>
-                                              <td>MYR<% task.amount %> </td>
-                                              <td>MYR<% task.service_charge %> </td>
-                                              <td>MYR<% task.payable_amount %> </td>
-                                              <td><% task.userId %> </td>
-                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id)">Release Fund</button></td>
+                                              <td><% task.title %> </td>
+                                              <td>$<% task.totalAmount %> </td>
+                                              <td>$<% task.totalAmount*0.10 %> </td>
+                                              <td>$<% task.totalAmount-task.totalAmount*0.10 %> </td>
+                                              <td><% task.taskDoerId %> </td>
+                                              <td><button class="btn btn-primary btn-md"  ng-click="sendWithrawalReq(task.id,task.userId,task.taskDoerId,task.totalAmount-task.totalAmount*0.10)">Close Task</button></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <span>
 
                                 </div>
-                                <div ng-if="!showWithdrawalList" >
+                                <div ng-if="!showReleaseFundList" >
                                   No list found
                                 </div>
                             </div>
@@ -68,6 +78,10 @@
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
+
+
             <!-- END QUICK SIDEBAR -->
         </div>
+
 </div>
+@stop

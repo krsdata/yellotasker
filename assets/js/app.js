@@ -32,6 +32,8 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.chngServiceChargeIndicator=false;
 	$scope.currentServiceCharge='';
 	$scope.serviceChargeError=false;
+	$scope.withdrawallist = [];
+	$scope.showWithdrawalList=false;
 	
 	$scope.init = function() {
 		$scope.loading = true;
@@ -43,11 +45,39 @@ app.controller('paymentController', function($scope, $http) {
 
 		});
 		$scope.getServiceCharge();
+		$scope.getWithrawalList();
+	}
+	// get withrawal list
+	$scope.getWithrawalList = function() {
+		$http.get('http://api.yellotasker.com/api/v1/withdrawalsRequest').
+		success(function(data, status, headers, config) {
+			if(data.status==1&&data.message=='Withdrawals List found.')
+			$scope.withdrawallist = data.data;
+			$scope.showWithdrawalList=$scope.withdrawallist.length>0?true:false;
+			$scope.loading = false;
+
+		});
+	}
+	//release fund
+	$scope.releaseFund = function(id) {
+		console.log('id');
+		$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/approve?withdrawalId='+id).
+		success(function(data, status, headers, config) {
+			console.log('id',data.status,data.message);
+			if(data.status==1&&data.message=='Withdrawal request initialize successfully.') {
+				var index = $scope.withdrawallist.findIndex(x => x.id==id);
+				if (index > -1) {
+					$scope.withdrawallist.splice(index, 1);
+				}
+				$scope.showWithdrawalList=$scope.withdrawallist.length>0?true:false;
+				$scope.loading = false;
+			} else {
+				alert('Something went wrong!')
+			}
+		});
 	}
 
-
-
-	$scope.releaseFund = function(taskId,userId,doerId,amount) {
+	$scope.sendWithrawalReq = function(taskId,userId,doerId,amount) {
 		$scope.loading = true;
 		// $http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
 		// success(function(data, status, headers, config) {

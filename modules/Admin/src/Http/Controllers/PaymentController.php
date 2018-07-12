@@ -78,4 +78,12 @@ class PaymentController extends Controller {
     //dd('here');
     return view('packages::payment.servicecharge', compact('page_title' ,'page_action'));
   }
+  public function closeTask(Request $request) {
+
+    $page_title = 'Payment';
+    $page_action = 'Close Task';
+
+    return view('packages::payment.closetask', compact('page_title' ,'page_action'));
+
+  }
 }

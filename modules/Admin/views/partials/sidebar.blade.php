@@ -615,6 +615,14 @@
                                                </span>
                                            </a>
                                        </li>
+                                       <li class="nav-item  {{ (isset($page_title) && $page_action=='Service Charge')?'active':'' }}">
+                                           <a href="{{ url('admin/payment/close-task') }}" class="nav-link ">
+                                              <i class="glyphicon glyphicon-eye-open"></i>
+                                               <span class="title">
+                                                 Close Task
+                                               </span>
+                                           </a>
+                                       </li>
                                    </ul>
                                </li>
                         
