@@ -156,7 +156,7 @@
                                <td><% task.title %> </td>
                                <!-- <td><% task.order_id %> </td> -->
                                <td><% task.updated_at %> </td>
-                               <td>MYR<% task.totalAmount %> </td>
+                               <td>MYR <% task.totalAmount %> </td>
                                <!-- <td>Mehul Ahir</td> -->
                              </tr>
                              <tr ng-if = "yelloIncomingIndicator" ng-repeat='task in yelloIncome'>
@@ -164,7 +164,7 @@
                                  <td><% task.task_details.title %> </td>
                                  <!-- <td><% task.order_id %> </td> -->
                                  <td><% task.updated_at %> </td>
-                                 <td>MYR<% task.task_details.totalAmount %> </td>
+                                 <td>MYR <% task.task_details.totalAmount %> </td>
                                  <!-- <td>Mehul Ahir</td> -->
                                </tr>
                          </tbody>

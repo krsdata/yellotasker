@@ -46,9 +46,9 @@
                                           <tr ng-repeat='task in withdrawallist'>
                                               <td><% task.id %> </td>
                                               <td><% task.txn_id %> </td>
-                                              <td>MYR<% task.amount %> </td>
-                                              <td>MYR<% task.service_charge %> </td>
-                                              <td>MYR<% task.payable_amount %> </td>
+                                              <td>MYR <% task.amount %> </td>
+                                              <td>MYR <% task.service_charge %> </td>
+                                              <td>MYR <% task.payable_amount %> </td>
                                               <td><% task.userId %> </td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id)">Release Fund</button></td>
                                             </tr>

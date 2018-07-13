@@ -149,7 +149,7 @@
                  <td><% task.task_title %> </td>
                  <td><% task.order_id %> </td>
                  <td><% task.status %> </td>
-                 <td>$<% task.total_price %> </td>
+                 <td>MYR <% task.total_price %> </td>
                  <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
                </tr>
            </tbody>
@@ -171,8 +171,8 @@
                  <td><% task.task_details.id %> </td>
                  <td><% task.task_details.title %> </td>
                  <td><% task.status %> </td>
-                 <td>$<% task.payable_amount %> </td>
-                 <td>$<% task.task_details.totalAmount %> </td>
+                 <td>MYR <% task.payable_amount %> </td>
+                 <td>MYR <% task.task_details.totalAmount %> </td>
                  <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
                </tr>
            </tbody>

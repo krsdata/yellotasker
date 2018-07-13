@@ -56,9 +56,9 @@
                                           <tr ng-repeat='task in list'>
                                               <td><% task.id %> </td>
                                               <td><% task.title %> </td>
-                                              <td>$<% task.totalAmount %> </td>
-                                              <td>$<% task.totalAmount*0.10 %> </td>
-                                              <td>$<% task.totalAmount-task.totalAmount*0.10 %> </td>
+                                              <td>MYR <% task.totalAmount %> </td>
+                                              <td>MYR <% task.totalAmount*0.10 %> </td>
+                                              <td>MYR <% task.totalAmount-task.totalAmount*0.10 %> </td>
                                               <td><% task.taskDoerId %> </td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="sendWithrawalReq(task.id,task.userId,task.taskDoerId,task.totalAmount-task.totalAmount*0.10)">Close Task</button></td>
                                             </tr>

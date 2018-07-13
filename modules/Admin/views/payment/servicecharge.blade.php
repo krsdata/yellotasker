@@ -41,7 +41,7 @@
 
                    <div class="row">
                        <div class="col-sm-12 change-current">
-                       <label>Current service charge: <% currentServiceCharge %> % of total task cost. (in $).</label>
+                       <label>Current service charge: <% currentServiceCharge %> % of total task cost. (in MYR).</label>
                        <button class="btn btn-primary btn-md user-report"  ng-click="changeServiceCharge()">Change</button>
                        
                     </div>
