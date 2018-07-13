@@ -41,8 +41,8 @@
 
                    <div class="row">
                        <div class="col-sm-12 change-current">
-                       <label>Current service charge: <% currentServiceCharge %> % of total task cost. (in MYR).</label>
-                       <button class="btn btn-primary btn-md user-report"  ng-click="changeServiceCharge()">Change</button>
+                       <label><b>Current service charge</b>: <% currentServiceCharge %> % of total task cost. (in MYR).</label>
+                       <button class="btn change-btn btn-primary btn-md user-report"  ng-click="changeServiceCharge()">Change</button>
                        
                     </div>
                    </div>
@@ -51,14 +51,15 @@
                    <div class="row change-current new-service" ng-init="model = {}"  >
                        <div ng-if = "chngServiceChargeIndicator">
                    <label> New service charges </label>
-                   <input class="search-input"  type='text' ng-model='model.serviceCharge'>
+                   <span style="float:left; width:100%; margin-bottom:10px;"><input class="search-input"  type='text' ng-model='model.serviceCharge'></span>
                <!-- <input class="search-input"  type='text' ng-model='serviceCharge'> -->
-               <button class="btn btn-primary btn-md user-report"  ng-click="saveServiceCharge()">Save</button>
+               <button class="btn change-btn btn-primary btn-md user-report"  ng-click="saveServiceCharge()">Save</button>
                <button class="btn btn-primary btn-md user-report"  ng-click="close()">Cancel</button>
-                                 </div>
-                             
+               <p class="red-text" ng-if="serviceChargeError">Please enter valid value.</p>                
+            </div>
+                            
                                 </div>
-                                <div ng-if="serviceChargeError">Please enter valid value.</div>
+                               
                </div>
                
                <!-- END CONTENT BODY -->

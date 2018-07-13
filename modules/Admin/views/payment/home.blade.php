@@ -50,7 +50,7 @@
                                               <td>MYR <% task.service_charge %> </td>
                                               <td>MYR <% task.payable_amount %> </td>
                                               <td><% task.userId %> </td>
-                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id)">Release Fund</button></td>
+                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
                                             </tr>
                                         </tbody>
                                     </table>

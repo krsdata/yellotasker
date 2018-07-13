@@ -18,10 +18,11 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.yelloSpend='';
 	$scope.yelloProfit='';
 	$scope.taskList=[];
-	$scope.userData='';
+	$scope.userReportIncoming=[];
+	$scope.userReportOutgoing=[];
 	$scope.showList=false;
 	$scope.label='';
-	$scope.outgoingIndicator=true;
+	$scope.outgoingIndicator=false;
 	$scope.incomingIndicator=false;
 	$scope.showError = false;
 	$scope.yelloIncome=[];
@@ -59,46 +60,29 @@ app.controller('paymentController', function($scope, $http) {
 		});
 	}
 	//release fund
-	$scope.releaseFund = function(id) {
-		console.log('id');
-		$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/approve?withdrawalId='+id).
-		success(function(data, status, headers, config) {
-			console.log('id',data.status,data.message);
-			if(data.status==1&&data.message=='Withdrawal request initialize successfully.') {
-				var index = $scope.withdrawallist.findIndex(x => x.id==id);
-				if (index > -1) {
-					$scope.withdrawallist.splice(index, 1);
+	$scope.releaseFund = function(id,response) {
+		if(response!=null&&response!='') {
+			alert(response)
+		} else {
+			$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/approve?withdrawalId='+id).
+			success(function(data, status, headers, config) {
+				console.log('id',data.status,data.message);
+				if(data.status==1&&data.message=='Withdrawal request initialize successfully.') {
+					var index = $scope.withdrawallist.findIndex(x => x.id==id);
+					if (index > -1) {
+						$scope.withdrawallist.splice(index, 1);
+					}
+					$scope.showWithdrawalList=$scope.withdrawallist.length>0?true:false;
+					$scope.loading = false;
+				} else {
+					alert('Something went wrong!')
 				}
-				$scope.showWithdrawalList=$scope.withdrawallist.length>0?true:false;
-				$scope.loading = false;
-			} else {
-				alert('Something went wrong!')
-			}
-		});
+			});
+		}
 	}
 
 	$scope.sendWithrawalReq = function(taskId,userId,doerId,amount) {
 		$scope.loading = true;
-		// $http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+userId).
-		// success(function(data, status, headers, config) {
-		// 	if(data.message=='Task Payment done succesfully.') {
-		// 			$http.post('http://api.yellotasker.com/api/v1/taskCompleteFromDoer', {
-		// 				taskId : taskId,
-		// 				taskDoerId : doerId,
-		// 				status : 'closed '
-		// 			}).success(function(data, status, headers, config) {
-		// 				var index = $scope.list.findIndex(x => x.id==taskId);
-		// 				if (index > -1) {
-		// 					$scope.list.splice(index, 1);
-		// 			}
-		// 			$scope.showReleaseFundList=$scope.list.length>0?true:false;
-		// 			});
-		// 			alert('Fund released Successfully')
-		// 		} else {
-		// 			alert('Fund already released')
-		// 		}
-		// 		$scope.loading = false;
-		// });
 			$http.get('http://api.yellotasker.com/api/v1/user/task/release-fund?taskId='+taskId+'&userId='+doerId).
 		success(function(data, status, headers, config) {
 			$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+doerId).
@@ -156,14 +140,16 @@ app.controller('paymentController', function($scope, $http) {
 		$http.get('http://api.yellotasker.com/api/v1/user/payments-histroy/outgoing?userId='+userId+'page_size=20&page_num=1').
 		success(function(data, status, headers, config) {
 			if(data.net_incoming!='0.00'||data.net_outgoing!='0.00') {
-				  $scope.userData=data;
+				    $scope.userReportOutgoing=data;
 					$scope.userProfit=data.net_incoming-data.net_outgoing;
 					$scope.label=$scope.userProfit>0?'Earned':'Spent';
 					$scope.userProfit=$scope.userProfit>0?$scope.userProfit:Math.abs($scope.userProfit);
 					$scope.userNetOutgoing=data.net_outgoing;
 					$scope.userNetIncoming=data.net_incoming;
-					$scope.taskList=$scope.userData.data.outgoing;
+					$scope.taskList=$scope.userReportOutgoing.data.outgoing;
 					$scope.showList=$scope.taskList.length>0?true:false;
+					$scope.outgoingIndicator=true;
+					$scope.incomingIndicator=false;
 				} else {
 					$scope.showList=false;
 					$scope.userData='';
@@ -178,7 +164,7 @@ app.controller('paymentController', function($scope, $http) {
 	}
 	$scope.showTaskList = function(listType){
 		if(listType=='outgoing') {
-      $scope.taskList=$scope.userData.data.outgoing!=undefined?$scope.userData.data.outgoing:[];
+            $scope.taskList=$scope.userReportOutgoing.data.outgoing;
 			$scope.showList=$scope.taskList.length>0?true:false;
 			$scope.outgoingIndicator=true;
 			$scope.incomingIndicator=false;
@@ -189,8 +175,8 @@ app.controller('paymentController', function($scope, $http) {
 			$http.get('http://api.yellotasker.com/api/v1/user/payments-histroy/earned?userId='+userId+'page_size=20&page_num=1').
 			success(function(data, status, headers, config) {
 				if(data.message=='Payment histroy found.') {
-						$scope.userData=data;
-						$scope.taskList=$scope.userData.data;
+						$scope.userReportIncoming=data;
+						$scope.taskList=$scope.userReportIncoming.data;
 						$scope.showList=$scope.taskList.length>0?true:false;
 					} else {
 						$scope.taskList=[];
@@ -201,18 +187,20 @@ app.controller('paymentController', function($scope, $http) {
 
 		}
 	}
+	// yellotasker report tab indicator
 	$scope.showYelloTaskList= function(listType){
 		if(listType=='outgoing') {
 			$scope.showYelloList=$scope.yelloOutgoing!=null&&$scope.yelloOutgoing.length>0?true:false;
 			$scope.yelloOutgoingIndicator=true;
 			$scope.yelloIncomingIndicator=false;
 		} else if(listType=='incoming') {
-			$scope.showYelloList=$scope.yelloIncomess!=null&&$scope.yelloIncome.length>0?true:false;
+			$scope.showYelloList=$scope.yelloIncome!=null&&$scope.yelloIncome.length>0?true:false;
 			$scope.yelloOutgoingIndicator=false;
 			$scope.yelloIncomingIndicator=true;
 
 		}
 	}
+	//applied active class for yellotasker report
 	$scope.appliedClass = function() {
 	    if ($scope.yelloIncomingIndicator === true) {
 	        return "active";
@@ -222,6 +210,21 @@ app.controller('paymentController', function($scope, $http) {
 	}
 	$scope.appliedActiveClass = function() {
 	    if ($scope.yelloOutgoingIndicator === true) {
+	        return "active";
+	    } else {
+	        return ""; // Or even "", which won't add any additional classes to the element
+	    }
+	}
+	//applied active class for user report
+	$scope.appliedClassForUser = function() {
+	    if ($scope.incomingIndicator === true) {
+	        return "active";
+	    } else {
+	        return ""; // Or even "", which won't add any additional classes to the element
+	    }
+	}
+	$scope.appliedActiveClassForUser = function() {
+	    if ($scope.outgoingIndicator === true) {
 	        return "active";
 	    } else {
 	        return ""; // Or even "", which won't add any additional classes to the element

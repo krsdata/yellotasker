@@ -123,10 +123,10 @@
                    <div class="row">
                      <div class="card-profile">
        <ul class="nav nav-tabs" role="tablist">
-         <li role="presentation" >
+         <li ng-class="appliedActiveClassForUser()" role="presentation" >
            <a ng-click="showTaskList('outgoing')">Outgoing</a>
           </li>
-          <li role="presentation" >
+          <li ng-class="appliedClassForUser()" role="presentation" >
             <a ng-click="showTaskList('incoming')">Incoming</a>
            </li>
        </ul>

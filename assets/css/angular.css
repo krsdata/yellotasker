@@ -109,4 +109,47 @@ button.btn.btn-primary.btn-md.user-report {
     padding: 15px;
     border-radius: 5px;
  }
+ .input.ng-dirty.ng-invalid { color: red }
 
+ .col-sm-12.change-current label {
+    float: left;
+    font-size: 16px;
+    margin-top: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+button.btn.change-btn.btn-primary.btn-md.user-report {
+    margin-left: 0px;
+    font-size: 14px;
+    width: auto;
+}
+button.btn.btn-primary.btn-md.user-report {
+    width: auto;
+}
+.red-text{
+color: red;
+float: left;
+width:100%;
+margin: 0px;
+}
+.card-profile ul li a:hover, .card-profile ul li a.active {
+    background: yellow;
+    color: #000;
+}
+/* table#contact tr td:nth-child(4) {
+    font-size: 11px;
+}
+table#contact tr td:nth-child(5) {
+    font-size: 11px;
+} */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #000;
+    background-color: yellow;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
+}
+.taskdate
+{
+    height: 40px;
+}
