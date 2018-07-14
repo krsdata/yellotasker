@@ -44,7 +44,7 @@
                                         </thead>
                                         <tbody>
                                           <tr ng-repeat='task in withdrawallist'>
-                                              <td><% task.id %> </td>
+                                              <td><a href="<% currDomain %>/uat/admin/posTask/<% task.id %>"><% task.id %></a></td>
                                               <td><% task.txn_id %> </td>
                                               <td>MYR <% task.amount %> </td>
                                               <td>MYR <% task.service_charge %> </td>

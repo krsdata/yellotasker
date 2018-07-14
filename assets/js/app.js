@@ -35,8 +35,10 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.serviceChargeError=false;
 	$scope.withdrawallist = [];
 	$scope.showWithdrawalList=false;
+	$scope.currDomain='';
 	
 	$scope.init = function() {
+		$scope.currDomain=window.location.origin;
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
 		success(function(data, status, headers, config) {

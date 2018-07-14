@@ -152,7 +152,7 @@
                          </thead>
                          <tbody>
                            <tr ng-if = "yelloOutgoingIndicator" ng-repeat='task in yelloOutgoing'>
-                               <td><% task.id %> </td>
+                               <td><a href="<% currDomain %>/uat/admin/posTask/<% task.id %>"><% task.id %></a></td>
                                <td><% task.title %> </td>
                                <!-- <td><% task.order_id %> </td> -->
                                <td><% task.updated_at %> </td>
@@ -160,11 +160,11 @@
                                <!-- <td>Mehul Ahir</td> -->
                              </tr>
                              <tr ng-if = "yelloIncomingIndicator" ng-repeat='task in yelloIncome'>
-                                 <td><% task.task_details.id %> </td>
-                                 <td><% task.task_details.title %> </td>
+                                 <td><% task.id %> </td>
+                                 <td><% task.title %> </td>
                                  <!-- <td><% task.order_id %> </td> -->
                                  <td><% task.updated_at %> </td>
-                                 <td>MYR <% task.task_details.totalAmount %> </td>
+                                 <td>MYR <% task.totalAmount %> </td>
                                  <!-- <td>Mehul Ahir</td> -->
                                </tr>
                          </tbody>

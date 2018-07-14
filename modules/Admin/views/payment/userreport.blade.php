@@ -145,12 +145,12 @@
            </thead>
            <tbody>
              <tr  ng-repeat='task in taskList'>
-                 <td><% task.id %> </td>
+                 <td><a href="<% currDomain %>/uat/admin/posTask/<% task.id %>"><% task.id %></a></td>
                  <td><% task.task_title %> </td>
                  <td><% task.order_id %> </td>
                  <td><% task.status %> </td>
                  <td>MYR <% task.total_price %> </td>
-                 <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
+                 <td ><a href="<% currDomain %>/uat/admin/mytask/<% task.task_details.taskDoerId %>"><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></a></td>
                </tr>
            </tbody>
        </table>
