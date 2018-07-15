@@ -560,7 +560,8 @@ private $trns_status = '(
         }   
         $userId = $request->get('userId');
         $paymentHistory = PaymentHistory::where('userId', $userId)->with('taskDetails')->orderBy('created_at', 'DESC')
-                 ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) );
+                 ->select('*',\DB::raw($this->trns_status),\DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as order_date,DATE_FORMAT(created_at,"%h:%i:%s %p") as order_time'  ) )
+                    ->where('taskId','!=',0); // 15-07-2018
         $total_record= $paymentHistory->count();
         $earned =$paymentHistory->skip($offset)
                 ->take($page_size)
