@@ -145,7 +145,7 @@
            </thead>
            <tbody>
              <tr  ng-repeat='task in taskList'>
-                 <td><a href="<% currDomain %>/uat/admin/posTask/<% task.id %>"><% task.id %></a></td>
+                 <td><a href="<% currDomain %>/uat/admin/postTask/<% task.id %>"><% task.id %></a></td>
                  <td><% task.task_title %> </td>
                  <td><% task.order_id %> </td>
                  <td><% task.status %> </td>

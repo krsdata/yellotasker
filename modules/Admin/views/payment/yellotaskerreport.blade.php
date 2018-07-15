@@ -152,7 +152,7 @@
                          </thead>
                          <tbody>
                            <tr ng-if = "yelloOutgoingIndicator" ng-repeat='task in yelloOutgoing'>
-                               <td><a href="<% currDomain %>/uat/admin/posTask/<% task.id %>"><% task.id %></a></td>
+                               <td><a href="<% currDomain %>/uat/admin/postTask/<% task.id %>"><% task.id %></a></td>
                                <td><% task.title %> </td>
                                <!-- <td><% task.order_id %> </td> -->
                                <td><% task.updated_at %> </td>
