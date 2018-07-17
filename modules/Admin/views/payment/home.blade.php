@@ -49,7 +49,7 @@
                                               <td>MYR <% task.amount %> </td>
                                               <td>MYR <% task.service_charge %> </td>
                                               <td>MYR <% task.payable_amount %> </td>
-                                              <td><% task.userId %> </td>
+                                              <td><a href="<% currDomain %>/uat/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
                                             </tr>
                                         </tbody>

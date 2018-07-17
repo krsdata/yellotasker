@@ -160,7 +160,7 @@
                                <!-- <td>Mehul Ahir</td> -->
                              </tr>
                              <tr ng-if = "yelloIncomingIndicator" ng-repeat='task in yelloIncome'>
-                                 <td><% task.id %> </td>
+                                 <td><a href="<% currDomain %>/uat/admin/postTask/<% task.id %>"><% task.id %></a></td>
                                  <td><% task.title %> </td>
                                  <!-- <td><% task.order_id %> </td> -->
                                  <td><% task.updated_at %> </td>

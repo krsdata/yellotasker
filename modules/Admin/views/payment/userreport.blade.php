@@ -145,12 +145,12 @@
            </thead>
            <tbody>
              <tr  ng-repeat='task in taskList'>
-                 <td><a href="<% currDomain %>/uat/admin/postTask/<% task.id %>"><% task.id %></a></td>
+                 <td><a href="<% currDomain %>/uat/admin/postTask/<% task.task_details.id %>"><% task.task_details.id %></a></td>
                  <td><% task.task_title %> </td>
                  <td><% task.order_id %> </td>
                  <td><% task.status %> </td>
                  <td>MYR <% task.total_price %> </td>
-                 <td ><a href="<% currDomain %>/uat/admin/mytask/<% task.task_details.taskDoerId %>"><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></a></td>
+                 <td ><a href="<% currDomain %>/uat/admin/mytask/<% task.task_details.taskDoerId %>"><%task.task_details.seeker_user_detail.first_name %> <%task.task_details.seeker_user_detail.last_name%></a></td>
                </tr>
            </tbody>
        </table>
@@ -168,12 +168,12 @@
            </thead>
            <tbody>
              <tr  ng-repeat='task in taskList'>
-                 <td><% task.task_details.id %> </td>
+                 <td><a href="<% currDomain %>/uat/admin/postTask/<% task.task_details.id  %>"> <% task.task_details.id %></a> </td>
                  <td><% task.task_details.title %> </td>
                  <td><% task.status %> </td>
                  <td>MYR <% task.payable_amount %> </td>
                  <td>MYR <% task.task_details.totalAmount %> </td>
-                 <td><%task.task_details.task_posted_user.first_name %> <%task.task_details.task_posted_user.last_name%></td>
+                 <td><a href="<% currDomain %>/uat/admin/mytask/<% task.task_details.taskDoerId %>"><%task.task_details.seeker_user_detail.first_name %> <%task.task_details.seeker_user_detail.last_name%></a></td>
                </tr>
            </tbody>
        </table>
