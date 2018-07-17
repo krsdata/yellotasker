@@ -104,36 +104,18 @@ app.controller('paymentController', function($scope, $http) {
 							}
 							$scope.showReleaseFundList=$scope.list.length>0?true:false;
 							});
-							alert('Fund released Successfully')
-						} else {
-							alert('Something went wrong!');
-						}	
-						
+							alert('Task closed successfully.Task life cycle completed successfully.You can release funds now.')
+							} else {
+								alert('Something went wrong!');
+							}							
 						});
 						
 					} else {
-						alert('Fund already released')
+						alert('No record found')
 					}
 					$scope.loading = false;
 			});
 		});
-		// 		$http.get('http://api.yellotasker.com/api/v1/user/bank_detail/list?userId='+userId).
-		// success(function(data, status, headers, config) {
-		// 	if(data.message=='Records found.') {
-		// 		var bankId=data.data[0].id;
-		// 			$http.get('http://api.yellotasker.com/api/v1/user/withdrawal/newrequest?userId='+userId+'&amount='+userId+'&bankId='+bankId).success(function(data, status, headers, config) {
-		// 				var index = $scope.list.findIndex(x => x.id==taskId);
-		// 				if (index > -1) {
-		// 					$scope.list.splice(index, 1);
-		// 			}
-		// 			$scope.showReleaseFundList=$scope.list.length>0?true:false;
-		// 			});
-		// 			alert('Fund released Successfully')
-		// 		} else {
-		// 			alert('Fund already released')
-		// 		}
-		// 		$scope.loading = false;
-		// });
 	}
 
 	$scope.getUserData = function() {

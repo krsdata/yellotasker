@@ -54,7 +54,7 @@
                                         </thead>
                                         <tbody>
                                           <tr ng-repeat='task in list'>
-                                              <td><% task.id %> </td>
+                                              <td><a href="<% currDomain %>/uat/admin/postTask/<% task.id %>"><% task.id %></a></td>
                                               <td><% task.title %> </td>
                                               <td>MYR <% task.totalAmount %> </td>
                                               <td>MYR <% task.totalAmount*0.10 %> </td>
