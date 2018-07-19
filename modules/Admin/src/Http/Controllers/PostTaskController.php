@@ -25,6 +25,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Dispatcher; 
 use App\Helpers\Helper;
 use Modules\Admin\Models\Contact; 
+use Modules\Admin\Models\Role;
 use Modules\Admin\Models\Category;
 use Modules\Admin\Models\ContactGroup;
 use Response; 
@@ -127,7 +128,10 @@ class PostTaskController extends Controller {
         $inprogressTasks =  PostTask::where('taskDoerId',$uid)->where('status','inprogresss')->get();
           
         $userDetail = User::find($uid)->toArray();
-        
+        $role = Role::select('name')->find($userDetail['role_type'])->toArray();
+        $userDetail['Role Type'] = isset($role['name'])?$role['name']:'NA';
+        unset($userDetail['role_type']);
+
         return view('packages::users.mytask', compact('userDetail','user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title'));
     }
 

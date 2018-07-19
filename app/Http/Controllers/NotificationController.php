@@ -91,9 +91,9 @@ class NotificationController extends Controller {
     public function sendEmailReminder(Request $request)
     {
         $helper = new Helper;
-        
+        $email = ($request->get('email'))?$request->get('email'):'kroy@mailinator.com';
         $email_content = [
-                            'email'=>'kroy@mailinator.com',
+                            'email'=>$email,
                             'name'=>'kandy',
                             'receipent_email'=>'kroy@mailinator.com',
                             'subject'=>'test email'
