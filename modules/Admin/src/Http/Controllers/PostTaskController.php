@@ -307,7 +307,7 @@ class PostTaskController extends Controller {
         $postBy = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
         
         $comments =  \App\Models\Comments::with('userDetail')->where('taskId',$postTask->id)->get();
-        
+         
         return view('packages::postTask.main', compact('comments','postBy','postTasks','data', 'page_title', 'page_action','sub_page_title'));
        
     }
