@@ -29,6 +29,7 @@
                                          {{ Session::get('flash_alert_notice') }}
                                          </div>
                                     @endif
+                                    <div class="card-profile">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li ng-class="appliedActiveClassForRf()" role="presentation" >
                                         <a ng-click="changeList('sip')">SIP Generated</a>
@@ -37,6 +38,7 @@
                                             <a ng-click="changeList('rf')">Release Funds</a>
                                         </li>
                                     </ul>
+                                 </div>
                                 <div ng-if="showWithdrawalList" class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="contact">
                                         <thead>
