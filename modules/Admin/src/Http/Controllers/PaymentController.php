@@ -79,7 +79,7 @@ class PaymentController extends Controller {
     return view('packages::payment.servicecharge', compact('page_title' ,'page_action'));
   }
   public function closeTask(Request $request) {
-
+    View::share('heading','Close Task');
     $page_title = 'Payment';
     $page_action = 'Close Task';
 

@@ -29,28 +29,47 @@
                                          {{ Session::get('flash_alert_notice') }}
                                          </div>
                                     @endif
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li ng-class="appliedActiveClassForRf()" role="presentation" >
+                                        <a ng-click="changeList('sip')">SIP Generated</a>
+                                        </li>
+                                        <li ng-class="appliedClassForRf()" role="presentation" >
+                                            <a ng-click="changeList('rf')">Release Funds</a>
+                                        </li>
+                                    </ul>
                                 <div ng-if="showWithdrawalList" class="portlet-body">
                                     <table class="table table-striped table-hover table-bordered" id="contact">
                                         <thead>
                                             <tr>
                                                  <th>Withdrawal Id</th>
                                                 <th>Transaction Id</th>
-                                                <th>Amount</th>
-                                                <th>Service Charge</th>
+                                                <!-- <th>Amount</th>
+                                                <th>Service Charge</th> -->
                                                  <th>Payable Amount</th>
                                                 <th>User Id</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody ng-if="sipListIndicator">
                                           <tr ng-repeat='task in withdrawallist'>
-                                              <td><% task.id %></td>
-                                              <td><% task.txn_id %> </td>
-                                              <td>MYR <% task.amount %> </td>
-                                              <td>MYR <% task.service_charge %> </td>
-                                              <td>MYR <% task.payable_amount %> </td>
-                                              <td><a href="<% currDomain %>/uat/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
-                                              <td><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
+                                              <td ng-if="task.status==2"><% task.id %></td>
+                                              <td ng-if="task.status==2"><% task.txn_id %> </td>
+                                              <!-- <td ng-if="task.status==2">MYR <% task.amount %> </td>
+                                              <td ng-if="task.status==2">MYR <% task.service_charge %> </td> -->
+                                              <td ng-if="task.status==2">MYR <% task.payable_amount %> </td>
+                                              <td ng-if="task.status==2"><a href="<% currDomain %>/uat/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
+                                              <td ng-if="task.status==2"><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody ng-if="rfListIndicator">
+                                          <tr ng-repeat='task in withdrawallist'>
+                                              <td ng-if="task.status==1"><% task.id %></td>
+                                              <td ng-if="task.status==1"><% task.txn_id %> </td>
+                                              <!-- <td ng-if="task.status==1">MYR <% task.amount %> </td>
+                                              <td ng-if="task.status==1">MYR <% task.service_charge %> </td> -->
+                                              <td ng-if="task.status==1">MYR <% task.payable_amount %> </td>
+                                              <td ng-if="task.status==1"><a href="<% currDomain %>/uat/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
+                                              <td ng-if="task.status==1"><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -61,6 +80,9 @@
                                   No list found
                                 </div>
                             </div>
+
+
+                            <div class="row">
                             <!-- END EXAMPLE TABLE PORTLET-->
                         </div>
                     </div>

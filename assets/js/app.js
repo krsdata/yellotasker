@@ -36,6 +36,8 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.withdrawallist = [];
 	$scope.showWithdrawalList=false;
 	$scope.currDomain='';
+	$scope.sipListIndicator=false;
+	$scope.rfListIndicator=false;
 	
 	$scope.init = function() {
 		$scope.currDomain=window.location.origin;
@@ -56,6 +58,7 @@ app.controller('paymentController', function($scope, $http) {
 		success(function(data, status, headers, config) {
 			if(data.status==1&&data.message=='Withdrawals List found.')
 			$scope.withdrawallist = data.data;
+			$scope.sipListIndicator=true;
 			$scope.showWithdrawalList=$scope.withdrawallist.length>0?true:false;
 			$scope.loading = false;
 
@@ -212,6 +215,32 @@ app.controller('paymentController', function($scope, $http) {
 	        return "active";
 	    } else {
 	        return ""; // Or even "", which won't add any additional classes to the element
+	    }
+	}
+	// applied active class for release fund
+	$scope.appliedActiveClassForRf = function() {
+	    if ($scope.sipListIndicator === true) {
+	        return "active";
+	    } else {
+	        return ""; 
+	    }
+	}
+	// applied active class for release fund
+	$scope.appliedClassForRf = function() {
+	    if ($scope.rfListIndicator === true) {
+	        return "active";
+	    } else {
+	        return ""; 
+	    }
+	}
+	// change list
+	$scope.changeList = function(listType) {
+	    if (listType === 'sip') {
+			$scope.sipListIndicator = true
+			$scope.rfListIndicator = false
+	    } else if(listType === 'rf') {
+			$scope.rfListIndicator = true
+			$scope.sipListIndicator = false
 	    }
 	}
 	$scope.getYellotaskerData= function() {

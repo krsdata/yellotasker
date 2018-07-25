@@ -45,9 +45,10 @@
                                             <tr>
                                                  <th>Task Id</th>
                                                 <th>Task Title</th>
-                                                <th>Amount</th>
+                                                <th>Task Amount</th>
+                                                <th>Offer Amount</th>
                                                 <th>Service Charge</th>
-                                                 <th>Net Amount</th>
+                                                 <th>Payable Amount</th>
                                                 <th>Doer Id</th>
                                                 <th>Action</th>
                                             </tr>
@@ -57,9 +58,10 @@
                                               <td><a href="<% currDomain %>/uat/admin/postTask/<% task.id %>"><% task.id %></a></td>
                                               <td><% task.title %> </td>
                                               <td>MYR <% task.totalAmount %> </td>
-                                              <td>MYR <% task.totalAmount*0.10 %> </td>
-                                              <td>MYR <% task.totalAmount-task.totalAmount*0.10 %> </td>
-                                              <td><% task.taskDoerId %> </td>
+                                              <td>MYR <% task.offer_details[0].offerPrice %> </td>
+                                              <td>MYR <% task.offer_details[0].serviceCharges %> </td>
+                                              <td>MYR <% task.offer_details[0].offerPrice-task.offer_details[0].offerPrice*(task.offer_details[0].serviceCharges/100) %> </td>
+                                              <td><a href="<% currDomain %>/uat/admin/mytask/<% task.taskDoerId %>"><% task.taskDoerId %></a></td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="sendWithrawalReq(task.id,task.userId,task.taskDoerId,task.totalAmount-task.totalAmount*0.10)">Close Task</button></td>
                                             </tr>
                                         </tbody>
