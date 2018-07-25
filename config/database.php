@@ -1,17 +1,7 @@
 <?php
 
   try{
-        // $ip =  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
-
-        // $ipInfo = file_get_contents('http://ip-api.com/json/' . $ip);
-        // $ipInfo = json_decode($ipInfo);
-        
-        // if($ipInfo->status=="success"){ 
-             
-        //     $timezone = $ipInfo->timezone; 
-            
-        // }else{
-            $timezone = 'Asia/Kolkata';
+        $timezone = 'Asia/Kolkata';
     }catch(\Exception $e){
         $timezone = 'Asia/Kolkata';
     }  

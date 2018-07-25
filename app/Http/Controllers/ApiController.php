@@ -178,6 +178,8 @@ class ApiController extends Controller
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
         $input['role_type']     = 3;
+        $input['user_type']     = $request->input('user_type'); ;
+        $input['provider_id']   = $request->input('provider_id'); ; 
          
         if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
@@ -204,7 +206,8 @@ class ApiController extends Controller
                 'data'  =>  $request->all()
                 )
             );
-        }  
+        } 
+
         
         $helper = new Helper;
         /** --Create USER-- **/
@@ -349,6 +352,30 @@ public function userDetail($id=null)
                         );
          
     }
+    // Validate user
+    public function validateInput($request,$input){
+        //Server side valiation 
+
+        $validator = Validator::make($request->all(), $input);
+         
+        /** Return Error Message **/
+        if ($validator->fails()) {
+            $error_msg      =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+
+            if($error_msg){
+               return array(
+                    'status' => 0,
+                    'code' => 500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    );
+            }
+
+        }
+    }
 
    /* @method : login
     * @param : email,password and deviceID
@@ -358,14 +385,39 @@ public function userDetail($id=null)
     */
     public function login(Request $request)
     {    
-        $input = $request->all();
-        $token = JWTAuth::attempt(['email'=>$request->get('email'),'password'=>$request->get('password'),'status'=>1]);
+        $input = $request->all(); 
+        $user_type = $request->get('user_type');
+        // Validation
+        $validateInput['email'] = 'required|email';
+        $v = $this->validateInput($request,$validateInput);
+        if($v){
+            return Response::json($v);
+        }
+        switch ($user_type) {
+            case 'facebook':
+                $token = JWTAuth::attempt(['email'=>$request->get('email'),'provider_id'=>$request->get('provider_id')]); 
+                break;
+            case 'google':
+                $token = JWTAuth::attempt(['email'=>$request->get('email'),'provider_id'=>$request->get('provider_id')]); 
+                break;
+            
+            default:
+                $token = JWTAuth::attempt(
+                            [
+                                'email'=>$request->get('email'),
+                                'password'=>$request->get('password'),
+                                'status'=>1
+                            ]); 
+                break;
+        }
+
+
         if (!$token) {
-            return response()->json([ "status"=>0,"message"=>"Invalid email or password. Try again!" ,'data' => '' ]);
+            return response()->json([ "status"=>0,"code"=>500,"message"=>"Invalid email or password. Try again!" ,'data' => $input ]);
         }
         $user = JWTAuth::toUser($token);
         
-        return response()->json([ "status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
+        return response()->json([ "status"=>1,"code"=>200,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
 
     } 
    /* @method : get user details

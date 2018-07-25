@@ -107,5 +107,9 @@ class User extends Authenticatable {
         
     }
 
+    public function role(){
+        return $this->belongsTo('Modules\Admin\Models\Role','user_id');
+    }
+
 
 }

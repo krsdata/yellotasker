@@ -526,7 +526,7 @@ class TaskController extends Controller {
             );
         }  
         
-        $tasks  = Tasks::with('userDetail')->where(function($q)
+        $tasks  = Tasks::with('userDetail','offerDetails')->where(function($q)
                 use(
                         $status,
                         $limit,

@@ -47,7 +47,12 @@
                             <div class="">
                                 <div class="detail-pic-name">
                                     <div class="pic-name-left">
-                                        <img src="{{url('storage/image/poster-big.png')}}" alt="">
+                                        @if(!empty($postTasks->user->profile_image))
+                                         <img src="{{$postTasks->user->profile_image}}" width="80%" alt="">
+                                        @else
+                                         <img src="{{url('storage/image/poster-big.png')}}" alt="">
+                                        @endif
+                                       
                                     </div>
                                     <div class="pic-name-right"> 
 
