@@ -4,7 +4,7 @@ var app = angular.module('paymentApp', [], function($interpolateProvider) {
 });
 
 
-app.controller('paymentController', function($scope, $http) {
+app.controller('paymentController', function($scope, $http,$location) {
 
 	$scope.list = [];
 	$scope.showReleaseFundList=false;
@@ -42,9 +42,7 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.init = function() {
 		//$scope.currDomain=window.location.origin;
 		//var re = new RegExp(/^.*\//);
-		$scope.currDomain +=  window.location.origin 
-		? window.location.origin + '/'
-		: window.location.protocol + '/' + window.location.host + '/';
+		$scope.currDomain = $location.absUrl();;
 		console.log('domain',$scope.currDomain);
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
