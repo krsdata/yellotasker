@@ -576,6 +576,27 @@
                                     </ul>
                                 </li> 
 
+                                
+                            <li class="nav-item start active {{ (isset($page_title) && $page_title=='setting')?'open':'' }}">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="glyphicon glyphicon-th"></i>
+                                        <span class="title">Website Setting </span>
+                                        <span class="arrow {{ (isset($page_title) && $page_title=='setting')?'open':'' }}"></span>
+                                    </a>
+                                    <ul class="sub-menu" style="display: {{ (isset($page_title) && $page_title=='setting')?'block':'none' }}">
+                                        <li class="nav-item  {{ (isset($page_title) && $page_action=='View setting')?'active':'' }}">
+                                        <a href="{{ route('setting') }}" class="nav-link ">
+                                           <i class="glyphicon glyphicon-eye-open"></i> 
+                                            <span class="title">
+                                                View Settings
+                                            </span>
+                                        </a>
+                                    </li> 
+                                         
+                                </ul>
+                            </li>
+
+
                         <!-- posttask end-->
                     </ul>
                     <!-- END SIDEBAR MENU -->
