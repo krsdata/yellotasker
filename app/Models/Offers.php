@@ -58,9 +58,17 @@ class Offers extends Authenticatable {
     public function mytask()
     {
         return $this->hasOne('App\Models\Tasks','id','taskId');
-    }
- 
+    } 
 
+    public  function taskOwner()
+    {
+        return $this->hasOne('App\User','id','assignUserId') ;
+    }
+
+    public  function interestedPeope()
+    {
+        return $this->hasOne('App\User','id','interestedUserId')->select('id','first_name','last_name','profile_image') ;
+    }
 
     
 }

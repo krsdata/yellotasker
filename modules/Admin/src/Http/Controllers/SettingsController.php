@@ -48,6 +48,9 @@ class SettingsController extends Controller {
         View::share('viewPage', 'setting');
         View::share('helper',new Helper);
         $this->record_per_page = Config::get('app.record_per_page');
+        View::share('route_url',route('setting'));
+        View::share('heading','Website Settings');
+
     }
 
     protected $categories;
@@ -71,15 +74,20 @@ class SettingsController extends Controller {
         $banner             = $setting::where('field_key','LIKE','%banner_image%')->get();
  
 
-        $setting = Settings::first();
-
+        $setting = Settings::first(); 
+        $web_setting =  Settings::all(); 
         if($setting)
         {
             $setting->id;
         }else{
             return Redirect::to(route('setting.create'));
         }
-      
+        foreach ($web_setting as $key => $value) {
+            echo $key_name = $value->field_key;
+            
+            $setting->$key_name = $value->field_value; 
+           
+        } 
 
         return view('packages::setting.edit', compact('setting','website_title','website_email','website_url','contact_number','company_address','banner', 'page_title', 'page_action','helper'));
    
@@ -93,15 +101,19 @@ class SettingsController extends Controller {
     {
         $page_title = 'setting';
         $page_action = 'Create setting';
+        $setting = Settings::first(); 
         
-         $website_title      = $setting::where('field_key','website_title')->first();
+        if($setting)
+        {
+           return Redirect::to(URL::previous());
+        }
+        $website_title      = $setting::where('field_key','website_title')->first();
         $website_email      = $setting::where('field_key','website_email')->first();
         $website_url        = $setting::where('field_key','website_url')->first();
         $contact_number     = $setting::where('field_key','contact_number')->first();
         $company_address    = $setting::where('field_key','company_address')->first();
 
-        $banner             = $setting::where('field_key','LIKE','%banner_image%')->get();
-
+        $banner             = $setting::where('field_key','LIKE','%banner_image%')->get(); 
 
 
         return view('packages::setting.create', compact('setting','website_title','website_email','website_url','contact_number','company_address','banner', 'page_title', 'page_action','helper'));
@@ -168,22 +180,19 @@ class SettingsController extends Controller {
         return view('packages::setting.edit', compact( 'categories','product', 'page_title', 'page_action'));
     }
 
-    public function update(SettingRequest $request, Settings $setting) 
+    public function update(Request $request, Settings $setting) 
     {
-        
         foreach ($request->except('_token') as $key => $value) {
             
             $setting = Settings::firstOrCreate(['field_key' => $key]);
-
             $setting->field_key     =   $key;
             $setting->field_value   =   $value;
             $setting->save();  
-
            
             if ($request->file($key)) {  
 
                 $photo = $request->file($key);
-                $destinationPath = storage_path('files/banner/');
+                $destinationPath = storage_path('uploads/img/');
                 $photo->move($destinationPath, time().$photo->getClientOriginalName());
                 $banner_image1 = time().$photo->getClientOriginalName();
                 
@@ -198,7 +207,7 @@ class SettingsController extends Controller {
         }
 
         return Redirect::to(route('setting'))
-                        ->with('flash_alert_notice2', 'Site settigs was successfully updated!');
+                        ->with('flash_alert_notice', 'Site settigs was saved!');
     }
     /*
      *Delete User
