@@ -41,8 +41,10 @@ app.controller('paymentController', function($scope, $http) {
 	
 	$scope.init = function() {
 		//$scope.currDomain=window.location.origin;
-		var re = new RegExp(/^.*\//);
-		$scope.currDomain += re.exec(window.location.href);
+		//var re = new RegExp(/^.*\//);
+		$scope.currDomain +=  window.location.origin 
+		? window.location.origin + '/'
+		: window.location.protocol + '/' + window.location.host + '/';
 		console.log('domain',$scope.currDomain);
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
