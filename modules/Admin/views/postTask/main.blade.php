@@ -101,7 +101,7 @@
                                   <th>{{ $postTasks->$result}}
                                     @if($result=='totalAmount' ||
                                         $result=='hourlyRate')
-                                      {!! $currency->currency or 'MYR' !!}
+                                      {!! $currency->field_value or 'MYR' !!}
                                     @endif
                                    </th>
                                 

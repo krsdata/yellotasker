@@ -104,7 +104,7 @@ class PostTaskController extends Controller {
             echo $s;
             exit();
         } 
-
+        $currency = \DB::table('settings')->where('field_key','currency')->first();
  
         // Search by name ,email and group
         $search = Input::get('search');
@@ -124,9 +124,8 @@ class PostTaskController extends Controller {
         } else {
             $postTasks = PostTask::with('user')->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-          
-        
-        return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
+           
+        return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title','currency'));
     }
 
     /*
@@ -355,7 +354,7 @@ class PostTaskController extends Controller {
         $currency = \DB::table('settings')->where('field_key','currency')->first();
         
         $posterUser = ($postTasks->user)->toArray(); 
-         
+
 
         return view('packages::postTask.main', compact('comments','postBy','postTasks','offers','doer', 'page_title', 'page_action','sub_page_title','table_cname','taskPostDate','taskdueDate','currency','posterUser'));
        
