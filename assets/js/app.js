@@ -40,7 +40,10 @@ app.controller('paymentController', function($scope, $http) {
 	$scope.rfListIndicator=false;
 	
 	$scope.init = function() {
-		$scope.currDomain=window.location.origin;
+		//$scope.currDomain=window.location.origin;
+		var re = new RegExp(/^.*\//);
+		$scope.currDomain += re.exec(window.location.href);
+		console.log('domain',$scope.currDomain);
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
 		success(function(data, status, headers, config) {
