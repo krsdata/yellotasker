@@ -92,7 +92,9 @@
                         
                           <thead>
                              @foreach($table_cname as $key => $result)
-                             @if($result=="id" || $result=='title')
+                             @if($result=="id" || $result=='title' || $result=='categoryId' || $result == 'userId'
+                              || $result == 'taskDoerId'
+                               || $result == 'taskOwnerId')
                              <?php continue; ?>
                              @endif 
                               <tr>
