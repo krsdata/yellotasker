@@ -162,7 +162,7 @@
                     </div> 
 
                     <div class="form-group ">
-                            @if(isset($postTasks) and ($postTasks->count())>0)
+                            @if(isset($doer))
                       <table class="table table-striped table-hover table-bordered" id="">
                            <thead> 
                              @foreach($doer as $key => $result)
