@@ -78,7 +78,7 @@
                                                 <td>{{ $result->totalAmount}}
                                                     {{$currency->field_value or ''}}
                                                 </td>
-                                                <td>{{ $result->hourlyRate}} {$currency->field_value or ''}}</td>
+                                                <td>{{ $result->hourlyRate}} {{$currency->field_value or ''}}</td>
                                                 <td>{{ $result->status}}</td>
                                                 <td>{{ $result->created_at}}</td>
                                                 <td><a href="{{route('postTask.show',$result->id)}}"> View Details </a></td>
