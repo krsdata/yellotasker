@@ -80,11 +80,12 @@
 		                                        <a href="#tab_1_5" data-toggle="tab" aria-expanded="true">
 		                                            <span class="badge badge-danger">{{ ($offerPending->count())?$offerPending->count():0 }} </span> Offer Pending</a>
 		                                    </li>
-		                                        <!--
+		                                         
 		                                    <li>
-		                                        <a href="javascript:;">
-		                                            <span class="badge badge-danger"> 2 </span> Offer </a>
-		                                    </li> -->
+		                                        <a href="javascript:;">   
+	                                        	<span class="badge badge-success
+	                                        	">{{ ($offerAssigned->count())?$offerAssigned->count():0 }} </span> Offer Assigned</a>
+		                                    </li>  
 		                                </ul>
 		                            </div>
 		                        </div>

@@ -171,10 +171,13 @@ class PostTaskController extends Controller {
 
         $offer_pending =  PostTask::where('taskOwnerId',$uid)->where('status','open')->lists('id');
 
-        $offerPending =  Offers::with('mytask','interestedPeope')->whereIn('taskId',$offer_pending)->get();  
+        $offerPending =  Offers::with('mytask','interestedPeope')->whereIn('taskId',$offer_pending)->get();
+ 
 
+        $offerAssigned =  PostTask::where('taskOwnerId',$uid)->where('status','assigned')->get();
+ 
 
-        return view('packages::users.mytask', compact('userDetail','user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title','offerPending'));
+        return view('packages::users.mytask', compact('userDetail','user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title','offerPending','offerAssigned'));
     }
 
     /*

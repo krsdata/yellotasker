@@ -88,6 +88,11 @@ class Tasks extends Authenticatable {
          return $this->hasMany('App\Models\SavedTask','taskId','id');
     }
 
+    public function assignTask()
+    {
+         return $this->hasOne('App\Models\Offers','taskId','id');
+    }
+
     public function allOffers2()
     {
          
