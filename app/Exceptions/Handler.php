@@ -57,9 +57,9 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
-    {    
+    {  
        $path_info_url = $request->getpathInfo();
-       $api_url='';
+       $api_url ='';
        $web_url ='';
         if (strpos($path_info_url, 'api/v1') !== false) {
             $api_url = $path_info_url;
@@ -68,7 +68,14 @@ class Handler extends ExceptionHandler
         } 
       // dd($e);
 
-        if($e instanceof FatalThrowableError){
+        if($e instanceof FatalThrowableError)
+        {
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'FatalThrowableError';
+
+          $this->errorLog($data,$e);
+
           $page_title = "404 Error";
           $page_action = "Page";
           $viewPage = "404 Error";
@@ -80,6 +87,13 @@ class Handler extends ExceptionHandler
 
         if($e instanceof InvalidArgumentException)
         {
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'InvalidArgumentException';
+
+          $this->errorLog($data,$e);
+          
+
             if($api_url)
             {
                 echo json_encode(
@@ -95,6 +109,12 @@ class Handler extends ExceptionHandler
             exit(); 
         }    
         if ($e instanceof ModelNotFoundException) { 
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'ModelNotFoundException';
+
+          $this->errorLog($data,$e);
+
           $page_title = "404 Error";
           $page_action = "Page";
           $viewPage = "404 Error";
@@ -107,6 +127,12 @@ class Handler extends ExceptionHandler
         $error_from_route =0;
         if($e instanceof NotFoundHttpException)
         {   
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'NotFoundHttpException';
+
+          $this->errorLog($data,$e);
+
             $error_from_route =1;
             if($api_url)
             {
@@ -126,6 +152,12 @@ class Handler extends ExceptionHandler
         }
         if($e instanceof QueryException)
         {    
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'QueryException';
+
+          $this->errorLog($data,$e);
+
             if($api_url)
             {    
                 echo json_encode(
@@ -147,6 +179,11 @@ class Handler extends ExceptionHandler
         }
 
         if($e instanceof MethodNotAllowedHttpException){
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'MethodNotAllowedHttpException';
+
+          $this->errorLog($data,$e);
             
             if($api_url)
             {
@@ -164,6 +201,13 @@ class Handler extends ExceptionHandler
            
         } 
         if($e instanceof ErrorException){ 
+
+          $data['url']        = URL::previous();
+          $data['message']    = $e->getMessage();
+          $data['error_type'] = 'ErrorException';
+
+          $this->errorLog($data,$e);
+
            if($api_url)
             {
                 echo json_encode(
@@ -180,11 +224,19 @@ class Handler extends ExceptionHandler
                  return  Redirect::to('admin/404')->with('flash_alert_notice', $e->getmessage()); 
 
             } 
-            exit();
-
-        }
-
-
+            exit(); 
+        } 
         return parent::render($request, $e);
+    }
+
+    public function errorLog($data,$e){
+
+      $data['log'] = json_encode($e);
+      $data['message'] = $e->getMessage();
+      $data['file'] = $e->getFile();
+      $data['statusCode'] = $e->getStatusCode();
+     
+      \DB::table('error_logs')->insert($data);
+
     }
 }
