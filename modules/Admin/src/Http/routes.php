@@ -199,9 +199,7 @@
                 ]
         );  
 
-        Route::get('admin/mytask/{id}','Modules\Admin\Http\Controllers\PostTaskController@mytask');
-
-
+        Route::get('admin/mytask/{id}','Modules\Admin\Http\Controllers\PostTaskController@mytask'); 
 
         // programs
          Route::bind('program', function($value, $route) {

@@ -154,12 +154,23 @@ class PostTaskController extends Controller {
         $completedTasks =  PostTask::where('taskDoerId',$uid)->where('status','completed')->get();
         $inprogressTasks =  PostTask::where('taskDoerId',$uid)->where('status','inprogresss')->get();
           
-        $userDetail = User::find($uid)->toArray();
-        $role = Role::select('name')->find($userDetail['role_type'])->toArray();
+        $userDetail = User::find($uid)->toArray(); 
+        $role = Role::select('name')->find($userDetail['role_type']);
+        if($role ){
+            $role =$role->toArray() ;  
+        }else{
+            $role =null; 
+        }
+ 
         $userDetail['Role Type'] = isset($role['name'])?$role['name']:'NA';
         unset($userDetail['role_type']);
 
-        return view('packages::users.mytask', compact('userDetail','user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title'));
+        $offer_pending =  PostTask::where('taskOwnerId',$uid)->where('status','open')->lists('id');
+
+        $offerPending =  Offers::with('mytask','interestedPeope')->whereIn('taskId',$offer_pending)->get();  
+
+
+        return view('packages::users.mytask', compact('userDetail','user','inprogressTasks','completedTasks','expireTasks','postTasks','data', 'page_title', 'page_action','sub_page_title','offerPending'));
     }
 
     /*

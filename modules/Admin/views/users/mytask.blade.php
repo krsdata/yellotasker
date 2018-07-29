@@ -60,26 +60,27 @@
 		                        <div class="portlet-body todo-project-list-content" style="height: auto;">
 		                            <div class="todo-project-list">
 		                                <ul class="nav nav-stacked">
-		                                    <li>
-		                                        <a href="javascript:;">
+		                                    <li> 
+		                                        <a href="#tab_1_1" data-toggle="tab" aria-expanded="true">
 		                                            <span class="badge badge-default">{{ ($postTasks->count())?$postTasks->count():0 }}</span> Posted Task</a>
 		                                    </li>
 		                                    <li>
-		                                        <a href="javascript:;">
+		                                        <a href="#tab_1_2" data-toggle="tab" aria-expanded="true">
 		                                            <span class="badge badge-info"> {{ ($inprogressTasks->count())?$inprogressTasks->count():0 }} </span> In Progress </a>
 		                                    </li>
 		                                    <li class="active">
-		                                        <a href="javascript:;">
+		                                        <a href="#tab_1_3" data-toggle="tab" aria-expanded="true">
 		                                            <span class="badge badge-success"> {{ ($completedTasks->count())?$completedTasks->count():0 }}</span> Completed</a>
 		                                    </li>
 		                                    <li>
-		                                        <a href="javascript:;">
+		                                        <a href="#tab_1_4" data-toggle="tab" aria-expanded="true">
 		                                            <span class="badge badge-danger">{{ ($expireTasks->count())?$expireTasks->count():0 }} </span> Overdue</a>
 		                                    </li>
-		                                   <!--  <li>
-		                                        <a href="javascript:;">
-		                                            <span class="badge badge-info"> 6 </span> Saved </a>
+		                                 <li>
+		                                        <a href="#tab_1_5" data-toggle="tab" aria-expanded="true">
+		                                            <span class="badge badge-danger">{{ ($offerPending->count())?$offerPending->count():0 }} </span> Offer Pending</a>
 		                                    </li>
+		                                        <!--
 		                                    <li>
 		                                        <a href="javascript:;">
 		                                            <span class="badge badge-danger"> 2 </span> Offer </a>
@@ -123,6 +124,9 @@
                             <li>
                                 <a href="#tab_1_4" data-toggle="tab">  Overdue Task</a>
                             </li>
+                            <li>
+                                <a href="#tab_1_5" data-toggle="tab"> Offer Pending</a>
+                            </li>
                         </ul>
                     </div>
 
@@ -148,13 +152,11 @@
 	                @foreach($userDetail as $key => $result)
 	                	<?php if( $key == "id" || $key=="created_at" || $key == "updated_at")
 	                	{
-	                		//continue;	
 	                	}else{
 	                	?>
 	                    <tr>
 	                    	<th> {{ ucfirst($key) }} </th>
-	                        <th> {{ !empty($result)?$result:'NA' }} </th>
-	                         
+	                        <th> {{ !empty($result)?$result:'NA' }} </th> 
 	                    </tr>
 	                    <?php } ?>
                     @endforeach
@@ -339,54 +341,100 @@
 	  </div>
 	</div>                                            <!-- END CHANGE PASSWORD TAB -->
                                             <!-- PRIVACY SETTINGS TAB --> 
-	<div class="tab-pane" id="tab_1_4">
-	                                                 
-	        <div class="portlet light bordered">
-	            <div class="portlet-title">
-	                <div class="caption">
-	                     <i class="icon-social-dribbble font-green"></i>
-	                    <span class="caption-subject font-green-sharp bold uppercase">Overdue Task</span>
-	                </div>
-	               
+	<div class="tab-pane" id="tab_1_4">              
+	    <div class="portlet light bordered">
+	        <div class="portlet-title">
+	            <div class="caption">
+	                 <i class="icon-social-dribbble font-green"></i>
+	                <span class="caption-subject font-green-sharp bold uppercase">Overdue Task</span>
 	            </div>
-	            <div class="portlet-body"> 
-	               @if(isset($expireTasks) && ($expireTasks->count())>0)
-	               <table class="table table-striped table-hover table-bordered" id="">
-	                <thead>
-	                    <tr>
-	                    	<th>Sno</th>
-	                        <th>Task Title </th>
-	                        <th>Description </th>  
-	                        <th>Total Amount</th> 
-	                        <th>Hourly Rate</th> 
-                         	<th>Status</th> 
-	                        <th>Due Date</th> 
-                         	<th>Action</th>  
-	                    </tr>
-	                </thead>
-	                <tbody>
-	               
-	                @foreach($expireTasks as $key => $result)
-	                    <tr>
-	                        <td>{{++$key}}</td>
-	                        <td>{{ substr($result->title,0,15)   }}</td>
-	                        <td>{{ substr($result->description,0,15)   }}</td>
-	                        <td>{{ $result->totalAmount}}</td>
-	                        <td>{{ $result->hourlyRate}}</td>
-	                        <td>Expired</td>
-	                        <td>{{ \Carbon\Carbon::parse($result->created_at)->format('M d,Y') }}</td>
-	                        <td><a href="{{route('postTask.show',$result->id)}}"> View Details </a></td>
-	                       
-	                    </tr>
-	                   @endforeach 
-	                </tbody>
-	               
-	            </table>
-	            @else
-	            No record found!
-	             @endif
+	           
+	        </div>
+	        <div class="portlet-body"> 
+	           @if(isset($expireTasks) && ($expireTasks->count())>0)
+	           <table class="table table-striped table-hover table-bordered" id="">
+	            <thead>
+	                <tr>
+	                	<th>Sno</th>
+	                    <th>Task Title </th>
+	                    <th>Description </th>  
+	                    <th>Total Amount</th> 
+	                    <th>Hourly Rate</th> 
+	                 	<th>Status</th> 
+	                    <th>Due Date</th> 
+	                 	<th>Action</th>  
+	                </tr>
+	            </thead>
+	            <tbody>
+	           
+	            @foreach($expireTasks as $key => $result)
+	                <tr>
+	                    <td>{{++$key}}</td>
+	                    <td>{{ substr($result->title,0,15)   }}</td>
+	                    <td>{{ substr($result->description,0,15)   }}</td>
+	                    <td>{{ $result->totalAmount}}</td>
+	                    <td>{{ $result->hourlyRate}}</td>
+	                    <td>Expired</td>
+	                    <td>{{ \Carbon\Carbon::parse($result->created_at)->format('M d,Y') }}</td>
+	                    <td><a href="{{route('postTask.show',$result->id)}}"> View Details </a></td>
+	                   
+	                </tr>
+	               @endforeach 
+	            </tbody>
+	           
+	        </table>
+	        @else
+	        No record found!
+	         @endif
+	        </div>
+	    </div>   
+	</div>
+	<div class="tab-pane" id="tab_1_5">              
+	    <div class="portlet light bordered">
+	        <div class="portlet-title">
+	            <div class="caption">
+	                 <i class="icon-social-dribbble font-green"></i>
+	                <span class="caption-subject font-green-sharp bold uppercase">Offer Pending</span>
 	            </div>
-	        </div>   
+	           
+	        </div>
+	        <div class="portlet-body"> 
+	           @if(isset($offerPending) && ($offerPending->count())>0)
+	           <table class="table table-striped table-hover table-bordered" id="">
+	            <thead>
+	                <tr>
+	                	<th>Sno</th>
+	                    <th>Task Title </th>
+	                    <th>Description </th>
+	                    <th>User Name</th>  
+	                    <th>Actual Amount</th> 
+	                    <th>Offer Amount</th> 
+	                 	<th>Offer Date</th>  
+	                </tr>
+	            </thead>
+	            <tbody>
+	           
+	            @foreach($offerPending as $key => $result)
+	                <tr>
+	                    <td>{{++$key}}</td>
+	                    <td>{{ ucfirst($result->mytask->title)   }}</td>
+	                    <td>{{ substr($result->mytask->description,0,50)   }}</td>
+	                    <td>{{ $result->interestedPeope->first_name}}
+	                    	{{ $result->interestedPeope->first_last}}
+                    	</td>
+	                    <td>{{ $result->mytask->totalAmount}}</td>
+	                    <td>{{ $result->offerPrice}}</td> 
+	                    <td>{{ \Carbon\Carbon::parse($result->created_at)->format('M d,Y') }}</td>
+	                </tr>
+	               @endforeach 
+	            </tbody>
+	           
+	        </table>
+	        @else
+	        No record found!
+	         @endif
+	        </div>
+	    </div>   
 	</div> 
                                             <!-- END PRIVACY SETTINGS TAB --> 
 
