@@ -502,7 +502,22 @@ Route::group(['prefix' => 'api/v1'], function()
 
             Route::match(['post','get'],'serviceCharge', 'MolpayPaymentController@serviceCharge');
 
-            
+            Route::get('allSettings',function(){
+                $data   = \DB::table('settings')->select('field_key','field_value')->get();
+                
+                $message = "all settings";
+                $code  =  200;
+
+                return json_encode(
+                    [
+                        'code'   => 200,
+                        'status' => 1,
+                        'message'=> $message,
+                        'data'   => $data
+                    ]
+                );
+
+            });
             
     });
 });    
