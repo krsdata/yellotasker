@@ -34,7 +34,7 @@
         <div class="form-group {{ $errors->first('website_url', ' has-error') }}">
             <label class="control-label col-md-3">Website Url <span class="required"> * </span></label>
             <div class="col-md-6"> 
-                {!! Form::text('website_url',url('/'), ['class' => 'form-control','data-required'=>1])  !!} 
+                {!! Form::text('website_url',($website_url->field_value)?$website_url->field_value:null, ['class' => 'form-control','data-required'=>1])  !!} 
                 
                 <span class="help-block">{{ $errors->first('website_url', ':message') }}</span>
             </div>
