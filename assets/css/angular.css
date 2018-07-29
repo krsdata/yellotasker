@@ -1,0 +1,155 @@
+input#startDate {
+    float: left;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #c9c9c9;
+    border-radius: 5px !important;
+    padding-left:15px;
+}
+input#endDate {
+    float: left;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #c9c9c9;
+    border-radius: 5px !important;
+    padding-left:15px;
+}
+button.btn.btn-primary.btn-md {
+    float: left;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 200px;
+    height: 40px;
+    border: 0;
+    border-radius: 5px !important;
+}
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+    top: 204px;
+    left: 294px;
+    display: block;
+    width: 202px;
+    text-align: center;
+}
+input.ng-pristine.ng-valid {
+    float: left;
+    width: 300px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px !important;
+}
+.search-input{
+  float: left;
+  width: 300px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px !important;
+}
+button.btn.btn-primary.btn-md.user-report {
+    float: left;
+    margin: 0;
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+.card-profile ul li a {
+    background: #efeb10;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+}
+.card-profile ul
+{
+  margin-left: 15px;
+}
+.card-profile ul li a.active-tabs
+{
+  background:#000;
+  color: #fff;
+}
+.no-list{
+  margin-left: 15px;
+}
+.not-active{
+  background:#e4e4e4 !important;
+}
+.dashboard-stat2.bordered {
+    min-height: 160px;
+}
+.card-profile ul li a {
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+.card-profile ul li a.active {
+    background: #efeb10 !important;
+    color: #000 !important;
+}
+
+.col-sm-12.change-current label {
+    float: left;
+    font-size: 16px;
+    margin-top: 8px;
+}
+.col-sm-12.new-service label {
+    float: left;
+    width: 100%;
+ }
+ .row.change-current.new-service label {
+    float: left;
+    width: 100%;
+ }
+ .row.change-current.new-service label {
+    float: left;
+    width: 100%;
+ }
+ .row.change-current.new-service div {
+    float: left;
+    width: 100%;
+    border: 1px solid #c9c9c9;
+    padding: 15px;
+    border-radius: 5px;
+ }
+ .input.ng-dirty.ng-invalid { color: red }
+
+ .col-sm-12.change-current label {
+    float: left;
+    font-size: 16px;
+    margin-top: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+button.btn.change-btn.btn-primary.btn-md.user-report {
+    margin-left: 0px;
+    font-size: 14px;
+    width: auto;
+}
+button.btn.btn-primary.btn-md.user-report {
+    width: auto;
+}
+.red-text{
+color: red;
+float: left;
+width:100%;
+margin: 0px;
+}
+.card-profile ul li a:hover, .card-profile ul li a.active {
+    background: yellow;
+    color: #000;
+}
+/* table#contact tr td:nth-child(4) {
+    font-size: 11px;
+}
+table#contact tr td:nth-child(5) {
+    font-size: 11px;
+} */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #000;
+    background-color: yellow;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
+}
+.taskdate
+{
+    height: 40px;
+}
