@@ -177,7 +177,7 @@ class Handler extends ExceptionHandler
                     ]
                 );
             }else{
-                 return  Redirect::to(URL::previous())->with('flash_alert_notice', $e->getmessage()); 
+                 return  Redirect::to('admin/404')->with('flash_alert_notice', $e->getmessage()); 
 
             } 
             exit();

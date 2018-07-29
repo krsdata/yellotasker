@@ -141,14 +141,14 @@ class PostTaskController extends Controller {
 
     public function mytask(Request $request, $uid=112)
     {
-        $page_title = "Task";
+        $page_title = "Client Users";
         $page_action = "Task";
         $sub_page_title = "My Task";
 
         $user = User::find($uid);
 
         if(!$user){
-          // return Redirect::to('admin/clientuser');
+           return Redirect::to('admin/clientuser');
         }
 
 
