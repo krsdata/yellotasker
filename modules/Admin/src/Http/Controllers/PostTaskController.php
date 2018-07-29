@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Modules\Admin\Http\Requests\ContactRequest;
-use Modules\Admin\Models\User; 
+use Modules\Admin\Models\User;
+use App\Models\Offers;
+use App\Models\Tasks;
 use Input;
 use Validator;
 use Auth;
@@ -40,6 +42,32 @@ class PostTaskController extends Controller {
     /**
      * @var  Repository
      */
+
+    protected $stockSettings = array();
+    protected $modelNumber = '';
+
+    private    $sub_sql =  "( case when status = 'completed' then 0 when  COALESCE(dueDate,CURRENT_DATE) < current_date then 1 when status = 'open'then 3 when status = 'assigned' then 2    end )as rank";
+    private    $sub_sql_offer_count     = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
+    private    $sub_sql_comment_count   = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
+
+    private $sub_status = '(
+                        CASE 
+                        when COALESCE(dueDate,CURRENT_DATE) < current_date AND status ="open" then "expired"
+                        ELSE 
+                        status end) as status'; 
+
+
+    private $doerRating     = '(SELECT ROUND( AVG(doerRating),1) from reviews LEFT  JOIN post_tasks on review.taskId=post_tasks.id ) as doerAvgRating';
+    private $posterRating   = '(SELECT ROUND(AVG(posterRating),1) from reviews LEFT JOIN post_tasks on review.posterUserId=post_tasks.userId) as posterAvgRating';
+                                         
+    private $trns_status = '(
+                        CASE 
+                        when  status=-1 then "Failed"
+                        when  status=1 then "Success"
+                        when  status=2 then "Pending"
+                        when  status=3 then "Failed" 
+                        ELSE 
+                        status end) as status';
 
     /**
      * Displays all admin.
@@ -76,7 +104,7 @@ class PostTaskController extends Controller {
             echo $s;
             exit();
         } 
-
+        $currency = \DB::table('settings')->where('field_key','currency')->first();
  
         // Search by name ,email and group
         $search = Input::get('search');
@@ -96,9 +124,8 @@ class PostTaskController extends Controller {
         } else {
             $postTasks = PostTask::with('user')->orderBy('id','desc')->Paginate($this->record_per_page);
         }
-          
-        
-        return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title'));
+           
+        return view('packages::postTask.index', compact('postTasks','data', 'page_title', 'page_action','sub_page_title','currency'));
     }
 
     /*
@@ -303,12 +330,33 @@ class PostTaskController extends Controller {
         $page_action = 'View Post Task Detail'; 
 
         $postTasks = PostTask::with('user')->where('id',$postTask->id)->first(); 
-//echo Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
+
+        $table_cname = \Schema::getColumnListing('post_tasks');
+         
+            //echo Carbon::createFromFormat('Y-m-d H', '1975-05-21 22')->toDateTimeString();
         $postBy = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
+
+        $taskPostDate = \Carbon\Carbon::parse($postTasks->created_at)->format('d M,Y');
+        $taskdueDate = \Carbon\Carbon::parse($postTasks->dueDate)->format('d M,Y');
         
         $comments =  \App\Models\Comments::with('userDetail')->where('taskId',$postTask->id)->get();
-         
-        return view('packages::postTask.main', compact('comments','postBy','postTasks','data', 'page_title', 'page_action','sub_page_title'));
+
+        $doer =  User::find($postTask->taskDoerId);
+
+        if($doer){
+            $doer = $doer->toArray();
+        }else{
+            $doer = null;
+        }
+
+        $offers =  Offers::with('interestedPeope')->where('taskId',$postTask->id)->get(); 
+
+        $currency = \DB::table('settings')->where('field_key','currency')->first();
+        
+        $posterUser = ($postTasks->user)->toArray(); 
+
+
+        return view('packages::postTask.main', compact('comments','postBy','postTasks','offers','doer', 'page_title', 'page_action','sub_page_title','table_cname','taskPostDate','taskdueDate','currency','posterUser'));
        
     }
 

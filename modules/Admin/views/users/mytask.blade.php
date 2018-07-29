@@ -92,7 +92,7 @@
 		                </div>
 		                <!-- END TODO SIDEBAR -->
 		                <!-- BEGIN TODO CONTENT -->
-            <div class="todo-content">
+	<div class="todo-content">
              	<div class="portlet light bordered">
                     <div class="portlet-title tabbable-line">
                         <div class="caption caption-md">
@@ -126,7 +126,7 @@
                         </ul>
                     </div>
 
-<div class="portlet-body">
+	<div class="portlet-body">
     <div class="tab-content">
         <!-- PERSONAL INFO TAB -->  
 
