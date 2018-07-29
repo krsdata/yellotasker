@@ -59,7 +59,7 @@
                                               <!-- <td ng-if="task.status==2">MYR <% task.amount %> </td>
                                               <td ng-if="task.status==2">MYR <% task.service_charge %> </td> -->
                                               <td ng-if="task.status==2">MYR <% task.payable_amount %> </td>
-                                              <td ng-if="task.status==2"><a href="<% currDomain %>/uat/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
+                                              <td ng-if="task.status==2"><a href="<% currDomain %>/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
                                               <td ng-if="task.status==2"><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
                                             </tr>
                                         </tbody>
@@ -70,7 +70,7 @@
                                               <!-- <td ng-if="task.status==1">MYR <% task.amount %> </td>
                                               <td ng-if="task.status==1">MYR <% task.service_charge %> </td> -->
                                               <td ng-if="task.status==1">MYR <% task.payable_amount %> </td>
-                                              <td ng-if="task.status==1"><a href="<% currDomain %>/uat/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
+                                              <td ng-if="task.status==1"><a href="<% currDomain %>/admin/mytask/<% task.userId %>"><% task.userId %></a> </td>
                                               <td ng-if="task.status==1"><button class="btn btn-primary btn-md"  ng-click="releaseFund(task.id,task.api_response)"><% task.api_response!=null?'View Detail':' Release Fund' %></button></td>
                                             </tr>
                                         </tbody>

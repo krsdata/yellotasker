@@ -77,7 +77,7 @@
          <script src="{{ URL::asset('assets/js/bootbox.js') }}" type="text/javascript"></script>
           <script src="{{ URL::asset('assets/js/formValidate.js') }}" type="text/javascript"></script>
           <script src="{{ URL::asset('assets/js/angular.js')}}"></script>
-          <script src="{{ URL::asset('assets/js/app.js?q=dbfjsbjgbdg')}}"></script>
+          <script src="{{ URL::asset('assets/js/app.js')}}"></script>
       @endif
 
       <script type="text/javascript">

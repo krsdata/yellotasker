@@ -55,13 +55,13 @@
                                         </thead>
                                         <tbody>
                                           <tr ng-repeat='task in list'>
-                                              <td><a href="<% currDomain %>admin/postTask/<% task.id %>"><% task.id %></a></td>
+                                              <td><a href="<% currDomain %>/admin/postTask/<% task.id %>"><% task.id %></a></td>
                                               <td><% task.title %> </td>
                                               <td>MYR <% task.totalAmount %> </td>
                                               <td>MYR <% task.offer_details[0].offerPrice %> </td>
                                               <td>MYR <% task.offer_details[0].offerPrice*(task.offer_details[0].serviceCharges/100) %> </td>
                                               <td>MYR <% task.offer_details[0].offerPrice-task.offer_details[0].offerPrice*(task.offer_details[0].serviceCharges/100) %> </td>
-                                              <td><a href="<% currDomain %>admin/mytask/<% task.taskDoerId %>"><% task.taskDoerId %></a></td>
+                                              <td><a href="<% currDomain %>/admin/mytask/<% task.taskDoerId %>"><% task.taskDoerId %></a></td>
                                               <td><button class="btn btn-primary btn-md"  ng-click="sendWithrawalReq(task.id,task.userId,task.taskDoerId,task.totalAmount-task.totalAmount*0.10)">Close Task</button></td>
                                             </tr>
                                         </tbody>
