@@ -45,7 +45,7 @@ app.controller('paymentController', function($scope, $http,$location) {
 		$scope.currDomain = $location.absUrl();
 		var pathArray = window.location.pathname.split( '/' );
 
-		console.log('domain',pathArray);
+		console.log('domain n',pathArray);
 		$scope.loading = true;
 		$http.get('http://api.yellotasker.com/api/v1/getPostTask?releasedFund=0&taskStatus=completed').
 		success(function(data, status, headers, config) {
