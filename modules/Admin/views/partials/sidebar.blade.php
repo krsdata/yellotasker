@@ -599,15 +599,15 @@
                                                </span>
                                            </a>
                                        </li>
-                   <li class="nav-item  {{ (isset($page_title) && $page_action=='Yellotasker Report')?'active':'' }}">
+                                <li class="nav-item  {{ (isset($page_title) && $page_action=='Yellotasker Report')?'active':'' }}">
                                            <a href="{{ url('admin/payment/yellotasker-report') }}" class="nav-link ">
                                               <i class="glyphicon glyphicon-eye-open"></i>
                                                <span class="title">
                                                   Yellotasker reports
                                                </span>
                                            </a>
-                                       </li>
-                                       <li class="nav-item  {{ (isset($page_title) && $page_action=='Service Charge')?'active':'' }}">
+                                </li>
+                                    <li class="nav-item  {{ (isset($page_title) && $page_action=='Service Charge')?'active':'' }}">
                                            <a href="{{ url('admin/payment/config-service-charge') }}" class="nav-link ">
                                               <i class="glyphicon glyphicon-eye-open"></i>
                                                <span class="title">
@@ -625,12 +625,8 @@
                                        </li>
                                    </ul>
                                </li>
-                        
-                                   </ul>
-                               </li>
 
-                                
-                            <li class="nav-item start active {{ (isset($page_title) && $page_title=='setting')?'open':'' }}">
+                               <li class="nav-item start active {{ (isset($page_title) && $page_title=='setting')?'open':'' }}">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="glyphicon glyphicon-th"></i>
                                         <span class="title">Website Setting </span>
@@ -648,6 +644,9 @@
                                          
                                 </ul>
                             </li>
+                        
+                                   </ul>
+                               </li> 
 
 
                         <!-- posttask end-->
