@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
-    {     
+    {    
        $path_info_url = $request->getpathInfo();
        $api_url='';
        $web_url ='';
@@ -66,6 +66,17 @@ class Handler extends ExceptionHandler
         }else{
            $web_url = $path_info_url;
         } 
+      // dd($e);
+
+        if($e instanceof FatalThrowableError){
+          $page_title = "404 Error";
+          $page_action = "Page";
+          $viewPage = "404 Error";
+          $msg = "page not found";
+          $error_msg = $e->getMessage(); //"Oops! Server is busy please try later."; 
+
+          return  Redirect::to(URL::previous())->with('flash_alert_notice', $error_msg); 
+        }
 
         if($e instanceof InvalidArgumentException)
         {
@@ -84,13 +95,13 @@ class Handler extends ExceptionHandler
             exit(); 
         }    
         if ($e instanceof ModelNotFoundException) { 
-           $page_title = "404 Error";
-              $page_action = "Page";
-              $viewPage = "404 Error";
-              $msg = "page not found";
-              $error_msg = $e->getMessage(); //"Oops! Server is busy please try later."; 
+          $page_title = "404 Error";
+          $page_action = "Page";
+          $viewPage = "404 Error";
+          $msg = "page not found";
+          $error_msg = $e->getMessage(); //"Oops! Server is busy please try later."; 
 
-              return  Redirect::to(URL::previous())->with('flash_alert_notice', $error_msg); 
+          return  Redirect::to(URL::previous())->with('flash_alert_notice', $error_msg); 
 
         }
         $error_from_route =0;
@@ -152,7 +163,7 @@ class Handler extends ExceptionHandler
             exit();
            
         } 
-        if($e instanceof ErrorException){
+        if($e instanceof ErrorException){ 
            if($api_url)
             {
                 echo json_encode(
@@ -166,18 +177,8 @@ class Handler extends ExceptionHandler
                     ]
                 );
             }else{
-                $error =  [
-                        'Error message'=>$e->getmessage(),
-                        'File path'=>$e->getfile(),
-                        'Line number'=>$e->getline()
-                     ];
-                
-                echo "Opps..We found Error! Pease fix it.<ol>";    
-                foreach ($error as $key => $value) {
-                        echo "<li><b>$key =></b>".$value.'</li>';
-                      
-                    }
-                echo "</ol>";    
+                 return  Redirect::to(URL::previous())->with('flash_alert_notice', $e->getmessage()); 
+
             } 
             exit();
 

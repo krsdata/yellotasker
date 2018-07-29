@@ -95,7 +95,6 @@ class PostTaskController extends Controller {
         $sub_page_title = 'View Post Task Detail';
         $page_action = 'View Post Task Detail'; 
 
-
         if ($request->ajax()) {
             $id = $request->get('id'); 
             $category = PostTask::find($id); 
@@ -147,6 +146,11 @@ class PostTaskController extends Controller {
         $sub_page_title = "My Task";
 
         $user = User::find($uid);
+
+        if(!$user){
+          // return Redirect::to('admin/clientuser');
+        }
+
 
         $postTasks =  PostTask::where('userId',$uid)->where('status','open')->get();
         $expireTasks =  PostTask::where('userId',$uid)->where('status','open')
