@@ -6,8 +6,8 @@
     <head>
         <meta charset="utf-8" />
         <title>Yellotasker | {{ $page_title or 'Yellotasker'}} </title>
-        <link rel="shortcut icon" type="image/png" href="{{asset('assets/img/fav.png')}}" /> 
-        
+        <link rel="shortcut icon" type="image/png" href="{{asset('assets/img/fav.png')}}" />
+
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="author" />
@@ -46,7 +46,21 @@
 
         <link href="{{ URL::asset('assets/apps/css/todo-2.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{ URL::asset('assets/pages/css/profile.min.css')}}" rel="stylesheet" type="text/css" />
-         
+        <link href="{{ URL::asset('assets/css/angular.css')}}" rel="stylesheet" type="text/css" />
+
+              <!--AngularJS-->
+
+       <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script> -->
+       <!-- <script src="{{ URL::asset('assets/js/angular.js')}}"></script> -->
+       <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.css"> -->
+      <!-- <script src="path/to/angular.js"></script> -->
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.js"></script>
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+
+        <!-- <script src="{{ URL::asset('assets/js/app.js')}}"></script> -->
+
+
 
         <style type="text/css">
             span.title{

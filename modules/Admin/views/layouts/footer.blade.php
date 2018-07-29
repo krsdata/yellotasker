@@ -1,17 +1,17 @@
- <!-- END CONTAINER -->
+<!-- END CONTAINER -->
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
             <div class="page-footer-inner"> 2017 &copy; Yellotasker
-               
+
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>
             </div>
         </div>
-       
+
 
         <!-- END QUICK NAV -->
-       
+
         <!-- BEGIN CORE PLUGINS -->
          <script src="{{ URL::asset('assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
         <script src="{{ URL::asset('assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
@@ -48,13 +48,13 @@
         <script src="{{ URL::asset('assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js') }}" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-       
+
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{ URL::asset('assets/pages/scripts/form-validation.js') }}" type="text/javascript"></script>
 
          <script src="{{ URL::asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
-          
-        
+
+
 
         <script src="{{ URL::asset('assets/global/plugins/ladda/spin.min.js') }}" type="text/javascript"></script>
 
@@ -76,26 +76,26 @@
          <script src="{{ URL::asset('assets/js/common.js') }}" type="text/javascript"></script>
          <script src="{{ URL::asset('assets/js/bootbox.js') }}" type="text/javascript"></script>
           <script src="{{ URL::asset('assets/js/formValidate.js') }}" type="text/javascript"></script>
+          <script src="{{ URL::asset('assets/js/angular.js')}}"></script>
+          <script src="{{ URL::asset('assets/js/app.js?q=fhsadfsd')}}"></script>
       @endif
 
       <script type="text/javascript">
-          
+
           var   email_req = "Please enter email";
           var  password_req = "Please enter password";
           var url = "{{ url::to('/')}}";
-
           $(document).ready(function(){
             $('#saveBtn').click(function(){
                 $('.scroll-to-top').trigger('click');
             });
           });
-
           $(document).ready(function() {
               $(".phone").keydown(function (e) {
                   // Allow: backspace, delete, tab, escape, enter and .
                   if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
                        // Allow: Ctrl+A, Command+A
-                      (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+                      (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
                        // Allow: home, end, left, right, down, up
                       (e.keyCode >= 35 && e.keyCode <= 40)) {
                            // let it happen, don't do anything
@@ -107,7 +107,6 @@
                   }
               });
           });
-
       </script>
 
 
