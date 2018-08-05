@@ -158,22 +158,20 @@ class Handler extends ExceptionHandler
 
           $this->errorLog($data,$e);
 
+            $error_from_route =1;
             if($api_url)
-            {    
+            {
                 echo json_encode(
                     [ "status"=>0,
                       "code"=>500,
-                      "message"=>$e->getMessage(),
+                      "message"=>"Request URL not available" ,
                       "data" => "" 
                     ]
                 );
             }else{
-              $page_title = "404 Error";
-              $page_action = "Page";
-              $viewPage = "404 Error";
-              $msg = "page not found";
-              $error_msg = $e->getMessage(); //"Oops! Server is busy please try later."; 
-              return view('packages::auth.page_not_found',compact('error_msg','page_title','page_action','viewPage'))->with('flash_alert_notice', $msg);
+               
+              //$url =  URL::previous().'?error=InvalidURL'; 
+              return Redirect::to('admin/404');
             } 
             exit();
         }
