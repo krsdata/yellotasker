@@ -390,9 +390,29 @@ public function userDetail($id=null)
         // Validation
         $validateInput['email'] = 'required|email';
         $v = $this->validateInput($request,$validateInput);
-        if($v){
-            return Response::json($v);
+ 
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+         
+        /** Return Error Message **/
+        if ($validator->fails()) {
+            $error_msg      =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+
+            if($error_msg){
+               return array(
+                    'status' => 0,
+                    'code' => 500,
+                    'message' => $error_msg[0],
+                    'data'  =>  $request->all()
+                    );
+            }
+
         }
+ 
         switch ($user_type) {
             case 'facebook':
                 $token = JWTAuth::attempt(['email'=>$request->get('email'),'provider_id'=>$request->get('provider_id')]); 
