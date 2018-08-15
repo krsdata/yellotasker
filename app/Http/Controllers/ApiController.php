@@ -178,7 +178,7 @@ class ApiController extends Controller
         $input['email']         = $request->input('email'); 
         $input['password']      = Hash::make($request->input('password'));
         $input['role_type']     = 3;
-        $input['user_type']     = $request->input('user_type'); ;
+        $input['user_type']     = $request->input('user_type');
         $input['provider_id']   = $request->input('provider_id'); ; 
          
         if($request->input('user_id')){
@@ -186,12 +186,25 @@ class ApiController extends Controller
             return $u;
         } 
 
-        //Server side valiation
-        $validator = Validator::make($request->all(), [
-           'first_name' => 'required',
-           'email' => 'required|email|unique:users',
-           'password' => 'required'
-        ]);
+        if($input['user_type']=='google' || $input['user_type']=='facebook'){
+                //Server side valiation
+                $validator = Validator::make($request->all(), [
+                   'first_name' => 'required',
+                   'password' => 'required'
+                ]);
+
+        }else{
+            //Server side valiation
+            $validator = Validator::make($request->all(), [
+               'first_name' => 'required',
+               'email' => 'required|email|unique:users',
+               'password' => 'required'
+            ]);
+        }
+        
+
+
+
         /** Return Error Message **/
         if ($validator->fails()) {
             $error_msg      =   [];
