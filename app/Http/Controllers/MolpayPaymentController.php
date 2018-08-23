@@ -1252,6 +1252,8 @@ private $trns_status = '(
         })->select(\DB::raw('GROUP_CONCAT(taskId) as taskId'),\DB::raw('SUM(amount) as earn'),\DB::raw('SUM(payable_amount) as spend'),\DB::raw('SUM(service_charge) as profit'))
           ->first();
 
+          dd($service_charge);
+
             $data = [];
             foreach ($service_charge as $key => $value) {
                 if($value==null){
