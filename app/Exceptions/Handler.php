@@ -230,8 +230,8 @@ class Handler extends ExceptionHandler
     public function errorLog($data,$e){
 
       $data['message'] = $e->getMessage();
-      $data['file'] = $e->getFile();
-     
+      $data['file']    = $e->getFile(); 
+      $data['url']     = URL::previous();
       \DB::table('error_logs')->insert($data);
 
     }
