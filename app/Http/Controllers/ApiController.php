@@ -190,7 +190,7 @@ class ApiController extends Controller
                 //Server side valiation
                 $validator = Validator::make($request->all(), [
                    'first_name' => 'required',
-                   'password' => 'required'
+                   'email' => 'required'
                 ]);
 
         }else{
@@ -901,7 +901,7 @@ public function userDetail($id=null)
 
        // $cd = CategoryDashboard::all 
         $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));
-        $categoryDashboard = CategoryDashboard::with('category')->take(8)->get();
+        $categoryDashboard = CategoryDashboard::with('category')->limit(8)->get();
         $data = [];
         $category_data = [];
         foreach ($categoryDashboard as $key => $value) {
