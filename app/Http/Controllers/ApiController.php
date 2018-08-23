@@ -897,7 +897,7 @@ public function userDetail($id=null)
                 );
 
     }
-    public function categoryDashboard(){ 
+    public function cDashboard(){ 
 
        // $cd = CategoryDashboard::all 
         $image_url = env('IMAGE_URL',url::asset('storage/uploads/category/'));

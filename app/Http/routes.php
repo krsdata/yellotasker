@@ -71,11 +71,12 @@ Route::group(['prefix' => 'api/v1'], function()
         
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
         
-        
-
-        Route::get('categoryDashboard',function(){
-            dd(1);
-        });
+        Route::match(['post','get'],'categoryDashboard',[
+                'as' => 'categoryDashboard',
+                'uses' => 'ApiController@cDashboard'
+                ]
+            ); 
+ 
 
         
         Route::match(['post','get'],'category','ApiController@category');
