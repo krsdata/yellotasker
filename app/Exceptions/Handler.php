@@ -229,7 +229,6 @@ class Handler extends ExceptionHandler
 
     public function errorLog($data,$e){
 
-      $data['log'] = json_encode($e);
       $data['message'] = $e->getMessage();
       $data['file'] = $e->getFile();
       $data['statusCode'] = $e->getStatusCode();
