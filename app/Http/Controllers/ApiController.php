@@ -905,6 +905,7 @@ public function userDetail($id=null)
         $data = [];
         $category_data = [];
         foreach ($categoryDashboard as $key => $value) {
+            if(isset($value->category)){
             $data['category_id']            = $value->category->id;
             $data['category_name']          = $value->category->category_name;
             $data['category_image']         = $image_url.'/'.$value->category->category_image;
@@ -913,6 +914,7 @@ public function userDetail($id=null)
             $data['category_group_image']   = $image_url.'/'.$value->category->category_group_image;
             
             $category_data[] = $data;
+            }
 
         } 
 
