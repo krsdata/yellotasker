@@ -279,11 +279,11 @@ class Helper {
              
 
             $mail->SMTPAuth   = true;                  // enable SMTP authentication
-            $mail->Host       = "smtp.zoho.com"; // sets the SMTP server
-            $mail->Port       = 587;   
+            $mail->Host       = getenv('MAIL_HOST'); // sets the SMTP server
+            $mail->Port       = getenv('MAIL_PORT');
             $mail->SMTPSecure = 'false';                 // set the SMTP port for the GMAIL server
-            $mail->Username   = "support@krsdata.net"; // SMTP account username
-            $mail->Password   = "support@123"; 
+            $mail->Username   = getenv('MAIL_USERNAME'); // SMTP account username
+            $mail->Password   = getenv('MAIL_PASSWORD');
 
             $mail->setFrom("support@krsdata.net", "Yellotasker");
             $mail->Subject = $subject;
