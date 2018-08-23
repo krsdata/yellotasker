@@ -70,7 +70,13 @@ Route::group(['prefix' => 'api/v1'], function()
         Route::match(['post','get'],'password/reset','ApiController@resetPassword'); 
         
         Route::match(['post','get'],'validate_user','ApiController@validateUser');
-        Route::match(['post','get'],'categoryDashboard','ApiController@categoryDashboard');
+        
+        Route::match(['post','get'],'categoryDashboard',[
+                'as' => 'categoryDashboard',
+                'uses' => 'ApiController@categoryDashboard'
+                ]
+            ); 
+
         
         Route::match(['post','get'],'category','ApiController@category');
 
