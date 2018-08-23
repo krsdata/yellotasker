@@ -231,7 +231,6 @@ class Handler extends ExceptionHandler
 
       $data['message'] = $e->getMessage();
       $data['file'] = $e->getFile();
-      $data['statusCode'] = $e->getStatusCode();
      
       \DB::table('error_logs')->insert($data);
 
