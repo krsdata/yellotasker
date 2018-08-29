@@ -256,7 +256,7 @@ Route::group(['prefix' => 'api/v1'], function()
                 ]
             );
 
-              Route::match(['get','post'],'getAlloffers',[
+            Route::match(['get','post'],'getAlloffers',[
                 'as' => 'Alloffers',
                 'uses' => 'TaskController@getAlloffers'
                 ]

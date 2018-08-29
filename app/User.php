@@ -128,13 +128,11 @@ class User extends Authenticatable
 
     public function myOffer()
     {
-       // return $this->hasMany('App\Models\Offers','interestedUserId')->with('mytask');
-
-         return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
+        return $this->belongsToMany('App\Models\Tasks', 'offers','interestedUserId','taskId')->with('taskPostedUser')->groupBy('offers.taskId')->orderBy('offers.id','desc');
     }
 
 
-     public function save_task()
+    public function save_task()
     {
 
         return $this->belongsToMany('App\Models\Tasks', 'saveTask','userId','taskId')->select('*',

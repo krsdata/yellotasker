@@ -179,8 +179,10 @@ class ApiController extends Controller
         $input['password']      = Hash::make($request->input('password'));
         $input['role_type']     = 3;
         $input['user_type']     = $request->input('user_type');
-        $input['provider_id']   = $request->input('provider_id'); ; 
-         
+        $input['provider_id']   = $request->input('provider_id'); 
+
+        $user = User::firstOrNew(['provider_id'=>$request->input('provider_id')]);
+        
         if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
             return $u;
