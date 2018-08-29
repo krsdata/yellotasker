@@ -181,8 +181,8 @@ class ApiController extends Controller
         $input['user_type']     = $request->input('user_type');
         $input['provider_id']   = $request->input('provider_id'); 
 
-        $user = User::firstOrNew(['provider_id'=>$request->input('provider_id')]);
-        
+        $user = User::firstOrNew(['provider_id'=>$request->input('provider_id'),'email'=>$request->input('email')]);
+       
         if($request->input('user_id')){
             $u = $this->updateProfile($request,$user);
             return $u;
