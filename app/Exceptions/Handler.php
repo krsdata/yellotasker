@@ -58,15 +58,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {  
-       $path_info_url = $request->getpathInfo();
-       $api_url ='';
-       $web_url ='';
-        if (strpos($path_info_url, 'api/v1') !== false) {
+        $server =  $_SERVER['HTTP_HOST'];
+       
+	$path_info_url = $request->getpathInfo();
+        $api_url ='';
+        $web_url ='';
+
+        if ((strpos($path_info_url, 'api') !== false)) {
             $api_url = $path_info_url;
-        }else{
+        }
+	elseif( strpos($server, 'api') !== false){
+	    $api_url = $server;
+	}else{
            $web_url = $path_info_url;
         } 
-      // dd($e);
 
         if($e instanceof FatalThrowableError)
         {
@@ -94,8 +99,8 @@ class Handler extends ExceptionHandler
           $this->errorLog($data,$e);
           
 
-            if($api_url)
-            {
+         if($api_url)
+         {
                 echo json_encode(
                     [ "status"=>0,
                       "code"=>500,
@@ -130,25 +135,19 @@ class Handler extends ExceptionHandler
           $data['url']        = URL::previous();
           $data['message']    = $e->getMessage();
           $data['error_type'] = 'NotFoundHttpException';
-
+          
+ 	  //dd($api_url);
           $this->errorLog($data,$e);
 
             $error_from_route =1;
-            if($api_url)
-            {
                 echo json_encode(
                     [ "status"=>0,
                       "code"=>500,
-                      "message"=>"Request URL not available" ,
+                      "message"=>"Invalid URL" ,
                       "data" => "" 
                     ]
                 );
-            }else{
-               
-              //$url =  URL::previous().'?error=InvalidURL'; 
-              return Redirect::to('admin/404');
-            } 
-            exit();
+	exit();
         }
         if($e instanceof QueryException)
         {    
@@ -182,7 +181,6 @@ class Handler extends ExceptionHandler
           $data['error_type'] = 'MethodNotAllowedHttpException';
 
           $this->errorLog($data,$e);
-            
             if($api_url)
             {
                 echo json_encode(

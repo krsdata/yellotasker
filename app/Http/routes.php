@@ -18,7 +18,7 @@ header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Origin: *");
 
 Route::get('/', function () {
-   // dd(Hash::make('admin'));
+   dd(url('/'));
     return redirect('admin');
 });
 
@@ -60,7 +60,7 @@ Route::get('otp','ApiController@otp');
 Route::group(['prefix' => 'api/v1'], function()
 {   
     Route::group(['middleware' => 'api'], function () {
-
+	Route::match(['post','get'],'config','ApiController@config');
         Route::match(['post','get'],'user/signup','ApiController@register');  
         Route::match(['post','get'],'user/updateProfile/{id}','ApiController@updateProfile'); 
         Route::match(['post','get'],'user/login', 'ApiController@login'); 
