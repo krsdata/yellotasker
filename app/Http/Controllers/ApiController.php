@@ -49,6 +49,49 @@ class ApiController extends Controller
         $user_id =  $request->input('user_id');
        
     } 
+	
+
+	
+	public function config(Request $request){
+	
+
+	$data = \DB::table('settings')->lists('field_value','field_key');
+
+		
+	 try{
+	 		if($data){
+
+	    $data = $data;	
+            $status = 1;
+            $code  = 200;
+            $message ="Config settings";
+
+	 		}else{
+		$data = [];
+	 			$status = 0;
+            	$code  = 500;
+            	$message ="Config key does not match! Try again";
+
+	 		}
+	 		
+        }catch(\Exception $e){
+            $status = 0;
+            $code  = 500;
+	    $data = [];
+            $message =$e->getMessage();
+        }
+         
+        return response()->json(
+                            [ 
+                            "status" =>$status,
+                            'code'   => $code,
+                            "message"=> $message,
+                            'data'=> $data
+                            ]
+                        );
+
+
+	}
 
     public function otp(){
 
@@ -303,7 +346,8 @@ public function userDetail($id=null)
     public function updateProfile(Request $request,$userId)
     {      
 
-        $user = User::find($userId);  
+        $user = User::find($userId); 
+
         if((User::find($userId))==null)
         {
             return Response::json(array(
