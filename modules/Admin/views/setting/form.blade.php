@@ -20,6 +20,25 @@
              {{ Session::get('flash_alert_notice') }} 
              </div>
         @endif
+
+	
+<div class="form-group {{ $errors->first('payment_status', ' has-error') }}">
+    <label class="control-label col-md-3"> Payment Status
+        <span class="required"> *  </span>
+    </label>
+    <div class="col-md-6">
+    <select name="payment_status" class="form-control">
+    	<option>Change payment Status</option>
+       <option value="enable" {{ (isset($setting->payment_status) && $setting->payment_status=="enable")?"selected":'' }}>
+			Enable
+		        </option>
+        <option value="disable" {{ (isset($setting->payment_status) && $setting->payment_status=="disable")?"selected":'' }} >
+		Disable
+        </option>
+          
+    </select>
+    </div>
+</div>
  
         <div class="form-group {{ $errors->first('website_title', ' has-error') }}">
             <label class="control-label col-md-3">Website Title <span class="required"> * </span></label>
