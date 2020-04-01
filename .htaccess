@@ -13,3 +13,7 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+<Files ".env">  
+  Order Allow,Deny
+  Deny from all
+</Files>

@@ -270,7 +270,7 @@ class ApiController extends Controller
         $helper = new Helper;
         /** --Create USER-- **/
         $user = User::create($input); 
-
+        //echo (date('h:i:s'));
         $subject = "Welcome to yellotasker! Verify your email address to get started";
         $email_content = [
                 'receipent_email'=> $request->input('email'),
@@ -278,14 +278,14 @@ class ApiController extends Controller
                 'greeting'=> 'Yellotasker',
                 'first_name'=> $request->input('first_name')
                 ];
-
-        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
-        
+        //echo (date('h:i:s'));
+        //$verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
+        //die(date('h:i:s'));
         //dd($verification_email);
 
         $notification = new Notification;
         $notification->addNotification('user_register',$user->id,$user->id,'User register','');
-       
+        
         return response()->json(
                             [ 
                                 "status"=>1,
@@ -294,7 +294,7 @@ class ApiController extends Controller
                                 'data'=>$user
                             ]
                         );
-    }
+    }  
 
     public function createImage($base64)
     {
