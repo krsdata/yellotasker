@@ -178,16 +178,12 @@ class ApiController extends Controller
          $user = User::find($user_id);
         /** Return Error Message **/
         if (!$user) {
-                    $error_msg  =   [];
-            foreach ( $validator->messages()->all() as $key => $value) {
-                        array_push($error_msg, $value);     
-                    }
                     
             return Response::json(array(
                 'status' => 0,
                 'code'=>500,
                 'message' => 'Invalid User id',
-                'data'  =>  $request->all()
+                'data'  =>  null
                 )
             );
         }   
@@ -197,13 +193,11 @@ class ApiController extends Controller
          return Response::json(array(
                 'status' => 1,
                 'code'=> 200,
-                'message' => 'Account deativated',
-                'data'  =>  []
+                'account_status' => $user->status?'activated':'deativated',
+                'message' => 'Account deativated successfully',
+                'data'  =>  ['user_id'=>$user_id]
                 )
             );
-
-
-
     }
 
    /* @method : register
