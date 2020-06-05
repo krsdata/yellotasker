@@ -265,7 +265,7 @@ class ApiController extends Controller
         /** --Create USER-- **/
         $user = User::create($input); 
 
-        $subject = "Welcome to yellotasker! Verify your email address to get started";
+        $subject = "Welcome to the Yellotasker. Verify your account to get start!! ";
         $email_content = [
                 'receipent_email'=> $request->input('email'),
                 'subject'=>$subject,
@@ -273,7 +273,16 @@ class ApiController extends Controller
                 'first_name'=> $request->input('first_name')
                 ];
 
-        $verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
+      //  $verification_email = $helper->sendNotificationMail($email_content,'verification_link');
+        $subject = "Welcome to the Yellotasker Community! ";
+        $email_content = [
+                'receipent_email'=> $request->input('email'),
+                'subject'=>$subject,
+                'greeting'=> 'Yellotasker',
+                'first_name'=> $request->input('first_name')
+                ];
+
+        $verification_email = $helper->sendNotificationMail($email_content,'signup_success');
         
         //dd($verification_email);
 
@@ -607,7 +616,7 @@ public function userDetail($id=null)
        
         $email_content = array(
                         'receipent_email'   => $request->input('email'),
-                        'subject'           => 'Your Yellotasker Account Password',
+                        'subject'           => 'Reset forgotten Yellotasker Password',
                         'name'              => $user->first_name,
                         'temp_password'     => $temp_password,
                         'encrypt_key'       => Crypt::encrypt($email),
@@ -615,7 +624,7 @@ public function userDetail($id=null)
 
                     );
         $helper = new Helper;
-        $email_response = $helper->sendMail(
+        $email_response = $helper->sendNotificationMail(
                                 $email_content,
                                 'forgot_password_link'
                             ); 
