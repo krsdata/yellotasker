@@ -489,8 +489,8 @@ public function userDetail($id=null)
             return response()->json([ "status"=>0,"code"=>500,"message"=>"Invalid email or password. Try again!" ,'data' => $input ]);
         }
         $user = JWTAuth::toUser($token);
-        
-        return response()->json([ "status"=>1,"code"=>200,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
+    
+        return response()->json(['is_active'=>$user->status ,"status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
 
     } 
    /* @method : get user details
