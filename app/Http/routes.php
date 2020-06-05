@@ -18,7 +18,11 @@ header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Origin: *");
 
 Route::get('/', function () {
+<<<<<<< HEAD
     return redirect('admin');
+=======
+   return redirect('admin');
+>>>>>>> 5ed9faa0991e3d6ffa666b8c0f75d54ff230da90
 });
 
 Route::get('/send', 'EmailController@sendMail');

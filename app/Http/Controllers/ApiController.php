@@ -272,9 +272,18 @@ class ApiController extends Controller
                 'greeting'=> 'Yellotasker',
                 'first_name'=> $request->input('first_name')
                 ];
-        //echo (date('h:i:s'));
-        //$verification_email = $helper->sendMailFrontEnd($email_content,'verification_link');
-        //die(date('h:i:s'));
+
+      //  $verification_email = $helper->sendNotificationMail($email_content,'verification_link');
+        $subject = "Welcome to the Yellotasker Community! ";
+        $email_content = [
+                'receipent_email'=> $request->input('email'),
+                'subject'=>$subject,
+                'greeting'=> 'Yellotasker',
+                'first_name'=> $request->input('first_name')
+                ];
+
+        $verification_email = $helper->sendNotificationMail($email_content,'signup_success');
+        
         //dd($verification_email);
 
         $notification = new Notification;
@@ -365,7 +374,8 @@ public function userDetail($id=null)
                 $user->$value = $request->get($value);
            }
         }
-        if(count($request->get('modeOfreach'))>0){
+        
+        if($request->get('modeOfreach')>0){
        		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
         }
         
@@ -489,8 +499,8 @@ public function userDetail($id=null)
             return response()->json([ "status"=>0,"code"=>500,"message"=>"Invalid email or password. Try again!" ,'data' => $input ]);
         }
         $user = JWTAuth::toUser($token);
-        
-        return response()->json([ "status"=>1,"code"=>200,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
+    
+        return response()->json(['is_active'=>$user->status ,"status"=>1,"code"=>200,"message"=>"Successfully logged in." ,'data' => $user,'token'=>$token ]);
 
     } 
    /* @method : get user details
@@ -606,7 +616,7 @@ public function userDetail($id=null)
        
         $email_content = array(
                         'receipent_email'   => $request->input('email'),
-                        'subject'           => 'Your Yellotasker Account Password',
+                        'subject'           => 'Reset forgotten Yellotasker Password',
                         'name'              => $user->first_name,
                         'temp_password'     => $temp_password,
                         'encrypt_key'       => Crypt::encrypt($email),
@@ -614,7 +624,7 @@ public function userDetail($id=null)
 
                     );
         $helper = new Helper;
-        $email_response = $helper->sendMail(
+        $email_response = $helper->sendNotificationMail(
                                 $email_content,
                                 'forgot_password_link'
                             ); 

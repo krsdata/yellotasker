@@ -317,10 +317,14 @@ class Helper {
     public  function sendNotificationMail($email_content, $template)
     {        
         
+
+        $email_content['verification_token'] =  Hash::make($email_content['receipent_email']);
+        $email_content['email'] = isset($email_content['receipent_email'])?$email_content['receipent_email']:'';
+
         return  Mail::send('emails.'.$template, array('content' => $email_content), function($message) use($email_content)
           {
-            $name = $_SERVER['SERVER_NAME'];
-            $message->from('no-reply@abc.com',$name);  
+            $name = 'yellotasker';
+            $message->from('info@yellotasker.com',$name);  
             $message->to($email_content['receipent_email'])->subject($email_content['subject']);
             
           });

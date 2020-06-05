@@ -479,6 +479,8 @@ class TaskController extends Controller {
         $categoryId     =   $request->get('categoryId'); 
         $page_number    =   $request->get('page_num');
 
+       
+
         if($page_number){
             $page_num   =   ($request->get('page_num'))?$request->get('page_num'):1;
             $page_size  =   ($request->get('page_size'))?$request->get('page_size'):20; 
@@ -502,8 +504,11 @@ class TaskController extends Controller {
         $search_totalAmount  = $request->get('totalAmount');
 
         $releasedFund  = $request->get('releasedFund');
-
-        
+        $budgetmax      = $request->get('budgetmax');
+        $budgetmin      = $request->get('budgetmin');
+        $budgetType     = $request->get('budgetType');
+        $locationType   = $request->get('locationType');
+                
         
          $validatorFields    = [];
         
@@ -526,8 +531,10 @@ class TaskController extends Controller {
             );
         }  
         
+        dd( $categoryId);
         $tasks  = Tasks::with('userDetail','offerDetails')->where(function($q)
                 use(
+                        $budgetmax,$budgetmin,$budgetType,$locationType,
                         $status,
                         $limit,
                         $taskId,
@@ -594,6 +601,19 @@ class TaskController extends Controller {
                     if($search_city){
                         $q->where('address','like',"%$search_city%");
                     }
+                    //$budgetmax,$budgetmin,$budgetType,$locationType,$categoryId
+                    
+                    if($locationType){
+                        $q->where('locationType','like',"%$locationType%");
+                    }
+                    if($budgetType){
+                        $q->where('budgetType','like',"%$budgetType%");
+                    }
+
+                    if($budgetmax && $budgetmin){
+                        $q->whereBetween('totalAmount',[$budgetmax,$budgetmin]);
+                    }
+
                     if($search_totalAmount){
                         $search_totalAmountRange = explode('-', $search_totalAmount);
                         if(isset($search_totalAmountRange[1]) && $search_totalAmountRange[1]){
