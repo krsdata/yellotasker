@@ -365,7 +365,8 @@ public function userDetail($id=null)
                 $user->$value = $request->get($value);
            }
         }
-        if(count($request->get('modeOfreach'))>0){
+        
+        if($request->get('modeOfreach')>0){
        		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
         }
         
