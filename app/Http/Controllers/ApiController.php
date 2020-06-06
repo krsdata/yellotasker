@@ -496,7 +496,20 @@ public function userDetail($id=null)
 
 
         if (!$token) {
-            return response()->json([ "status"=>0,"code"=>500,"message"=>"Invalid email or password. Try again!" ,'data' => $input ]);
+            $token_d = JWTAuth::attempt(
+                            [
+                                'email'=>$request->get('email'),
+                                'password'=>$request->get('password'),
+                                'status'=>0
+                            ]);  
+
+            if($token_d){
+                $user = JWTAuth::toUser($token_d);
+                return response()->json([ 'is_active'=>$user->status, "status"=>0,"code"=>500,"message"=>"This account is deactivated" ,'data' => $input ]);
+            }else{
+                return response()->json(["status"=>0,"code"=>500,"message"=>"Invalid email or password. Try again!" ,'data' => $input ]);
+            }
+            
         }
         $user = JWTAuth::toUser($token);
     
