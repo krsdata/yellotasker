@@ -735,7 +735,7 @@ class TaskController extends Controller {
                     ];
     } 
 
-    public function getUserTasks(Request $request,$usrt_id)
+    public function getUserTasks(Request $request,$user_id)
     {
        $user_id = $request->user_id;
 
@@ -1646,9 +1646,13 @@ class TaskController extends Controller {
                 break;
             case 'postedTask':
 
-                $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){
+               $taskId =  \DB::table('offers')->where('interestedUserId',$uid)
+                            ->pluck('taskId');
+                            
+                $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid, $taskId){          // $q->  
                                     $q->where('taskOwnerId',$uid)
-                                    ->orWhere('userId',$uid)
+                                    ->whereIn('id',$taskId)
+                                   // ->orWhere('userId',$uid)
                                     ->select('*',\DB::raw($this->sub_sql),
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
