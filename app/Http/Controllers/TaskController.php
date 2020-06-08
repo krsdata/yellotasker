@@ -531,7 +531,6 @@ class TaskController extends Controller {
             );
         }  
         
-        dd( $categoryId);
         $tasks  = Tasks::with('userDetail','offerDetails')->where(function($q)
                 use(
                         $budgetmax,$budgetmin,$budgetType,$locationType,
