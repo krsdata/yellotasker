@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
-    {   dd($e); 
+    {    
         $server =  $_SERVER['HTTP_HOST'];
        
       	$path_info_url = $request->getpathInfo();
