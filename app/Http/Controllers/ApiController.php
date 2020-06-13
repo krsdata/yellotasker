@@ -377,6 +377,8 @@ public function userDetail($id=null)
         
         if($request->get('modeOfreach')>0){
        		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
+        }else{
+            $user->modeOfreach = ($request->get('modeOfreach'));
         }
         
         if($request->get('profile_image')){ 
