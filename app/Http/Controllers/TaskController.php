@@ -2085,6 +2085,9 @@ class TaskController extends Controller {
                                     ->with('taskAsDoer')
                                     ->where('id',$userId)
                                     ->first();
+        $user->completion_rate_doer  =0;
+        $user->completion_rate_poster  =0;
+                
 
         return Response::json(array(
                 'status' => ($user)?1:0,
