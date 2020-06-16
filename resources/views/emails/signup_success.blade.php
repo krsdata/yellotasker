@@ -24,7 +24,7 @@
      
       <tbody><tr>
        <td class="m_6462014940457833709textContent m_6462014940457833709text-center" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:center" valign="top" align="center">
-        <img height="auto" src="{{url('storage/image/logo.png')}}" style="border:0;outline:none;text-decoration:none" width="" class="CToWUd">
+        <img height="auto" src="http://yellotasker.com/assets/img/logo.png" style="border:0;outline:none;text-decoration:none" width="" class="CToWUd">
 </td>
 </tr>
 </tbody></table>
