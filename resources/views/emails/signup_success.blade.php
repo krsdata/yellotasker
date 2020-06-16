@@ -43,6 +43,7 @@
         <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:24px 0;padding:0;text-align:Left" align="Left">
          <strong style="font-family:MuseoSans-500,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-weight:500">Welcome to the Yellotasker Community! </strong></p>
 <p style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;font-weight:300;line-height:125%;margin:24px 0;padding:0;text-align:Left" align="Left">
+  <p>Fun tasks, exceptional people. </p>
           <p>Yellotasker is a community that connects people who need tasks done, with people to earn money and ready to work. Simple, secure and free. 
                         </p>
                         <p>
