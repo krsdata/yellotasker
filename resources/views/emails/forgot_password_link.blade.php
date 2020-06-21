@@ -133,8 +133,8 @@
           <tbody><tr>
            <td class="m_6462014940457833709textContentLast" style="color:#2a2c2d;font-family:MuseoSans-300,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-size:16px;line-height:125%;padding-bottom:20px;text-align:Left" valign="top" align="Left">
             <p style="margin-top:0px; text-align:right;">
-        <img src="{{url('storage/image/apple-store.png')}}" width="100px;"> 
-        <img src="{{url('storage/image/google-play.png')}}" width="100px;"> 
+        <img src="http://api.yellotasker.com/storage/image/apple-store.png" width="100px;"> 
+        <img src="http://api.yellotasker.com/storage/image/google-play.png" width="100px;"> 
       </p>
 </td>
 </tr>
