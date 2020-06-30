@@ -1645,7 +1645,7 @@ class TaskController extends Controller {
                 break;
             case 'postedTask':
                // dd($taskId);            
-                $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid, $taskId){          // $q->  
+                $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){          // $q->  
                                     $q->where('taskOwnerId',$uid)
                                   //  ->whereIn('id',$taskId)
                                     ->where('userId',$uid)
