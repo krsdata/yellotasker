@@ -530,10 +530,13 @@ class TaskController extends Controller {
                 )
             );
         }  
-        
+
         $tasks  = Tasks::with('userDetail','offerDetails')->where(function($q)
                 use(
-                        $budgetmax,$budgetmin,$budgetType,$locationType,
+                        $budgetmax,
+                        $budgetmin,
+                        $budgetType,
+                        $locationType,
                         $status,
                         $limit,
                         $taskId,
@@ -600,7 +603,6 @@ class TaskController extends Controller {
                     if($search_city){
                         $q->where('address','like',"%$search_city%");
                     }
-                    //$budgetmax,$budgetmin,$budgetType,$locationType,$categoryId
                     
                     if($locationType){
                         $q->where('locationType','like',"%$locationType%");
@@ -608,9 +610,8 @@ class TaskController extends Controller {
                     if($budgetType){
                         $q->where('budgetType','like',"%$budgetType%");
                     }
-
-                    if($budgetmax && $budgetmin){
-                        $q->whereBetween('totalAmount',[$budgetmax,$budgetmin]);
+                    if($budgetmax && $budgetmin || $budgetmin=="0"){
+                        $q->whereBetween('totalAmount',[$budgetmin,$budgetmax]);
                     }
 
                     if($search_totalAmount){
@@ -621,10 +622,8 @@ class TaskController extends Controller {
                          $q->where('totalAmount',$search_totalAmount);
                         }    
                     }
-                     
-                }); 
+                });
 
-     
         if($limit){  
            $task = $tasks->take($limit)->orderBy('id', 'desc')->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
@@ -663,8 +662,6 @@ class TaskController extends Controller {
         }  
         $my_data = $this->array_msort($task, array('dueDate'=>SORT_ASC));
         $data = array_values($my_data);
-         
-       
 
         if(count($task)){
             $status  =  1;
@@ -677,7 +674,6 @@ class TaskController extends Controller {
             $message =  "No task found.";
             $data    =  [];
         }
-
         return [ 
                     "status"  =>$status,
                     'total_record'  => count($data),
@@ -1644,9 +1640,8 @@ class TaskController extends Controller {
                         ->get();
                 break;
             case 'postedTask':
-               // dd($taskId);            
                 $data['postedTask'] =  User::with(['postedTask'=>function($q)use($uid){          // $q->  
-                                    $q->where('taskOwnerId',$uid)
+                                   $q->where('taskOwnerId',$uid)
                                   //  ->whereIn('id',$taskId)
                                     ->where('userId',$uid)
                                     ->select('*',\DB::raw($this->sub_sql),
