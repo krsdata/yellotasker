@@ -565,8 +565,9 @@ class TaskController extends Controller {
                     }
                     if($status){
                         $q->where('status', $status); 
+                        $q->where('dueDate', '>', $today); 
                     }
-                  
+
                     if($releasedFund || $releasedFund==="0"){
                         $q->where('fund_released', $releasedFund);
                     }
@@ -768,12 +769,14 @@ class TaskController extends Controller {
        // delete Blog
     public function deletePostTask(Request $request,$id=null)
     {
-        $t = Tasks::where('id',$id)->where('status','open')->delete();
+        $t = Tasks::where('id',$id)->where('is_delete', 0)->get();
+       // print($t); die;
 
         if($t){
-            $delete_savetask = DB::table('saveTask')
-                                ->where('taskId',$id)
-                                    ->delete(); 
+            $input['is_delete'] = 1;
+            $delete_savetask = DB::table('post_tasks')
+                                ->where('id',$id)
+                                    ->update( $input); 
 
              return  response()->json([ 
                     "status"=>1,
@@ -2076,6 +2079,7 @@ class TaskController extends Controller {
                                     ->with('taskAsDoer')
                                     ->where('id',$userId)
                                     ->first();
+                                
         $user->completion_rate_doer  =0;
         $user->completion_rate_poster  =0;
                 
