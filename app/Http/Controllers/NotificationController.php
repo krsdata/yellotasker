@@ -36,6 +36,8 @@ class NotificationController extends Controller {
 
     protected $stockSettings = array();
     protected $modelNumber = '';
+
+    
     
     public function getAllNotification(Request $request)
     {
@@ -86,6 +88,11 @@ class NotificationController extends Controller {
                 );  
 
         } 
+
+
+
+
+
 
 
     public function sendEmailReminder(Request $request)

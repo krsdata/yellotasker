@@ -2079,11 +2079,17 @@ class TaskController extends Controller {
                                     ->with('taskAsDoer')
                                     ->where('id',$userId)
                                     ->first();
-                                
-        $user->completion_rate_doer  =0;
-        $user->completion_rate_poster  =0;
-                
 
+       $taskassign = DB::table('post_tasks')->where('userId', $userId)
+        ->where('status', 'assigned')
+        ->count();
+       $task_complete = DB::table('post_tasks')->where('userId', $userId)
+        ->where('status', 'completed')
+        ->count();
+                     
+        $user->completion_rate_doer  =($taskassign / $task_complete)*100;
+        $user->completion_rate_poster  =($task_complete / $taskassign)*100;
+ 
         return Response::json(array(
                 'status' => ($user)?1:0,
                 'code' => ($user)?200:500,
