@@ -145,6 +145,7 @@ class TaskController extends Controller {
                 )
             );
         }   
+     
          
         if ($request->get('userId')==null) {
 
@@ -161,32 +162,43 @@ class TaskController extends Controller {
                 
             } 
         }   
-        $task = new Tasks;
-
-        $table_cname = \Schema::getColumnListing('post_tasks');
-        $except = ['id','created_at','updated_at','status'];
-        foreach ($table_cname as $key => $value) {
+        // $task = new Tasks;
+        // $table_cname = \Schema::getColumnListing('post_tasks');
+        // $except = ['id','created_at','updated_at','status'];
+        // foreach ($table_cname as $key => $value) {
+             
            
-           if(in_array($value, $except )){
-                continue;
-           } 
-           $task->$value = $request->get($value);
-        }
-        $task->fund_released=0;
-        $task->funded_by_poster= "No";
-        $task->payment_status = "Not initiated";
-        $task->taskOwnerId = $request->get('userId');
-        
-        $task->save();
+        //    if(in_array($value, $except )){
+        //         continue;
+        //    } 
+        //    $task->$value = $request->get($value);
+
+        // }
+      
+        // $task->fund_released=0;
+        // $task->funded_by_poster= "No";
+        // $task->payment_status = "Not initiated";
+        // $task->taskOwnerId = $request->get('userId');
+
+          $input['fund_released'] =0;
+          $input['funded_by_poster'] ="No";
+          $input['payment_status'] ="Not initiated";
+          $input['taskOwnerId'] = $request->get('userId');
+          $input['title'] = $request->get('title');
+
+          $task = DB::table('post_tasks')->insert(array($input));
+          $id = DB::getPdo()->lastInsertId();
+     
+        //$task->save();
         $status  = 1;
         $code    = 200;
         $message = 'Task  created successfully.';
         $data    = $task; 
-        
+
         if($task){
 
         $notification = new Notification;
-        $notification->addNotification('task_add',$task->id,$request->get('userId'),'New Task Added',$task->title);
+        $notification->addNotification('task_add',$id,$request->get('userId'),'New Task Added',$request->get('title'));
    
         }
         return 
@@ -197,6 +209,9 @@ class TaskController extends Controller {
                 'data'    => $data
                 ]; 
     }
+
+
+
 
  	public function updateTaskStatus(Request $request)
     { 

@@ -92,9 +92,6 @@ class NotificationController extends Controller {
 
 
 
-
-
-
     public function sendEmailReminder(Request $request)
     {
         $helper = new Helper;
