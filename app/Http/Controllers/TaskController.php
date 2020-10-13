@@ -579,11 +579,16 @@ class TaskController extends Controller {
                         
                         $q->where('title','LIKE',"%".$title."%");
                     }
-                    if($status){
+                    if($status == "open"){
 
                         $q->where('status', $status); 
                         $q->where('dueDate', '>=', $today); 
                     }
+                    if($status != "open"){
+
+                        $q->where('status', $status);  
+                    }
+
 
                     if($releasedFund || $releasedFund==="0"){
                        

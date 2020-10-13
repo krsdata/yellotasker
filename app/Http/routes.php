@@ -91,7 +91,7 @@ Route::group(['prefix' => 'api/v1'], function()
         
         Route::match(['post','get'],'userDetail/{id}','ApiController@userDetail'); 
         Route::match(['get'],'notifications','NotificationController@getAllNotification');
-         Route::match(['post','get'],'notification/{id}','NotificationController@getAllNotifications');
+         //Route::match(['post','get'],'notification/{id}','NotificationController@getAllNotifications');
            
         Route::match(['get','post'],'molpay','MolpayPaymentController@index'); 
 
