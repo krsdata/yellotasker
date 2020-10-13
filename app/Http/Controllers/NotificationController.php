@@ -90,6 +90,51 @@ class NotificationController extends Controller {
         } 
 
 
+          public function getAllNotifications(Request $request)
+    {
+         $user_id = $request->id;
+       $arr = [];
+        $notifications = Notification::where('user_id', $user_id)->limit(50)->get();
+
+        foreach ($notifications as $key => $value) {
+
+                if($value->entity_type=="task_add" || $value->entity_type=="task_update"){
+                 $task = DB::table('post_tasks')->where()
+                            ->select('users.*', 'group.name as type_name')
+                            ->get();
+       
+                 //$data  = $value;
+                 $data['TaskPoster'] = $task; 
+            }  
+
+            // if($value->entity_type=="comment_replied" || $value->entity_type=="comment_add"){
+            //      $comments = Comments::where('id',$value->entity_id)->where()
+            //                     ->get();
+
+            //          $data  = $value;
+            //          $data['commentsDetails'] = $comments;  
+            // } 
+
+             $arr[] =   $data; 
+        }
+ 
+
+      //  dd($arr);
+
+        return  response()->json([
+                    "status"=>count($arr)?1:0,
+                    "code"=> count($arr)?200:404,
+                    "message"=>count($arr)?"Notification list found":"Record not found for given input!",
+                    'data' => $arr
+                   ]
+                );  
+
+        } 
+
+
+
+
+
 
 
     public function sendEmailReminder(Request $request)

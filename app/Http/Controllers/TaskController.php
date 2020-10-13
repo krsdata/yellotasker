@@ -576,61 +576,77 @@ class TaskController extends Controller {
                     )
                 {
                     if($title){
+                        
                         $q->where('title','LIKE',"%".$title."%");
                     }
                     if($status){
+
                         $q->where('status', $status); 
-                        $q->where('dueDate', '>', $today); 
+                        $q->where('dueDate', '>=', $today); 
                     }
 
                     if($releasedFund || $releasedFund==="0"){
+                       
                         $q->where('fund_released', $releasedFund);
                     }
                    
                     if($userId){
+                        
                         $q->where('userId', $userId); 
                     }
 
                     if($categoryId){
+                        
                         $q->where('categoryId', $categoryId); 
                     }
 
-                    if($due_today){
+                    if($due_today){ 
+                         
                         $q->where('dueDate', $today); 
                     }
                     if($due_tomorrow){
+                        
                          $q->where('dueDate', $tomorrow); 
                     }
                     if($due_current_week){
+                         
                          $q->whereBetween('dueDate',[$start_week,$end_week]);
                     }
                     if($due_current_month){
+                         
                          $q->whereBetween('dueDate',[$startOfMonth,$endOfMonth]);
                     }
                     if($search_by_date){
+                        
                         $q->where('dueDate',$search_by_date);
                     }
                     if($taskId){
+                        
                         $q->where('id',$taskId);
                     }
                     if($search_locationType){
-                        $q->where('locationType','like',"%$search_locationType%");
+                          $q->where('locationType','like',"%$search_locationType%");
                     }
                     if($search_city){
+                         
                         $q->where('address','like',"%$search_city%");
                     }
                     
                     if($locationType){
+                         
                         $q->where('locationType','like',"%$locationType%");
                     }
                     if($budgetType){
+                        
                         $q->where('budgetType','like',"%$budgetType%");
                     }
                     if($budgetmax && $budgetmin || $budgetmin=="0"){
+                         
                         $q->whereBetween('totalAmount',[$budgetmin,$budgetmax]);
                     }
 
                     if($search_totalAmount){
+                       
                         $search_totalAmountRange = explode('-', $search_totalAmount);
                         if(isset($search_totalAmountRange[1]) && $search_totalAmountRange[1]){
                           $q->whereBetween('totalAmount',$search_totalAmountRange);   
@@ -639,13 +655,14 @@ class TaskController extends Controller {
                         }    
                     }
                 });
-
+        
         if($limit){  
            $task = $tasks->take($limit)->orderBy('id', 'desc')->select('*',
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
                                             \DB::raw($this->sub_status)
                                         )->get()->toArray();  
+            
         }
         elseif($page_number){   
             if($page_number>1){
@@ -2095,16 +2112,37 @@ class TaskController extends Controller {
                                     ->where('id',$userId)
                                     ->first();
 
-       $taskassign = DB::table('post_tasks')->where('userId', $userId)
-        ->where('status', 'assigned')
+       $poster_assigned = DB::table('post_tasks')->where('taskOwnerId', $userId)
+        ->where('status','!=' ,'completed')
         ->count();
-       $task_complete = DB::table('post_tasks')->where('userId', $userId)
+
+        $poster_completed = DB::table('post_tasks')->where('taskOwnerId', $userId)
         ->where('status', 'completed')
         ->count();
-                     
-        $user->completion_rate_doer  =($taskassign / $task_complete)*100;
-        $user->completion_rate_poster  =($task_complete / $taskassign)*100;
- 
+
+
+       $doer_assigned = DB::table('post_tasks')->where('taskDoerId', $userId)
+        ->where('status','!=' ,'completed')
+        ->count();
+
+        $doer_completed = DB::table('post_tasks')->where('taskDoerId', $userId)
+        ->where('status', 'completed')
+        ->count();
+
+        if($doer_assigned == 0){
+
+            $user->completion_rate_doer  = 0;
+            $user->completion_rate_poster  = 0;
+
+        }else{
+
+            $user->completion_rate_doer  = round(($doer_completed / $doer_assigned)*100,2);
+            $user->completion_rate_poster  = round(($poster_completed / $poster_assigned)*100,2);
+
+        }      
+            
+
+       
         return Response::json(array(
                 'status' => ($user)?1:0,
                 'code' => ($user)?200:500,
