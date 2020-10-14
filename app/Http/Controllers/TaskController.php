@@ -176,6 +176,7 @@ class TaskController extends Controller {
         $task->funded_by_poster= "No";
         $task->payment_status = "Not initiated";
         $task->taskOwnerId = $request->get('userId');
+        $task->is_delete = 0;
         
         $task->save();
         $status  = 1;
