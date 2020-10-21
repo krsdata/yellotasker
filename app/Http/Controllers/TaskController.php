@@ -1933,6 +1933,7 @@ class TaskController extends Controller {
         }
 
     }
+    
 
 
     public function getFollowedTask(Request $request,$uid=null)

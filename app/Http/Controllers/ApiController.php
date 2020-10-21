@@ -28,6 +28,7 @@ use Twilio\Rest\Client;
 class ApiController extends Controller
 {
     
+    
    /* @method : validateUser
     * @param : email,password,firstName,lastName
     * Response : json
