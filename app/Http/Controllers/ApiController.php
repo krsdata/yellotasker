@@ -348,7 +348,7 @@ public function userDetail($id=null)
     */
     public function updateProfile(Request $request,$userId)
     {      
-
+       
         $user = User::find($userId); 
 
         if((User::find($userId))==null)
@@ -364,7 +364,8 @@ public function userDetail($id=null)
          
         $table_cname = \Schema::getColumnListing('users');
         $except = ['id','created_at','updated_at','profile_image','modeOfreach'];
-        
+      
+       
         foreach ($table_cname as $key => $value) {
            
            if(in_array($value, $except )){
@@ -372,8 +373,12 @@ public function userDetail($id=null)
            } 
             if($request->get($value)){
                 $user->$value = $request->get($value);
+           }else{
+                 $user->$value = $request->get($value);
+
            }
         }
+
         
         if($request->get('modeOfreach')>0){
        		$user->modeOfreach = json_encode($request->get('modeOfreach')); 	
@@ -394,7 +399,7 @@ public function userDetail($id=null)
             }
             $user->profile_image  = $profile_image;       
         }        
-           
+          
 
         try{
             $user->save();
@@ -402,7 +407,7 @@ public function userDetail($id=null)
             $code  = 200;
             $message ="Profile updated successfully";
         }catch(\Exception $e){
-            $status = 0;
+            $status = 0;+
             $code  = 500;
             $message =$e->getMessage();
         }

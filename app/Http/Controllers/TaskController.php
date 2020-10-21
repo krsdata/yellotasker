@@ -41,6 +41,7 @@ class TaskController extends Controller {
     protected $modelNumber = '';
 
     private    $sub_sql =  "( case when status = 'completed' then 0 when  COALESCE(dueDate,CURRENT_DATE) < current_date then 1 when status = 'open'then 3 when status = 'assigned' then 2    end )as rank";
+    
     private    $sub_sql_offer_count     = '(SELECT COUNT(*) as count from   offers where offers.taskId=post_tasks.id) as offer_count';
     private    $sub_sql_comment_count   = '(SELECT COUNT(*) as count from   comments where comments.taskId=post_tasks.id) as comment_count';
 
@@ -758,6 +759,7 @@ class TaskController extends Controller {
 
     public function getUserTasks(Request $request,$user_id)
     {
+       
        $user_id = $request->user_id;
         if($user_id)
         {
@@ -793,11 +795,12 @@ class TaskController extends Controller {
        // delete Blog
     public function deletePostTask(Request $request,$id=null)
     {
-        $t = Tasks::where('id',$id)->where('is_delete', 0)->get();
-       // print($t); die;
-
+        $t = Tasks::where('id',$id)->where('is_delete', 0)->first();
+      
         if($t){
+
             $input['is_delete'] = 1;
+            $input['status'] = "cancel";
             $delete_savetask = DB::table('post_tasks')
                                 ->where('id',$id)
                                     ->update( $input); 
@@ -1829,7 +1832,9 @@ class TaskController extends Controller {
         $blog_type = $request->get('type');
 
         $category = $request->get('category');
-        
+       
+        if(!empty($category)){
+
         if($page_num>1){
             $offset = $page_size*($page_num-1);
         }else{
@@ -1912,6 +1917,20 @@ class TaskController extends Controller {
                     'data'  =>  ($arr)?$arr:$request->all()
                     )
                 );
+
+        }else{
+
+             $category =  DB::table('blogs')->get();
+              $arr[] = $category;
+                return Response::json(array(
+                    'status' => 1,
+                    'code'=> 200,
+                    'message' => 'all blogs',
+                    'data'  =>  $arr
+                    )
+                );
+
+        }
 
     }
 
