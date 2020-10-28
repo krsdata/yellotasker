@@ -1824,16 +1824,14 @@ class TaskController extends Controller {
 
     public function getBlog(Request $request)
     {
-        
         $page_num = ($request->get('page_num'))?$request->get('page_num'):1;
         $page_size = ($request->get('page_size'))?$request->get('page_size'):20; 
         $blogId = $request->get('blogId'); 
-        $blog_title = $request->get('blogTitle'); 
+        $blog_title = $request->get('blogTitle');
         $blog_type = $request->get('type');
 
         $category = $request->get('category');
        
-        if(!empty($category)){
 
         if($page_num>1){
             $offset = $page_size*($page_num-1);
@@ -1842,21 +1840,25 @@ class TaskController extends Controller {
         }  
         $data =  \DB::table('blogs')
                  ->Where(function ($query) use($blogId,$blog_title,$category,$blog_type){
+
                     if($blogId){
+
                         $query->where('id',$blogId);
-                    }
-                    if($category){
+                    }else{
+                        if($category){
                         //$query->where(FIND_IN_SET($category, 'blog_category'));
-                         $query->whereRaw("FIND_IN_SET($category,blog_category)");
+                             $query->whereRaw("FIND_IN_SET($category,blog_category)");
+                        }
+                        
+                        if($blog_type){
+                            $query->where('blog_type','LIKE',"%$blog_type%");
+                        }
+                        
+                        if($blog_title){
+                            $query->where('blog_title','LIKE',"%$blog_title%");
+                        }    
                     }
-                    
-                    if($blog_type){
-                        $query->where('blog_type','LIKE',"%$blog_type%");
-                    }
-                    
-                    if($blog_title){
-                        $query->where('blog_title','LIKE',"%$blog_title%");
-                    }
+
 
                  })
                 // ->where('id',21)
@@ -1917,42 +1919,6 @@ class TaskController extends Controller {
                     'data'  =>  ($arr)?$arr:$request->all()
                     )
                 );
-
-        }else{
-
-             $category =  DB::table('blogs')->get();
-              
-            $input = [];
-            $arr=[];
-
-        foreach ($category as $key => $value) {
-            $input['id'] =  $value->id;
-            $input['blog_title'] = $value->blog_title;
-            $input['blog_sub_title'] = $value->blog_sub_title;
-            $input['blog_type'] = $value->blog_type;
-            $input['blog_description'] = $value->blog_description;
-            $input['author'] = ($value->blog_created_by)?$value->blog_created_by:'Admin';
-           
-            
-            if(\File::exists('storage/blog/'.$value->blog_image)){
-                 $input['blog_image'] = !empty($value->blog_image)?url('storage/blog/'.$value->blog_image):null; 
-            }else{
-                 $input['blog_image'] = null; 
-            } 
-            $input['created_date'] = $value->created_at;
-
-            $arr[] = $input;
-            $input = [];
-        }
-                return Response::json(array(
-                    'status' => 1,
-                    'code'=> 200,
-                    'message' => 'all blogs',
-                    'data'  => ($arr)?$arr:$request->all()
-                    )
-                );
-
-        }
 
     }
     
