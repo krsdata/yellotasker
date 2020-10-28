@@ -1921,12 +1921,34 @@ class TaskController extends Controller {
         }else{
 
              $category =  DB::table('blogs')->get();
-              $arr[] = $category;
+              
+            $input = [];
+            $arr=[];
+
+        foreach ($category as $key => $value) {
+            $input['id'] =  $value->id;
+            $input['blog_title'] = $value->blog_title;
+            $input['blog_sub_title'] = $value->blog_sub_title;
+            $input['blog_type'] = $value->blog_type;
+            $input['blog_description'] = $value->blog_description;
+            $input['author'] = ($value->blog_created_by)?$value->blog_created_by:'Admin';
+           
+            
+            if(\File::exists('storage/blog/'.$value->blog_image)){
+                 $input['blog_image'] = !empty($value->blog_image)?url('storage/blog/'.$value->blog_image):null; 
+            }else{
+                 $input['blog_image'] = null; 
+            } 
+            $input['created_date'] = $value->created_at;
+
+            $arr[] = $input;
+            $input = [];
+        }
                 return Response::json(array(
                     'status' => 1,
                     'code'=> 200,
                     'message' => 'all blogs',
-                    'data'  =>  $arr
+                    'data'  => ($arr)?$arr:$request->all()
                     )
                 );
 
