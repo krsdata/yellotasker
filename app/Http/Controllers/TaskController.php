@@ -1842,23 +1842,28 @@ class TaskController extends Controller {
                  ->Where(function ($query) use($blogId,$blog_title,$category,$blog_type){
 
                     if($blogId){
-
+                        $s=1;
                         $query->where('id',$blogId);
                     }else{
                         if($category){
+                            $s=1;
                         //$query->where(FIND_IN_SET($category, 'blog_category'));
                              $query->whereRaw("FIND_IN_SET($category,blog_category)");
                         }
                         
                         if($blog_type){
+                            $s=1;
                             $query->where('blog_type','LIKE',"%$blog_type%");
                         }
                         
                         if($blog_title){
+                            $s=1;
                             $query->where('blog_title','LIKE',"%$blog_title%");
                         }    
                     }
-
+                    if(!isset($s)){
+                        $query->where('blog_category','!=','');
+                    }
 
                  })
                 // ->where('id',21)
