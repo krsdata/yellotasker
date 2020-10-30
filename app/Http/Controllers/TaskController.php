@@ -1606,17 +1606,21 @@ class TaskController extends Controller {
     public function getTask(Request $request, $uid=null)
     { 
         $action     =   $request->get('action');
-        
+        $today = date("Y-m-d");
+        $open_task = Tasks::where('userId',$uid)->where('status','open')->where('dueDate', '>=', $today)->pluck('id')->toArray();
+
         $data = [];
         switch ($action) {
             case 'saveTask':
-                $data['save_task']  = User::with(['save_task'=>function($q) {
+                $data['save_task']  = User::with(['save_task'=>function($q) use($open_task) {
+                                       
+                                        $q->whereIn('taskId',$open_task);
                                         $q->select('*',\DB::raw($this->sub_sql),
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
                                             \DB::raw($this->sub_status)
                                          )->orderBy('rank','DESC')
-                                                ->orderBy('post_tasks.id','DESC');
+                                        ->orderBy('post_tasks.id','DESC');
                                         }])
                                             ->where('id',$uid)  
                                             ->get();  
