@@ -218,7 +218,7 @@ class ApiController extends Controller
         $input['role_type']     = 3;
         $input['user_type']     = $request->input('user_type');
         $input['provider_id']   = $request->input('provider_id'); 
-
+        $input['status']        = 1;
         $user = User::firstOrNew(['provider_id'=>$request->input('provider_id'),'email'=>$request->input('email')]);
        
         if($request->input('user_id')){

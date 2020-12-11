@@ -21,6 +21,10 @@ Route::get('/', function () {
    return redirect('admin');
 });
 
+if (App::environment('prod')) {
+    \URL::forceScheme('https');
+}
+
 Route::get('/send', 'EmailController@sendMail');
 
 Route::get('/sendEmailReminder', 'NotificationController@sendEmailReminder');
