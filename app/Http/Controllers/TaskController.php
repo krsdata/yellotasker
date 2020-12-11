@@ -2145,12 +2145,12 @@ class TaskController extends Controller {
 
         }else{
 
-            $user->completion_rate_doer  = round(($doer_completed / $doer_assigned)*100,2);
-            $user->completion_rate_poster  = round(($poster_completed / $poster_assigned)*100,2);
-
+            $user->completion_rate_doer  = round(($doer_completed??0 / $doer_assigned??0)*100,2);
+            
+            $user->completion_rate_poster  = round(($poster_completed??0 / $poster_assigned??0)*100,2);
+             
         }      
             
-
        
         return Response::json(array(
                 'status' => ($user)?1:0,
