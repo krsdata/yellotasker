@@ -37,9 +37,75 @@ class NotificationController extends Controller {
     protected $stockSettings = array();
     protected $modelNumber = '';
 
-    
-    
     public function getAllNotification(Request $request)
+    {
+        $arr = [];
+        
+        $validator = Validator::make($request->all(), [
+           'user_id' => 'required'
+        ]);
+        /** Return Error Message **/
+        if ($validator->fails()) {
+                    $error_msg  =   [];
+            foreach ( $validator->messages()->all() as $key => $value) {
+                        array_push($error_msg, $value);     
+                    }
+                            
+            /*return Response::json(array(
+                'status' => 0,
+                'code'=>500,
+                'message' => $error_msg[0],
+                'data'  =>  $request->user_id
+                )
+            );*/
+            $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->limit(50)->get();
+        }else{
+             $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->where('user_id',$request->user_id)->get();     
+        }   
+
+       
+
+        foreach ($notifications as $key => $value) {
+
+                if($value->entity_type=="offers_add"){
+                     $offers = Offers::with('task','assignUser','interestedUser')->where('id',$value->entity_id)->first();
+                     $data  = $value;
+                     $data['offerDetails'] = $offers; 
+                }
+                if($value->entity_type=="task_add" || $value->entity_type=="task_update"){
+                     $task = Tasks::with('postUserDetail','seekerUserDetail')->where('id',$value->entity_id)->first();
+                     $data  = $value;
+                     $data['taskDetails'] = $task; 
+                } 
+
+                if($value->entity_type=="comment_replied" || $value->entity_type=="comment_add"){
+                    $comments = Comments::with('userDetail','commentReply','taskDetail')
+                                ->where('id',$value->entity_id)
+                                ->first();
+
+                     $data  = $value;
+                     $data['commentsDetails'] = $comments; 
+                }
+
+                if($value->entity_type=="user_register"){
+                    $user_register =User::where('id',$value->entity_id)->first();
+
+                     $data  = $value;
+                     $data['userRegisterd'] = $user_register; 
+                }  
+
+                 $arr[] =   $data;              
+        } 
+        return  response()->json([
+                    "status"=>count($arr)?1:0,
+                    "code"=> count($arr)?200:404,
+                    "message"=>count($arr)?"Notification list found":"Record not found for given input!",
+                    'data' => $arr
+                   ]
+                );
+    } 
+    
+    public function getAllNotification2(Request $request)
     {
         $arr = [];
         $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->limit(50)->get();
@@ -74,20 +140,15 @@ class NotificationController extends Controller {
                 }  
 
                  $arr[] =   $data;              
-        }
- 
-
-      //  dd($arr);
-
+        } 
         return  response()->json([
                     "status"=>count($arr)?1:0,
                     "code"=> count($arr)?200:404,
                     "message"=>count($arr)?"Notification list found":"Record not found for given input!",
                     'data' => $arr
                    ]
-                );  
-
-        } 
+                );
+    } 
 
 
 
