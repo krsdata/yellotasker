@@ -1658,9 +1658,10 @@ class TaskController extends Controller {
                 break;                  
             case 'offerPending':
                  $data['offers_pending'] = User::with(['offers_pending'=>function($q) use($uid)
-                        {               
-                          $q->where('userId','!=',$uid)
-                           ->orWhere('userId',$uid)
+                        { 
+                          $q->where('userId','!=',$uid) 
+                           ->orWhereNot('taskDoerId',$uid)
+                           
                                     ->select('*',\DB::raw($this->sub_sql),
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
