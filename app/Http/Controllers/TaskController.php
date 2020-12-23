@@ -1661,7 +1661,7 @@ class TaskController extends Controller {
                         {               
                           $q->where('userId','!=',$uid)
                            ->orWhere('userId',$uid)
-                           //->where('taskDoerId','!=',$uid)
+                           ->where('status','!=','assigned')
                                     ->select('*',\DB::raw($this->sub_sql),
                                             \DB::raw($this->sub_sql_offer_count),
                                             \DB::raw($this->sub_sql_comment_count),
