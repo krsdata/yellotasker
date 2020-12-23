@@ -87,13 +87,13 @@ class NotificationController extends Controller {
                      $data['commentsDetails'] = $comments; 
                 }
 
-                if($value->entity_type=="user_register"){
+             /*   if($value->entity_type=="user_register"){
                     $user_register =User::where('id',$value->entity_id)->first();
 
                      $data  = $value;
                      $data['userRegisterd'] = $user_register; 
                 }  
-
+*/
                  $arr[] =   $data;              
         } 
         return  response()->json([
