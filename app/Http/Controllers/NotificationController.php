@@ -51,31 +51,72 @@ class NotificationController extends Controller {
                         array_push($error_msg, $value);     
                     }
                             
-            /*return Response::json(array(
+        return Response::json(array(
                 'status' => 0,
                 'code'=>500,
                 'message' => $error_msg[0],
                 'data'  =>  $request->user_id
                 )
-            );*/
+            );
             $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->limit(50)->get();
         }else{
-             $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->where('user_id',$request->user_id)->get();     
+             $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->where('user_id',$request->user_id)->limit(50)->get();     
         }   
 
-       
+        $task_as_doer = Tasks::where('taskDoerId',$request->user_id)->pluck('id');
+        $task_as_poster = Tasks::where('taskOwnerId',$request->user_id)->pluck('id');
 
         foreach ($notifications as $key => $value) {
 
                 if($value->entity_type=="offers_add"){
-                     $offers = Offers::with('task','assignUser','interestedUser')->where('id',$value->entity_id)->first();
-                     $data  = $value;
-                     $data['offerDetails'] = $offers; 
+                     $offers1 = Offers::with('task','assignUser','interestedUser')->where('id',$value->entity_id)
+                        ->whereIn('taskId',$task_as_doer)->first();
+                     
+                     $offers2 = Offers::with('task','assignUser','interestedUser')->where('id',$value->entity_id)
+                        ->whereIn('taskId',$task_as_poster)->first();
+                     //      
+                     //$data  = $value;
+                    // $data['offerDetails'] = $offers1??$offers2;
+
+                     // doer
+                     if($offers1){
+                        $data1['offerDetails'] = $offers1;   
+                     }else{
+                        $data1['offerDetails'] = [];
+                     }
+                     // poster
+                     if($offers2){
+                        $data2['offerDetails'] = $offers2;   
+                     }else{
+                        $data2['offerDetails'] = [];
+                     } 
+                     
                 }
+                
+
                 if($value->entity_type=="task_add" || $value->entity_type=="task_update"){
-                     $task = Tasks::with('postUserDetail','seekerUserDetail')->where('id',$value->entity_id)->first();
-                     $data  = $value;
-                     $data['taskDetails'] = $task; 
+                     $task1 = Tasks::with('postUserDetail','seekerUserDetail')
+                     ->where('id',$value->entity_id)
+                     ->whereIn('id',$task_as_poster)->first();
+
+                     $task2 = Tasks::with('postUserDetail','seekerUserDetail')
+                     ->where('id',$value->entity_id)
+                     ->whereIn('id',$task_as_doer)->first();
+
+                    // $data  = $value;
+                     // doer
+                     if($task1){
+                        $data1['taskDetails'] = $task1;   
+                     }else{
+                        $data1['taskDetails'] = [];
+                     }
+                     // poster
+                     if($task2){
+                        $data2['taskDetails'] = $task2;   
+                     }else{
+                        $data2['taskDetails'] = [];
+                     }
+                        
                 } 
 
                 if($value->entity_type=="comment_replied" || $value->entity_type=="comment_add"){
@@ -83,18 +124,13 @@ class NotificationController extends Controller {
                                 ->where('id',$value->entity_id)
                                 ->first();
 
-                     $data  = $value;
-                     $data['commentsDetails'] = $comments; 
+                    // $data  = $value;
+                     $data1['commentsDetails'] = $comments;
+                     $data2['commentsDetails'] = $comments;
                 }
 
-             /*   if($value->entity_type=="user_register"){
-                    $user_register =User::where('id',$value->entity_id)->first();
-
-                     $data  = $value;
-                     $data['userRegisterd'] = $user_register; 
-                }  
-*/
-                 $arr[] =   $data;              
+                $arr['doer'][] =   $data1??null;
+                $arr['poster'][] =   $data2??null;              
         } 
         return  response()->json([
                     "status"=>count($arr)?1:0,

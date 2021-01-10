@@ -41,7 +41,7 @@ class Comments extends Eloquent {
     // user details
     public  function userDetail()
     {
-        return $this->hasOne('App\User','id','userId') ;
+        return $this->hasOne('App\User','id','userId')->select('id','first_name','last_name','profile_image','email') ;
     }
 
     public  function commentReply()
