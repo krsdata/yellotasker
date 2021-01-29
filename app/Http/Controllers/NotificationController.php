@@ -37,7 +37,7 @@ class NotificationController extends Controller {
     protected $stockSettings = array();
     protected $modelNumber = '';
 
-    public function getAllNotification(Request $request)
+    public function getAllNotification2(Request $request)
     {
         $arr = [];
         
@@ -141,7 +141,7 @@ class NotificationController extends Controller {
                 );
     } 
     
-    public function getAllNotification2(Request $request)
+    public function getAllNotification(Request $request)
     {
         $arr = [];
         $notifications = Notification::with('userDetails')->orderBy('id', 'desc')->limit(50)->get();
