@@ -51,9 +51,9 @@ class Tasks extends Authenticatable {
 
     public  function taskPostedUser()
     {
-         return $this->belongsTo('App\User', 'userId', 'id')->with('posterReview');
+         return $this->belongsTo('App\User', 'taskOwnerId', 'id')->with('posterReview');
     }
-
+    
     public  function taskAssignedUser()
     {
          return $this->belongsTo('App\User', 'taskDoerId', 'id');
