@@ -141,7 +141,10 @@ class User extends Authenticatable
                         when COALESCE(dueDate,CURRENT_DATE) < current_date then "expired" 
                         when post_tasks.taskDoerId!=saveTask.userId then "assigned"
                         ELSE 
-                        status end) as status'))->with('taskPostedUser')->groupBy('saveTask.taskId')->orderBy('saveTask.id','desc');
+                        status end) as status'))
+                    ->with('taskPostedUser')
+                    ->groupBy('saveTask.taskId')
+                    ->orderBy('saveTask.id','desc');
          
     }
 
